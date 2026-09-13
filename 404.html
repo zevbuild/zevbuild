@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Route Redirect & Error Handler — Zevbuild</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #07090e;
+      color: #f3f4f6;
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-[#07090e] antialiased selection:bg-purple-600 selection:text-white">
+
+  <div class="max-w-lg w-full bg-[#0d121f]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden">
+    <!-- Ambient Glow -->
+    <div class="absolute -right-16 -top-16 w-48 h-48 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Error Icon -->
+    <div class="w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mx-auto mb-6 shadow-lg shadow-purple-500/10">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+      </svg>
+    </div>
+
+    <!-- Status & Title -->
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold mb-3">
+      <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+      <span>HTTP 404 · Unresolved Route</span>
+    </div>
+
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-white mb-2 tracking-tight">
+      Resource Relocated or Not Found
+    </h1>
+
+    <p id="error-message" class="text-xs sm:text-sm text-slate-400 mb-6 leading-relaxed">
+      The requested route does not exist. Our smart resolver is identifying the appropriate destination...
+    </p>
+
+    <!-- Detected Target Resolution Banner -->
+    <div id="target-box" class="hidden mb-6 p-4 rounded-xl bg-purple-950/30 border border-purple-500/20 text-left text-xs">
+      <div class="text-[10px] uppercase font-bold text-purple-400 tracking-wider mb-1">Target Resolved:</div>
+      <div id="target-name" class="font-bold text-slate-200"></div>
+      <div id="target-url" class="text-slate-400 mono truncate text-[11px]"></div>
+    </div>
+
+    <!-- Countdown & Redirect Trigger -->
+    <div class="space-y-3">
+      <a id="redirect-btn" href="index.html" 
+         class="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-600/25 border border-purple-400/20 transition-all">
+        <span id="redirect-label">Redirecting to Main Portal in 5s</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+        </svg>
+      </a>
+
+      <a href="index.html" class="inline-block text-xs text-slate-500 hover:text-slate-300 transition-colors">
+        Cancel redirect and go to Home
+      </a>
+    </div>
+
+    <!-- Quick Navigation Links -->
+    <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-center gap-4 text-xs text-slate-400">
+      <a href="tools/zevsafe/index.html" class="hover:text-purple-400 transition-colors">ZevSafe</a>
+      <span>·</span>
+      <a href="tools/collegebus/index.html" class="hover:text-emerald-400 transition-colors">CollegeBus</a>
+      <span>·</span>
+      <a href="tools/satta-matka-tools/index.html" class="hover:text-indigo-400 transition-colors">Analytics</a>
+      <span>·</span>
+      <a href="https://github.com/zevbuild" target="_blank" class="hover:text-slate-200 transition-colors">GitHub</a>
+    </div>
+
+  </div>
+
+  <script>
+    // Smart routing resolution logic
+    const currentPath = window.location.pathname.toLowerCase();
+    const targetBox = document.getElementById('target-box');
+    const targetName = document.getElementById('target-name');
+    const targetUrl = document.getElementById('target-url');
+    const redirectBtn = document.getElementById('redirect-btn');
+    const redirectLabel = document.getElementById('redirect-label');
+    const errorMessage = document.getElementById('error-message');
+
+    let destination = 'index.html';
+    let destTitle = 'Zevbuild Main Portal';
+
+    if (currentPath.includes('satta') || currentPath.includes('matka')) {
+      destination = 'tools/satta-matka-tools/index.html';
+      destTitle = 'Predictive Analytics & Kalyan Engine';
+    } else if (currentPath.includes('zevsafe')) {
+      destination = 'https://zevsafe.pages.dev';
+      destTitle = 'ZevSafe — Offline Folder Encryption Portal';
+    } else if (currentPath.includes('zevsync')) {
+      destination = 'https://github.com/zevbuild/zevsync';
+      destTitle = 'ZevSync — Offline Bluetooth Mesh Sync';
+    } else if (currentPath.includes('collegebus') || currentPath.includes('bus')) {
+      destination = 'https://collegebus.pages.dev';
+      destTitle = 'CollegeBus — Student Transit Tracker';
+    }
+
+    if (destination !== 'index.html') {
+      targetBox.classList.remove('hidden');
+      targetName.innerText = destTitle;
+      targetUrl.innerText = destination;
+      errorMessage.innerText = 'We detected you were attempting to access ' + destTitle + '. Redirecting you automatically.';
+      redirectBtn.href = destination;
+    }
+
+    // Countdown timer
+    let secondsLeft = 4;
+    redirectLabel.innerText = 'Redirecting to ' + (destTitle === 'Zevbuild Main Portal' ? 'Main Portal' : destTitle) + ' in ' + secondsLeft + 's';
+
+    const countdownInterval = setInterval(() => {
+      secondsLeft -= 1;
+      if (secondsLeft > 0) {
+        redirectLabel.innerText = 'Redirecting in ' + secondsLeft + 's';
+      } else {
+        clearInterval(countdownInterval);
+        window.location.href = destination;
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
