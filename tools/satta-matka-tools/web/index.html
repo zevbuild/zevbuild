@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalyan Live Predictor & Auto-Fetch Engine</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 3px; }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .live-pulse { animation: pulse-ring 2s infinite; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-indigo-500 selection:text-white p-3 sm:p-6">
+
+  <div class="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+
+    <!-- Top Navigation & Auto-Sync Bar -->
+    <header class="bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+            Kalyan Auto-Predictor Web Engine
+          </h1>
+          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+            Realtime Auto-Sync
+          </span>
+        </div>
+        <p class="text-xs text-slate-400 mt-1">
+          Auto-fetches latest Kalyan charts from dpbossx.net, recalibrates Markov & Seasonality models, and forecasts upcoming draws.
+        </p>
+      </div>
+
+      <!-- Controls: Auto-Sync Switch & Manual Refresh -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+        <!-- Auto-fetch Toggle & Countdown -->
+        <div class="flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800 text-xs">
+          <span id="auto-sync-status" class="text-emerald-400 font-semibold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Auto: ON
+          </span>
+          <span class="text-slate-600">|</span>
+          <span id="countdown-timer" class="font-mono text-slate-300">45s</span>
+          <button onclick="toggleAutoSync()" id="btn-toggle-auto" class="ml-1 text-[11px] text-indigo-400 hover:text-indigo-300 underline font-medium">
+            Pause
+          </button>
+        </div>
+
+        <!-- Manual Fetch Button -->
+        <button onclick="triggerFetchAndPredict()" id="btn-fetch-now" class="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl shadow-lg shadow-indigo-600/20 transition-all active:scale-95 disabled:opacity-50">
+          <svg id="sync-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span id="btn-text">Sync Now</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Status & Latest Draw Banner -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <!-- Latest Result Card -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Latest Live Draw</div>
+          <div class="flex items-baseline gap-2 mt-0.5">
+            <span id="latest-jodi" class="text-2xl font-black font-mono text-amber-400">15</span>
+            <span id="latest-patti" class="text-xs text-slate-400 font-mono">Open: 1 | Close: 5</span>
+          </div>
+          <div id="latest-date" class="text-[11px] text-slate-400 mt-0.5">Saturday, 2026-09-12</div>
+        </div>
+        <div class="text-right">
+          <span class="inline-block px-2 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold text-xs">Official</span>
+        </div>
+      </div>
+
+      <!-- Sync Status Card -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Database Synchronization</div>
+          <div class="text-sm font-bold text-slate-200 mt-0.5" id="dataset-count">3,282 Historical Records</div>
+          <div class="text-[11px] text-emerald-400 mt-0.5 flex items-center gap-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span id="last-sync-time">Just now</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="inline-block px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold text-xs">96.9% Valid</span>
+        </div>
+      </div>
+
+      <!-- Historical Hit Rate Card -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Model Backtest Edge</div>
+          <div class="text-sm font-bold text-indigo-400 mt-0.5">Top-5 Hit Rate: 5.11%</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Random Baseline: 5.00% (+2.2% edge)</div>
+        </div>
+        <div class="text-right">
+          <span class="inline-block px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-bold text-xs">2,680 Tests</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day Selector Navigation -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Target Upcoming Draw Day:</span>
+        <span id="target-day-banner" class="text-xs font-mono font-bold text-indigo-400">TARGET: 2026-09-14 (Monday)</span>
+      </div>
+      <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+        <button onclick="changeDay('Mon')" id="btn-Mon" class="day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow">
+          Mon<span class="block text-[10px] font-normal opacity-80" id="date-Mon">14 Sep</span>
+        </button>
+        <button onclick="changeDay('Tue')" id="btn-Tue" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Tue<span class="block text-[10px] font-normal opacity-80" id="date-Tue">15 Sep</span>
+        </button>
+        <button onclick="changeDay('Wed')" id="btn-Wed" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Wed<span class="block text-[10px] font-normal opacity-80" id="date-Wed">16 Sep</span>
+        </button>
+        <button onclick="changeDay('Thu')" id="btn-Thu" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Thu<span class="block text-[10px] font-normal opacity-80" id="date-Thu">17 Sep</span>
+        </button>
+        <button onclick="changeDay('Fri')" id="btn-Fri" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Fri<span class="block text-[10px] font-normal opacity-80" id="date-Fri">18 Sep</span>
+        </button>
+        <button onclick="changeDay('Sat')" id="btn-Sat" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Sat<span class="block text-[10px] font-normal opacity-80" id="date-Sat">19 Sep</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Prediction Highlights (Top Pick, Prime Open, Prime Close) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+      <!-- Card 1: Top Recommended Jodi -->
+      <div class="bg-gradient-to-b from-indigo-950/60 to-slate-900 border border-indigo-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg">
+        <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-indigo-500/10 rounded-full blur-xl pointer-events-none"></div>
+        <div class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Highest Confidence Jodi
+        </div>
+        <div class="flex items-baseline gap-3 mt-2">
+          <span id="spotlight-jodi" class="text-4xl sm:text-5xl font-black font-mono text-white tracking-tight">31</span>
+          <span id="spotlight-jodi-prob" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20">2.05% (+105% edge)</span>
+        </div>
+        <div class="mt-3 text-xs text-slate-300">
+          <span class="text-slate-400">Recommended Cut/Family Set:</span>
+          <div id="spotlight-family" class="flex flex-wrap gap-1 mt-1 font-mono">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Prime Open Ank -->
+      <div class="bg-gradient-to-b from-purple-950/60 to-slate-900 border border-purple-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg">
+        <div class="text-[11px] font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+          Predicted Single Open Ank
+        </div>
+        <div class="flex items-baseline gap-3 mt-2">
+          <span id="spotlight-open" class="text-4xl sm:text-5xl font-black font-mono text-purple-300 tracking-tight">9</span>
+          <span id="spotlight-open-prob" class="text-xs font-bold text-purple-300 bg-purple-500/10 px-2 py-1 rounded-md border border-purple-500/20">12.38% prob</span>
+        </div>
+        <div class="mt-3 text-xs text-slate-400">
+          Secondary Alternative: <span id="spotlight-alt-open" class="font-bold text-slate-200 font-mono">Digit 3 (12.36%)</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Prime Close Ank -->
+      <div class="bg-gradient-to-b from-sky-950/60 to-slate-900 border border-sky-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg">
+        <div class="text-[11px] font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+          Predicted Single Close Ank
+        </div>
+        <div class="flex items-baseline gap-3 mt-2">
+          <span id="spotlight-close" class="text-4xl sm:text-5xl font-black font-mono text-sky-300 tracking-tight">1</span>
+          <span id="spotlight-close-prob" class="text-xs font-bold text-sky-300 bg-sky-500/10 px-2 py-1 rounded-md border border-sky-500/20">10.95% prob</span>
+        </div>
+        <div class="mt-3 text-xs text-slate-400">
+          Secondary Alternative: <span id="spotlight-alt-close" class="font-bold text-slate-200 font-mono">Digit 8 (10.68%)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Tabbed Detail Views -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
+        <div class="flex gap-2">
+          <button onclick="setTab('jodis')" id="tab-btn-jodis" class="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white transition-all">
+            Top 10 Jodis
+          </button>
+          <button onclick="setTab('digits')" id="tab-btn-digits" class="text-xs font-medium px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">
+            Open & Close Anks (0–9)
+          </button>
+          <button onclick="setTab('family')" id="tab-btn-family" class="text-xs font-medium px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">
+            Family / Cut Sets
+          </button>
+        </div>
+        <span class="text-xs text-slate-400">Payout Benchmark: 90:1</span>
+      </div>
+
+      <!-- Tab 1: Top 10 Jodis -->
+      <div id="tab-content-jodis" class="tab-pane overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-slate-800 text-slate-400">
+              <th class="py-2 px-3">Rank</th>
+              <th class="py-2 px-3">Jodi Number</th>
+              <th class="py-2 px-3">Ensemble Prob</th>
+              <th class="py-2 px-3">Relative Edge</th>
+              <th class="py-2 px-3">Probability Gauge</th>
+              <th class="py-2 px-3 text-right">Associated Cut Family</th>
+            </tr>
+          </thead>
+          <tbody id="jodi-table" class="divide-y divide-slate-800/60 font-mono">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab 2: Single Digits (0-9) -->
+      <div id="tab-content-digits" class="tab-pane hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Open Digits -->
+        <div class="border border-slate-800 rounded-xl p-3.5 bg-slate-950/40 space-y-2">
+          <div class="flex justify-between items-center text-xs font-bold text-purple-400">
+            <span>Single Open Ank (0–9)</span>
+            <span>Probability</span>
+          </div>
+          <div id="open-digits-container" class="space-y-1.5 text-xs font-mono"></div>
+        </div>
+
+        <!-- Close Digits -->
+        <div class="border border-slate-800 rounded-xl p-3.5 bg-slate-950/40 space-y-2">
+          <div class="flex justify-between items-center text-xs font-bold text-sky-400">
+            <span>Single Close Ank (0–9)</span>
+            <span>Probability</span>
+          </div>
+          <div id="close-digits-container" class="space-y-1.5 text-xs font-mono"></div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Family Brackets -->
+      <div id="tab-content-family" class="tab-pane hidden space-y-3">
+        <p class="text-xs text-slate-400">
+          Family sets combine original digits with Cut digits (+5 mod 10) and their inverted permutations. Playing family sets hedges against single-digit flip variations.
+        </p>
+        <div id="family-sets-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      </div>
+    </div>
+
+    <!-- Risk & Bankroll Management Card -->
+    <footer class="bg-amber-950/20 border border-amber-500/20 rounded-2xl p-4 text-xs text-slate-400 space-y-2">
+      <div class="flex items-center gap-2 font-bold text-amber-400">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span>Mathematical Guardrail & Risk Management Notice</span>
+      </div>
+      <p class="leading-relaxed">
+        This automated system applies quantitative pattern recognition (Markov state transition matrices, recency exponential decay, and weekday seasonality priors). In strict historical walk-forward backtesting, the Top-5 Jodi model yielded a verified <strong>5.11% hit-rate</strong>. However, because bookmaker payouts of 90:1 on 100 possible outcomes represent a negative expectancy (-10% house margin), deterministic wins are mathematically impossible. Treat all model outputs as probabilistic intelligence, never gamble essentials, and limit wagers to under 1% of entertainment capital per draw.
+      </p>
+    </footer>
+
+  </div>
+
+  <script>
+    // Embedded Baseline Data (ensures instant load even if server is offline)
+    let APP_DATA = null;
+    let selectedDay = "Mon";
+    let autoSyncEnabled = true;
+    let countdownSec = 45;
+    let timerInterval = null;
+
+    async function loadData() {
+      try {
+        const res = await fetch('/api/fetch-and-predict', { method: 'POST' });
+        if (res.ok) {
+          const json = await res.json();
+          APP_DATA = json;
+          document.getElementById('last-sync-time').textContent = new Date().toLocaleTimeString();
+          renderUI();
+          return;
+        }
+      } catch (err) {
+        console.warn('Backend server not responding, falling back to local cached dataset...');
+      }
+
+      // Fallback to static prediction_data.json if running as standalone static file
+      try {
+        const res = await fetch('prediction_data.json');
+        if (res.ok) {
+          APP_DATA = await res.json();
+          document.getElementById('last-sync-time').textContent = 'Cached Snapshot';
+          renderUI();
+        }
+      } catch (e) {
+        console.error('Failed to load prediction data', e);
+      }
+    }
+
+    async function triggerFetchAndPredict() {
+      const btn = document.getElementById('btn-fetch-now');
+      const icon = document.getElementById('sync-icon');
+      const text = document.getElementById('btn-text');
+
+      btn.disabled = true;
+      text.textContent = "Syncing...";
+      icon.classList.add('animate-spin');
+
+      try {
+        await loadData();
+      } finally {
+        btn.disabled = false;
+        text.textContent = "Sync Now";
+        icon.classList.remove('animate-spin');
+        countdownSec = 45;
+      }
+    }
+
+    function toggleAutoSync() {
+      autoSyncEnabled = !autoSyncEnabled;
+      const statusEl = document.getElementById('auto-sync-status');
+      const btn = document.getElementById('btn-toggle-auto');
+
+      if (autoSyncEnabled) {
+        statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span>Auto: ON';
+        statusEl.className = 'text-emerald-400 font-semibold flex items-center gap-1.5';
+        btn.textContent = 'Pause';
+      } else {
+        statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span>Auto: OFF';
+        statusEl.className = 'text-slate-400 font-semibold flex items-center gap-1.5';
+        btn.textContent = 'Resume';
+      }
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (!autoSyncEnabled) return;
+        countdownSec--;
+        if (countdownSec <= 0) {
+          countdownSec = 45;
+          triggerFetchAndPredict();
+        }
+        document.getElementById('countdown-timer').textContent = countdownSec + 's';
+      }, 1000);
+    }
+
+    function changeDay(day) {
+      selectedDay = day;
+      document.querySelectorAll('.day-tab').forEach(b => {
+        b.className = "day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800";
+      });
+      const activeBtn = document.getElementById('btn-' + day);
+      if (activeBtn) {
+        activeBtn.className = "day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow";
+      }
+      renderDayView();
+    }
+
+    function setTab(tab) {
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+      const activePane = document.getElementById('tab-content-' + tab);
+      if (activePane) activePane.classList.remove('hidden');
+
+      const tabs = ['jodis', 'digits', 'family'];
+      tabs.forEach(t => {
+        const b = document.getElementById('tab-btn-' + t);
+        if (t === tab) {
+          b.className = "text-xs font-bold px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white transition-all";
+        } else {
+          b.className = "text-xs font-medium px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all";
+        }
+      });
+    }
+
+    function renderUI() {
+      if (!APP_DATA) return;
+
+      // Update Latest Draw Banner
+      if (APP_DATA.latest_draw) {
+        document.getElementById('latest-jodi').textContent = APP_DATA.latest_draw.jodi;
+        document.getElementById('latest-patti').textContent = `Open: ${APP_DATA.latest_draw.open} | Close: ${APP_DATA.latest_draw.close}`;
+        document.getElementById('latest-date').textContent = `${APP_DATA.latest_draw.day}, ${APP_DATA.latest_draw.date}`;
+      }
+
+      // Update Day buttons with dates
+      if (APP_DATA.by_day) {
+        for (const [day, val] of Object.entries(APP_DATA.by_day)) {
+          const el = document.getElementById('date-' + day);
+          if (el && val.date) {
+            const parts = val.date.split('-');
+            el.textContent = `${parts[2]}/${parts[1]}`;
+          }
+        }
+      }
+
+      renderDayView();
+    }
+
+    function renderDayView() {
+      if (!APP_DATA || !APP_DATA.by_day || !APP_DATA.by_day[selectedDay]) return;
+
+      const dayData = APP_DATA.by_day[selectedDay];
+
+      // Target Banner
+      document.getElementById('target-day-banner').textContent = `TARGET: ${dayData.date} (${dayData.day})`;
+
+      // Spotlight Top Jodi
+      const top1 = dayData.top_jodis[0];
+      document.getElementById('spotlight-jodi').textContent = top1.jodi;
+      const relEdge = ((top1.prob / 1.0) - 1.0) * 100;
+      document.getElementById('spotlight-jodi-prob').textContent = `${top1.prob.toFixed(2)}% (${relEdge >= 0 ? '+' : ''}${relEdge.toFixed(0)}% edge)`;
+
+      const familyContainer = document.getElementById('spotlight-family');
+      familyContainer.innerHTML = '';
+      top1.family.forEach(f => {
+        const s = document.createElement('span');
+        s.className = `px-1.5 py-0.5 rounded text-[11px] font-bold ${f === top1.jodi ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300'}`;
+        s.textContent = f;
+        familyContainer.appendChild(s);
+      });
+
+      // Spotlight Open
+      const topOpen = dayData.open_digits[0];
+      const altOpen = dayData.open_digits[1];
+      document.getElementById('spotlight-open').textContent = topOpen.digit;
+      document.getElementById('spotlight-open-prob').textContent = `${topOpen.prob.toFixed(2)}% prob`;
+      document.getElementById('spotlight-alt-open').textContent = `Digit ${altOpen.digit} (${altOpen.prob.toFixed(2)}%)`;
+
+      // Spotlight Close
+      const topClose = dayData.close_digits[0];
+      const altClose = dayData.close_digits[1];
+      document.getElementById('spotlight-close').textContent = topClose.digit;
+      document.getElementById('spotlight-close-prob').textContent = `${topClose.prob.toFixed(2)}% prob`;
+      document.getElementById('spotlight-alt-close').textContent = `Digit ${altClose.digit} (${altClose.prob.toFixed(2)}%)`;
+
+      // Jodi Table
+      const jodiTbody = document.getElementById('jodi-table');
+      jodiTbody.innerHTML = '';
+      dayData.top_jodis.forEach(j => {
+        const edge = ((j.prob / 1.0) - 1.0) * 100;
+        const widthPct = Math.min(100, Math.round((j.prob / 2.5) * 100));
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/40 transition-colors";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 text-slate-500 font-semibold">#${j.rank}</td>
+          <td class="py-2.5 px-3 font-bold text-base text-indigo-400">${j.jodi}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-200">${j.prob.toFixed(2)}%</td>
+          <td class="py-2.5 px-3 font-bold ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${edge >= 0 ? '+' : ''}${edge.toFixed(1)}%</td>
+          <td class="py-2.5 px-3">
+            <div class="w-28 sm:w-40 bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div class="bg-indigo-500 h-full rounded-full" style="width: ${widthPct}%"></div>
+            </div>
+          </td>
+          <td class="py-2.5 px-3 text-right text-slate-400">${j.family.slice(0, 4).join(', ')}</td>
+        `;
+        jodiTbody.appendChild(tr);
+      });
+
+      // Open Digits
+      const openBox = document.getElementById('open-digits-container');
+      openBox.innerHTML = '';
+      dayData.open_digits.forEach(d => {
+        const barWidth = Math.round((d.prob / 15.0) * 100);
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-slate-800/50";
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-6 text-center font-bold text-sm ${d.rank <= 3 ? 'text-purple-400' : 'text-slate-400'}">${d.digit}</span>
+            <div class="w-28 sm:w-36 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-purple-500 h-full rounded-full" style="width: ${barWidth}%"></div>
+            </div>
+          </div>
+          <span class="text-xs font-bold ${d.rank <= 3 ? 'text-purple-300' : 'text-slate-400'}">${d.prob.toFixed(2)}%</span>
+        `;
+        openBox.appendChild(div);
+      });
+
+      // Close Digits
+      const closeBox = document.getElementById('close-digits-container');
+      closeBox.innerHTML = '';
+      dayData.close_digits.forEach(d => {
+        const barWidth = Math.round((d.prob / 15.0) * 100);
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-slate-800/50";
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-6 text-center font-bold text-sm ${d.rank <= 3 ? 'text-sky-400' : 'text-slate-400'}">${d.digit}</span>
+            <div class="w-28 sm:w-36 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-sky-500 h-full rounded-full" style="width: ${barWidth}%"></div>
+            </div>
+          </div>
+          <span class="text-xs font-bold ${d.rank <= 3 ? 'text-sky-300' : 'text-slate-400'}">${d.prob.toFixed(2)}%</span>
+        `;
+        closeBox.appendChild(div);
+      });
+
+      // Family Sets
+      const familyBox = document.getElementById('family-sets-container');
+      familyBox.innerHTML = '';
+      dayData.top_jodis.slice(0, 4).forEach(j => {
+        const card = document.createElement('div');
+        card.className = "border border-slate-800 rounded-xl p-3 bg-slate-950/60 space-y-2";
+        card.innerHTML = `
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-indigo-400 text-sm">Jodi [${j.jodi}] Family Group</span>
+            <span class="text-slate-400 font-mono">Rank #${j.rank} (${j.prob.toFixed(2)}%)</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono">
+            ${j.family.map(f => `<span class="px-2 py-0.5 rounded text-xs ${f === j.jodi ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-800 text-slate-300 border border-slate-700'}">${f}</span>`).join('')}
+          </div>
+        `;
+        familyBox.appendChild(card);
+      });
+    }
+
+    // Auto-init on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      startTimer();
+    });
+  </script>
+</body>
+</html>

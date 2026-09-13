@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalyan Matka - Upcoming Predictions Dashboard</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 3px; }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-2 sm:p-4 selection:bg-indigo-500 selection:text-white">
+
+  <!-- Main Container -->
+  <div class="max-w-4xl mx-auto bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-2xl p-4 sm:p-5 shadow-lg space-y-4">
+    
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 border-b border-[var(--border)]">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight">Kalyan Matka Predictive Intelligence</h1>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-medium border border-indigo-500/20">Ensemble v2.4</span>
+        </div>
+        <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
+          Markov Transitions + Recency-Decay (60d) + Day-of-Week Seasonality Prior
+        </p>
+      </div>
+      <div class="text-right text-xs bg-[var(--secondary)] px-2.5 py-1 rounded-lg border border-[var(--border)]">
+        <span class="text-[var(--muted-foreground)]">Last Result:</span>
+        <span class="font-bold text-amber-500 ml-1">Sat (2026-09-12) &rarr; [15]</span>
+      </div>
+    </div>
+
+    <!-- Day Selector Tabs -->
+    <div class="space-y-1.5">
+      <div class="flex items-center justify-between">
+        <label class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Select Upcoming Target Day:</label>
+        <span id="target-date-display" class="text-xs font-mono text-indigo-400 font-semibold">Target: 2026-09-14 (Mon)</span>
+      </div>
+      <div class="grid grid-cols-6 gap-1.5 p-1 bg-[var(--secondary)] rounded-xl border border-[var(--border)]">
+        <button onclick="selectDay('Mon')" id="btn-Mon" class="day-btn py-1.5 px-2 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow-sm">
+          Mon<span class="hidden sm:inline text-[10px] block opacity-80">14 Sep</span>
+        </button>
+        <button onclick="selectDay('Tue')" id="btn-Tue" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+          Tue<span class="hidden sm:inline text-[10px] block opacity-80">15 Sep</span>
+        </button>
+        <button onclick="selectDay('Wed')" id="btn-Wed" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+          Wed<span class="hidden sm:inline text-[10px] block opacity-80">16 Sep</span>
+        </button>
+        <button onclick="selectDay('Thu')" id="btn-Thu" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+          Thu<span class="hidden sm:inline text-[10px] block opacity-80">17 Sep</span>
+        </button>
+        <button onclick="selectDay('Fri')" id="btn-Fri" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+          Fri<span class="hidden sm:inline text-[10px] block opacity-80">18 Sep</span>
+        </button>
+        <button onclick="selectDay('Sat')" id="btn-Sat" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+          Sat<span class="hidden sm:inline text-[10px] block opacity-80">19 Sep</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Core Prediction Highlights Card -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+      <!-- Top Pick Card -->
+      <div class="bg-gradient-to-br from-indigo-500/10 via-[var(--card)] to-[var(--card)] border border-indigo-500/30 rounded-xl p-3 relative overflow-hidden">
+        <div class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Top Recommended Jodi</div>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="card-top-jodi" class="text-3xl font-extrabold tracking-tight font-mono text-indigo-400">31</span>
+          <span id="card-top-prob" class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">2.05% (+105% edge)</span>
+        </div>
+        <div class="text-[11px] text-[var(--muted-foreground)] mt-2">
+          Cut/Family: <span id="card-family-preview" class="font-mono text-[var(--foreground)] font-medium">13, 18, 36, 68...</span>
+        </div>
+      </div>
+
+      <!-- Top Open Digit -->
+      <div class="bg-gradient-to-br from-purple-500/10 via-[var(--card)] to-[var(--card)] border border-purple-500/30 rounded-xl p-3">
+        <div class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">Prime Open Ank (Single Digit)</div>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="card-top-open" class="text-3xl font-extrabold tracking-tight font-mono text-purple-400">9</span>
+          <span id="card-open-prob" class="text-xs font-semibold text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">12.38% prob</span>
+        </div>
+        <div class="text-[11px] text-[var(--muted-foreground)] mt-2">
+          Alternate Open: <span id="card-alt-open" class="font-mono text-[var(--foreground)] font-medium">Digit 3 (12.36%)</span>
+        </div>
+      </div>
+
+      <!-- Top Close Digit -->
+      <div class="bg-gradient-to-br from-sky-500/10 via-[var(--card)] to-[var(--card)] border border-sky-500/30 rounded-xl p-3">
+        <div class="text-[10px] font-bold text-sky-400 uppercase tracking-wider">Prime Close Ank (Single Digit)</div>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="card-top-close" class="text-3xl font-extrabold tracking-tight font-mono text-sky-400">1</span>
+          <span id="card-close-prob" class="text-xs font-semibold text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-500/20">10.95% prob</span>
+        </div>
+        <div class="text-[11px] text-[var(--muted-foreground)] mt-2">
+          Alternate Close: <span id="card-alt-close" class="font-mono text-[var(--foreground)] font-medium">Digit 8 (10.68%)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Modes: Jodis vs Digits vs Family -->
+    <div class="space-y-3">
+      <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
+        <div class="flex gap-2">
+          <button onclick="setViewMode('jodis')" id="tab-jodis" class="view-tab text-xs font-bold px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] transition-all">
+            Top 10 Jodis
+          </button>
+          <button onclick="setViewMode('digits')" id="tab-digits" class="view-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all">
+            Open & Close Anks (0-9)
+          </button>
+          <button onclick="setViewMode('family')" id="tab-family" class="view-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all">
+            Family / Cut Brackets
+          </button>
+        </div>
+        <span class="text-[11px] text-[var(--muted-foreground)] hidden sm:inline">90:1 Payout Metric</span>
+      </div>
+
+      <!-- Content Area 1: Top 10 Jodis Table -->
+      <div id="view-jodis" class="view-panel overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]">
+              <th class="py-1.5 px-2 font-semibold">Rank</th>
+              <th class="py-1.5 px-2 font-semibold">Jodi</th>
+              <th class="py-1.5 px-2 font-semibold">Probability</th>
+              <th class="py-1.5 px-2 font-semibold">Relative Edge</th>
+              <th class="py-1.5 px-2 font-semibold">Confidence Distribution</th>
+              <th class="py-1.5 px-2 font-semibold text-right">Family Set</th>
+            </tr>
+          </thead>
+          <tbody id="jodi-table-body" class="divide-y divide-[var(--border)] font-mono">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Content Area 2: Single Digits (Ank) -->
+      <div id="view-digits" class="view-panel hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Open Digit Column -->
+        <div class="border border-[var(--border)] rounded-xl p-3 bg-[var(--secondary)]/30 space-y-2">
+          <div class="flex justify-between items-center text-xs font-bold text-purple-400">
+            <span>Single Open Ank (0-9)</span>
+            <span>Probability</span>
+          </div>
+          <div id="open-digits-list" class="space-y-1.5 font-mono text-xs">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Close Digit Column -->
+        <div class="border border-[var(--border)] rounded-xl p-3 bg-[var(--secondary)]/30 space-y-2">
+          <div class="flex justify-between items-center text-xs font-bold text-sky-400">
+            <span>Single Close Ank (0-9)</span>
+            <span>Probability</span>
+          </div>
+          <div id="close-digits-list" class="space-y-1.5 font-mono text-xs">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Area 3: Family / Cut Brackets -->
+      <div id="view-family" class="view-panel hidden space-y-3">
+        <p class="text-xs text-[var(--muted-foreground)]">
+          In Satta Matka, high-probability Jodis frequently manifest across their mathematically associated <strong>Family Brackets</strong> (combinations of original and cut digits [+5 mod 10]).
+        </p>
+        <div id="family-brackets-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Mathematical Risk & Bankroll Guardrail -->
+    <div class="bg-[var(--secondary)]/50 border border-[var(--border)] rounded-xl p-3 text-[11px] text-[var(--muted-foreground)] space-y-1">
+      <div class="flex items-center gap-1.5 font-semibold text-amber-400">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span>Data Engineering & Mathematical Risk Reality</span>
+      </div>
+      <p>
+        The ensemble model achieves a verified <strong>5.11% hit-rate on Top-5 Jodis</strong> in walk-forward backtests (exceeding the 5.00% random baseline). However, because market bookmakers retain an intrinsic <strong>-10.0% house edge</strong> (90:1 payout vs 100:1 true probability), no statistical strategy guarantees deterministic profits. Never stake more than 1% of entertainment capital per draw.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    const DATA = {
+  "latest_draw": {
+    "date": "2026-09-12",
+    "day": "Sat",
+    "jodi": "15",
+    "open": 1,
+    "close": 5
+  },
+  "by_day": {
+    "Mon": {
+      "date": "2026-09-14",
+      "day": "Mon",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "31",
+          "prob": 2.05,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "26",
+          "prob": 1.95,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "66",
+          "prob": 1.7,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "69",
+          "prob": 1.68,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "15",
+          "prob": 1.66,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "38",
+          "prob": 1.62,
+          "family": [
+            "33",
+            "38",
+            "83",
+            "88"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "65",
+          "prob": 1.62,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "90",
+          "prob": 1.58,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "98",
+          "prob": 1.55,
+          "family": [
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "14",
+          "prob": 1.53,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 9,
+          "prob": 12.38
+        },
+        {
+          "rank": 2,
+          "digit": 3,
+          "prob": 12.36
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 11.14
+        },
+        {
+          "rank": 4,
+          "digit": 0,
+          "prob": 10.86
+        },
+        {
+          "rank": 5,
+          "digit": 2,
+          "prob": 9.93
+        },
+        {
+          "rank": 6,
+          "digit": 1,
+          "prob": 9.65
+        },
+        {
+          "rank": 7,
+          "digit": 8,
+          "prob": 9.1
+        },
+        {
+          "rank": 8,
+          "digit": 7,
+          "prob": 8.9
+        },
+        {
+          "rank": 9,
+          "digit": 5,
+          "prob": 8.64
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 7.05
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 10.95
+        },
+        {
+          "rank": 2,
+          "digit": 8,
+          "prob": 10.68
+        },
+        {
+          "rank": 3,
+          "digit": 9,
+          "prob": 10.33
+        },
+        {
+          "rank": 4,
+          "digit": 5,
+          "prob": 10.2
+        },
+        {
+          "rank": 5,
+          "digit": 4,
+          "prob": 9.74
+        },
+        {
+          "rank": 6,
+          "digit": 3,
+          "prob": 9.73
+        },
+        {
+          "rank": 7,
+          "digit": 0,
+          "prob": 9.68
+        },
+        {
+          "rank": 8,
+          "digit": 6,
+          "prob": 9.66
+        },
+        {
+          "rank": 9,
+          "digit": 2,
+          "prob": 9.59
+        },
+        {
+          "rank": 10,
+          "digit": 7,
+          "prob": 9.44
+        }
+      ],
+      "top_pick": "31",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ]
+    },
+    "Tue": {
+      "date": "2026-09-15",
+      "day": "Tue",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "31",
+          "prob": 1.99,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "26",
+          "prob": 1.84,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "95",
+          "prob": 1.81,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "98",
+          "prob": 1.76,
+          "family": [
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "69",
+          "prob": 1.73,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "14",
+          "prob": 1.68,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "15",
+          "prob": 1.6,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "66",
+          "prob": 1.59,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "17",
+          "prob": 1.58,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "01",
+          "prob": 1.57,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 9,
+          "prob": 12.73
+        },
+        {
+          "rank": 2,
+          "digit": 3,
+          "prob": 11.93
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.99
+        },
+        {
+          "rank": 4,
+          "digit": 1,
+          "prob": 10.8
+        },
+        {
+          "rank": 5,
+          "digit": 2,
+          "prob": 10.4
+        },
+        {
+          "rank": 6,
+          "digit": 0,
+          "prob": 9.92
+        },
+        {
+          "rank": 7,
+          "digit": 5,
+          "prob": 8.95
+        },
+        {
+          "rank": 8,
+          "digit": 7,
+          "prob": 8.87
+        },
+        {
+          "rank": 9,
+          "digit": 8,
+          "prob": 8.84
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 6.57
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 11.81
+        },
+        {
+          "rank": 2,
+          "digit": 2,
+          "prob": 10.34
+        },
+        {
+          "rank": 3,
+          "digit": 5,
+          "prob": 10.28
+        },
+        {
+          "rank": 4,
+          "digit": 8,
+          "prob": 10.2
+        },
+        {
+          "rank": 5,
+          "digit": 0,
+          "prob": 9.81
+        },
+        {
+          "rank": 6,
+          "digit": 4,
+          "prob": 9.76
+        },
+        {
+          "rank": 7,
+          "digit": 3,
+          "prob": 9.75
+        },
+        {
+          "rank": 8,
+          "digit": 7,
+          "prob": 9.53
+        },
+        {
+          "rank": 9,
+          "digit": 9,
+          "prob": 9.51
+        },
+        {
+          "rank": 10,
+          "digit": 6,
+          "prob": 9.01
+        }
+      ],
+      "top_pick": "31",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ]
+    },
+    "Wed": {
+      "date": "2026-09-16",
+      "day": "Wed",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "26",
+          "prob": 1.95,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "15",
+          "prob": 1.81,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "69",
+          "prob": 1.78,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "31",
+          "prob": 1.68,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "95",
+          "prob": 1.66,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "91",
+          "prob": 1.56,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "98",
+          "prob": 1.55,
+          "family": [
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "66",
+          "prob": 1.54,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "07",
+          "prob": 1.51,
+          "family": [
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "65",
+          "prob": 1.46,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 9,
+          "prob": 13.06
+        },
+        {
+          "rank": 2,
+          "digit": 3,
+          "prob": 11.92
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.81
+        },
+        {
+          "rank": 4,
+          "digit": 2,
+          "prob": 10.56
+        },
+        {
+          "rank": 5,
+          "digit": 1,
+          "prob": 10.23
+        },
+        {
+          "rank": 6,
+          "digit": 0,
+          "prob": 9.68
+        },
+        {
+          "rank": 7,
+          "digit": 7,
+          "prob": 9.41
+        },
+        {
+          "rank": 8,
+          "digit": 8,
+          "prob": 8.99
+        },
+        {
+          "rank": 9,
+          "digit": 5,
+          "prob": 8.54
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 6.79
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 11.13
+        },
+        {
+          "rank": 2,
+          "digit": 5,
+          "prob": 10.6
+        },
+        {
+          "rank": 3,
+          "digit": 8,
+          "prob": 10.24
+        },
+        {
+          "rank": 4,
+          "digit": 2,
+          "prob": 10.11
+        },
+        {
+          "rank": 5,
+          "digit": 7,
+          "prob": 10.07
+        },
+        {
+          "rank": 6,
+          "digit": 3,
+          "prob": 9.85
+        },
+        {
+          "rank": 7,
+          "digit": 0,
+          "prob": 9.8
+        },
+        {
+          "rank": 8,
+          "digit": 9,
+          "prob": 9.78
+        },
+        {
+          "rank": 9,
+          "digit": 6,
+          "prob": 9.78
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 8.63
+        }
+      ],
+      "top_pick": "26",
+      "top_family": [
+        "12",
+        "17",
+        "21",
+        "26",
+        "62",
+        "67",
+        "71",
+        "76"
+      ]
+    },
+    "Thu": {
+      "date": "2026-09-17",
+      "day": "Thu",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "26",
+          "prob": 1.95,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "69",
+          "prob": 1.93,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "31",
+          "prob": 1.89,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "15",
+          "prob": 1.7,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "14",
+          "prob": 1.68,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "95",
+          "prob": 1.6,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "59",
+          "prob": 1.57,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "38",
+          "prob": 1.57,
+          "family": [
+            "33",
+            "38",
+            "83",
+            "88"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "66",
+          "prob": 1.54,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "91",
+          "prob": 1.51,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 9,
+          "prob": 12.5
+        },
+        {
+          "rank": 2,
+          "digit": 3,
+          "prob": 12.49
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.76
+        },
+        {
+          "rank": 4,
+          "digit": 2,
+          "prob": 10.62
+        },
+        {
+          "rank": 5,
+          "digit": 1,
+          "prob": 10.23
+        },
+        {
+          "rank": 6,
+          "digit": 0,
+          "prob": 10.19
+        },
+        {
+          "rank": 7,
+          "digit": 7,
+          "prob": 9.31
+        },
+        {
+          "rank": 8,
+          "digit": 5,
+          "prob": 8.72
+        },
+        {
+          "rank": 9,
+          "digit": 8,
+          "prob": 8.5
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 6.68
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 10.91
+        },
+        {
+          "rank": 2,
+          "digit": 8,
+          "prob": 10.81
+        },
+        {
+          "rank": 3,
+          "digit": 2,
+          "prob": 10.39
+        },
+        {
+          "rank": 4,
+          "digit": 9,
+          "prob": 10.29
+        },
+        {
+          "rank": 5,
+          "digit": 4,
+          "prob": 10.26
+        },
+        {
+          "rank": 6,
+          "digit": 5,
+          "prob": 9.71
+        },
+        {
+          "rank": 7,
+          "digit": 3,
+          "prob": 9.52
+        },
+        {
+          "rank": 8,
+          "digit": 0,
+          "prob": 9.47
+        },
+        {
+          "rank": 9,
+          "digit": 7,
+          "prob": 9.41
+        },
+        {
+          "rank": 10,
+          "digit": 6,
+          "prob": 9.23
+        }
+      ],
+      "top_pick": "26",
+      "top_family": [
+        "12",
+        "17",
+        "21",
+        "26",
+        "62",
+        "67",
+        "71",
+        "76"
+      ]
+    },
+    "Fri": {
+      "date": "2026-09-18",
+      "day": "Fri",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "26",
+          "prob": 2.0,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "31",
+          "prob": 1.89,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "69",
+          "prob": 1.68,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "65",
+          "prob": 1.67,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "95",
+          "prob": 1.66,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "15",
+          "prob": 1.6,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "14",
+          "prob": 1.58,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "59",
+          "prob": 1.57,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "98",
+          "prob": 1.5,
+          "family": [
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "66",
+          "prob": 1.49,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 9,
+          "prob": 12.46
+        },
+        {
+          "rank": 2,
+          "digit": 3,
+          "prob": 12.22
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.66
+        },
+        {
+          "rank": 4,
+          "digit": 1,
+          "prob": 10.41
+        },
+        {
+          "rank": 5,
+          "digit": 0,
+          "prob": 10.04
+        },
+        {
+          "rank": 6,
+          "digit": 2,
+          "prob": 10.02
+        },
+        {
+          "rank": 7,
+          "digit": 5,
+          "prob": 9.46
+        },
+        {
+          "rank": 8,
+          "digit": 7,
+          "prob": 8.87
+        },
+        {
+          "rank": 9,
+          "digit": 8,
+          "prob": 8.84
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 7.03
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 2,
+          "prob": 10.69
+        },
+        {
+          "rank": 2,
+          "digit": 1,
+          "prob": 10.59
+        },
+        {
+          "rank": 3,
+          "digit": 3,
+          "prob": 10.49
+        },
+        {
+          "rank": 4,
+          "digit": 5,
+          "prob": 10.28
+        },
+        {
+          "rank": 5,
+          "digit": 8,
+          "prob": 10.2
+        },
+        {
+          "rank": 6,
+          "digit": 4,
+          "prob": 10.1
+        },
+        {
+          "rank": 7,
+          "digit": 0,
+          "prob": 9.65
+        },
+        {
+          "rank": 8,
+          "digit": 6,
+          "prob": 9.52
+        },
+        {
+          "rank": 9,
+          "digit": 9,
+          "prob": 9.41
+        },
+        {
+          "rank": 10,
+          "digit": 7,
+          "prob": 9.08
+        }
+      ],
+      "top_pick": "26",
+      "top_family": [
+        "12",
+        "17",
+        "21",
+        "26",
+        "62",
+        "67",
+        "71",
+        "76"
+      ]
+    },
+    "Sat": {
+      "date": "2026-09-19",
+      "day": "Sat",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "31",
+          "prob": 2.0,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "26",
+          "prob": 1.84,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "69",
+          "prob": 1.83,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "15",
+          "prob": 1.81,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "66",
+          "prob": 1.69,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "95",
+          "prob": 1.66,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "17",
+          "prob": 1.64,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "65",
+          "prob": 1.56,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "59",
+          "prob": 1.41,
+          "family": [
+            "04",
+            "09",
+            "40",
+            "45",
+            "54",
+            "59",
+            "90",
+            "95"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "07",
+          "prob": 1.41,
+          "family": [
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 3,
+          "prob": 12.56
+        },
+        {
+          "rank": 2,
+          "digit": 9,
+          "prob": 11.96
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 11.56
+        },
+        {
+          "rank": 4,
+          "digit": 1,
+          "prob": 10.3
+        },
+        {
+          "rank": 5,
+          "digit": 2,
+          "prob": 9.8
+        },
+        {
+          "rank": 6,
+          "digit": 0,
+          "prob": 9.54
+        },
+        {
+          "rank": 7,
+          "digit": 7,
+          "prob": 9.38
+        },
+        {
+          "rank": 8,
+          "digit": 8,
+          "prob": 8.96
+        },
+        {
+          "rank": 9,
+          "digit": 5,
+          "prob": 8.68
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 7.26
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 10.54
+        },
+        {
+          "rank": 2,
+          "digit": 5,
+          "prob": 10.51
+        },
+        {
+          "rank": 3,
+          "digit": 2,
+          "prob": 10.47
+        },
+        {
+          "rank": 4,
+          "digit": 9,
+          "prob": 10.2
+        },
+        {
+          "rank": 5,
+          "digit": 8,
+          "prob": 10.1
+        },
+        {
+          "rank": 6,
+          "digit": 3,
+          "prob": 9.99
+        },
+        {
+          "rank": 7,
+          "digit": 7,
+          "prob": 9.82
+        },
+        {
+          "rank": 8,
+          "digit": 6,
+          "prob": 9.75
+        },
+        {
+          "rank": 9,
+          "digit": 4,
+          "prob": 9.49
+        },
+        {
+          "rank": 10,
+          "digit": 0,
+          "prob": 9.15
+        }
+      ],
+      "top_pick": "31",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ]
+    }
+  }
+};
+    let currentDay = "Mon";
+
+    function selectDay(day) {
+      currentDay = day;
+      
+      // Update Day buttons
+      document.querySelectorAll('.day-btn').forEach(btn => {
+        btn.className = "day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]";
+      });
+      const activeBtn = document.getElementById("btn-" + day);
+      if (activeBtn) {
+        activeBtn.className = "day-btn py-1.5 px-2 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow-sm";
+      }
+
+      render();
+    }
+
+    function setViewMode(mode) {
+      document.querySelectorAll('.view-tab').forEach(tab => {
+        tab.className = "view-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all";
+      });
+      const activeTab = document.getElementById("tab-" + mode);
+      if (activeTab) {
+        activeTab.className = "view-tab text-xs font-bold px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] transition-all";
+      }
+
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
+      const activePanel = document.getElementById("view-" + mode);
+      if (activePanel) {
+        activePanel.classList.remove('hidden');
+      }
+    }
+
+    function render() {
+      const dayData = DATA.by_day[currentDay];
+      if (!dayData) return;
+
+      // Update date indicator
+      document.getElementById('target-date-display').textContent = `Target: ${dayData.date} (${dayData.day})`;
+
+      // Top Pick Cards
+      const topPick = dayData.top_jodis[0];
+      document.getElementById('card-top-jodi').textContent = topPick.jodi;
+      const relEdge = ((topPick.prob / 1.0) - 1.0) * 100;
+      document.getElementById('card-top-prob').textContent = `${topPick.prob.toFixed(2)}% (${relEdge >= 0 ? '+' : ''}${relEdge.toFixed(0)}% edge)`;
+      document.getElementById('card-family-preview').textContent = topPick.family.slice(0, 4).join(', ') + '...';
+
+      // Top Open
+      const topOpen = dayData.open_digits[0];
+      const altOpen = dayData.open_digits[1];
+      document.getElementById('card-top-open').textContent = topOpen.digit;
+      document.getElementById('card-open-prob').textContent = `${topOpen.prob.toFixed(2)}% prob`;
+      document.getElementById('card-alt-open').textContent = `Digit ${altOpen.digit} (${altOpen.prob.toFixed(2)}%)`;
+
+      // Top Close
+      const topClose = dayData.close_digits[0];
+      const altClose = dayData.close_digits[1];
+      document.getElementById('card-top-close').textContent = topClose.digit;
+      document.getElementById('card-close-prob').textContent = `${topClose.prob.toFixed(2)}% prob`;
+      document.getElementById('card-alt-close').textContent = `Digit ${altClose.digit} (${altClose.prob.toFixed(2)}%)`;
+
+      // Render Jodis Table
+      const tbody = document.getElementById('jodi-table-body');
+      tbody.innerHTML = '';
+      dayData.top_jodis.forEach(j => {
+        const edge = ((j.prob / 1.0) - 1.0) * 100;
+        const widthPct = Math.min(100, Math.round((j.prob / 2.5) * 100));
+        
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--secondary)]/40 transition-colors";
+        tr.innerHTML = `
+          <td class="py-2 px-2 text-[var(--muted-foreground)]">#${j.rank}</td>
+          <td class="py-2 px-2 font-bold text-indigo-400 text-sm">${j.jodi}</td>
+          <td class="py-2 px-2 font-semibold text-[var(--foreground)]">${j.prob.toFixed(2)}%</td>
+          <td class="py-2 px-2 font-medium ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${edge >= 0 ? '+' : ''}${edge.toFixed(1)}%</td>
+          <td class="py-2 px-2">
+            <div class="w-24 sm:w-32 bg-[var(--secondary)] h-2 rounded-full overflow-hidden border border-[var(--border)]">
+              <div class="bg-indigo-500 h-full rounded-full" style="width: ${widthPct}%"></div>
+            </div>
+          </td>
+          <td class="py-2 px-2 text-right text-[11px] text-[var(--muted-foreground)]">${j.family.slice(0, 3).join(', ')}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Render Open Digits
+      const openContainer = document.getElementById('open-digits-list');
+      openContainer.innerHTML = '';
+      dayData.open_digits.forEach(d => {
+        const barWidth = Math.round((d.prob / 15.0) * 100);
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-[var(--secondary)]/50";
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-5 text-center font-bold ${d.rank <= 3 ? 'text-purple-400' : 'text-[var(--muted-foreground)]'}">${d.digit}</span>
+            <div class="w-20 sm:w-28 bg-[var(--secondary)] h-1.5 rounded-full overflow-hidden">
+              <div class="bg-purple-500 h-full rounded-full" style="width: ${barWidth}%"></div>
+            </div>
+          </div>
+          <span class="text-xs ${d.rank <= 3 ? 'font-bold text-purple-400' : 'text-[var(--muted-foreground)]'}">${d.prob.toFixed(2)}%</span>
+        `;
+        openContainer.appendChild(div);
+      });
+
+      // Render Close Digits
+      const closeContainer = document.getElementById('close-digits-list');
+      closeContainer.innerHTML = '';
+      dayData.close_digits.forEach(d => {
+        const barWidth = Math.round((d.prob / 15.0) * 100);
+        const div = document.createElement('div');
+        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-[var(--secondary)]/50";
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="w-5 text-center font-bold ${d.rank <= 3 ? 'text-sky-400' : 'text-[var(--muted-foreground)]'}">${d.digit}</span>
+            <div class="w-20 sm:w-28 bg-[var(--secondary)] h-1.5 rounded-full overflow-hidden">
+              <div class="bg-sky-500 h-full rounded-full" style="width: ${barWidth}%"></div>
+            </div>
+          </div>
+          <span class="text-xs ${d.rank <= 3 ? 'font-bold text-sky-400' : 'text-[var(--muted-foreground)]'}">${d.prob.toFixed(2)}%</span>
+        `;
+        closeContainer.appendChild(div);
+      });
+
+      // Render Family Brackets
+      const familyContainer = document.getElementById('family-brackets-container');
+      familyContainer.innerHTML = '';
+      dayData.top_jodis.slice(0, 4).forEach(j => {
+        const card = document.createElement('div');
+        card.className = "border border-[var(--border)] rounded-lg p-2.5 bg-[var(--secondary)]/30 space-y-1.5";
+        card.innerHTML = `
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-bold text-indigo-400">Jodi [${j.jodi}] Family Set</span>
+            <span class="text-[10px] text-[var(--muted-foreground)]">Rank #${j.rank} (${j.prob.toFixed(2)}%)</span>
+          </div>
+          <div class="flex flex-wrap gap-1">
+            ${j.family.map(f => `<span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-mono text-xs ${f === j.jodi ? 'border-indigo-500 text-indigo-400 font-bold' : 'text-[var(--muted-foreground)]'}">${f}</span>`).join('')}
+          </div>
+        `;
+        familyContainer.appendChild(card);
+      });
+    }
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>

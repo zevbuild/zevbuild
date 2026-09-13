@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zevbuild — Privacy-First Systems & Resilient Digital Products</title>
+  <meta name="description" content="Zevbuild is a multi-domain engineering studio crafting zero-knowledge cryptographic portals, offline-first peer-to-peer mesh protocols, transit hubs, and predictive data systems.">
+  <meta name="keywords" content="Zevbuild, ZevSafe, ZevSync, CollegeBus, Zero-Knowledge, Offline-First, Cryptography, P2P Mesh, PWA, Privacy">
+  <meta name="author" content="Zevbuild Studio">
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zevbuild.github.io/">
+  <meta property="og:title" content="Zevbuild — Privacy-First Systems & Resilient Digital Products">
+  <meta property="og:description" content="Zero-knowledge cryptographic portals, offline-first peer-to-peer mesh protocols, and high-performance digital tools.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+
+  <style>
+    :root {
+      --bg-base: #07090e;
+      --bg-surface: #0d111a;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(139, 92, 246, 0.3);
+      --accent-violet: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-base);
+      color: #f3f4f6;
+      overflow-x: hidden;
+    }
+
+    code, pre, .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Ambient background grid */
+    .bg-grid-pattern {
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 100% 40%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    .glass-panel {
+      background: rgba(15, 21, 37, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(19, 27, 46, 0.65) 0%, rgba(11, 16, 28, 0.8) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(139, 92, 246, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px -8px rgba(139, 92, 246, 0.15), 0 0 20px -4px rgba(6, 182, 212, 0.1);
+    }
+
+    .glow-badge {
+      box-shadow: 0 0 12px -2px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f293d;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #374151;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-grid-pattern selection:bg-purple-600 selection:text-white">
+
+  <!-- Fixed Navigation Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo & Name -->
+      <a href="#" class="flex items-center gap-3.5 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-cyan-400 p-[1.5px] shadow-lg shadow-purple-500/20 group-hover:scale-105 transition-transform duration-300">
+          <div class="w-full h-full bg-[#090d16] rounded-[10px] flex items-center justify-center">
+            <svg class="w-5 h-5 text-purple-400 group-hover:text-cyan-300 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+              Zevbuild
+            </span>
+            <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              Studio
+            </span>
+          </div>
+          <span class="text-[11px] text-slate-400 font-medium block">Privacy-First Digital Products</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+        <a href="#products" class="hover:text-purple-400 transition-colors">Products & Tools</a>
+        <a href="#philosophy" class="hover:text-cyan-400 transition-colors">Philosophy</a>
+        <a href="#architecture" class="hover:text-purple-400 transition-colors">Architecture</a>
+        <a href="#specs" class="hover:text-cyan-400 transition-colors">Tech Specs</a>
+        <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
+      </nav>
+
+      <!-- Action CTAs -->
+      <div class="hidden sm:flex items-center gap-3">
+        <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" 
+           class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 hover:border-purple-500/30 transition-all duration-200">
+          <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a href="#products" 
+           class="px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/25 border border-purple-400/20 transition-all duration-200">
+          Launch Tools
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button id="mobileMenuBtn" aria-label="Toggle Navigation Menu" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/10 bg-[#0a0e18] px-4 py-5 space-y-3">
+      <a href="#products" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Products & Tools</a>
+      <a href="#philosophy" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Philosophy</a>
+      <a href="#architecture" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Architecture</a>
+      <a href="#specs" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Tech Specs</a>
+      <a href="#contact" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Contact</a>
+      <div class="pt-3 border-t border-white/10 flex flex-col gap-2">
+        <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200">
+          GitHub Organization
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="pt-28 pb-20">
+
+    <!-- HERO SECTION -->
+    <section class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-20 lg:pt-20 lg:pb-28">
+      
+      <!-- Top Pill Badge -->
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-8 glow-badge">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Official Main Portal · Zevbuild Studio</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] max-w-5xl mb-6">
+        Engineering <span class="bg-gradient-to-r from-purple-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">Privacy-First</span> Systems & Resilient Digital Products.
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-lg sm:text-xl text-slate-400 max-w-3xl leading-relaxed mb-10 font-normal">
+        Zevbuild is a multi-domain software engineering studio. We build zero-knowledge cryptographic vaults, offline-first peer-to-peer mesh protocols, real-time civic transit hubs, and probabilistic predictive platforms — prioritizing user sovereignty and zero telemetry.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-wrap items-center gap-4 mb-16">
+        <a href="#products" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white shadow-xl shadow-purple-600/30 border border-purple-400/30 transition-all duration-200">
+          <span>Explore Ecosystem</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </a>
+
+        <a href="#philosophy" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 hover:border-purple-500/30 transition-all duration-200">
+          <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+          </svg>
+          <span>Privacy Manifesto</span>
+        </a>
+
+        <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold bg-slate-900/60 hover:bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all duration-200">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+          </svg>
+          <span>github.com/zevbuild</span>
+        </a>
+      </div>
+
+      <!-- Live Core Metrics Strip -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl glass-panel border border-white/5">
+        <div class="p-3">
+          <div class="text-2xl sm:text-3xl font-extrabold text-purple-400 mb-1">100%</div>
+          <div class="text-xs font-semibold text-slate-200">Zero-Knowledge</div>
+          <div class="text-[11px] text-slate-400">Client-side WebCrypto execution</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl sm:text-3xl font-extrabold text-cyan-400 mb-1">Offline</div>
+          <div class="text-xs font-semibold text-slate-200">Local-First Architecture</div>
+          <div class="text-[11px] text-slate-400">P2P Bluetooth mesh & PWAs</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mb-1">Zero</div>
+          <div class="text-xs font-semibold text-slate-200">Surveillance / Trackers</div>
+          <div class="text-[11px] text-slate-400">No cookies, analytics, or logging</div>
+        </div>
+        <div class="p-3">
+          <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 mb-1">Multi-Domain</div>
+          <div class="text-xs font-semibold text-slate-200">Software Craftsmanship</div>
+          <div class="text-[11px] text-slate-400">Security, Transit, Mesh & AI</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PRODUCTS & ECOSYSTEM SHOWCASE -->
+    <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <div class="text-xs font-bold tracking-widest text-purple-400 uppercase mb-2">Portfolio Ecosystem</div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Flagship Software & Tools
+          </h2>
+        </div>
+        <p class="text-sm text-slate-400 max-w-md">
+          Explore our suite of specialized products designed for sovereign security, offline communication, intelligent transit, and statistical analysis.
+        </p>
+      </div>
+
+      <!-- Product Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- CARD 1: ZEVSAFE -->
+        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-12 -top-12 w-40 h-40 bg-purple-600/10 rounded-full blur-3xl pointer-events-none group-hover:bg-purple-600/20 transition-all"></div>
+          
+          <div>
+            <!-- Header with Icon and Badges -->
+            <div class="flex items-start justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Live Web App
+                </span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 mono">
+                  v3 Stable
+                </span>
+              </div>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h3 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+              <span>ZevSafe</span>
+              <span class="text-xs text-slate-400 font-normal">Offline Folder Encryption Portal</span>
+            </h3>
+
+            <p class="text-sm text-slate-300 mb-5 leading-relaxed">
+              A zero-trust, client-side encryption vault. Encrypts entire folder hierarchies directly in the browser using the native Web Crypto API. Files and passwords never touch a server or network.
+            </p>
+
+            <!-- Feature Badges -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">AES-256-GCM</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">PBKDF2-SHA512 (600k)</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Keyfile 2FA</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">PWA Installable</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">100% Offline</span>
+            </div>
+
+            <!-- Highlights list -->
+            <ul class="space-y-2 text-xs text-slate-400 mb-6">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                In-memory ZIP compression with drag-and-drop vault creation
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Automatic version detection: v1 standard & v2 enhanced format
+              </li>
+            </ul>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+            <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" 
+               class="flex-1 text-center py-2.5 px-4 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/20 transition-all">
+              Launch Live App ↗
+            </a>
+            <a href="tools/zevsafe/index.html" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all" title="Open local copy">
+              Local Run
+            </a>
+            <a href="https://github.com/zevbuild/zevsafe" target="_blank" rel="noopener noreferrer" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all" title="View Source on GitHub">
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD 2: ZEVSYNC -->
+        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-12 -top-12 w-40 h-40 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-600/20 transition-all"></div>
+          
+          <div>
+            <!-- Header with Icon and Badges -->
+            <div class="flex items-start justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+                </svg>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  Android Native
+                </span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 mono">
+                  Kotlin M3
+                </span>
+              </div>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h3 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+              <span>ZevSync</span>
+              <span class="text-xs text-slate-400 font-normal">Offline Bluetooth Mesh Sync</span>
+            </h3>
+
+            <p class="text-sm text-slate-300 mb-5 leading-relaxed">
+              Fully offline peer-to-peer mesh synchronization engine and conflict-free cache vault. Syncs notes, documents, and code repositories across nearby devices over Bluetooth RFCOMM with zero internet.
+            </p>
+
+            <!-- Feature Badges -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">Bluetooth Mesh</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">SHA-256 CAS</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Vector Clocks</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">3-Way Visual Diff</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Zero Cloud</span>
+            </div>
+
+            <!-- Highlights list -->
+            <ul class="space-y-2 text-xs text-slate-400 mb-6">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Content-Addressable Storage (CAS) automatically deduplicates identical payloads
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                In-app APK self-extraction and offline Bluetooth APK beaming
+              </li>
+            </ul>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+            <a href="https://github.com/zevbuild/zevsync" target="_blank" rel="noopener noreferrer" 
+               class="flex-1 text-center py-2.5 px-4 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/20 transition-all">
+              View Repository ↗
+            </a>
+            <a href="https://github.com/zevbuild/zevsync/releases" target="_blank" rel="noopener noreferrer" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
+              Download APK
+            </a>
+            <a href="tools/zevsync/README.md" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+              Docs
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD 3: COLLEGEBUS -->
+        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none group-hover:bg-emerald-600/20 transition-all"></div>
+          
+          <div>
+            <!-- Header with Icon and Badges -->
+            <div class="flex items-start justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8m-8 4h8m-8 4h4m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Live Service
+                </span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 mono">
+                  Civic PWA
+                </span>
+              </div>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h3 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+              <span>CollegeBus</span>
+              <span class="text-xs text-slate-400 font-normal">Real-Time Transit & Schedule Tracker</span>
+            </h3>
+
+            <p class="text-sm text-slate-300 mb-5 leading-relaxed">
+              Real-time student transit scheduler and multi-hop connection planner for ACMSR College (Borda) and South Goa routes. Live departure count-downs, route road timelines, and peer crowd updates.
+            </p>
+
+            <!-- Feature Badges -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Next Bus Spotlight</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Multi-Hop Planner</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Crowd Seat Voting</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">ServiceWorker Offline</span>
+            </div>
+
+            <!-- Highlights list -->
+            <ul class="space-y-2 text-xs text-slate-400 mb-6">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Instant route search (Kamat, Varca, Margao KTC, Mobor)
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Role-based access with verified student status broadcasts
+              </li>
+            </ul>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+            <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" 
+               class="flex-1 text-center py-2.5 px-4 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 transition-all">
+              Launch Live App ↗
+            </a>
+            <a href="tools/collegebus/index.html" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all" title="Open local copy">
+              Local Run
+            </a>
+            <a href="https://github.com/zevbuild/collegebus" target="_blank" rel="noopener noreferrer" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD 4: PREDICTIVE ANALYTICS & WEB ENGINE -->
+        <div class="glass-card rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden group">
+          <div class="absolute -right-12 -top-12 w-40 h-40 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-600/20 transition-all"></div>
+          
+          <div>
+            <!-- Header with Icon and Badges -->
+            <div class="flex items-start justify-between mb-5">
+              <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                  Data Engine
+                </span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 mono">
+                  Python + Web
+                </span>
+              </div>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h3 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">
+              <span>Predictive Analytics Engine</span>
+              <span class="text-xs text-slate-400 font-normal">Satta Matka Historical Tool</span>
+            </h3>
+
+            <p class="text-sm text-slate-300 mb-5 leading-relaxed">
+              Real-time statistical modeling platform evaluating Kalyan historical draw records (2012–2026). Features Markov chains, seasonality models, automated HTML scraping, and probabilistic forecast tables.
+            </p>
+
+            <!-- Feature Badges -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">Markov Chains</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">Walk-Forward Backtest</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Auto-Sync Scraper</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Mathematical Edge Audit</span>
+            </div>
+
+            <!-- Highlights list -->
+            <ul class="space-y-2 text-xs text-slate-400 mb-6">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Interactive live dashboard with auto-polling & manual refresh
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Family/Cut pairings generator and risk bankroll guardrail
+              </li>
+            </ul>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+            <a href="tools/satta-matka-tools/index.html" 
+               class="flex-1 text-center py-2.5 px-4 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/20 transition-all">
+              Launch Dashboard ↗
+            </a>
+            <a href="tools/satta-matka-tools/web/index.html" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all" title="Open Web Version">
+              Web Version
+            </a>
+            <a href="tools/satta-matka-tools/README.md" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+              Docs
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Additional Services Banner -->
+      <div class="mt-8 glass-panel rounded-2xl p-7 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-white">Custom Engineering & Privacy-First Architecture</h4>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Need custom zero-knowledge cryptography, decentralized offline networks, or bespoke high-performance web tooling?
+            </p>
+          </div>
+        </div>
+        <a href="#contact" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15 text-white border border-white/10 transition-all whitespace-nowrap">
+          Inquire with Studio
+        </a>
+      </div>
+
+    </section>
+
+    <!-- CORE ARCHITECTURE & PRIVACY MANIFESTO -->
+    <section id="philosophy" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
+      
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <div class="text-xs font-bold tracking-widest text-purple-400 uppercase mb-2">Core Principles</div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+          The Zevbuild Privacy & Engineering Manifesto
+        </h2>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Modern software has grown bloated, surveillance-dependent, and brittle to network failures. We engineer software on foundational principles of sovereignty, local resilience, and zero data leakage.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Zero-Knowledge Core</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Data never leaves your browser unencrypted. Cryptographic keys are derived dynamically in user runtime and never transmitted to our servers.
+          </p>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Offline-First Design</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Software built to function without internet connectivity. From in-browser ZIP processing to P2P Bluetooth mesh synchronization.
+          </p>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Zero Surveillance</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            No behavioral trackers, no third-party telemetry, no hidden fingerprinting. Clean, honest software that respects your personal privacy.
+          </p>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-all">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-white mb-2">Auditable & Open</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Built with open-source cryptographic primitives, documented protocols, and transparent mathematical formulas you can verify independently.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TECHNICAL SPECIFICATIONS & CRYPTOGRAPHY MATRIX -->
+    <section id="specs" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
+      
+      <div class="glass-panel rounded-2xl p-7 lg:p-10 border border-white/5">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
+          <div>
+            <div class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-1">Under The Hood</div>
+            <h3 class="text-2xl font-bold text-white">Cryptographic & Protocol Matrix</h3>
+          </div>
+          <div class="text-xs text-slate-400 mono bg-slate-900/80 px-3 py-1.5 rounded-lg border border-white/10">
+            Standard: NIST / WebCrypto / IEEE 802.15.1
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead>
+              <tr class="border-b border-white/10 text-slate-400 uppercase tracking-wider text-[11px]">
+                <th class="pb-3 font-semibold">Subsystem</th>
+                <th class="pb-3 font-semibold">Primitive / Protocol</th>
+                <th class="pb-3 font-semibold">Parameters & Implementation</th>
+                <th class="pb-3 font-semibold">Security Property</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              <tr>
+                <td class="py-3.5 font-bold text-white">ZevSafe Symmetric Cipher</td>
+                <td class="py-3.5 mono text-purple-400">AES-256-GCM</td>
+                <td class="py-3.5 text-slate-400">96-bit CSPRNG IV, 128-bit Authentication Tag</td>
+                <td class="py-3.5 text-emerald-400">Authenticated Encryption (AEAD)</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-white">ZevSafe Key Derivation</td>
+                <td class="py-3.5 mono text-purple-400">PBKDF2-HMAC-SHA512</td>
+                <td class="py-3.5 text-slate-400">600,000 rounds · 256-bit cryptographically random salt</td>
+                <td class="py-3.5 text-emerald-400">GPU brute-force defense</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-white">ZevSafe Keyfile Mixing</td>
+                <td class="py-3.5 mono text-purple-400">SHA-256 XOR Mixing</td>
+                <td class="py-3.5 text-slate-400">2nd factor hardware/arbitrary binary file entropy</td>
+                <td class="py-3.5 text-emerald-400">Physical two-factor guarantee</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-white">ZevSync Deduplication</td>
+                <td class="py-3.5 mono text-cyan-400">Content-Addressable Storage</td>
+                <td class="py-3.5 text-slate-400">SHA-256 payload digest hashing</td>
+                <td class="py-3.5 text-emerald-400">Collision-resistant CAS cache</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-white">ZevSync Concurrency</td>
+                <td class="py-3.5 mono text-cyan-400">Vector Clocks & CRDTs</td>
+                <td class="py-3.5 text-slate-400">Decentralized causal ordering without central NTP</td>
+                <td class="py-3.5 text-emerald-400">Deterministic 3-way conflict resolution</td>
+              </tr>
+              <tr>
+                <td class="py-3.5 font-bold text-white">CollegeBus Architecture</td>
+                <td class="py-3.5 mono text-emerald-400">Offline PWA + Edge Cache</td>
+                <td class="py-3.5 text-slate-400">Cache-first Service Worker with real-time background sync</td>
+                <td class="py-3.5 text-emerald-400">Instant cold boot & zero offline latency</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ABOUT & STUDIO PROFILE -->
+    <section id="about" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="text-xs font-bold tracking-widest text-purple-400 uppercase mb-2">About Zevbuild</div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-5">
+            A New Paradigm of Autonomous, Local-First Software
+          </h2>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            Founded with a vision to build resilient software tools, <strong>Zevbuild</strong> operates as a specialized independent studio. We focus on areas where mainstream applications fall short: privacy-compromised environments, high-latency or zero-connectivity scenarios, and user-empowering offline utilities.
+          </p>
+          <p class="text-sm text-slate-400 leading-relaxed mb-6">
+            Our codebase is crafted with meticulous attention to detail — minimal third-party dependencies, clean native platform APIs (WebCrypto, Jetpack Compose, Service Workers), and mathematically verifiable security models.
+          </p>
+
+          <div class="flex items-center gap-4 text-xs font-semibold text-slate-300">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>Zero Vendor Lock-in</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>MIT Open Source</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>Sovereign Data</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Card Graphic -->
+        <div class="glass-panel rounded-2xl p-6 border border-white/10 shadow-2xl relative overflow-hidden">
+          <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+            </div>
+            <span class="text-[11px] mono text-slate-400">zevbuild@company-main:~</span>
+          </div>
+
+          <div class="mono text-xs space-y-2.5 text-slate-300">
+            <p class="text-purple-400">$ zevbuild --status</p>
+            <p class="text-slate-400">System: Operational · Branch: main · Ecosystem: Active</p>
+            <p class="text-emerald-400">✔ [ZevSafe] v3.0 Offline Encryption Portal (PBKDF2-SHA512)</p>
+            <p class="text-cyan-400">✔ [ZevSync] Bluetooth Mesh CAS Node (Kotlin M3)</p>
+            <p class="text-indigo-400">✔ [CollegeBus] Multi-Hop Transit Engine (PWA 100% Offline)</p>
+            <p class="text-pink-400">✔ [Analytics] Real-Time Probabilistic Modeling Engine</p>
+            <p class="text-slate-500 pt-2"># Ready for deployment to production</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- CONTACT & GET IN TOUCH -->
+    <section id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 scroll-mt-24">
+      
+      <div class="glass-card rounded-3xl p-8 sm:p-12 border border-purple-500/20 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-purple-600/10 via-transparent to-transparent pointer-events-none"></div>
+
+        <div class="max-w-2xl mx-auto relative z-10">
+          <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mx-auto mb-6">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+            Connect with Zevbuild Studio
+          </h2>
+
+          <p class="text-sm text-slate-300 mb-8 leading-relaxed">
+            Interested in partnering, collaborating on open-source privacy systems, or inquiring about custom software engineering? Reach out directly.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="mailto:zevbuildstudio@gmail.com" 
+               class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-600/25 border border-purple-400/20 transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              <span>Email: zevbuildstudio@gmail.com</span>
+            </a>
+
+            <button id="copyEmailBtn" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              <span id="copyEmailText">Copy Address</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/5 bg-[#06080d] py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 rounded-lg bg-purple-600/20 flex items-center justify-center text-purple-400">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        </div>
+        <span class="text-slate-400 font-semibold">Zevbuild Studio</span>
+        <span>— © 2026. All rights reserved.</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="#products" class="hover:text-slate-300 transition-colors">Tools</a>
+        <a href="#philosophy" class="hover:text-slate-300 transition-colors">Privacy</a>
+        <a href="#specs" class="hover:text-slate-300 transition-colors">Security</a>
+        <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition-colors">GitHub</a>
+        <a href="mailto:zevbuildstudio@gmail.com" class="hover:text-slate-300 transition-colors">Contact</a>
+      </div>
+
+      <div class="text-[11px] text-slate-500 mono">
+        Zero Tracking · 100% Client-Side Privacy
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script>
+    // Mobile navigation menu toggle
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+
+    // Copy email helper
+    const copyBtn = document.getElementById('copyEmailBtn');
+    const copyText = document.getElementById('copyEmailText');
+    if (copyBtn && copyText) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('zevbuildstudio@gmail.com');
+          copyText.innerText = 'Copied to Clipboard!';
+          setTimeout(() => {
+            copyText.innerText = 'Copy Address';
+          }, 2500);
+        } catch (e) {
+          copyText.innerText = 'zevbuildstudio@gmail.com';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
