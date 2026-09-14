@@ -3,192 +3,534 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kalyan Matka - Upcoming Predictions Dashboard</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Kalyan Live Predictor & Auto-Fetch Engine</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
-    /* Custom subtle scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(150, 150, 150, 0.3); border-radius: 3px; }
+    @keyframes highlight-flash {
+      0% { background-color: rgba(99, 102, 241, 0.4); }
+      100% { background-color: transparent; }
+    }
+    .flash-update { animation: highlight-flash 1.5s ease-out; }
   </style>
 </head>
-<body class="bg-transparent text-[var(--foreground)] antialiased p-2 sm:p-4 selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-indigo-500 selection:text-white p-3 sm:p-6">
 
-  <!-- Main Container -->
-  <div class="max-w-4xl mx-auto bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-2xl p-4 sm:p-5 shadow-lg space-y-4">
-    
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 border-b border-[var(--border)]">
+  <div class="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+
+    <!-- Top Header & Live Sync Bar -->
+    <header class="bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <div class="flex items-center gap-2">
-          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight">Kalyan Matka Predictive Intelligence</h1>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 font-medium border border-indigo-500/20">Ensemble v2.4</span>
+        <div class="flex items-center gap-2.5">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+            Kalyan Real-Time Auto-Predictor
+          </h1>
+          <span id="system-badge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+            Auto-Polling Active
+          </span>
         </div>
-        <p class="text-xs text-[var(--muted-foreground)] mt-0.5">
-          Markov Transitions + Recency-Decay (60d) + Day-of-Week Seasonality Prior
+        <p class="text-xs text-slate-400 mt-1">
+          In-browser machine learning engine: polls live draw data every 45s, detects newly declared results, and recalibrates predictions on-the-fly.
         </p>
       </div>
-      <div class="text-right text-xs bg-[var(--secondary)] px-2.5 py-1 rounded-lg border border-[var(--border)]">
-        <span class="text-[var(--muted-foreground)]">Last Result:</span>
-        <span class="font-bold text-amber-500 ml-1">Sat (2026-09-12) &rarr; [15]</span>
+
+      <!-- Controls: Auto-Sync Switch & Manual Refresh -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+        <!-- Auto-fetch Toggle & Countdown -->
+        <div class="flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800 text-xs shadow-inner">
+          <span id="auto-sync-status" class="text-emerald-400 font-semibold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Auto: ON
+          </span>
+          <span class="text-slate-600">|</span>
+          <span id="countdown-timer" class="font-mono text-slate-300 font-bold">45s</span>
+          <button onclick="toggleAutoSync()" id="btn-toggle-auto" class="ml-1 text-[11px] text-indigo-400 hover:text-indigo-300 underline font-medium">
+            Pause
+          </button>
+        </div>
+
+        <!-- Manual Fetch Button -->
+        <button onclick="manualSyncClick()" id="btn-fetch-now" class="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/25 transition-all active:scale-95 disabled:opacity-50">
+          <svg id="sync-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span id="btn-text">Sync Now</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Status & Latest Draw Banner -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <!-- Latest Result Card -->
+      <div id="card-latest-result" class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between transition-colors">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
+            <span>Latest Official Draw</span>
+            <span id="live-indicator-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+          <div class="flex items-baseline gap-2 mt-0.5">
+            <span id="latest-jodi" class="text-2xl sm:text-3xl font-black font-mono text-amber-400">15</span>
+            <span id="latest-patti" class="text-xs text-slate-400 font-mono">560 - 15 - 249</span>
+          </div>
+          <div id="latest-date" class="text-[11px] text-slate-400 mt-0.5">Saturday, 2026-09-12</div>
+        </div>
+        <div class="text-right">
+          <span id="draw-status-badge" class="inline-block px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold text-xs">Official</span>
+        </div>
+      </div>
+
+      <!-- Sync Status Card -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Database Synchronization</div>
+          <div class="text-sm font-bold text-slate-200 mt-0.5" id="dataset-count">3,180 Historical Records</div>
+          <div class="text-[11px] text-emerald-400 mt-0.5 flex items-center gap-1">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span id="last-sync-time">Synchronized</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="inline-block px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold text-xs">100% In-Browser</span>
+        </div>
+      </div>
+
+      <!-- Historical Hit Rate Card -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between">
+        <div>
+          <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Model Backtest Edge</div>
+          <div class="text-sm font-bold text-indigo-400 mt-0.5">Top-5 Hit Rate: 5.11%</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">Random Baseline: 5.00% (+2.2% edge)</div>
+        </div>
+        <div class="text-right">
+          <span class="inline-block px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-bold text-xs">2,680 Tests</span>
+        </div>
       </div>
     </div>
 
-    <!-- Day Selector Tabs -->
-    <div class="space-y-1.5">
+    <!-- Live Live Debug Console Drawer -->
+    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono space-y-1">
+      <div class="flex items-center justify-between text-slate-400 text-[11px]">
+        <span class="font-bold text-indigo-400 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Live Pipeline Pipeline Audit
+        </span>
+        <span id="pipeline-status-text" class="text-slate-400">Idle (Next auto-check in 45s)</span>
+      </div>
+      <div id="live-console-log" class="text-[11px] text-slate-400 truncate">
+        [INITIALIZED] Ready for live polling. Check Chrome DevTools console (F12) for detailed traces.
+      </div>
+    </div>
+
+    <!-- Day Selector Navigation -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2">
       <div class="flex items-center justify-between">
-        <label class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Select Upcoming Target Day:</label>
-        <span id="target-date-display" class="text-xs font-mono text-indigo-400 font-semibold">Target: 2026-09-14 (Mon)</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Select Forecast Day:</span>
+        <span id="target-day-banner" class="text-xs font-mono font-bold text-indigo-400">TARGET: 2026-09-14 (Monday)</span>
       </div>
-      <div class="grid grid-cols-6 gap-1.5 p-1 bg-[var(--secondary)] rounded-xl border border-[var(--border)]">
-        <button onclick="selectDay('Mon')" id="btn-Mon" class="day-btn py-1.5 px-2 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow-sm">
-          Mon<span class="hidden sm:inline text-[10px] block opacity-80">14 Sep</span>
+      <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
+        <button onclick="changeDay('Mon')" id="btn-Mon" class="day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow">
+          Mon<span class="block text-[10px] font-normal opacity-80" id="date-Mon">14 Sep</span>
         </button>
-        <button onclick="selectDay('Tue')" id="btn-Tue" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-          Tue<span class="hidden sm:inline text-[10px] block opacity-80">15 Sep</span>
+        <button onclick="changeDay('Tue')" id="btn-Tue" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Tue<span class="block text-[10px] font-normal opacity-80" id="date-Tue">15 Sep</span>
         </button>
-        <button onclick="selectDay('Wed')" id="btn-Wed" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-          Wed<span class="hidden sm:inline text-[10px] block opacity-80">16 Sep</span>
+        <button onclick="changeDay('Wed')" id="btn-Wed" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Wed<span class="block text-[10px] font-normal opacity-80" id="date-Wed">16 Sep</span>
         </button>
-        <button onclick="selectDay('Thu')" id="btn-Thu" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-          Thu<span class="hidden sm:inline text-[10px] block opacity-80">17 Sep</span>
+        <button onclick="changeDay('Thu')" id="btn-Thu" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Thu<span class="block text-[10px] font-normal opacity-80" id="date-Thu">17 Sep</span>
         </button>
-        <button onclick="selectDay('Fri')" id="btn-Fri" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-          Fri<span class="hidden sm:inline text-[10px] block opacity-80">18 Sep</span>
+        <button onclick="changeDay('Fri')" id="btn-Fri" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Fri<span class="block text-[10px] font-normal opacity-80" id="date-Fri">18 Sep</span>
         </button>
-        <button onclick="selectDay('Sat')" id="btn-Sat" class="day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-          Sat<span class="hidden sm:inline text-[10px] block opacity-80">19 Sep</span>
+        <button onclick="changeDay('Sat')" id="btn-Sat" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Sat<span class="block text-[10px] font-normal opacity-80" id="date-Sat">19 Sep</span>
         </button>
-      </div>
-    </div>
-
-    <!-- Core Prediction Highlights Card -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
-      <!-- Top Pick Card -->
-      <div class="bg-gradient-to-br from-indigo-500/10 via-[var(--card)] to-[var(--card)] border border-indigo-500/30 rounded-xl p-3 relative overflow-hidden">
-        <div class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Top Recommended Jodi</div>
-        <div class="flex items-baseline gap-2 mt-1">
-          <span id="card-top-jodi" class="text-3xl font-extrabold tracking-tight font-mono text-indigo-400">31</span>
-          <span id="card-top-prob" class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">2.05% (+105% edge)</span>
-        </div>
-        <div class="text-[11px] text-[var(--muted-foreground)] mt-2">
-          Cut/Family: <span id="card-family-preview" class="font-mono text-[var(--foreground)] font-medium">13, 18, 36, 68...</span>
-        </div>
-      </div>
-
-      <!-- Top Open Digit -->
-      <div class="bg-gradient-to-br from-purple-500/10 via-[var(--card)] to-[var(--card)] border border-purple-500/30 rounded-xl p-3">
-        <div class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">Prime Open Ank (Single Digit)</div>
-        <div class="flex items-baseline gap-2 mt-1">
-          <span id="card-top-open" class="text-3xl font-extrabold tracking-tight font-mono text-purple-400">9</span>
-          <span id="card-open-prob" class="text-xs font-semibold text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20">12.38% prob</span>
-        </div>
-        <div class="text-[11px] text-[var(--muted-foreground)] mt-2">
-          Alternate Open: <span id="card-alt-open" class="font-mono text-[var(--foreground)] font-medium">Digit 3 (12.36%)</span>
-        </div>
-      </div>
-
-      <!-- Top Close Digit -->
-      <div class="bg-gradient-to-br from-sky-500/10 via-[var(--card)] to-[var(--card)] border border-sky-500/30 rounded-xl p-3">
-        <div class="text-[10px] font-bold text-sky-400 uppercase tracking-wider">Prime Close Ank (Single Digit)</div>
-        <div class="flex items-baseline gap-2 mt-1">
-          <span id="card-top-close" class="text-3xl font-extrabold tracking-tight font-mono text-sky-400">1</span>
-          <span id="card-close-prob" class="text-xs font-semibold text-sky-400 bg-sky-500/10 px-1.5 py-0.5 rounded border border-sky-500/20">10.95% prob</span>
-        </div>
-        <div class="text-[11px] text-[var(--muted-foreground)] mt-2">
-          Alternate Close: <span id="card-alt-close" class="font-mono text-[var(--foreground)] font-medium">Digit 8 (10.68%)</span>
-        </div>
       </div>
     </div>
 
-    <!-- View Modes: Jodis vs Digits vs Family -->
-    <div class="space-y-3">
-      <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
+    <!-- Prediction Highlights (Top Pick, Prime Open, Prime Close) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+      <!-- Card 1: Top Recommended Jodi -->
+      <div id="box-spotlight-jodi" class="bg-gradient-to-b from-indigo-950/60 to-slate-900 border border-indigo-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg transition-all">
+        <div class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Highest Confidence Jodi
+        </div>
+        <div class="flex items-baseline gap-3 mt-2">
+          <span id="spotlight-jodi" class="text-4xl sm:text-5xl font-black font-mono text-white tracking-tight">31</span>
+          <span id="spotlight-jodi-prob" class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20">2.05% (+105% edge)</span>
+        </div>
+        <div class="mt-3 text-xs text-slate-300">
+          <span class="text-slate-400">Associated Cut/Family Set:</span>
+          <div id="spotlight-family" class="flex flex-wrap gap-1 mt-1 font-mono"></div>
+        </div>
+      </div>
+
+      <!-- Card 2: Prime Open Ank -->
+      <div id="box-spotlight-open" class="bg-gradient-to-b from-purple-950/60 to-slate-900 border border-purple-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg transition-all">
+        <div class="text-[11px] font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+          Predicted Single Open Ank
+        </div>
+        <div class="flex items-baseline gap-3 mt-2">
+          <span id="spotlight-open" class="text-4xl sm:text-5xl font-black font-mono text-purple-300 tracking-tight">9</span>
+          <span id="spotlight-open-prob" class="text-xs font-bold text-purple-300 bg-purple-500/10 px-2 py-1 rounded-md border border-purple-500/20">12.38% prob</span>
+        </div>
+        <div class="mt-3 text-xs text-slate-400">
+          Secondary Alternative: <span id="spotlight-alt-open" class="font-bold text-slate-200 font-mono">Digit 3 (12.36%)</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Prime Close Ank -->
+      <div id="box-spotlight-close" class="bg-gradient-to-b from-sky-950/60 to-slate-900 border border-sky-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg transition-all">
+        <div class="text-[11px] font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+          Predicted Single Close Ank
+        </div>
+        <div class="flex items-baseline gap-3 mt-2">
+          <span id="spotlight-close" class="text-4xl sm:text-5xl font-black font-mono text-sky-300 tracking-tight">1</span>
+          <span id="spotlight-close-prob" class="text-xs font-bold text-sky-300 bg-sky-500/10 px-2 py-1 rounded-md border border-sky-500/20">10.95% prob</span>
+        </div>
+        <div class="mt-3 text-xs text-slate-400">
+          Secondary Alternative: <span id="spotlight-alt-close" class="font-bold text-slate-200 font-mono">Digit 8 (10.68%)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Tabbed Detail Views -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
         <div class="flex gap-2">
-          <button onclick="setViewMode('jodis')" id="tab-jodis" class="view-tab text-xs font-bold px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] transition-all">
+          <button onclick="setTab('jodis')" id="tab-btn-jodis" class="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white transition-all">
             Top 10 Jodis
           </button>
-          <button onclick="setViewMode('digits')" id="tab-digits" class="view-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all">
-            Open & Close Anks (0-9)
+          <button onclick="setTab('digits')" id="tab-btn-digits" class="text-xs font-medium px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">
+            Open & Close Anks (0–9)
           </button>
-          <button onclick="setViewMode('family')" id="tab-family" class="view-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all">
-            Family / Cut Brackets
+          <button onclick="setTab('family')" id="tab-btn-family" class="text-xs font-medium px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all">
+            Family / Cut Sets
           </button>
         </div>
-        <span class="text-[11px] text-[var(--muted-foreground)] hidden sm:inline">90:1 Payout Metric</span>
+        <span class="text-xs text-slate-400">Payout Benchmark: 90:1</span>
       </div>
 
-      <!-- Content Area 1: Top 10 Jodis Table -->
-      <div id="view-jodis" class="view-panel overflow-x-auto">
+      <!-- Tab 1: Top 10 Jodis -->
+      <div id="tab-content-jodis" class="tab-pane overflow-x-auto">
         <table class="w-full text-left text-xs border-collapse">
           <thead>
-            <tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]">
-              <th class="py-1.5 px-2 font-semibold">Rank</th>
-              <th class="py-1.5 px-2 font-semibold">Jodi</th>
-              <th class="py-1.5 px-2 font-semibold">Probability</th>
-              <th class="py-1.5 px-2 font-semibold">Relative Edge</th>
-              <th class="py-1.5 px-2 font-semibold">Confidence Distribution</th>
-              <th class="py-1.5 px-2 font-semibold text-right">Family Set</th>
+            <tr class="border-b border-slate-800 text-slate-400">
+              <th class="py-2 px-3">Rank</th>
+              <th class="py-2 px-3">Jodi Number</th>
+              <th class="py-2 px-3">Ensemble Prob</th>
+              <th class="py-2 px-3">Relative Edge</th>
+              <th class="py-2 px-3">Probability Gauge</th>
+              <th class="py-2 px-3 text-right">Associated Cut Family</th>
             </tr>
           </thead>
-          <tbody id="jodi-table-body" class="divide-y divide-[var(--border)] font-mono">
-            <!-- Populated via JS -->
-          </tbody>
+          <tbody id="jodi-table" class="divide-y divide-slate-800/60 font-mono"></tbody>
         </table>
       </div>
 
-      <!-- Content Area 2: Single Digits (Ank) -->
-      <div id="view-digits" class="view-panel hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Open Digit Column -->
-        <div class="border border-[var(--border)] rounded-xl p-3 bg-[var(--secondary)]/30 space-y-2">
+      <!-- Tab 2: Single Digits (0-9) -->
+      <div id="tab-content-digits" class="tab-pane hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Open Digits -->
+        <div class="border border-slate-800 rounded-xl p-3.5 bg-slate-950/40 space-y-2">
           <div class="flex justify-between items-center text-xs font-bold text-purple-400">
-            <span>Single Open Ank (0-9)</span>
+            <span>Single Open Ank (0–9)</span>
             <span>Probability</span>
           </div>
-          <div id="open-digits-list" class="space-y-1.5 font-mono text-xs">
-            <!-- Populated via JS -->
-          </div>
+          <div id="open-digits-container" class="space-y-1.5 text-xs font-mono"></div>
         </div>
 
-        <!-- Close Digit Column -->
-        <div class="border border-[var(--border)] rounded-xl p-3 bg-[var(--secondary)]/30 space-y-2">
+        <!-- Close Digits -->
+        <div class="border border-slate-800 rounded-xl p-3.5 bg-slate-950/40 space-y-2">
           <div class="flex justify-between items-center text-xs font-bold text-sky-400">
-            <span>Single Close Ank (0-9)</span>
+            <span>Single Close Ank (0–9)</span>
             <span>Probability</span>
           </div>
-          <div id="close-digits-list" class="space-y-1.5 font-mono text-xs">
-            <!-- Populated via JS -->
-          </div>
+          <div id="close-digits-container" class="space-y-1.5 text-xs font-mono"></div>
         </div>
       </div>
 
-      <!-- Content Area 3: Family / Cut Brackets -->
-      <div id="view-family" class="view-panel hidden space-y-3">
-        <p class="text-xs text-[var(--muted-foreground)]">
-          In Satta Matka, high-probability Jodis frequently manifest across their mathematically associated <strong>Family Brackets</strong> (combinations of original and cut digits [+5 mod 10]).
+      <!-- Tab 3: Family Brackets -->
+      <div id="tab-content-family" class="tab-pane hidden space-y-3">
+        <p class="text-xs text-slate-400">
+          Family sets combine original digits with Cut digits (+5 mod 10) and their inverted permutations. Playing family sets hedges against single-digit flip variations.
         </p>
-        <div id="family-brackets-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <!-- Populated via JS -->
-        </div>
+        <div id="family-sets-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </div>
     </div>
 
-    <!-- Mathematical Risk & Bankroll Guardrail -->
-    <div class="bg-[var(--secondary)]/50 border border-[var(--border)] rounded-xl p-3 text-[11px] text-[var(--muted-foreground)] space-y-1">
-      <div class="flex items-center gap-1.5 font-semibold text-amber-400">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-        <span>Data Engineering & Mathematical Risk Reality</span>
+    <!-- Risk & Bankroll Management Card -->
+    <footer class="bg-amber-950/20 border border-amber-500/20 rounded-2xl p-4 text-xs text-slate-400 space-y-2">
+      <div class="flex items-center gap-2 font-bold text-amber-400">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span>Mathematical Guardrail & Risk Management Notice</span>
       </div>
-      <p>
-        The ensemble model achieves a verified <strong>5.11% hit-rate on Top-5 Jodis</strong> in walk-forward backtests (exceeding the 5.00% random baseline). However, because market bookmakers retain an intrinsic <strong>-10.0% house edge</strong> (90:1 payout vs 100:1 true probability), no statistical strategy guarantees deterministic profits. Never stake more than 1% of entertainment capital per draw.
+      <p class="leading-relaxed">
+        This automated system applies quantitative pattern recognition (Markov state transition matrices, recency exponential decay, and weekday seasonality priors). In strict historical walk-forward backtesting, the Top-5 Jodi model yielded a verified <strong>5.11% hit-rate</strong>. However, because bookmaker payouts of 90:1 on 100 possible outcomes represent a negative expectancy (-10% house margin), deterministic wins are mathematically impossible. Treat all model outputs as probabilistic intelligence, never gamble essentials, and limit wagers to under 1% of entertainment capital per draw.
       </p>
-    </div>
+    </footer>
 
   </div>
 
   <script>
-    const DATA = {
+    // ==========================================
+    // 1. IN-BROWSER MACHINE LEARNING MODELS
+    // ==========================================
+    class BrowserMarkovModel {
+      constructor(alpha = 0.5) {
+        this.alpha = alpha;
+        this.jodiTrans = Array.from({ length: 100 }, () => new Float64Array(100));
+        this.openTrans = Array.from({ length: 10 }, () => new Float64Array(10));
+        this.closeTrans = Array.from({ length: 10 }, () => new Float64Array(10));
+      }
+
+      fit(records) {
+        for (let i = 0; i < 100; i++) this.jodiTrans[i].fill(0);
+        for (let i = 0; i < 10; i++) {
+          this.openTrans[i].fill(0);
+          this.closeTrans[i].fill(0);
+        }
+        for (let i = 0; i < records.length - 1; i++) {
+          const prev = records[i];
+          const next = records[i + 1];
+          this.jodiTrans[prev[2]][next[2]]++;
+          this.openTrans[prev[3]][next[3]]++;
+          this.closeTrans[prev[4]][next[4]]++;
+        }
+      }
+
+      predictJodiProbs(prevJodi) {
+        const counts = this.jodiTrans[prevJodi] || new Float64Array(100);
+        let total = 0;
+        for (let i = 0; i < 100; i++) total += counts[i];
+        const probs = new Float64Array(100);
+        const denom = total + 100 * this.alpha;
+        for (let i = 0; i < 100; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        return probs;
+      }
+
+      predictOpenProbs(prevOpen) {
+        const counts = this.openTrans[prevOpen] || new Float64Array(10);
+        let total = 0;
+        for (let i = 0; i < 10; i++) total += counts[i];
+        const probs = new Float64Array(10);
+        const denom = total + 10 * this.alpha;
+        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        return probs;
+      }
+
+      predictCloseProbs(prevClose) {
+        const counts = this.closeTrans[prevClose] || new Float64Array(10);
+        let total = 0;
+        for (let i = 0; i < 10; i++) total += counts[i];
+        const probs = new Float64Array(10);
+        const denom = total + 10 * this.alpha;
+        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        return probs;
+      }
+    }
+
+    class BrowserRecencyModel {
+      constructor(halfLife = 60.0, alpha = 0.5) {
+        this.decayRate = Math.log(2.0) / halfLife;
+        this.alpha = alpha;
+        this.jodiWeights = new Float64Array(100);
+        this.openWeights = new Float64Array(10);
+        this.closeWeights = new Float64Array(10);
+      }
+
+      fit(records) {
+        this.jodiWeights.fill(0);
+        this.openWeights.fill(0);
+        this.closeWeights.fill(0);
+        const n = records.length;
+        for (let i = 0; i < n; i++) {
+          const lag = n - 1 - i;
+          const w = Math.exp(-this.decayRate * lag);
+          const r = records[i];
+          this.jodiWeights[r[2]] += w;
+          this.openWeights[r[3]] += w;
+          this.closeWeights[r[4]] += w;
+        }
+      }
+
+      predictJodiProbs() {
+        let total = 0;
+        for (let i = 0; i < 100; i++) total += this.jodiWeights[i];
+        const probs = new Float64Array(100);
+        const denom = total + 100 * this.alpha;
+        for (let i = 0; i < 100; i++) probs[i] = (this.jodiWeights[i] + this.alpha) / denom;
+        return probs;
+      }
+
+      predictOpenProbs() {
+        let total = 0;
+        for (let i = 0; i < 10; i++) total += this.openWeights[i];
+        const probs = new Float64Array(10);
+        const denom = total + 10 * this.alpha;
+        for (let i = 0; i < 10; i++) probs[i] = (this.openWeights[i] + this.alpha) / denom;
+        return probs;
+      }
+
+      predictCloseProbs() {
+        let total = 0;
+        for (let i = 0; i < 10; i++) total += this.closeWeights[i];
+        const probs = new Float64Array(10);
+        const denom = total + 10 * this.alpha;
+        for (let i = 0; i < 10; i++) probs[i] = (this.closeWeights[i] + this.alpha) / denom;
+        return probs;
+      }
+    }
+
+    class BrowserSeasonalModel {
+      constructor(alpha = 0.5) {
+        this.alpha = alpha;
+        this.dayJodi = { Mon: new Float64Array(100), Tue: new Float64Array(100), Wed: new Float64Array(100), Thu: new Float64Array(100), Fri: new Float64Array(100), Sat: new Float64Array(100) };
+        this.dayOpen = { Mon: new Float64Array(10), Tue: new Float64Array(10), Wed: new Float64Array(10), Thu: new Float64Array(10), Fri: new Float64Array(10), Sat: new Float64Array(10) };
+        this.dayClose = { Mon: new Float64Array(10), Tue: new Float64Array(10), Wed: new Float64Array(10), Thu: new Float64Array(10), Fri: new Float64Array(10), Sat: new Float64Array(10) };
+      }
+
+      fit(records) {
+        for (const d of ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
+          this.dayJodi[d].fill(0);
+          this.dayOpen[d].fill(0);
+          this.dayClose[d].fill(0);
+        }
+        for (let i = 0; i < records.length; i++) {
+          const r = records[i];
+          const day = r[1];
+          if (this.dayJodi[day]) {
+            this.dayJodi[day][r[2]]++;
+            this.dayOpen[day][r[3]]++;
+            this.dayClose[day][r[4]]++;
+          }
+        }
+      }
+
+      predictJodiProbs(day) {
+        const counts = this.dayJodi[day] || new Float64Array(100);
+        let total = 0;
+        for (let i = 0; i < 100; i++) total += counts[i];
+        const probs = new Float64Array(100);
+        const denom = total + 100 * this.alpha;
+        for (let i = 0; i < 100; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        return probs;
+      }
+
+      predictOpenProbs(day) {
+        const counts = this.dayOpen[day] || new Float64Array(10);
+        let total = 0;
+        for (let i = 0; i < 10; i++) total += counts[i];
+        const probs = new Float64Array(10);
+        const denom = total + 10 * this.alpha;
+        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        return probs;
+      }
+
+      predictCloseProbs(day) {
+        const counts = this.dayClose[day] || new Float64Array(10);
+        let total = 0;
+        for (let i = 0; i < 10; i++) total += counts[i];
+        const probs = new Float64Array(10);
+        const denom = total + 10 * this.alpha;
+        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        return probs;
+      }
+    }
+
+    class BrowserEnsemblePredictor {
+      constructor(wMarkov = 0.30, wRecency = 0.40, wSeasonal = 0.30) {
+        this.wMarkov = wMarkov;
+        this.wRecency = wRecency;
+        this.wSeasonal = wSeasonal;
+        this.markov = new BrowserMarkovModel();
+        this.recency = new BrowserRecencyModel();
+        this.seasonal = new BrowserSeasonalModel();
+      }
+
+      fit(records) {
+        this.markov.fit(records);
+        this.recency.fit(records);
+        this.seasonal.fit(records);
+      }
+
+      predict(day, prevJodi, prevOpen, prevClose) {
+        const pjM = this.markov.predictJodiProbs(prevJodi);
+        const pjR = this.recency.predictJodiProbs();
+        const pjS = this.seasonal.predictJodiProbs(day);
+        const jodiProbs = new Float64Array(100);
+        let sumJ = 0;
+        for (let i = 0; i < 100; i++) {
+          jodiProbs[i] = this.wMarkov * pjM[i] + this.wRecency * pjR[i] + this.wSeasonal * pjS[i];
+          sumJ += jodiProbs[i];
+        }
+        for (let i = 0; i < 100; i++) jodiProbs[i] /= sumJ;
+
+        const poM = this.markov.predictOpenProbs(prevOpen);
+        const poR = this.recency.predictOpenProbs();
+        const poS = this.seasonal.predictOpenProbs(day);
+        const openProbs = new Float64Array(10);
+        let sumO = 0;
+        for (let i = 0; i < 10; i++) {
+          openProbs[i] = this.wMarkov * poM[i] + this.wRecency * poR[i] + this.wSeasonal * poS[i];
+          sumO += openProbs[i];
+        }
+        for (let i = 0; i < 10; i++) openProbs[i] /= sumO;
+
+        const pcM = this.markov.predictCloseProbs(prevClose);
+        const pcR = this.recency.predictCloseProbs();
+        const pcS = this.seasonal.predictCloseProbs(day);
+        const closeProbs = new Float64Array(10);
+        let sumC = 0;
+        for (let i = 0; i < 10; i++) {
+          closeProbs[i] = this.wMarkov * pcM[i] + this.wRecency * pcR[i] + this.wSeasonal * pcS[i];
+          sumC += closeProbs[i];
+        }
+        for (let i = 0; i < 10; i++) closeProbs[i] /= sumC;
+
+        return { jodiProbs, openProbs, closeProbs };
+      }
+    }
+
+    function getCutDigit(d) {
+      return (d + 5) % 10;
+    }
+
+    function getFamilyJodis(jodiStr) {
+      const o = parseInt(jodiStr[0], 10);
+      const c = parseInt(jodiStr[1], 10);
+      const cutO = getCutDigit(o);
+      const cutC = getCutDigit(c);
+      const basePairs = [
+        [o, c], [o, cutC], [cutO, c], [cutO, cutC],
+        [c, o], [cutC, o], [c, cutO], [cutC, cutO],
+      ];
+      const seen = new Set();
+      const result = [];
+      for (const [d1, d2] of basePairs) {
+        const val = `${d1}${d2}`;
+        if (!seen.has(val)) {
+          seen.add(val);
+          result.push(val);
+        }
+      }
+      return result.sort();
+    }
+
+    // ==========================================
+    // 2. STATE & DATA REPOSITORY
+    // ==========================================
+    const BASELINE_DATA = {
   "latest_draw": {
     "date": "2026-09-12",
     "day": "Sat",
@@ -1793,150 +2135,603 @@
     }
   }
 };
-    let currentDay = "Mon";
+    const FALLBACK_HISTORY = [["2026-05-19", "Tue", 64, 6, 4], ["2026-05-20", "Wed", 31, 3, 1], ["2026-05-21", "Thu", 24, 2, 4], ["2026-05-22", "Fri", 0, 0, 0], ["2026-05-23", "Sat", 13, 1, 3], ["2026-05-25", "Mon", 72, 7, 2], ["2026-05-26", "Tue", 71, 7, 1], ["2026-05-27", "Wed", 21, 2, 1], ["2026-05-28", "Thu", 75, 7, 5], ["2026-05-29", "Fri", 1, 0, 1], ["2026-05-30", "Sat", 95, 9, 5], ["2026-06-01", "Mon", 2, 0, 2], ["2026-06-02", "Tue", 38, 3, 8], ["2026-06-03", "Wed", 31, 3, 1], ["2026-06-04", "Thu", 83, 8, 3], ["2026-06-05", "Fri", 80, 8, 0], ["2026-06-06", "Sat", 50, 5, 0], ["2026-06-08", "Mon", 92, 9, 2], ["2026-06-09", "Tue", 62, 6, 2], ["2026-06-10", "Wed", 95, 9, 5], ["2026-06-11", "Thu", 30, 3, 0], ["2026-06-12", "Fri", 78, 7, 8], ["2026-06-13", "Sat", 17, 1, 7], ["2026-06-15", "Mon", 50, 5, 0], ["2026-06-16", "Tue", 23, 2, 3], ["2026-06-17", "Wed", 2, 0, 2], ["2026-06-18", "Thu", 13, 1, 3], ["2026-06-19", "Fri", 96, 9, 6], ["2026-06-20", "Sat", 92, 9, 2], ["2026-06-22", "Mon", 8, 0, 8], ["2026-06-23", "Tue", 34, 3, 4], ["2026-06-24", "Wed", 57, 5, 7], ["2026-06-25", "Thu", 21, 2, 1], ["2026-06-26", "Fri", 93, 9, 3], ["2026-06-27", "Sat", 97, 9, 7], ["2026-06-29", "Mon", 34, 3, 4], ["2026-06-30", "Tue", 6, 0, 6], ["2026-07-01", "Wed", 94, 9, 4], ["2026-07-02", "Thu", 6, 0, 6], ["2026-07-03", "Fri", 3, 0, 3], ["2026-07-04", "Sat", 49, 4, 9], ["2026-07-06", "Mon", 95, 9, 5], ["2026-07-07", "Tue", 75, 7, 5], ["2026-07-08", "Wed", 69, 6, 9], ["2026-07-09", "Thu", 14, 1, 4], ["2026-07-10", "Fri", 64, 6, 4], ["2026-07-11", "Sat", 96, 9, 6], ["2026-07-13", "Mon", 74, 7, 4], ["2026-07-14", "Tue", 1, 0, 1], ["2026-07-15", "Wed", 14, 1, 4], ["2026-07-16", "Thu", 45, 4, 5], ["2026-07-17", "Fri", 81, 8, 1], ["2026-07-18", "Sat", 62, 6, 2], ["2026-07-20", "Mon", 31, 3, 1], ["2026-07-21", "Tue", 31, 3, 1], ["2026-07-22", "Wed", 78, 7, 8], ["2026-07-23", "Thu", 0, 0, 0], ["2026-07-24", "Fri", 4, 0, 4], ["2026-07-25", "Sat", 74, 7, 4], ["2026-07-27", "Mon", 26, 2, 6], ["2026-07-28", "Tue", 26, 2, 6], ["2026-07-29", "Wed", 45, 4, 5], ["2026-07-30", "Thu", 28, 2, 8], ["2026-07-31", "Fri", 23, 2, 3], ["2026-08-01", "Sat", 32, 3, 2], ["2026-08-03", "Mon", 99, 9, 9], ["2026-08-04", "Tue", 65, 6, 5], ["2026-08-05", "Wed", 66, 6, 6], ["2026-08-06", "Thu", 89, 8, 9], ["2026-08-07", "Fri", 59, 5, 9], ["2026-08-08", "Sat", 67, 6, 7], ["2026-08-10", "Mon", 26, 2, 6], ["2026-08-11", "Tue", 81, 8, 1], ["2026-08-12", "Wed", 38, 3, 8], ["2026-08-13", "Thu", 37, 3, 7], ["2026-08-14", "Fri", 26, 2, 6], ["2026-08-17", "Mon", 33, 3, 3], ["2026-08-18", "Tue", 20, 2, 0], ["2026-08-19", "Wed", 73, 7, 3], ["2026-08-20", "Thu", 88, 8, 8], ["2026-08-21", "Fri", 99, 9, 9], ["2026-08-22", "Sat", 31, 3, 1], ["2026-08-24", "Mon", 7, 0, 7], ["2026-08-25", "Tue", 17, 1, 7], ["2026-08-26", "Wed", 33, 3, 3], ["2026-08-27", "Thu", 92, 9, 2], ["2026-08-28", "Fri", 32, 3, 2], ["2026-08-29", "Sat", 50, 5, 0], ["2026-08-31", "Mon", 69, 6, 9], ["2026-09-01", "Tue", 5, 0, 5], ["2026-09-02", "Wed", 18, 1, 8], ["2026-09-03", "Thu", 65, 6, 5], ["2026-09-04", "Fri", 70, 7, 0], ["2026-09-05", "Sat", 63, 6, 3], ["2026-09-07", "Mon", 96, 9, 6], ["2026-09-08", "Tue", 76, 7, 6], ["2026-09-09", "Wed", 27, 2, 7], ["2026-09-10", "Thu", 15, 1, 5], ["2026-09-11", "Fri", 59, 5, 9], ["2026-09-12", "Sat", 15, 1, 5]];
+    let HISTORY_RECORDS = [];
+    let APP_STATE = JSON.parse(JSON.stringify(BASELINE_DATA));
+    let selectedDay = "Mon";
+    let autoSyncEnabled = true;
+    let countdownSec = 45;
+    let autoSyncTimerId = null;
+    let currentSyncRequestId = 0;
+    let isSyncInProgress = false;
 
-    function selectDay(day) {
-      currentDay = day;
-      
-      // Update Day buttons
-      document.querySelectorAll('.day-btn').forEach(btn => {
-        btn.className = "day-btn py-1.5 px-2 text-xs font-medium rounded-lg transition-all text-center text-[var(--muted-foreground)] hover:text-[var(--foreground)]";
-      });
-      const activeBtn = document.getElementById("btn-" + day);
-      if (activeBtn) {
-        activeBtn.className = "day-btn py-1.5 px-2 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow-sm";
+    // Current known latest draw tracker
+    let CURRENT_LATEST_DRAW = {
+      date: "2026-09-12",
+      day: "Sat",
+      jodi: "15",
+      open: 1,
+      close: 5,
+      openPatti: "560",
+      closePatti: "249",
+      status: "FULL_JODI_DECLARED",
+    };
+
+    // ==========================================
+    // 3. LIVE FETCH & PARSER ENGINE
+    // ==========================================
+    function parseLiveResultString(str) {
+      if (!str) return null;
+      str = str.trim();
+      let m = str.match(/^(\d{3})-(\d{2})-(\d{3})$/);
+      if (m) {
+        return {
+          openPatti: m[1],
+          jodi: m[2],
+          openDigit: parseInt(m[2][0], 10),
+          closeDigit: parseInt(m[2][1], 10),
+          closePatti: m[3],
+          status: 'FULL_JODI_DECLARED',
+          raw: str
+        };
       }
-
-      render();
+      m = str.match(/^(\d{3})-(\d{1})(?:[*\-].*)?$/);
+      if (m) {
+        return {
+          openPatti: m[1],
+          jodi: m[2] + '*',
+          openDigit: parseInt(m[2], 10),
+          closeDigit: null,
+          closePatti: null,
+          status: 'OPEN_DECLARED',
+          raw: str
+        };
+      }
+      m = str.match(/^(\d{3})-(\d{2})(?:[*\-].*)?$/);
+      if (m) {
+        return {
+          openPatti: m[1],
+          jodi: m[2],
+          openDigit: parseInt(m[2][0], 10),
+          closeDigit: parseInt(m[2][1], 10),
+          closePatti: null,
+          status: 'FULL_JODI_DECLARED',
+          raw: str
+        };
+      }
+      return { status: 'UNKNOWN', raw: str };
     }
 
-    function setViewMode(mode) {
-      document.querySelectorAll('.view-tab').forEach(tab => {
-        tab.className = "view-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-all";
-      });
-      const activeTab = document.getElementById("tab-" + mode);
-      if (activeTab) {
-        activeTab.className = "view-tab text-xs font-bold px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] transition-all";
+    async function fetchLiveDrawData(syncId) {
+      const timestamp = Date.now();
+      const endpoints = [
+        // 1. Cloudflare Pages Function (same-origin, zero CORS, edge-executed)
+        `/api/live-kalyan?_t=${timestamp}`,
+        // 2. Cloudflare Pages Function alias
+        `/api/fetch-and-predict?_t=${timestamp}`,
+        // 3. Public CORS Proxies as fallback
+        `https://api.allorigins.win/raw?url=${encodeURIComponent('https://dpbossx.net/kalyan-chart.php')}&_t=${timestamp}`,
+        `https://corsproxy.io/?url=${encodeURIComponent('https://dpbossx.net/kalyan-chart.php')}&_t=${timestamp}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent('https://dpbossx.net/kalyan-chart.php')}&_t=${timestamp}`,
+      ];
+
+      for (const ep of endpoints) {
+        try {
+          console.log(`%c[FETCH] Trying endpoint: ${ep.split('?')[0]}...`, 'color: #94a3b8');
+          const res = await fetch(ep, {
+            method: 'GET',
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache' }
+          });
+
+          if (!res.ok) continue;
+
+          const contentType = res.headers.get('content-type') || '';
+          if (contentType.includes('application/json')) {
+            const json = await res.json();
+            if (json.draw && json.draw.status !== 'UNKNOWN') {
+              return {
+                source: ep,
+                parsed: {
+                  openPatti: json.draw.open_panna,
+                  openDigit: json.draw.open_digit,
+                  closeDigit: json.draw.close_digit,
+                  closePatti: json.draw.close_panna,
+                  jodi: json.draw.jodi,
+                  status: json.draw.status,
+                  raw: json.raw_result
+                }
+              };
+            }
+          } else {
+            // HTML response via proxy
+            const html = await res.text();
+            const match = html.match(/<div class="chart-result"[^>]*>[\s\S]*?<span>(.*?)<\/span>/i);
+            if (match && match[1]) {
+              const parsed = parseLiveResultString(match[1]);
+              if (parsed && parsed.status !== 'UNKNOWN') {
+                return { source: ep, parsed };
+              }
+            }
+          }
+        } catch (err) {
+          // try next endpoint
+        }
       }
 
-      document.querySelectorAll('.view-panel').forEach(p => p.classList.add('hidden'));
-      const activePanel = document.getElementById("view-" + mode);
-      if (activePanel) {
-        activePanel.classList.remove('hidden');
+      throw new Error('All live data fetch endpoints exhausted or blocked.');
+    }
+
+    // ==========================================
+    // 4. SYNCHRONIZATION PIPELINE
+    // ==========================================
+    async function executeSyncPipeline({ isManual = false } = {}) {
+      if (isSyncInProgress && !isManual) return;
+      isSyncInProgress = true;
+      const syncId = ++currentSyncRequestId;
+
+      logPipeline("FETCH START", `Initiating live draw sync... [Request #${syncId}]`, "#818cf8");
+      setButtonLoading(true);
+      document.getElementById('pipeline-status-text').textContent = `Fetching live draw data (Req #${syncId})...`;
+
+      try {
+        const result = await fetchLiveDrawData(syncId);
+
+        // Discard stale responses if newer request was launched
+        if (syncId !== currentSyncRequestId) {
+          console.warn(`[CONCURRENCY] Outdated response ${syncId} discarded.`);
+          return;
+        }
+
+        logPipeline("FETCH SUCCESS", `Live result payload received from ${result.source.split('?')[0]}: "${result.parsed.raw}"`, "#34d399");
+
+        const dataChanged = isResultChanged(result.parsed);
+        logPipeline("DATA CHANGED?", dataChanged ? `YES! New draw state detected (${result.parsed.raw})` : `NO. Current result matches stored state (${CURRENT_LATEST_DRAW.jodi})`, dataChanged ? "#f59e0b" : "#94a3b8");
+
+        if (dataChanged) {
+          logPipeline("UPDATE LATEST DRAW", `Applying ${result.parsed.raw} to state...`, "#38bdf8");
+          applyNewDrawData(result.parsed);
+
+          logPipeline("RECALCULATE PREDICTION", "Running in-browser EnsemblePredictor across historical records...", "#a855f7");
+          recalculateEnsemblePredictions();
+
+          logPipeline("UPDATE STATE", "Committing recalibrated predictions & confidence metrics...", "#ec4899");
+          commitState();
+
+          logPipeline("UI UPDATED", "Fresh numbers rendered to DOM.", "#10b981");
+          renderAll();
+          flashUIUpdate();
+        } else {
+          document.getElementById('last-sync-time').textContent = new Date().toLocaleTimeString();
+          document.getElementById('pipeline-status-text').textContent = `Sync Complete: No new draw (Last checked: ${new Date().toLocaleTimeString()})`;
+        }
+
+      } catch (err) {
+        console.error("[SYNC ERROR]", err.message);
+        document.getElementById('pipeline-status-text').textContent = `Sync Failed: ${err.message} (Will retry automatically)`;
+        logPipeline("SYNC RETRY", `Network error: ${err.message}. Next retry in 45s.`, "#ef4444");
+      } finally {
+        isSyncInProgress = false;
+        setButtonLoading(false);
+        if (isManual) {
+          countdownSec = 45;
+          document.getElementById('countdown-timer').textContent = countdownSec + 's';
+        }
       }
     }
 
-    function render() {
-      const dayData = DATA.by_day[currentDay];
-      if (!dayData) return;
+    function isResultChanged(parsed) {
+      if (!parsed) return false;
+      if (parsed.status === 'FULL_JODI_DECLARED') {
+        // If full jodi has digits and is different from current latest
+        return parsed.jodi && parsed.jodi !== CURRENT_LATEST_DRAW.jodi;
+      } else if (parsed.status === 'OPEN_DECLARED') {
+        // If open digit is out and not yet recorded as open live
+        return parsed.openDigit !== null && CURRENT_LATEST_DRAW.openLive !== parsed.openDigit;
+      }
+      return false;
+    }
 
-      // Update date indicator
-      document.getElementById('target-date-display').textContent = `Target: ${dayData.date} (${dayData.day})`;
+    function applyNewDrawData(parsed) {
+      const today = new Date();
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const todayDay = dayNames[today.getDay()] || "Mon";
+      const todayDateStr = today.toISOString().split('T')[0];
 
-      // Top Pick Cards
-      const topPick = dayData.top_jodis[0];
-      document.getElementById('card-top-jodi').textContent = topPick.jodi;
-      const relEdge = ((topPick.prob / 1.0) - 1.0) * 100;
-      document.getElementById('card-top-prob').textContent = `${topPick.prob.toFixed(2)}% (${relEdge >= 0 ? '+' : ''}${relEdge.toFixed(0)}% edge)`;
-      document.getElementById('card-family-preview').textContent = topPick.family.slice(0, 4).join(', ') + '...';
+      if (parsed.status === 'FULL_JODI_DECLARED') {
+        CURRENT_LATEST_DRAW = {
+          date: todayDateStr,
+          day: todayDay,
+          jodi: parsed.jodi,
+          open: parsed.openDigit,
+          close: parsed.closeDigit,
+          openPatti: parsed.openPatti || "---",
+          closePatti: parsed.closePatti || "---",
+          status: 'FULL_JODI_DECLARED',
+        };
+
+        // Append to historical records
+        const newRecord = [todayDateStr, todayDay, parseInt(parsed.jodi, 10), parsed.openDigit, parsed.closeDigit];
+        HISTORY_RECORDS.push(newRecord);
+        try {
+          localStorage.setItem('kalyan_custom_history_v2', JSON.stringify(HISTORY_RECORDS));
+          localStorage.setItem('kalyan_latest_draw_v2', JSON.stringify(CURRENT_LATEST_DRAW));
+        } catch (e) {}
+
+      } else if (parsed.status === 'OPEN_DECLARED') {
+        CURRENT_LATEST_DRAW.openLive = parsed.openDigit;
+        CURRENT_LATEST_DRAW.openLivePatti = parsed.openPatti;
+        CURRENT_LATEST_DRAW.status = 'OPEN_DECLARED';
+      }
+    }
+
+    function recalculateEnsemblePredictions() {
+      const ensemble = new BrowserEnsemblePredictor(0.30, 0.40, 0.30);
+      ensemble.fit(HISTORY_RECORDS);
+
+      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const byDay = {};
+
+      const lastRec = HISTORY_RECORDS[HISTORY_RECORDS.length - 1];
+      const prevJodi = lastRec[2];
+      const prevOpen = lastRec[3];
+      const prevClose = lastRec[4];
+
+      const baseDate = new Date();
+      for (let offset = 0; offset < 6; offset++) {
+        const targetD = new Date(baseDate);
+        targetD.setDate(baseDate.getDate() + offset + 1);
+        if (targetD.getDay() === 0) targetD.setDate(targetD.getDate() + 1); // Skip Sunday
+
+        const dayName = days[targetD.getDay() === 0 ? 0 : targetD.getDay() - 1];
+        const dateStr = targetD.toISOString().split('T')[0];
+
+        const preds = ensemble.predict(dayName, prevJodi, prevOpen, prevClose);
+
+        // Sort Top 10 Jodis
+        const sortedJodis = Array.from({ length: 100 }, (_, i) => i)
+          .sort((a, b) => preds.jodiProbs[b] - preds.jodiProbs[a])
+          .slice(0, 10)
+          .map((idx, rank) => {
+            const jStr = idx.toString().padStart(2, '0');
+            return {
+              rank: rank + 1,
+              jodi: jStr,
+              prob: parseFloat((preds.jodiProbs[idx] * 100).toFixed(2)),
+              family: getFamilyJodis(jStr)
+            };
+          });
+
+        // Sort Open Digits
+        const sortedOpens = Array.from({ length: 10 }, (_, i) => i)
+          .sort((a, b) => preds.openProbs[b] - preds.openProbs[a])
+          .map((d, rank) => ({
+            rank: rank + 1,
+            digit: d,
+            prob: parseFloat((preds.openProbs[d] * 100).toFixed(2))
+          }));
+
+        // Sort Close Digits
+        const sortedCloses = Array.from({ length: 10 }, (_, i) => i)
+          .sort((a, b) => preds.closeProbs[b] - preds.closeProbs[a])
+          .map((d, rank) => ({
+            rank: rank + 1,
+            digit: d,
+            prob: parseFloat((preds.closeProbs[d] * 100).toFixed(2))
+          }));
+
+        byDay[dayName] = {
+          date: dateStr,
+          day: dayName,
+          top_jodis: sortedJodis,
+          open_digits: sortedOpens,
+          close_digits: sortedCloses,
+          top_pick: sortedJodis[0].jodi,
+          top_family: sortedJodis[0].family
+        };
+      }
+
+      APP_STATE = {
+        latest_draw: {
+          date: CURRENT_LATEST_DRAW.date,
+          day: CURRENT_LATEST_DRAW.day,
+          jodi: CURRENT_LATEST_DRAW.jodi,
+          open: CURRENT_LATEST_DRAW.open,
+          close: CURRENT_LATEST_DRAW.close,
+        },
+        by_day: byDay
+      };
+    }
+
+    function commitState() {
+      document.getElementById('last-sync-time').textContent = new Date().toLocaleTimeString();
+      document.getElementById('dataset-count').textContent = `${HISTORY_RECORDS.length} Historical Records`;
+      document.getElementById('pipeline-status-text').textContent = `Recalibrated with latest draw ${CURRENT_LATEST_DRAW.jodi} (${new Date().toLocaleTimeString()})`;
+    }
+
+    // ==========================================
+    // 5. UI RENDERING & INTERACTION
+    // ==========================================
+    function logPipeline(step, detail, color = "#94a3b8") {
+      const timestamp = new Date().toLocaleTimeString();
+      console.log(`%c[${step}]%c ${detail}`, `color: ${color}; font-weight: bold;`, 'color: inherit;');
+      const consoleLogEl = document.getElementById('live-console-log');
+      if (consoleLogEl) {
+        consoleLogEl.innerHTML = `<span style="color:${color}">[${step}]</span> <span class="text-slate-300">${detail}</span> <span class="text-slate-400">(${timestamp})</span>`;
+      }
+    }
+
+    function setButtonLoading(loading) {
+      const btn = document.getElementById('btn-fetch-now');
+      const icon = document.getElementById('sync-icon');
+      const text = document.getElementById('btn-text');
+      if (!btn || !icon || !text) return;
+      btn.disabled = loading;
+      if (loading) {
+        text.textContent = "Syncing...";
+        icon.classList.add('animate-spin');
+      } else {
+        text.textContent = "Sync Now";
+        icon.classList.remove('animate-spin');
+      }
+    }
+
+    function flashUIUpdate() {
+      const cards = ['box-spotlight-jodi', 'box-spotlight-open', 'box-spotlight-close', 'card-latest-result'];
+      cards.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.classList.add('flash-update');
+          setTimeout(() => el.classList.remove('flash-update'), 1600);
+        }
+      });
+    }
+
+    function renderAll() {
+      if (!APP_STATE) return;
+
+      // Render Latest Draw banner
+      if (CURRENT_LATEST_DRAW) {
+        document.getElementById('latest-jodi').textContent = CURRENT_LATEST_DRAW.jodi || "---";
+        if (CURRENT_LATEST_DRAW.status === 'OPEN_DECLARED') {
+          document.getElementById('latest-patti').textContent = `Live Open: ${CURRENT_LATEST_DRAW.openLive} (Patti: ${CURRENT_LATEST_DRAW.openLivePatti || '---'})`;
+          document.getElementById('draw-status-badge').textContent = "Open Live";
+          document.getElementById('draw-status-badge').className = "inline-block px-2.5 py-1 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30 font-bold text-xs animate-pulse";
+        } else {
+          document.getElementById('latest-patti').textContent = `${CURRENT_LATEST_DRAW.openPatti || '---'} - ${CURRENT_LATEST_DRAW.jodi || '--'} - ${CURRENT_LATEST_DRAW.closePatti || '---'}`;
+          document.getElementById('draw-status-badge').textContent = "Official Result";
+          document.getElementById('draw-status-badge').className = "inline-block px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold text-xs";
+        }
+        document.getElementById('latest-date').textContent = `${CURRENT_LATEST_DRAW.day}, ${CURRENT_LATEST_DRAW.date}`;
+      }
+
+      // Render Selected Day Forecast
+      renderDayForecast();
+    }
+
+    function renderDayForecast() {
+      if (!APP_STATE || !APP_STATE.by_day || !APP_STATE.by_day[selectedDay]) return;
+      const dayData = APP_STATE.by_day[selectedDay];
+
+      document.getElementById('target-day-banner').textContent = `TARGET: ${dayData.date} (${dayData.day})`;
+
+      // Top Pick
+      const top1 = dayData.top_jodis[0];
+      document.getElementById('spotlight-jodi').textContent = top1.jodi;
+      const relEdge = ((top1.prob / 1.0) - 1.0) * 100;
+      document.getElementById('spotlight-jodi-prob').textContent = `${top1.prob.toFixed(2)}% (${relEdge >= 0 ? '+' : ''}${relEdge.toFixed(0)}% edge)`;
+
+      const familyContainer = document.getElementById('spotlight-family');
+      familyContainer.innerHTML = '';
+      top1.family.forEach(f => {
+        const s = document.createElement('span');
+        s.className = `px-1.5 py-0.5 rounded text-[11px] font-bold ${f === top1.jodi ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300'}`;
+        s.textContent = f;
+        familyContainer.appendChild(s);
+      });
 
       // Top Open
       const topOpen = dayData.open_digits[0];
       const altOpen = dayData.open_digits[1];
-      document.getElementById('card-top-open').textContent = topOpen.digit;
-      document.getElementById('card-open-prob').textContent = `${topOpen.prob.toFixed(2)}% prob`;
-      document.getElementById('card-alt-open').textContent = `Digit ${altOpen.digit} (${altOpen.prob.toFixed(2)}%)`;
+      document.getElementById('spotlight-open').textContent = topOpen.digit;
+      document.getElementById('spotlight-open-prob').textContent = `${topOpen.prob.toFixed(2)}% prob`;
+      document.getElementById('spotlight-alt-open').textContent = `Digit ${altOpen.digit} (${altOpen.prob.toFixed(2)}%)`;
 
       // Top Close
       const topClose = dayData.close_digits[0];
       const altClose = dayData.close_digits[1];
-      document.getElementById('card-top-close').textContent = topClose.digit;
-      document.getElementById('card-close-prob').textContent = `${topClose.prob.toFixed(2)}% prob`;
-      document.getElementById('card-alt-close').textContent = `Digit ${altClose.digit} (${altClose.prob.toFixed(2)}%)`;
+      document.getElementById('spotlight-close').textContent = topClose.digit;
+      document.getElementById('spotlight-close-prob').textContent = `${topClose.prob.toFixed(2)}% prob`;
+      document.getElementById('spotlight-alt-close').textContent = `Digit ${altClose.digit} (${altClose.prob.toFixed(2)}%)`;
 
-      // Render Jodis Table
-      const tbody = document.getElementById('jodi-table-body');
-      tbody.innerHTML = '';
+      // Jodi Table
+      const jodiTbody = document.getElementById('jodi-table');
+      jodiTbody.innerHTML = '';
       dayData.top_jodis.forEach(j => {
         const edge = ((j.prob / 1.0) - 1.0) * 100;
         const widthPct = Math.min(100, Math.round((j.prob / 2.5) * 100));
-        
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-[var(--secondary)]/40 transition-colors";
+        tr.className = "hover:bg-slate-800/40 transition-colors";
         tr.innerHTML = `
-          <td class="py-2 px-2 text-[var(--muted-foreground)]">#${j.rank}</td>
-          <td class="py-2 px-2 font-bold text-indigo-400 text-sm">${j.jodi}</td>
-          <td class="py-2 px-2 font-semibold text-[var(--foreground)]">${j.prob.toFixed(2)}%</td>
-          <td class="py-2 px-2 font-medium ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${edge >= 0 ? '+' : ''}${edge.toFixed(1)}%</td>
-          <td class="py-2 px-2">
-            <div class="w-24 sm:w-32 bg-[var(--secondary)] h-2 rounded-full overflow-hidden border border-[var(--border)]">
+          <td class="py-2.5 px-3 text-slate-400 font-semibold">#${j.rank}</td>
+          <td class="py-2.5 px-3 font-bold text-base text-indigo-400">${j.jodi}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-200">${j.prob.toFixed(2)}%</td>
+          <td class="py-2.5 px-3 font-bold ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${edge >= 0 ? '+' : ''}${edge.toFixed(1)}%</td>
+          <td class="py-2.5 px-3">
+            <div class="w-28 sm:w-40 bg-slate-800 h-2 rounded-full overflow-hidden">
               <div class="bg-indigo-500 h-full rounded-full" style="width: ${widthPct}%"></div>
             </div>
           </td>
-          <td class="py-2 px-2 text-right text-[11px] text-[var(--muted-foreground)]">${j.family.slice(0, 3).join(', ')}</td>
+          <td class="py-2.5 px-3 text-right text-slate-400">${j.family.slice(0, 4).join(', ')}</td>
         `;
-        tbody.appendChild(tr);
+        jodiTbody.appendChild(tr);
       });
 
-      // Render Open Digits
-      const openContainer = document.getElementById('open-digits-list');
-      openContainer.innerHTML = '';
+      // Open Digits
+      const openBox = document.getElementById('open-digits-container');
+      openBox.innerHTML = '';
       dayData.open_digits.forEach(d => {
         const barWidth = Math.round((d.prob / 15.0) * 100);
         const div = document.createElement('div');
-        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-[var(--secondary)]/50";
+        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-slate-800/50";
         div.innerHTML = `
           <div class="flex items-center gap-2">
-            <span class="w-5 text-center font-bold ${d.rank <= 3 ? 'text-purple-400' : 'text-[var(--muted-foreground)]'}">${d.digit}</span>
-            <div class="w-20 sm:w-28 bg-[var(--secondary)] h-1.5 rounded-full overflow-hidden">
+            <span class="w-6 text-center font-bold text-sm ${d.rank <= 3 ? 'text-purple-400' : 'text-slate-400'}">${d.digit}</span>
+            <div class="w-28 sm:w-36 bg-slate-800 h-1.5 rounded-full overflow-hidden">
               <div class="bg-purple-500 h-full rounded-full" style="width: ${barWidth}%"></div>
             </div>
           </div>
-          <span class="text-xs ${d.rank <= 3 ? 'font-bold text-purple-400' : 'text-[var(--muted-foreground)]'}">${d.prob.toFixed(2)}%</span>
+          <span class="text-xs font-bold ${d.rank <= 3 ? 'text-purple-300' : 'text-slate-400'}">${d.prob.toFixed(2)}%</span>
         `;
-        openContainer.appendChild(div);
+        openBox.appendChild(div);
       });
 
-      // Render Close Digits
-      const closeContainer = document.getElementById('close-digits-list');
-      closeContainer.innerHTML = '';
+      // Close Digits
+      const closeBox = document.getElementById('close-digits-container');
+      closeBox.innerHTML = '';
       dayData.close_digits.forEach(d => {
         const barWidth = Math.round((d.prob / 15.0) * 100);
         const div = document.createElement('div');
-        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-[var(--secondary)]/50";
+        div.className = "flex items-center justify-between gap-2 p-1 rounded hover:bg-slate-800/50";
         div.innerHTML = `
           <div class="flex items-center gap-2">
-            <span class="w-5 text-center font-bold ${d.rank <= 3 ? 'text-sky-400' : 'text-[var(--muted-foreground)]'}">${d.digit}</span>
-            <div class="w-20 sm:w-28 bg-[var(--secondary)] h-1.5 rounded-full overflow-hidden">
+            <span class="w-6 text-center font-bold text-sm ${d.rank <= 3 ? 'text-sky-400' : 'text-slate-400'}">${d.digit}</span>
+            <div class="w-28 sm:w-36 bg-slate-800 h-1.5 rounded-full overflow-hidden">
               <div class="bg-sky-500 h-full rounded-full" style="width: ${barWidth}%"></div>
             </div>
           </div>
-          <span class="text-xs ${d.rank <= 3 ? 'font-bold text-sky-400' : 'text-[var(--muted-foreground)]'}">${d.prob.toFixed(2)}%</span>
+          <span class="text-xs font-bold ${d.rank <= 3 ? 'text-sky-300' : 'text-slate-400'}">${d.prob.toFixed(2)}%</span>
         `;
-        closeContainer.appendChild(div);
+        closeBox.appendChild(div);
       });
 
-      // Render Family Brackets
-      const familyContainer = document.getElementById('family-brackets-container');
-      familyContainer.innerHTML = '';
+      // Family Sets
+      const familyBox = document.getElementById('family-sets-container');
+      familyBox.innerHTML = '';
       dayData.top_jodis.slice(0, 4).forEach(j => {
         const card = document.createElement('div');
-        card.className = "border border-[var(--border)] rounded-lg p-2.5 bg-[var(--secondary)]/30 space-y-1.5";
+        card.className = "border border-slate-800 rounded-xl p-3 bg-slate-950/60 space-y-2";
         card.innerHTML = `
           <div class="flex justify-between items-center text-xs">
-            <span class="font-bold text-indigo-400">Jodi [${j.jodi}] Family Set</span>
-            <span class="text-[10px] text-[var(--muted-foreground)]">Rank #${j.rank} (${j.prob.toFixed(2)}%)</span>
+            <span class="font-bold text-indigo-400 text-sm">Jodi [${j.jodi}] Family Group</span>
+            <span class="text-slate-400 font-mono">Rank #${j.rank} (${j.prob.toFixed(2)}%)</span>
           </div>
-          <div class="flex flex-wrap gap-1">
-            ${j.family.map(f => `<span class="px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] font-mono text-xs ${f === j.jodi ? 'border-indigo-500 text-indigo-400 font-bold' : 'text-[var(--muted-foreground)]'}">${f}</span>`).join('')}
+          <div class="flex flex-wrap gap-1.5 font-mono">
+            ${j.family.map(f => `<span class="px-2 py-0.5 rounded text-xs ${f === j.jodi ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-800 text-slate-300 border border-slate-700'}">${f}</span>`).join('')}
           </div>
         `;
-        familyContainer.appendChild(card);
+        familyBox.appendChild(card);
       });
     }
 
-    // Initial render
-    render();
+    function changeDay(day) {
+      selectedDay = day;
+      document.querySelectorAll('.day-tab').forEach(b => {
+        b.className = "day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800";
+      });
+      const activeBtn = document.getElementById('btn-' + day);
+      if (activeBtn) {
+        activeBtn.className = "day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow";
+      }
+      renderDayForecast();
+    }
+
+    function setTab(tab) {
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+      const activePane = document.getElementById('tab-content-' + tab);
+      if (activePane) activePane.classList.remove('hidden');
+
+      const tabs = ['jodis', 'digits', 'family'];
+      tabs.forEach(t => {
+        const b = document.getElementById('tab-btn-' + t);
+        if (t === tab) {
+          b.className = "text-xs font-bold px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white transition-all";
+        } else {
+          b.className = "text-xs font-medium px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all";
+        }
+      });
+    }
+
+    function toggleAutoSync() {
+      autoSyncEnabled = !autoSyncEnabled;
+      const statusEl = document.getElementById('auto-sync-status');
+      const btn = document.getElementById('btn-toggle-auto');
+      if (autoSyncEnabled) {
+        statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span>Auto: ON';
+        statusEl.className = 'text-emerald-400 font-semibold flex items-center gap-1.5';
+        btn.textContent = 'Pause';
+      } else {
+        statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span>Auto: OFF';
+        statusEl.className = 'text-slate-400 font-semibold flex items-center gap-1.5';
+        btn.textContent = 'Resume';
+      }
+    }
+
+    function manualSyncClick() {
+      executeSyncPipeline({ isManual: true });
+    }
+
+    function startAutoSyncTimer() {
+      if (autoSyncTimerId) {
+        clearInterval(autoSyncTimerId);
+        autoSyncTimerId = null;
+      }
+      countdownSec = 45;
+      autoSyncTimerId = setInterval(() => {
+        if (!autoSyncEnabled) return;
+        countdownSec--;
+        if (countdownSec <= 0) {
+          countdownSec = 45;
+          executeSyncPipeline({ isManual: false });
+        }
+        document.getElementById('countdown-timer').textContent = countdownSec + 's';
+      }, 1000);
+    }
+
+    // Clean up timer on window unload
+    window.addEventListener('beforeunload', () => {
+      if (autoSyncTimerId) {
+        clearInterval(autoSyncTimerId);
+        autoSyncTimerId = null;
+      }
+    });
+
+    // ==========================================
+    // 6. APPLICATION BOOTSTRAP
+    // ==========================================
+    async function initApp() {
+      renderAll();
+
+      // Load historical records into in-memory store
+      try {
+        const cached = localStorage.getItem('kalyan_custom_history_v2');
+        if (cached) {
+          HISTORY_RECORDS = JSON.parse(cached);
+          console.log(`[BOOT] Restored ${HISTORY_RECORDS.length} historical records from localStorage.`);
+        }
+      } catch (e) {}
+
+      if (HISTORY_RECORDS.length === 0) {
+        try {
+          const res = await fetch('history.json?_t=' + Date.now(), { cache: 'no-store' });
+          if (res.ok) {
+            HISTORY_RECORDS = await res.json();
+            console.log(`[BOOT] Loaded ${HISTORY_RECORDS.length} historical records from history.json.`);
+          }
+        } catch (e) {
+          console.warn('[BOOT] Using embedded fallback history records.');
+          HISTORY_RECORDS = Array.from(FALLBACK_HISTORY);
+        }
+      }
+
+      // Start timer
+      startAutoSyncTimer();
+
+      // Immediate first sync to check if today has new results
+      executeSyncPipeline({ isManual: false });
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
 </html>
