@@ -2366,6 +2366,13 @@
     }
 
     function recalculateEnsemblePredictions() {
+      if (!HISTORY_RECORDS || HISTORY_RECORDS.length === 0) {
+        if (typeof FALLBACK_HISTORY !== 'undefined' && FALLBACK_HISTORY.length > 0) {
+          HISTORY_RECORDS = Array.from(FALLBACK_HISTORY);
+        } else {
+          return;
+        }
+      }
       const ensemble = new BrowserEnsemblePredictor(0.30, 0.40, 0.30);
       ensemble.fit(HISTORY_RECORDS);
 
@@ -2730,6 +2737,34 @@
       // Immediate first sync to check if today has new results
       executeSyncPipeline({ isManual: false });
     }
+
+    // ==========================================
+    // DEVTOOLS SIMULATION UTILITY
+    // ==========================================
+    window.simulateNewDraw = function(jodi = '74', openPatti = '179', closePatti = '248') {
+      const parsed = {
+        raw: `${openPatti}-${jodi}-${closePatti}`,
+        jodi: String(jodi).padStart(2, '0'),
+        openDigit: parseInt(String(jodi)[0], 10),
+        closeDigit: parseInt(String(jodi)[1], 10),
+        openPatti: String(openPatti),
+        closePatti: String(closePatti),
+        status: 'FULL_JODI_DECLARED',
+      };
+      logPipeline("FETCH START", `[SIMULATION] Injecting incoming draw: ${parsed.raw}`, "#818cf8");
+      logPipeline("FETCH SUCCESS", `[SIMULATION] Mock payload processed: "${parsed.raw}"`, "#34d399");
+      logPipeline("DATA CHANGED?", `YES! New mock draw detected (${parsed.raw})`, "#f59e0b");
+      logPipeline("UPDATE LATEST DRAW", `Applying ${parsed.raw} to state...`, "#38bdf8");
+      applyNewDrawData(parsed);
+      logPipeline("RECALCULATE PREDICTION", "Running in-browser EnsemblePredictor across historical records...", "#a855f7");
+      recalculateEnsemblePredictions();
+      logPipeline("UPDATE STATE", "Committing recalibrated predictions & confidence metrics...", "#ec4899");
+      commitState();
+      logPipeline("UI UPDATED", "Fresh numbers rendered to DOM with highlight animation.", "#10b981");
+      renderAll();
+      flashUIUpdate();
+      return `Simulated draw ${parsed.raw} applied! Check UI and prediction numbers.`;
+    };
 
     window.addEventListener('DOMContentLoaded', initApp);
   </script>
