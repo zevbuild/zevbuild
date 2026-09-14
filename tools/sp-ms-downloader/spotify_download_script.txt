@@ -1,0 +1,89 @@
+(async function() {
+    const buttons = document.querySelectorAll('.track-item .action button');
+    if (buttons.length === 0) {
+        console.error("No tracks found on the page! Make sure the playlist track list is loaded first.");
+        alert("Please paste the playlist link, click Download, and make sure the tracks are loaded before running the script!");
+        return;
+    }
+    
+    console.log(`Found ${buttons.length} tracks. Starting download...`);
+    
+    // Create or locate a visual status banner on the webpage so you don't have to keep Console open
+    let statusEl = document.getElementById('bulk-download-status');
+    if (!statusEl) {
+        statusEl = document.createElement('div');
+        statusEl.id = 'bulk-download-status';
+        statusEl.style.padding = '15px';
+        statusEl.style.margin = '20px auto';
+        statusEl.style.background = '#1e1e1e';
+        statusEl.style.border = '2px solid #1DB954';
+        statusEl.style.borderRadius = '12px';
+        statusEl.style.color = '#fff';
+        statusEl.style.maxWidth = '620px';
+        statusEl.style.textAlign = 'center';
+        statusEl.style.fontFamily = 'Figtree, sans-serif';
+        statusEl.style.fontSize = '15px';
+        statusEl.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
+        
+        // Insert it right above the track list
+        const info = document.getElementById('info');
+        info.parentNode.insertBefore(statusEl, info);
+    }
+    
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    
+    for (let i = 0; i < buttons.length; i++) {
+        const btn = buttons[i];
+        let trackData;
+        try {
+            trackData = JSON.parse(decodeURIComponent(btn.dataset.track));
+        } catch (e) {
+            console.error(`Failed to parse track data for item ${i + 1}`, e);
+            continue;
+        }
+        
+        if (!trackData.get_download_url) {
+            console.warn(`Skipping: ${trackData.name} (no download URL)`);
+            continue;
+        }
+        
+        const progressMessage = `[${i + 1}/${buttons.length}] Downloading: "${trackData.name}" by ${trackData.artists}`;
+        console.log(progressMessage);
+        statusEl.innerHTML = `<span style="color: #1DB954; font-weight: bold;">Bulk Downloading:</span><br>${i + 1} of ${buttons.length}<br><strong style="font-size: 16px;">${trackData.name}</strong> - ${trackData.artists}`;
+        
+        try {
+            const url = trackData.get_download_url.indexOf('http') === 0 ? trackData.get_download_url : (host + trackData.get_download_url);
+            const response = await apiGet(url);
+            
+            if (response.result && response.result.status == 3 && response.result.audios && response.result.audios.length > 0) {
+                const audio = response.result.audios[0];
+                const downloadLink = audio.url.indexOf('http') === 0 ? audio.url : (host + audio.url);
+                
+                // Create a temporary link to trigger the download
+                const a = document.createElement('a');
+                a.href = downloadLink;
+                
+                // Suggest a clean, friendly name for the downloaded file
+                let cleanFilename = `${trackData.artists} - ${trackData.name}.mp3`;
+                a.download = cleanFilename;
+                a.style.display = 'none';
+                
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                console.error(`-> Error resolving track URL for ${trackData.name}`);
+                statusEl.innerHTML += `<br><span style="color: red;">Failed to get download URL for: ${trackData.name}</span>`;
+            }
+        } catch (err) {
+            console.error(`-> Error:`, err);
+            statusEl.innerHTML += `<br><span style="color: red;">Error: ${err.message || err}</span>`;
+        }
+        
+        // Wait 10 seconds between downloads to avoid Cloudflare/API rate limits
+        await delay(10000);
+    }
+    
+    console.log("All tracks processed!");
+    statusEl.innerHTML = `<span style="color: #1DB954; font-weight: bold; font-size: 18px;">🎉 All Downloads Finished!</span><br>Processed ${buttons.length} tracks.`;
+})();
