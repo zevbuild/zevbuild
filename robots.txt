@@ -1,0 +1,12 @@
+# Zevbuild — robots.txt
+# https://zevbuild.github.io/
+
+User-agent: *
+Allow: /
+
+# Disallow build artifacts and local-only paths
+Disallow: /.git/
+Disallow: /functions/
+
+# Point crawlers to our sitemap
+Sitemap: https://zevbuild.github.io/sitemap.xml
