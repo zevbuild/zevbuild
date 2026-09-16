@@ -1040,6 +1040,28 @@
 
   <!-- FOOTER -->
   <footer class="border-t border-white/5 bg-[#06080d] py-12">
+
+    <!-- Last Updated Bar — auto-populated by JS from document.lastModified -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <div class="flex items-center justify-between gap-4 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.07] text-[11px] mono text-slate-500">
+        <!-- Left: last updated info -->
+        <div class="flex items-center gap-2.5">
+          <svg class="w-3.5 h-3.5 text-slate-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="text-slate-600">Last Updated:</span>
+          <span id="footer-last-updated" class="text-slate-400 font-medium">—</span>
+        </div>
+        <!-- Right: version chip -->
+        <a href="https://github.com/zevbuild/zevbuild/releases" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-1.5 text-emerald-500/80 hover:text-emerald-400 transition-colors">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500/80 inline-block"></span>
+          <span>v2.0</span>
+          <span class="text-slate-600">· Changelog ↗</span>
+        </a>
+      </div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
       
       <div class="flex items-center gap-3">
@@ -1096,6 +1118,36 @@
         }
       });
     }
+
+    // ── Auto Last Updated Footer ──────────────────────────────────────────
+    // Reads document.lastModified (set by server's Last-Modified HTTP header
+    // or the file system when opened locally). Updates every time the file
+    // changes — no manual editing required.
+    (function () {
+      const el = document.getElementById('footer-last-updated');
+      if (!el) return;
+
+      const raw = document.lastModified; // e.g. "09/16/2026 12:29:54"
+      if (!raw) { el.textContent = 'Unknown'; return; }
+
+      try {
+        const d = new Date(raw);
+        if (isNaN(d.getTime())) { el.textContent = raw; return; }
+
+        const pad = n => String(n).padStart(2, '0');
+
+        const dd   = pad(d.getDate());
+        const mm   = pad(d.getMonth() + 1);
+        const yyyy = d.getFullYear();
+        const hh   = pad(d.getHours());
+        const min  = pad(d.getMinutes());
+        const ss   = pad(d.getSeconds());
+
+        el.textContent = `${dd}-${mm}-${yyyy}  ${hh}:${min}:${ss}`;
+      } catch (_) {
+        el.textContent = raw;
+      }
+    })();
   </script>
 
 </body>
