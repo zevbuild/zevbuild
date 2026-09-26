@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ═══ Primary SEO ═══ -->
+  <title>v_yt — YouTube Video Downloader | Zevbuild Tools</title>
+  <meta name="description" content="Download YouTube videos and audio for free. Supports MP4 720p, MP4 1080p, and MP3 audio extraction powered by yt-dlp. No install required — works directly in your browser.">
+  <meta name="keywords" content="YouTube downloader, yt-dlp, download YouTube video, MP4, MP3, free YouTube downloader, Zevbuild, v_yt">
+  <meta name="author" content="Zevbuild">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://zevbuild.github.io/tools/v_yt/">
+
+  <!-- ═══ Open Graph ═══ -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zevbuild">
+  <meta property="og:url" content="https://zevbuild.github.io/tools/v_yt/">
+  <meta property="og:title" content="v_yt — YouTube Video Downloader | Zevbuild">
+  <meta property="og:description" content="Download YouTube videos in MP4 or MP3 — powered by yt-dlp. No install, no tracking, works in your browser.">
+  <meta property="og:image" content="https://zevbuild.github.io/og-image.svg">
+
+  <!-- ═══ Twitter Cards ═══ -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@zevbuild">
+  <meta name="twitter:title" content="v_yt — YouTube Video Downloader | Zevbuild">
+  <meta name="twitter:description" content="Free YouTube downloader powered by yt-dlp. MP4 & MP3, no install needed.">
+  <meta name="twitter:image" content="https://zevbuild.github.io/og-image.svg">
+
+  <!-- ═══ Fonts & Styles ═══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+
+  <style>
+    :root {
+      --bg-base: #07090e;
+      --bg-surface: #0d111a;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(239, 68, 68, 0.3);
+      --accent-red: #ef4444;
+      --accent-violet: #8b5cf6;
+      --accent-cyan: #06b6d4;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-base);
+      color: #f3f4f6;
+      overflow-x: hidden;
+    }
+
+    code, pre, .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .bg-grid-pattern {
+      background-image:
+        radial-gradient(circle at 50% 0%, rgba(239, 68, 68, 0.10) 0%, transparent 60%),
+        radial-gradient(circle at 100% 40%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+
+    .glass-panel {
+      background: rgba(15, 21, 37, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(19, 27, 46, 0.65) 0%, rgba(11, 16, 28, 0.8) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .input-field {
+      background: rgba(10, 14, 24, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f3f4f6;
+      font-family: 'JetBrains Mono', monospace;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: rgba(239, 68, 68, 0.5);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+    }
+
+    .input-field::placeholder {
+      color: #4b5563;
+    }
+
+    .select-field {
+      background: rgba(10, 14, 24, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f3f4f6;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    .select-field:focus {
+      outline: none;
+      border-color: rgba(239, 68, 68, 0.5);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      font-weight: 700;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      box-shadow: 0 8px 24px -4px rgba(220, 38, 38, 0.3);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 12px 32px -4px rgba(220, 38, 38, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .download-btn {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+      transition: all 0.2s;
+    }
+
+    .download-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .download-btn.audio {
+      background: rgba(139, 92, 246, 0.1);
+      border-color: rgba(139, 92, 246, 0.25);
+      color: #c4b5fd;
+    }
+
+    .download-btn.audio:hover {
+      background: rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.5);
+    }
+
+    /* Spinner */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .spinner {
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* Progress bar */
+    @keyframes progress-shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .progress-bar {
+      background: linear-gradient(90deg, transparent 0%, rgba(239, 68, 68, 0.8) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: progress-shimmer 1.5s ease infinite;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #07090e; }
+    ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+    /* Pulse badge */
+    .glow-badge {
+      box-shadow: 0 0 12px -2px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-grid-pattern selection:bg-red-600 selection:text-white">
+
+  <!-- ═══ Fixed Navigation ═══ -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/5 transition-all duration-300">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+
+      <!-- Brand -->
+      <a href="../../index.html" class="flex items-center gap-3 group">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 via-indigo-500 to-cyan-400 p-[1.5px] shadow-lg shadow-purple-500/20 group-hover:scale-105 transition-transform duration-300">
+          <div class="w-full h-full bg-[#090d16] rounded-[7px] flex items-center justify-center">
+            <svg class="w-4 h-4 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          </div>
+        </div>
+        <span class="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">Zevbuild</span>
+      </a>
+
+      <!-- Breadcrumb + badges -->
+      <div class="flex items-center gap-3">
+        <a href="../../tools/index.html" class="text-xs text-slate-500 hover:text-slate-300 transition-colors hidden sm:block">Tools</a>
+        <span class="text-slate-600 text-xs hidden sm:block">/</span>
+        <span class="text-xs font-bold text-red-400 mono">v_yt</span>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 mono">yt-dlp</span>
+      </div>
+
+      <!-- GitHub link -->
+      <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+        </svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ═══ Main Content ═══ -->
+  <main class="pt-24 pb-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- ── Hero Section ── -->
+      <section class="pt-10 pb-12 text-center">
+
+        <!-- Top badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-semibold mb-6 glow-badge">
+          <span class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
+          <span>Powered by yt-dlp via Cobalt API</span>
+        </div>
+
+        <!-- Icon -->
+        <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-red-600/20 to-red-800/10 border border-red-500/20 flex items-center justify-center">
+          <svg class="w-10 h-10 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+          </svg>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.15] mb-4">
+          <span class="bg-gradient-to-r from-red-400 via-red-300 to-orange-300 bg-clip-text text-transparent">YouTube</span>
+          <span class="text-white"> Downloader</span>
+        </h1>
+        <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed mb-6">
+          Paste any YouTube link and download it as MP4 video or MP3 audio — directly in your browser. No installs, no sign-ups, no trackers.
+        </p>
+
+        <!-- Feature chips -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">MP4 1080p</span>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">MP4 720p</span>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">MP3 Audio</span>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">yt-dlp Engine</span>
+          <span class="text-[11px] px-2.5 py-1 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">Zero Trackers</span>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="inline-flex items-start gap-2.5 px-4 py-2.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-left max-w-xl mx-auto">
+          <svg class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          <p class="text-[11px] text-amber-300/80 leading-relaxed">
+            For personal and fair-use purposes only. Do not download copyrighted content without authorization. Downloading YouTube videos may violate YouTube's Terms of Service.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Downloader Card ── -->
+      <section class="mb-10">
+        <div class="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+          <div class="absolute -right-16 -top-16 w-48 h-48 bg-red-600/8 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- URL Input -->
+          <div class="mb-5">
+            <label for="yt-url" class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">YouTube URL</label>
+            <div class="flex gap-3">
+              <div class="relative flex-1">
+                <!-- YouTube icon inside input -->
+                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+                  </svg>
+                </div>
+                <input
+                  id="yt-url"
+                  type="url"
+                  class="input-field w-full pl-10 pr-4 py-3 rounded-xl text-sm"
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  autocomplete="off"
+                  spellcheck="false"
+                >
+              </div>
+              <!-- Paste button -->
+              <button id="paste-btn" title="Paste from clipboard"
+                class="px-3.5 py-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 hover:border-white/20 transition-all flex items-center gap-1.5 flex-shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <span class="hidden sm:block">Paste</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Format selector -->
+          <div class="mb-6">
+            <label for="format-select" class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">Download Format</label>
+            <div class="grid grid-cols-3 gap-3" id="format-grid" role="radiogroup" aria-label="Download format">
+              <!-- MP4 720p -->
+              <button type="button" class="format-btn selected" data-value="mp4-720" aria-pressed="true">
+                <svg class="w-5 h-5 mx-auto mb-1.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                <div class="text-xs font-bold">MP4</div>
+                <div class="text-[10px] text-slate-400 mono">720p</div>
+              </button>
+              <!-- MP4 1080p -->
+              <button type="button" class="format-btn" data-value="mp4-1080" aria-pressed="false">
+                <svg class="w-5 h-5 mx-auto mb-1.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                <div class="text-xs font-bold">MP4</div>
+                <div class="text-[10px] text-slate-400 mono">1080p</div>
+              </button>
+              <!-- MP3 Audio -->
+              <button type="button" class="format-btn" data-value="mp3" aria-pressed="false">
+                <svg class="w-5 h-5 mx-auto mb-1.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                </svg>
+                <div class="text-xs font-bold">MP3</div>
+                <div class="text-[10px] text-slate-400 mono">Audio</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Fetch Button -->
+          <button id="fetch-btn" class="btn-primary w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <span id="fetch-btn-text">Fetch Download Link</span>
+          </button>
+
+          <!-- Progress bar (hidden by default) -->
+          <div id="progress-wrap" class="mt-4 hidden">
+            <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+              <div class="progress-bar h-full w-full rounded-full"></div>
+            </div>
+            <p id="progress-msg" class="text-[11px] text-slate-500 text-center mt-2">Processing…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Results Section ── -->
+      <section id="results-section" class="mb-10 hidden">
+        <div class="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+          <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-red-600/5 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Video info panel (if thumbnail available) -->
+          <div id="video-info" class="flex gap-4 mb-6 pb-6 border-b border-white/5 hidden">
+            <img id="video-thumb" src="" alt="Video thumbnail" class="w-28 h-16 rounded-xl object-cover flex-shrink-0 bg-white/5">
+            <div class="flex-1 min-w-0">
+              <h3 id="video-title" class="text-sm font-bold text-white mb-1 line-clamp-2"></h3>
+              <p id="video-meta" class="text-[11px] text-slate-500 mono"></p>
+            </div>
+          </div>
+
+          <!-- Download buttons -->
+          <div class="mb-4">
+            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-4">Download Links</h2>
+            <div id="download-links" class="flex flex-col gap-3"></div>
+          </div>
+
+          <!-- Note -->
+          <p class="text-[11px] text-slate-600 mt-4">
+            Links are temporary and may expire. Download immediately after fetching. If a link fails, try again.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── Error Section ── -->
+      <section id="error-section" class="mb-10 hidden">
+        <div class="glass-card rounded-2xl p-6 border border-red-500/20">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-red-400 mb-1">Extraction Failed</h3>
+              <p id="error-message" class="text-xs text-slate-400 leading-relaxed"></p>
+              <p class="text-[11px] text-slate-600 mt-2">Try a different video, or check if it is private/age-restricted.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── How It Works ── -->
+      <section class="mb-10">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">How It Works</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass-card rounded-xl p-4 text-center">
+            <div class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-3 text-red-400 font-bold text-sm mono">1</div>
+            <h3 class="text-xs font-bold text-white mb-1">Paste URL</h3>
+            <p class="text-[11px] text-slate-500 leading-relaxed">Copy any YouTube video link and paste it into the input field.</p>
+          </div>
+          <div class="glass-card rounded-xl p-4 text-center">
+            <div class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-3 text-red-400 font-bold text-sm mono">2</div>
+            <h3 class="text-xs font-bold text-white mb-1">Choose Format</h3>
+            <p class="text-[11px] text-slate-500 leading-relaxed">Pick MP4 (720p or 1080p) for video, or MP3 for audio-only extraction.</p>
+          </div>
+          <div class="glass-card rounded-xl p-4 text-center">
+            <div class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-3 text-red-400 font-bold text-sm mono">3</div>
+            <h3 class="text-xs font-bold text-white mb-1">Download</h3>
+            <p class="text-[11px] text-slate-500 leading-relaxed">Click the download button to save the file directly to your device.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Tech Info ── -->
+      <section class="mb-10">
+        <div class="glass-card rounded-xl p-5 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xs font-bold text-slate-200 mb-1">Architecture</h3>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              This tool is a static webpage. Download extraction is handled server-side by a <span class="text-violet-400 mono">Cloudflare Worker</span> (<code class="mono text-slate-400">/api/yt-download</code>) that proxies requests to the <span class="text-red-400">Cobalt API</span> — an open-source <span class="mono text-slate-400">yt-dlp</span> wrapper. No data is stored or logged.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="border-t border-white/5 py-8">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-600">© 2026 Zevbuild Studio</span>
+        <span class="text-slate-700">·</span>
+        <a href="../../index.html" class="text-xs text-slate-600 hover:text-slate-400 transition-colors">Back to Home</a>
+        <span class="text-slate-700">·</span>
+        <a href="README.md" class="text-xs text-slate-600 hover:text-slate-400 transition-colors">Docs</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-[10px] px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20 mono">v_yt</span>
+        <span class="text-[10px] text-slate-600">Personal / Fair-Use Only</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Toast Notification ── -->
+  <div id="toast" class="toast glass-panel rounded-xl px-4 py-3 flex items-center gap-2.5 border border-white/10">
+    <svg id="toast-icon" class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toast-msg" class="text-xs font-semibold text-slate-200"></span>
+  </div>
+
+  <!-- ═══ Inline Styles for format buttons ═══ -->
+  <style>
+    .format-btn {
+      padding: 12px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(10, 14, 24, 0.6);
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .format-btn:hover {
+      border-color: rgba(239,68,68,0.3);
+      background: rgba(239,68,68,0.05);
+      color: #f87171;
+    }
+    .format-btn.selected {
+      border-color: rgba(239,68,68,0.5);
+      background: rgba(239,68,68,0.10);
+      color: #fca5a5;
+      box-shadow: 0 0 16px -4px rgba(239,68,68,0.2);
+    }
+    .format-btn[data-value="mp3"].selected {
+      border-color: rgba(139,92,246,0.5);
+      background: rgba(139,92,246,0.10);
+      color: #c4b5fd;
+      box-shadow: 0 0 16px -4px rgba(139,92,246,0.2);
+    }
+  </style>
+
+  <!-- ═══ Application Logic ═══ -->
+  <script>
+    'use strict';
+
+    // ── State ──
+    let selectedFormat = 'mp4-720';
+    let isFetching = false;
+
+    // ── DOM refs ──
+    const urlInput      = document.getElementById('yt-url');
+    const fetchBtn      = document.getElementById('fetch-btn');
+    const fetchBtnText  = document.getElementById('fetch-btn-text');
+    const pasteBtn      = document.getElementById('paste-btn');
+    const progressWrap  = document.getElementById('progress-wrap');
+    const progressMsg   = document.getElementById('progress-msg');
+    const resultsSection= document.getElementById('results-section');
+    const errorSection  = document.getElementById('error-section');
+    const errorMessage  = document.getElementById('error-message');
+    const downloadLinks = document.getElementById('download-links');
+    const videoInfo     = document.getElementById('video-info');
+    const videoThumb    = document.getElementById('video-thumb');
+    const videoTitle    = document.getElementById('video-title');
+    const videoMeta     = document.getElementById('video-meta');
+
+    // ── Format button logic ──
+    document.querySelectorAll('.format-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.format-btn').forEach(b => {
+          b.classList.remove('selected');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('selected');
+        btn.setAttribute('aria-pressed', 'true');
+        selectedFormat = btn.dataset.value;
+      });
+    });
+
+    // ── Paste button ──
+    pasteBtn.addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        urlInput.value = text.trim();
+        urlInput.focus();
+        showToast('Pasted from clipboard ✓', 'success');
+      } catch {
+        showToast('Clipboard access denied', 'error');
+      }
+    });
+
+    // ── Enter key submits ──
+    urlInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !isFetching) fetchDownload();
+    });
+
+    // ── Fetch button ──
+    fetchBtn.addEventListener('click', () => {
+      if (!isFetching) fetchDownload();
+    });
+
+    // ── Core fetch logic ──
+    async function fetchDownload() {
+      const rawUrl = urlInput.value.trim();
+
+      // Basic validation
+      if (!rawUrl) {
+        showToast('Please enter a YouTube URL', 'error');
+        urlInput.focus();
+        return;
+      }
+
+      if (!isValidYouTubeUrl(rawUrl)) {
+        showToast('Please enter a valid YouTube URL', 'error');
+        urlInput.focus();
+        return;
+      }
+
+      setLoading(true);
+      hideAll();
+
+      try {
+        const apiUrl = `/api/yt-download?url=${encodeURIComponent(rawUrl)}&format=${encodeURIComponent(selectedFormat)}`;
+        progressMsg.textContent = 'Fetching download link via yt-dlp…';
+
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || `Server error (${response.status})`);
+        }
+
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        if (!data.downloads || data.downloads.length === 0) {
+          throw new Error('No download links were returned. The video may be private, age-restricted, or unavailable.');
+        }
+
+        renderResults(data);
+        showToast('Download link ready!', 'success');
+
+      } catch (err) {
+        showError(err.message || 'An unknown error occurred.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // ── Render download results ──
+    function renderResults(data) {
+      downloadLinks.innerHTML = '';
+
+      data.downloads.forEach(item => {
+        const isAudio = item.label.toLowerCase().includes('mp3') || item.label.toLowerCase().includes('audio');
+        const btn = document.createElement('a');
+        btn.href = item.url;
+        btn.target = '_blank';
+        btn.rel = 'noopener noreferrer';
+        btn.className = `download-btn ${isAudio ? 'audio' : ''} w-full flex items-center justify-between px-5 py-3.5 rounded-xl font-semibold text-sm transition-all`;
+
+        btn.innerHTML = `
+          <div class="flex items-center gap-3">
+            ${isAudio
+              ? `<svg class="w-5 h-5 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>`
+              : `<svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`
+            }
+            <div>
+              <div class="font-bold">${escapeHtml(item.label)}</div>
+              ${item.size ? `<div class="text-[10px] opacity-60 mono">${escapeHtml(item.size)}</div>` : ''}
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-xs opacity-70">
+            <span>Download</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          </div>
+        `;
+
+        downloadLinks.appendChild(btn);
+      });
+
+      // Optionally render video info if returned
+      if (data.videoTitle) {
+        videoTitle.textContent = data.videoTitle;
+        videoMeta.textContent = data.videoMeta || '';
+        if (data.thumbnail) {
+          videoThumb.src = data.thumbnail;
+          videoThumb.onerror = () => { videoInfo.classList.add('hidden'); };
+          videoInfo.classList.remove('hidden');
+        }
+      }
+
+      resultsSection.classList.remove('hidden');
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ── Show error ──
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorSection.classList.remove('hidden');
+      errorSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ── Loading state ──
+    function setLoading(loading) {
+      isFetching = loading;
+      fetchBtn.disabled = loading;
+
+      if (loading) {
+        fetchBtnText.innerHTML = `
+          <svg class="spinner w-4 h-4 inline-block mr-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
+          Extracting…`;
+        progressWrap.classList.remove('hidden');
+      } else {
+        fetchBtnText.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+          </svg>
+          Fetch Download Link`;
+        progressWrap.classList.add('hidden');
+      }
+    }
+
+    // ── Hide results/error ──
+    function hideAll() {
+      resultsSection.classList.add('hidden');
+      errorSection.classList.add('hidden');
+      videoInfo.classList.add('hidden');
+      downloadLinks.innerHTML = '';
+    }
+
+    // ── URL validation ──
+    function isValidYouTubeUrl(url) {
+      try {
+        const u = new URL(url);
+        return (
+          (u.hostname === 'www.youtube.com' || u.hostname === 'youtube.com') && u.searchParams.has('v')
+        ) || (
+          u.hostname === 'youtu.be' && u.pathname.length > 1
+        ) || (
+          (u.hostname === 'www.youtube.com' || u.hostname === 'youtube.com') &&
+          (u.pathname.startsWith('/shorts/') || u.pathname.startsWith('/live/'))
+        );
+      } catch {
+        return false;
+      }
+    }
+
+    // ── HTML escape ──
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ── Toast notification ──
+    let toastTimer;
+    function showToast(msg, type = 'success') {
+      const toast = document.getElementById('toast');
+      const icon  = document.getElementById('toast-icon');
+      const msgEl = document.getElementById('toast-msg');
+
+      msgEl.textContent = msg;
+
+      if (type === 'error') {
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>`;
+        icon.className = 'w-4 h-4 text-red-400 flex-shrink-0';
+      } else {
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>`;
+        icon.className = 'w-4 h-4 text-emerald-400 flex-shrink-0';
+      }
+
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ── Mobile menu toggle (header) ──
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu    = document.getElementById('mobileMenu');
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  </script>
+
+</body>
+</html>

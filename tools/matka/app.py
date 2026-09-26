@@ -20,6 +20,7 @@ WORKSPACE_DIR = os.path.dirname(os.path.abspath(__file__))
 if WORKSPACE_DIR not in sys.path:
     sys.path.insert(0, WORKSPACE_DIR)
 
+from bs4 import BeautifulSoup
 from scraper import fetch_html, parse_kalyan_chart, export_to_csv
 from models import EnsemblePredictor
 from predict import get_family_jodis
@@ -28,10 +29,10 @@ WEB_DIR = os.path.join(WORKSPACE_DIR, "web")
 CSV_PATH = os.path.join(WORKSPACE_DIR, "kalyan_historical_data.csv")
 
 
-def compute_all_predictions():
+def compute_all_predictions(force_refresh: bool = False):
     """Execute live scraping/cache read, retrain models, and generate predictions."""
     # 1. Fetch & parse
-    html = fetch_html()
+    html = fetch_html(force_refresh=force_refresh)
     df = parse_kalyan_chart(html)
     export_to_csv(df, CSV_PATH)
 
@@ -40,29 +41,49 @@ def compute_all_predictions():
     valid_df["Close_Digit"] = valid_df["Close_Digit"].astype(int)
 
     latest_row = valid_df.iloc[-1]
-    latest_date_str = latest_row["Date"]
+    latest_date_str = str(latest_row["Date"])
     latest_date = datetime.strptime(latest_date_str, "%Y-%m-%d")
     latest_jodi = str(latest_row["Jodi"]).zfill(2)
     latest_open = int(latest_row["Open_Digit"])
     latest_close = int(latest_row["Close_Digit"])
 
+    # Extract latest pattis if available
+    open_patti = "---"
+    close_patti = "---"
+    try:
+        soup = BeautifulSoup(html, "html.parser")
+        table = soup.find("table", class_=lambda c: c and "chart-table" in c) or soup.find("table")
+        if table:
+            rows = table.find_all("tr")
+            for row in reversed(rows):
+                tds = row.find_all("td")
+                if len(tds) >= 4:
+                    num_days = (len(tds) - 1) // 3
+                    if num_days > 0:
+                        last_col = 1 + (num_days - 1) * 3
+                        open_patti = tds[last_col].get_text(strip=True)
+                        if last_col + 2 < len(tds):
+                            close_patti = tds[last_col + 2].get_text(strip=True)
+                    break
+    except Exception:
+        pass
+
     # Fit Ensemble Model
     ensemble = EnsemblePredictor(w_markov=0.30, w_recency=0.40, w_seasonal=0.30)
     ensemble.fit(valid_df)
 
-    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    day_abbrs = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
     predictions_by_day = {}
 
-    cur_date = latest_date + timedelta(days=1)
-    if cur_date.weekday() == 6:
-        cur_date += timedelta(days=1)
+    d_date = latest_date
+    draw_days = []
+    while len(draw_days) < 6:
+        d_date += timedelta(days=1)
+        if d_date.weekday() != 6:  # Skip Sunday
+            draw_days.append(d_date)
 
-    for offset in range(6):
-        d_date = cur_date + timedelta(days=offset)
-        if d_date.weekday() == 6:
-            d_date += timedelta(days=1)
-        day_name = days[offset % 6]
-
+    for target_d in draw_days:
+        day_name = day_abbrs[target_d.weekday()]
         preds = ensemble.predict(
             day_of_week=day_name,
             prev_jodi=latest_jodi,
@@ -106,7 +127,7 @@ def compute_all_predictions():
             })
 
         predictions_by_day[day_name] = {
-            "date": d_date.strftime("%Y-%m-%d"),
+            "date": target_d.strftime("%Y-%m-%d"),
             "day": day_name,
             "top_jodis": top_jodis,
             "open_digits": top_open,
@@ -115,20 +136,47 @@ def compute_all_predictions():
             "top_family": top_jodis[0]["family"],
         }
 
-    return {
+    output_payload = {
         "status": "success",
         "sync_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total_records": len(df),
         "valid_records": len(valid_df),
         "latest_draw": {
             "date": latest_date_str,
-            "day": latest_row["Day_Of_Week"],
+            "day": str(latest_row["Day_Of_Week"]),
             "jodi": latest_jodi,
             "open": latest_open,
             "close": latest_close,
+            "openPatti": open_patti,
+            "closePatti": close_patti,
         },
+        "draw": {
+            "date": latest_date_str,
+            "day": str(latest_row["Day_Of_Week"]),
+            "jodi": latest_jodi,
+            "open_digit": latest_open,
+            "close_digit": latest_close,
+            "open_panna": open_patti,
+            "close_panna": close_patti,
+            "status": "FULL_JODI_DECLARED",
+        },
+        "raw_result": f"{open_patti}-{latest_jodi}-{close_patti}",
         "by_day": predictions_by_day,
     }
+
+    # Persist updated prediction_data.json
+    pred_data_to_save = {
+        "latest_draw": output_payload["latest_draw"],
+        "by_day": predictions_by_day,
+    }
+    pred_path_root = os.path.join(WORKSPACE_DIR, "prediction_data.json")
+    pred_path_web = os.path.join(WEB_DIR, "prediction_data.json")
+    with open(pred_path_root, "w", encoding="utf-8") as f:
+        json.dump(pred_data_to_save, f, indent=2)
+    with open(pred_path_web, "w", encoding="utf-8") as f:
+        json.dump(pred_data_to_save, f, indent=2)
+
+    return output_payload
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):

@@ -73,6 +73,10 @@ zevbuild/                             ← Root: org portal & multi-tool monorepo
     │
     └── top-10-free-video-downloaders-in-india/
         └── index.html                ← Static SEO article/landing page (1,684 bytes)
+    │
+    └── v_yt/                         ← YouTube Video Downloader (yt-dlp via Cobalt API)
+        ├── index.html                ← Downloader UI (vanilla HTML + Tailwind + vanilla JS)
+        └── README.md                 ← Usage guide & API reference
 ```
 
 ---
@@ -192,6 +196,46 @@ A minimal **static article page** (1,684 bytes). SEO content targeting "top 10 f
 
 ---
 
+### 5. v_yt — YouTube Video Downloader (`tools/v_yt/`)
+
+A **browser-based video downloader** powered by yt-dlp via the Cobalt API.
+
+#### Architecture
+
+```
+Browser (index.html)
+        │  GET /api/yt-download?url=...&format=...
+        ▼
+Cloudflare Worker (functions/api/yt-download.js)
+        │  POST https://api.cobalt.tools/
+        ▼
+   Cobalt API (open-source yt-dlp wrapper)
+        │  { status: "redirect", url: "..." }
+        ▼
+  Direct CDN download URL ──► returned to browser ──► user downloads file
+```
+
+#### Supported Formats
+
+| Format Code | Label | Description |
+|---|---|---|
+| `mp4-720` | MP4 720p | Standard HD video (default) |
+| `mp4-1080` | MP4 1080p | Full HD video |
+| `mp3` | MP3 Audio | Audio-only extraction |
+
+#### File Responsibilities
+
+| File | Role |
+|---|---|
+| `tools/v_yt/index.html` | Static UI: URL input, format selector, fetch button, results panel |
+| `tools/v_yt/README.md` | Usage docs, API reference, legal notice |
+| `functions/api/yt-download.js` | CF Worker: validates URL, maps format → Cobalt params, proxies response |
+
+#### API Endpoint
+`GET /api/yt-download?url=<encoded-url>&format=<format-code>`
+
+---
+
 ## ☁️ Cloudflare Edge Functions (`functions/api/`)
 
 Auto-deployed by Cloudflare Pages on push to main. Run as **serverless edge workers globally**.
@@ -220,6 +264,23 @@ Auto-deployed by Cloudflare Pages on push to main. Run as **serverless edge work
 
 ### `fetch-and-predict.js`
 Stub file (46 bytes) — delegates to live-kalyan.
+
+### `yt-download.js` — YouTube Download Link Extractor
+- **Endpoint:** `https://zevbuild.pages.dev/api/yt-download`
+- **Purpose:** Server-side proxy to the Cobalt API (yt-dlp wrapper). Extracts direct download links for YouTube videos without running yt-dlp in the browser.
+- **Query params:** `url` (YouTube URL), `format` (`mp4-720`, `mp4-1080`, `mp3`)
+- **Response Schema:**
+```json
+{
+  "status": "ok",
+  "format": "mp4-720",
+  "downloads": [
+    { "label": "MP4 720p", "url": "https://...googlevideo.com/...", "filename": "title.mp4" }
+  ]
+}
+```
+- **Supported URL formats:** `youtube.com/watch?v=`, `youtu.be/`, `/shorts/`, `/live/`, `/embed/`
+- **Error codes propagated from Cobalt:** `content.video.private`, `content.video.age`, `content.video.live`, `fetch.fail`, `fetch.rate`, etc.
 
 ---
 

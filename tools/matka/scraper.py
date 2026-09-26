@@ -18,12 +18,12 @@ LOCAL_CACHE_HTML = "kalyan_penal_chart.html"
 DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
 
-def fetch_html(url: str = URL, cache_file: str = LOCAL_CACHE_HTML) -> str:
+def fetch_html(url: str = URL, cache_file: str = LOCAL_CACHE_HTML, force_refresh: bool = False) -> str:
     """
-    Fetch HTML content. Prefers local cache if present, otherwise fetches live
-    and caches the response locally.
+    Fetch HTML content. If force_refresh is False and cache exists, loads from cache.
+    Otherwise fetches live from the web and updates local cache.
     """
-    if os.path.exists(cache_file) and os.path.getsize(cache_file) > 1000:
+    if not force_refresh and os.path.exists(cache_file) and os.path.getsize(cache_file) > 1000:
         print(f"[INFO] Loading cached HTML from '{cache_file}'...")
         with open(cache_file, "r", encoding="utf-8") as f:
             return f.read()
@@ -75,7 +75,7 @@ def parse_week_start_date(raw_cell_text: str) -> datetime:
 def parse_kalyan_chart(html_content: str) -> pd.DataFrame:
     """
     Parse the Kalyan Panel Record table into a normalized DataFrame.
-    Each week row contains 1 Date column and 6 days x 3 columns = 19 columns.
+    Each week row contains 1 Date column and up to 6 days x 3 columns = 19 columns.
     """
     soup = BeautifulSoup(html_content, "html.parser")
     table = soup.find("table", class_=lambda c: c and "chart-table" in c)
@@ -93,7 +93,7 @@ def parse_kalyan_chart(html_content: str) -> pd.DataFrame:
             continue
         
         tds = row.find_all("td")
-        if len(tds) < 19:
+        if len(tds) < 4:
             continue
 
         raw_date_cell = "".join(str(c) for c in tds[0].contents)
@@ -103,8 +103,12 @@ def parse_kalyan_chart(html_content: str) -> pd.DataFrame:
 
         # Process each day: Mon to Sat
         for day_idx, day_name in enumerate(DAYS_OF_WEEK):
-            day_date = start_date + timedelta(days=day_idx)
             col_base = 1 + day_idx * 3
+            if col_base + 1 >= len(tds):
+                # Day has not been played/entered yet in this partial week
+                break
+
+            day_date = start_date + timedelta(days=day_idx)
             
             # Jodi is the center column of the 3-column day block
             jodi_td = tds[col_base + 1]
