@@ -1,5 +1,5 @@
 # Zevbuild — robots.txt
-# https://zevbuild.github.io/
+# https://zevbuild.pages.dev/
 
 User-agent: *
 Allow: /
@@ -9,4 +9,4 @@ Disallow: /.git/
 Disallow: /functions/
 
 # Point crawlers to our sitemap
-Sitemap: https://zevbuild.github.io/sitemap.xml
+Sitemap: https://zevbuild.pages.dev/sitemap.xml

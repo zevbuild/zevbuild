@@ -1,6 +1,6 @@
 # 🎬 v_yt — YouTube Video Downloader
 
-> **Part of the [Zevbuild](https://zevbuild.github.io) tools portfolio.**
+> **Part of the [Zevbuild](https://zevbuild.pages.dev) tools portfolio.**
 
 A browser-based YouTube video downloader powered by **yt-dlp** via the Cobalt API. Supports MP4 (720p / 1080p) and MP3 audio-only downloads with zero installs and zero trackers.
 

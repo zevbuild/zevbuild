@@ -113,7 +113,7 @@ export async function onRequest(context) {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         // Cobalt requires a proper User-Agent
-        'User-Agent': 'Zevbuild/v_yt (+https://zevbuild.github.io/tools/v_yt/)',
+        'User-Agent': 'Zevbuild/v_yt (+https://zevbuild.pages.dev/tools/v_yt/)',
       },
       body: JSON.stringify(cobaltPayload),
     });

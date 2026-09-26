@@ -8,7 +8,7 @@
 
 **Zevbuild Studio** is an independent software engineering studio founded in 2024, based in **Goa, India**. It builds privacy-first, zero-telemetry, offline-capable digital tools and publishes them as MIT open source.
 
-- **Website:** [zevbuild.github.io](https://zevbuild.github.io)
+- **Website:** [zevbuild.pages.dev](https://zevbuild.pages.dev)
 - **GitHub Org:** [github.com/zevbuild](https://github.com/zevbuild)
 - **Email:** zevbuildstudio@gmail.com
 - **License:** MIT — Copyright © 2026 Zevbuild Studio
@@ -90,7 +90,7 @@ A **fully self-contained single-page app** — no build step, no framework, no C
 - **Size:** ~68 KB, 1,091 lines
 - **Tech:** Vanilla HTML + Tailwind CSS (CDN) + vanilla JS
 - **SEO:** Full JSON-LD structured data (Organization schema), Open Graph, Twitter Cards, geo-targeting (IN-GA Goa)
-- **Deployed at:** `https://zevbuild.github.io/` via GitHub Pages
+- **Deployed at:** `https://zevbuild.pages.dev/` via GitHub Pages
 - **Notable:** `theme-color: #8b5cf6` (purple branding), 600,000-iteration PBKDF2 referenced in product copy
 
 ---
@@ -288,8 +288,8 @@ Stub file (46 bytes) — delegates to live-kalyan.
 
 | Layer | Technology | URL |
 |---|---|---|
-| Main site | **GitHub Pages** | `https://zevbuild.github.io/` |
-| Serverless Edge API | **Cloudflare Pages** | `https://zevbuild.pages.dev/api/...` |
+| Main site | **Cloudflare Pages** | `https://zevbuild.pages.dev/` |
+| Serverless Edge API | **Cloudflare Pages Functions** | `https://zevbuild.pages.dev/api/...` |
 | Kalyan predictor (local) | **Python stdlib HTTP server** | `http://127.0.0.1:8080` |
 | ZevSafe (separate repo) | Cloudflare Pages | `https://zevsafe.pages.dev` |
 | CollegeBus (separate repo) | Cloudflare Pages | `https://collegebus.pages.dev` |
