@@ -1,15 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse web tools and projects published in the Zevbuild repository.">
+  <meta name="theme-color" content="#0b1020">
+  <title>Tools | Zevbuild</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0b1020;
+      color: #e5e7eb;
+    }
+
+    body {
+      box-sizing: border-box;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem;
+      line-height: 1.6;
+    }
+
+    a {
+      color: #a5b4fc;
+    }
+
+    a:focus-visible {
+      outline: 3px solid #a5b4fc;
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin-bottom: 0.25rem;
+      color: #fff;
+      font-size: clamp(2rem, 6vw, 3rem);
+    }
+
+    .intro {
+      margin-top: 0;
+      color: #aeb8cc;
+    }
+
+    .tool-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tool-card {
+      height: 100%;
+      box-sizing: border-box;
+      padding: 1.25rem;
+      border: 1px solid #29334a;
+      border-radius: 0.75rem;
+      background: #111a2c;
+    }
+
+    .tool-card h2 {
+      margin: 0 0 0.5rem;
+      color: #fff;
+      font-size: 1.15rem;
+    }
+
+    .tool-card p {
+      margin: 0 0 1rem;
+      color: #c1cada;
+    }
+
+    .tool-card a {
+      font-weight: 650;
+    }
+
+    footer {
+      margin-top: 2rem;
+      color: #aeb8cc;
+    }
+  </style>
 </head>
 <body>
-    all tools
-    <ol>
-        <li><h1> <a href="top-10-free-video-downloaders-in-india/index.html">top 10 free video downloader</a></h1></li>
-        <li>Tool 2</li> 
-    </ol>
+  <header>
+    <a class="back-link" href="../">← Zevbuild home</a>
+    <h1>Tools &amp; projects</h1>
+    <p class="intro">Browse the tools and pages included in this repository.</p>
+  </header>
+
+  <main>
+    <ul class="tool-list">
+      <li>
+        <article class="tool-card">
+          <h2>Kalyan historical data dashboard</h2>
+          <p>Explore the local dashboard and analysis tools for historical Kalyan data.</p>
+          <a href="satta-matka-tools/">Open dashboard</a>
+          <span aria-hidden="true"> · </span>
+          <a href="satta-matka-tools/README.md">Setup and documentation</a>
+        </article>
+      </li>
+      <li>
+        <article class="tool-card">
+          <h2>Offline audio player</h2>
+          <p>Play local audio files in the browser using the included player.</p>
+          <a href="sp-ms-downloader/">Open player</a>
+        </article>
+      </li>
+      <li>
+        <article class="tool-card">
+          <h2>Video downloader article</h2>
+          <p>Read the static article included in this repository.</p>
+          <a href="top-10-free-video-downloaders-in-india/">Read article</a>
+        </article>
+      </li>
+    </ul>
+  </main>
+
+  <footer>
+    <p><a href="https://github.com/zevbuild/zevbuild">View the repository on GitHub</a></p>
+  </footer>
 </body>
 </html>
