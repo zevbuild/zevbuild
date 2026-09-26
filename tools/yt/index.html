@@ -10,12 +10,12 @@
   <meta name="keywords" content="YouTube downloader, yt-dlp, download YouTube video, MP4, MP3, free YouTube downloader, Zevbuild, v_yt">
   <meta name="author" content="Zevbuild">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://zevbuild.github.io/tools/v_yt/">
+  <link rel="canonical" href="https://zevbuild.github.io/tools/yt/">
 
   <!-- ═══ Open Graph ═══ -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zevbuild">
-  <meta property="og:url" content="https://zevbuild.github.io/tools/v_yt/">
+  <meta property="og:url" content="https://zevbuild.github.io/tools/yt/">
   <meta property="og:title" content="v_yt — YouTube Video Downloader | Zevbuild">
   <meta property="og:description" content="Download YouTube videos in MP4 or MP3 — powered by yt-dlp. No install, no tracking, works in your browser.">
   <meta property="og:image" content="https://zevbuild.github.io/og-image.svg">
@@ -27,755 +27,1187 @@
   <meta name="twitter:description" content="Free YouTube downloader powered by yt-dlp. MP4 & MP3, no install needed.">
   <meta name="twitter:image" content="https://zevbuild.github.io/og-image.svg">
 
-  <!-- ═══ Fonts & Styles ═══ -->
+  <!-- ═══ Fonts ═══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
 
   <style>
+    /* ── Variables ── */
     :root {
-      --bg-base: #07090e;
-      --bg-surface: #0d111a;
-      --bg-card: rgba(17, 24, 39, 0.7);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(239, 68, 68, 0.3);
-      --accent-red: #ef4444;
-      --accent-violet: #8b5cf6;
-      --accent-cyan: #06b6d4;
+      --bg-base: #06080d;
+      --bg-surface: #0c1019;
+      --border-subtle: rgba(255,255,255,0.07);
+      --red: #ef4444;
+      --red-dim: rgba(239,68,68,0.12);
+      --red-glow: rgba(239,68,68,0.25);
+      --violet: #8b5cf6;
+      --violet-dim: rgba(139,92,246,0.12);
+      --cyan: #06b6d4;
     }
+
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
 
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-base);
-      color: #f3f4f6;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg-base);
+      color: #e2e8f0;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    code, pre, .mono {
-      font-family: 'JetBrains Mono', monospace;
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Animated background ── */
+    .bg-hero {
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(239,68,68,0.13) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 50%, rgba(139,92,246,0.07) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(6,182,212,0.05) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 56px 56px, 56px 56px;
     }
 
-    .bg-grid-pattern {
-      background-image:
-        radial-gradient(circle at 50% 0%, rgba(239, 68, 68, 0.10) 0%, transparent 60%),
-        radial-gradient(circle at 100% 40%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    /* ── Glass panel ── */
+    .glass {
+      background: linear-gradient(135deg, rgba(18,26,46,0.7) 0%, rgba(10,15,28,0.85) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.07);
     }
 
-    .glass-panel {
-      background: rgba(15, 21, 37, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-subtle);
-    }
-
-    .glass-card {
-      background: linear-gradient(135deg, rgba(19, 27, 46, 0.65) 0%, rgba(11, 16, 28, 0.8) 100%);
+    .glass-sm {
+      background: rgba(12,16,25,0.6);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255,255,255,0.06);
     }
 
-    .input-field {
-      background: rgba(10, 14, 24, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #f3f4f6;
+    /* ── Nav ── */
+    .nav-bar {
+      background: rgba(6,8,13,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* ── Big URL input ── */
+    .url-wrap {
+      background: rgba(8,11,20,0.9);
+      border: 1.5px solid rgba(255,255,255,0.07);
+      transition: border-color 0.25s, box-shadow 0.25s;
+      border-radius: 16px;
+    }
+    .url-wrap:focus-within {
+      border-color: rgba(239,68,68,0.45);
+      box-shadow: 0 0 0 4px rgba(239,68,68,0.08), 0 8px 32px -8px rgba(239,68,68,0.2);
+    }
+    .url-wrap.valid {
+      border-color: rgba(16,185,129,0.45);
+      box-shadow: 0 0 0 4px rgba(16,185,129,0.06);
+    }
+    .url-wrap.invalid {
+      border-color: rgba(239,68,68,0.5);
+      box-shadow: 0 0 0 4px rgba(239,68,68,0.08);
+    }
+
+    #yt-url {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #f1f5f9;
       font-family: 'JetBrains Mono', monospace;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      font-size: 0.875rem;
+      width: 100%;
     }
+    #yt-url::placeholder { color: #374151; }
 
-    .input-field:focus {
-      outline: none;
-      border-color: rgba(239, 68, 68, 0.5);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+    /* ── Format cards ── */
+    .fmt-card {
+      background: rgba(8,12,22,0.7);
+      border: 1.5px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
+      overflow: hidden;
+      user-select: none;
     }
-
-    .input-field::placeholder {
-      color: #4b5563;
+    .fmt-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
-
-    .select-field {
-      background: rgba(10, 14, 24, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #f3f4f6;
-      transition: border-color 0.2s;
-      -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      background-size: 16px;
-      padding-right: 40px;
+    .fmt-card.video::before { background: radial-gradient(circle at 30% 50%, rgba(239,68,68,0.08), transparent 70%); }
+    .fmt-card.audio::before { background: radial-gradient(circle at 30% 50%, rgba(139,92,246,0.08), transparent 70%); }
+    .fmt-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
+    .fmt-card:hover::before { opacity: 1; }
+    .fmt-card.selected.video {
+      border-color: rgba(239,68,68,0.55);
+      background: rgba(239,68,68,0.06);
+      box-shadow: 0 0 24px -6px rgba(239,68,68,0.25);
     }
-
-    .select-field:focus {
-      outline: none;
-      border-color: rgba(239, 68, 68, 0.5);
+    .fmt-card.selected.audio {
+      border-color: rgba(139,92,246,0.55);
+      background: rgba(139,92,246,0.06);
+      box-shadow: 0 0 24px -6px rgba(139,92,246,0.25);
     }
+    .fmt-card.selected::before { opacity: 1; }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #dc2626, #b91c1c);
+    /* checkmark */
+    .fmt-check {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.2s;
+    }
+    .fmt-card.selected .fmt-check { opacity: 1; transform: scale(1); }
+    .fmt-card.selected.video .fmt-check { background: rgba(239,68,68,0.8); }
+    .fmt-card.selected.audio .fmt-check { background: rgba(139,92,246,0.8); }
+
+    /* ── Main fetch button ── */
+    .btn-fetch {
+      background: linear-gradient(135deg, #dc2626 0%, #c2170d 100%);
+      border: 1px solid rgba(239,68,68,0.3);
+      box-shadow: 0 4px 24px -6px rgba(220,38,38,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
       color: white;
       font-weight: 700;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      box-shadow: 0 8px 24px -4px rgba(220, 38, 38, 0.3);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 12px;
       cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
+      overflow: hidden;
     }
-
-    .btn-primary:hover:not(:disabled) {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      box-shadow: 0 12px 32px -4px rgba(220, 38, 38, 0.45);
+    .btn-fetch::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      transition: left 0.5s;
+    }
+    .btn-fetch:hover:not(:disabled)::after { left: 150%; }
+    .btn-fetch:hover:not(:disabled) {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      box-shadow: 0 8px 32px -4px rgba(220,38,38,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
       transform: translateY(-1px);
     }
+    .btn-fetch:active:not(:disabled) { transform: translateY(0); }
+    .btn-fetch:disabled { opacity: 0.45; cursor: not-allowed; }
 
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
+    /* ── Animated progress steps ── */
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+    }
+    .step-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .step.pending .step-dot { background: rgba(255,255,255,0.15); }
+    .step.active .step-dot  { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.6); animation: pulse-dot 1s ease infinite; }
+    .step.done .step-dot    { background: #10b981; }
+    .step.pending .step-label { color: #374151; }
+    .step.active .step-label  { color: #fca5a5; }
+    .step.done .step-label    { color: #34d399; }
+
+    @keyframes pulse-dot {
+      0%,100% { box-shadow: 0 0 8px rgba(239,68,68,0.6); }
+      50% { box-shadow: 0 0 16px rgba(239,68,68,0.9); }
     }
 
-    .download-btn {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.25);
+    /* progress bar */
+    .prog-track { background: rgba(255,255,255,0.05); border-radius: 99px; overflow: hidden; }
+    .prog-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #dc2626, #ef4444, #f87171);
+      background-size: 200% 100%;
+      transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+      animation: shimmer 2s linear infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+
+    /* ── Video preview card ── */
+    .thumb-wrap {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.04);
+    }
+    .thumb-wrap img { display: block; object-fit: cover; }
+    .thumb-wrap .play-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.3);
+    }
+
+    /* ── Download link buttons ── */
+    .dl-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .dl-btn.video {
+      background: rgba(239,68,68,0.07);
+      border: 1px solid rgba(239,68,68,0.2);
       color: #fca5a5;
+    }
+    .dl-btn.video:hover {
+      background: rgba(239,68,68,0.14);
+      border-color: rgba(239,68,68,0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(239,68,68,0.2);
+    }
+    .dl-btn.audio {
+      background: rgba(139,92,246,0.07);
+      border: 1px solid rgba(139,92,246,0.2);
+      color: #c4b5fd;
+    }
+    .dl-btn.audio:hover {
+      background: rgba(139,92,246,0.14);
+      border-color: rgba(139,92,246,0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -6px rgba(139,92,246,0.2);
+    }
+
+    /* copy badge */
+    .copy-badge {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .copy-badge.video-copy { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+    .copy-badge.video-copy:hover { background: rgba(239,68,68,0.25); }
+    .copy-badge.audio-copy { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.2); }
+    .copy-badge.audio-copy:hover { background: rgba(139,92,246,0.25); }
+
+    /* ── History panel ── */
+    .hist-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .hist-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
+    .hist-thumb {
+      width: 48px; height: 27px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: rgba(255,255,255,0.05);
+      flex-shrink: 0;
+    }
+
+    /* ── Animations ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { animation: spin 0.7s linear infinite; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fade-up 0.35s cubic-bezier(0.16,1,0.3,1) both; }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .fade-in { animation: fade-in 0.25s ease both; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      z-index: 9999;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+
+    /* ── URL status ring ── */
+    .url-status {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
       transition: all 0.2s;
     }
 
-    .download-btn:hover {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.5);
-      transform: translateY(-1px);
+    /* ── Pulse animation for live badge ── */
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+      70%  { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+      100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
     }
+    .pulse-ring { animation: pulse-ring 2s ease infinite; }
 
-    .download-btn.audio {
-      background: rgba(139, 92, 246, 0.1);
-      border-color: rgba(139, 92, 246, 0.25);
-      color: #c4b5fd;
-    }
-
-    .download-btn.audio:hover {
-      background: rgba(139, 92, 246, 0.2);
-      border-color: rgba(139, 92, 246, 0.5);
-    }
-
-    /* Spinner */
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    .spinner {
-      animation: spin 0.8s linear infinite;
-    }
-
-    /* Progress bar */
-    @keyframes progress-shimmer {
-      0% { background-position: -200% center; }
-      100% { background-position: 200% center; }
-    }
-    .progress-bar {
-      background: linear-gradient(90deg, transparent 0%, rgba(239, 68, 68, 0.8) 50%, transparent 100%);
-      background-size: 200% 100%;
-      animation: progress-shimmer 1.5s ease infinite;
-    }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #07090e; }
-    ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #374151; }
-
-    /* Pulse badge */
-    .glow-badge {
-      box-shadow: 0 0 12px -2px rgba(239, 68, 68, 0.4);
-    }
-
-    /* Toast notification */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 9999;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    /* ── Section reveal ── */
+    .reveal { display: none; }
+    .reveal.visible { display: block; }
   </style>
 </head>
-<body class="min-h-screen bg-grid-pattern selection:bg-red-600 selection:text-white">
 
-  <!-- ═══ Fixed Navigation ═══ -->
-  <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-white/5 transition-all duration-300">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<body class="bg-hero min-h-screen">
 
-      <!-- Brand -->
-      <a href="../../index.html" class="flex items-center gap-3 group">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 via-indigo-500 to-cyan-400 p-[1.5px] shadow-lg shadow-purple-500/20 group-hover:scale-105 transition-transform duration-300">
-          <div class="w-full h-full bg-[#090d16] rounded-[7px] flex items-center justify-center">
-            <svg class="w-4 h-4 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-              <polyline points="2 17 12 22 22 17"></polyline>
-              <polyline points="2 12 12 17 22 12"></polyline>
-            </svg>
-          </div>
+<!-- ═══ Floating orbs (decorative, CSS only) ═══ -->
+<div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
+  <div style="position:absolute;top:-20%;left:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(239,68,68,0.06),transparent 70%);filter:blur(40px);"></div>
+  <div style="position:absolute;bottom:-20%;right:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,0.05),transparent 70%);filter:blur(40px);"></div>
+</div>
+
+<!-- ═══ Nav ═══ -->
+<header class="nav-bar fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+    <!-- Brand -->
+    <a href="../../index.html" class="flex items-center gap-2.5 group">
+      <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-purple-600 via-indigo-500 to-cyan-400 p-[1.5px] group-hover:scale-105 transition-transform">
+        <div class="w-full h-full bg-[#090d16] rounded-[6px] flex items-center justify-center">
+          <svg class="w-3.5 h-3.5 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
         </div>
-        <span class="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">Zevbuild</span>
-      </a>
+      </div>
+      <span class="text-xs font-bold text-slate-400 group-hover:text-slate-200 transition-colors">Zevbuild</span>
+    </a>
 
-      <!-- Breadcrumb + badges -->
-      <div class="flex items-center gap-3">
-        <a href="../../tools/index.html" class="text-xs text-slate-500 hover:text-slate-300 transition-colors hidden sm:block">Tools</a>
-        <span class="text-slate-600 text-xs hidden sm:block">/</span>
-        <span class="text-xs font-bold text-red-400 mono">v_yt</span>
-        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 mono">yt-dlp</span>
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs">
+      <a href="../index.html" class="text-slate-600 hover:text-slate-400 transition-colors hidden sm:block">Tools</a>
+      <span class="text-slate-700 hidden sm:block">/</span>
+      <span class="text-red-400 mono font-bold">v_yt</span>
+      <span class="px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 mono text-[10px] font-semibold pulse-ring">yt-dlp</span>
+    </div>
+
+    <!-- GitHub -->
+    <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer"
+       class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold bg-white/4 hover:bg-white/8 text-slate-400 border border-white/8 hover:border-white/15 transition-all">
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+      </svg>
+      <span class="hidden sm:block">GitHub</span>
+    </a>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main class="relative z-10 pt-20 pb-24">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6">
+
+    <!-- ── Hero ── -->
+    <section class="pt-10 pb-10 text-center">
+      <!-- YouTube icon badge -->
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 relative"
+           style="background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(185,28,28,0.08));border:1px solid rgba(239,68,68,0.2);">
+        <svg class="w-8 h-8 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+        </svg>
+        <!-- glow ring -->
+        <div style="position:absolute;inset:-1px;border-radius:17px;background:conic-gradient(from 0deg,rgba(239,68,68,0.4),transparent 60%,rgba(239,68,68,0.4));animation:spin 4s linear infinite;z-index:-1;"></div>
       </div>
 
-      <!-- GitHub link -->
-      <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer"
-         class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
-        </svg>
-        <span>GitHub</span>
-      </a>
-    </div>
-  </header>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-4">
+        <span style="background:linear-gradient(135deg,#fca5a5,#ef4444,#dc2626);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">YouTube</span>
+        <span class="text-white"> Downloader</span>
+      </h1>
 
-  <!-- ═══ Main Content ═══ -->
-  <main class="pt-24 pb-20">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-slate-400 text-base sm:text-lg max-w-lg mx-auto leading-relaxed mb-6">
+        Paste a link. Pick your format. Download instantly.<br>
+        <span class="text-slate-500 text-sm">No installs · No sign-ups · Zero tracking</span>
+      </p>
 
-      <!-- ── Hero Section ── -->
-      <section class="pt-10 pb-12 text-center">
+      <!-- Feature pills -->
+      <div class="flex flex-wrap justify-center gap-2">
+        <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-red-500/8 text-red-400 border border-red-500/15 mono">MP4 1080p</span>
+        <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-red-500/8 text-red-400 border border-red-500/15 mono">MP4 720p</span>
+        <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-violet-500/8 text-violet-400 border border-violet-500/15 mono">MP3 Audio</span>
+        <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/5 text-slate-400 border border-white/8">Shorts ✓</span>
+        <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/5 text-slate-400 border border-white/8">yt-dlp Engine</span>
+      </div>
+    </section>
 
-        <!-- Top badge -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-semibold mb-6 glow-badge">
-          <span class="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
-          <span>Powered by yt-dlp via Cobalt API</span>
+    <!-- ── Main Downloader Card ── -->
+    <section class="mb-6">
+      <div class="glass rounded-2xl p-6 sm:p-8">
+
+        <!-- URL Input -->
+        <div class="mb-6">
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-[0.1em] mb-2.5">YouTube URL</label>
+          <div class="url-wrap flex items-center gap-3 px-4 py-3.5" id="url-wrap">
+            <!-- YT icon -->
+            <svg class="w-5 h-5 text-slate-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+            </svg>
+            <input id="yt-url" type="url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off" spellcheck="false" class="flex-1 text-sm">
+            <!-- Status indicator -->
+            <div id="url-status" class="url-status opacity-0"></div>
+            <!-- Divider -->
+            <div class="w-px h-5 bg-white/8 flex-shrink-0"></div>
+            <!-- Paste -->
+            <button id="paste-btn" title="Paste from clipboard"
+              class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-slate-500 hover:text-slate-200 hover:bg-white/6 transition-all flex-shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+              <span class="hidden sm:block">Paste</span>
+            </button>
+            <!-- Clear -->
+            <button id="clear-btn" title="Clear" class="text-slate-600 hover:text-slate-300 transition-colors flex-shrink-0 opacity-0" style="display:none;">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <!-- Icon -->
-        <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-red-600/20 to-red-800/10 border border-red-500/20 flex items-center justify-center">
-          <svg class="w-10 h-10 text-red-400" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+        <!-- Live Preview (shown after valid URL detected) -->
+        <div id="preview-panel" class="mb-6 hidden fade-in">
+          <div class="flex items-center gap-4 p-4 rounded-xl" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">
+            <div class="thumb-wrap w-24 h-[54px] sm:w-32 sm:h-[72px]">
+              <img id="preview-thumb" src="" alt="Video thumbnail" class="w-full h-full">
+              <div class="play-overlay">
+                <svg class="w-5 h-5 text-white opacity-70" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div id="preview-loading" class="flex items-center gap-2 text-slate-500 text-xs">
+                <svg class="spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                Fetching video info…
+              </div>
+              <p id="preview-title" class="text-sm font-semibold text-slate-200 leading-snug line-clamp-2 hidden"></p>
+              <p id="preview-author" class="text-[11px] text-slate-500 mt-1 hidden"></p>
+              <div id="preview-id" class="mt-1.5 hidden">
+                <span class="text-[10px] font-mono text-slate-600 bg-white/4 px-2 py-0.5 rounded"></span>
+              </div>
+            </div>
+            <button id="preview-close" class="text-slate-600 hover:text-slate-300 transition-colors flex-shrink-0 self-start p-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Format Picker -->
+        <div class="mb-6">
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-[0.1em] mb-3">Format</label>
+          <div class="grid grid-cols-3 gap-3">
+
+            <!-- MP4 720p -->
+            <button type="button" class="fmt-card video selected p-4 text-center" data-value="mp4-720">
+              <div class="fmt-check">
+                <svg class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <div class="w-9 h-9 rounded-xl mx-auto mb-2.5 flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);">
+                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="text-xs font-bold text-slate-200">MP4</div>
+              <div class="text-[10px] text-slate-500 mono mt-0.5">720p · HD</div>
+            </button>
+
+            <!-- MP4 1080p -->
+            <button type="button" class="fmt-card video p-4 text-center" data-value="mp4-1080">
+              <div class="fmt-check">
+                <svg class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <div class="w-9 h-9 rounded-xl mx-auto mb-2.5 flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);">
+                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <div class="text-xs font-bold text-slate-200">MP4</div>
+              <div class="text-[10px] text-slate-500 mono mt-0.5">1080p · FHD</div>
+            </button>
+
+            <!-- MP3 Audio -->
+            <button type="button" class="fmt-card audio p-4 text-center" data-value="mp3">
+              <div class="fmt-check">
+                <svg class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+              </div>
+              <div class="w-9 h-9 rounded-xl mx-auto mb-2.5 flex items-center justify-center" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);">
+                <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                </svg>
+              </div>
+              <div class="text-xs font-bold text-slate-200">MP3</div>
+              <div class="text-[10px] text-slate-500 mono mt-0.5">Audio · 128kbps</div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Fetch Button -->
+        <button id="fetch-btn" class="btn-fetch w-full py-4 text-sm flex items-center justify-center gap-2.5">
+          <svg id="btn-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
           </svg>
-        </div>
-
-        <!-- Heading -->
-        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.15] mb-4">
-          <span class="bg-gradient-to-r from-red-400 via-red-300 to-orange-300 bg-clip-text text-transparent">YouTube</span>
-          <span class="text-white"> Downloader</span>
-        </h1>
-        <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed mb-6">
-          Paste any YouTube link and download it as MP4 video or MP3 audio — directly in your browser. No installs, no sign-ups, no trackers.
-        </p>
-
-        <!-- Feature chips -->
-        <div class="flex flex-wrap justify-center gap-2 mb-8">
-          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">MP4 1080p</span>
-          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">MP4 720p</span>
-          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">MP3 Audio</span>
-          <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">yt-dlp Engine</span>
-          <span class="text-[11px] px-2.5 py-1 rounded-md bg-red-500/10 text-red-400 border border-red-500/20">Zero Trackers</span>
-        </div>
+          <span id="btn-text">Get Download Link</span>
+        </button>
 
         <!-- Disclaimer -->
-        <div class="inline-flex items-start gap-2.5 px-4 py-2.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-left max-w-xl mx-auto">
-          <svg class="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-          </svg>
-          <p class="text-[11px] text-amber-300/80 leading-relaxed">
-            For personal and fair-use purposes only. Do not download copyrighted content without authorization. Downloading YouTube videos may violate YouTube's Terms of Service.
-          </p>
+        <p class="text-center text-[11px] text-slate-700 mt-4 leading-relaxed">
+          Personal / fair-use only. Downloading YouTube content may violate their
+          <a href="https://www.youtube.com/static?template=terms" target="_blank" rel="noopener" class="text-slate-600 hover:text-slate-400 underline underline-offset-2 transition-colors">Terms of Service</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Progress Section ── -->
+    <section id="progress-section" class="mb-6 reveal">
+      <div class="glass rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Extracting</h3>
+          <span id="prog-pct" class="text-xs text-red-400 mono font-semibold">0%</span>
         </div>
-      </section>
 
-      <!-- ── Downloader Card ── -->
-      <section class="mb-10">
-        <div class="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-          <div class="absolute -right-16 -top-16 w-48 h-48 bg-red-600/8 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Bar -->
+        <div class="prog-track h-1 mb-5">
+          <div id="prog-fill" class="prog-fill h-full" style="width:0%"></div>
+        </div>
 
-          <!-- URL Input -->
-          <div class="mb-5">
-            <label for="yt-url" class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">YouTube URL</label>
-            <div class="flex gap-3">
-              <div class="relative flex-1">
-                <!-- YouTube icon inside input -->
-                <div class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
-                  </svg>
-                </div>
-                <input
-                  id="yt-url"
-                  type="url"
-                  class="input-field w-full pl-10 pr-4 py-3 rounded-xl text-sm"
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  autocomplete="off"
-                  spellcheck="false"
-                >
-              </div>
-              <!-- Paste button -->
-              <button id="paste-btn" title="Paste from clipboard"
-                class="px-3.5 py-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 hover:border-white/20 transition-all flex items-center gap-1.5 flex-shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-                <span class="hidden sm:block">Paste</span>
-              </button>
-            </div>
+        <!-- Steps -->
+        <div class="flex flex-col gap-2.5" id="steps-list">
+          <div class="step pending" id="step-validate">
+            <div class="step-dot"></div>
+            <span class="step-label text-xs">Validating URL</span>
           </div>
-
-          <!-- Format selector -->
-          <div class="mb-6">
-            <label for="format-select" class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">Download Format</label>
-            <div class="grid grid-cols-3 gap-3" id="format-grid" role="radiogroup" aria-label="Download format">
-              <!-- MP4 720p -->
-              <button type="button" class="format-btn selected" data-value="mp4-720" aria-pressed="true">
-                <svg class="w-5 h-5 mx-auto mb-1.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
-                <div class="text-xs font-bold">MP4</div>
-                <div class="text-[10px] text-slate-400 mono">720p</div>
-              </button>
-              <!-- MP4 1080p -->
-              <button type="button" class="format-btn" data-value="mp4-1080" aria-pressed="false">
-                <svg class="w-5 h-5 mx-auto mb-1.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
-                <div class="text-xs font-bold">MP4</div>
-                <div class="text-[10px] text-slate-400 mono">1080p</div>
-              </button>
-              <!-- MP3 Audio -->
-              <button type="button" class="format-btn" data-value="mp3" aria-pressed="false">
-                <svg class="w-5 h-5 mx-auto mb-1.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
-                </svg>
-                <div class="text-xs font-bold">MP3</div>
-                <div class="text-[10px] text-slate-400 mono">Audio</div>
-              </button>
-            </div>
+          <div class="step pending" id="step-fetch">
+            <div class="step-dot"></div>
+            <span class="step-label text-xs">Contacting yt-dlp service</span>
           </div>
-
-          <!-- Fetch Button -->
-          <button id="fetch-btn" class="btn-primary w-full py-3.5 rounded-xl text-sm flex items-center justify-center gap-2.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-            </svg>
-            <span id="fetch-btn-text">Fetch Download Link</span>
-          </button>
-
-          <!-- Progress bar (hidden by default) -->
-          <div id="progress-wrap" class="mt-4 hidden">
-            <div class="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-              <div class="progress-bar h-full w-full rounded-full"></div>
-            </div>
-            <p id="progress-msg" class="text-[11px] text-slate-500 text-center mt-2">Processing…</p>
+          <div class="step pending" id="step-extract">
+            <div class="step-dot"></div>
+            <span class="step-label text-xs">Extracting stream links</span>
+          </div>
+          <div class="step pending" id="step-ready">
+            <div class="step-dot"></div>
+            <span class="step-label text-xs">Preparing download</span>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ── Results Section ── -->
-      <section id="results-section" class="mb-10 hidden">
-        <div class="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-          <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-red-600/5 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- ── Results Section ── -->
+    <section id="results-section" class="mb-6 reveal">
+      <div class="glass rounded-2xl p-6 fade-up">
 
-          <!-- Video info panel (if thumbnail available) -->
-          <div id="video-info" class="flex gap-4 mb-6 pb-6 border-b border-white/5 hidden">
-            <img id="video-thumb" src="" alt="Video thumbnail" class="w-28 h-16 rounded-xl object-cover flex-shrink-0 bg-white/5">
-            <div class="flex-1 min-w-0">
-              <h3 id="video-title" class="text-sm font-bold text-white mb-1 line-clamp-2"></h3>
-              <p id="video-meta" class="text-[11px] text-slate-500 mono"></p>
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-2.5">
+            <div class="w-2 h-2 rounded-full bg-emerald-400" style="box-shadow:0 0 8px rgba(16,185,129,0.6);"></div>
+            <h2 class="text-sm font-bold text-white">Download Ready</h2>
+          </div>
+          <span class="text-[10px] text-slate-500 mono" id="result-format-label"></span>
+        </div>
+
+        <!-- Result video info -->
+        <div id="result-video-info" class="flex items-center gap-4 mb-5 pb-5 border-b border-white/5 hidden">
+          <div class="thumb-wrap w-20 h-[45px] flex-shrink-0">
+            <img id="result-thumb" src="" alt="" class="w-full h-full">
+            <div class="play-overlay">
+              <svg class="w-4 h-4 text-white opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </div>
           </div>
-
-          <!-- Download buttons -->
-          <div class="mb-4">
-            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-4">Download Links</h2>
-            <div id="download-links" class="flex flex-col gap-3"></div>
-          </div>
-
-          <!-- Note -->
-          <p class="text-[11px] text-slate-600 mt-4">
-            Links are temporary and may expire. Download immediately after fetching. If a link fails, try again.
-          </p>
-        </div>
-      </section>
-
-      <!-- ── Error Section ── -->
-      <section id="error-section" class="mb-10 hidden">
-        <div class="glass-card rounded-2xl p-6 border border-red-500/20">
-          <div class="flex items-start gap-3">
-            <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-sm font-bold text-red-400 mb-1">Extraction Failed</h3>
-              <p id="error-message" class="text-xs text-slate-400 leading-relaxed"></p>
-              <p class="text-[11px] text-slate-600 mt-2">Try a different video, or check if it is private/age-restricted.</p>
-            </div>
+          <div class="min-w-0 flex-1">
+            <p id="result-title" class="text-xs font-semibold text-slate-200 line-clamp-2 leading-snug"></p>
+            <p id="result-author" class="text-[10px] text-slate-500 mt-0.5 mono"></p>
           </div>
         </div>
-      </section>
 
-      <!-- ── How It Works ── -->
-      <section class="mb-10">
-        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">How It Works</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="glass-card rounded-xl p-4 text-center">
-            <div class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-3 text-red-400 font-bold text-sm mono">1</div>
-            <h3 class="text-xs font-bold text-white mb-1">Paste URL</h3>
-            <p class="text-[11px] text-slate-500 leading-relaxed">Copy any YouTube video link and paste it into the input field.</p>
-          </div>
-          <div class="glass-card rounded-xl p-4 text-center">
-            <div class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-3 text-red-400 font-bold text-sm mono">2</div>
-            <h3 class="text-xs font-bold text-white mb-1">Choose Format</h3>
-            <p class="text-[11px] text-slate-500 leading-relaxed">Pick MP4 (720p or 1080p) for video, or MP3 for audio-only extraction.</p>
-          </div>
-          <div class="glass-card rounded-xl p-4 text-center">
-            <div class="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-3 text-red-400 font-bold text-sm mono">3</div>
-            <h3 class="text-xs font-bold text-white mb-1">Download</h3>
-            <p class="text-[11px] text-slate-500 leading-relaxed">Click the download button to save the file directly to your device.</p>
-          </div>
-        </div>
-      </section>
+        <!-- Download link buttons -->
+        <div id="download-links" class="flex flex-col gap-3"></div>
 
-      <!-- ── Tech Info ── -->
-      <section class="mb-10">
-        <div class="glass-card rounded-xl p-5 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+        <!-- Note -->
+        <p class="text-[11px] text-slate-700 mt-4 text-center">Links are temporary — download right away. If a link expires, click <em>Get Download Link</em> again.</p>
+      </div>
+    </section>
+
+    <!-- ── Error Section ── -->
+    <section id="error-section" class="mb-6 reveal">
+      <div class="rounded-2xl p-6 fade-up" style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);">
+            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
           <div>
-            <h3 class="text-xs font-bold text-slate-200 mb-1">Architecture</h3>
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              This tool is a static webpage. Download extraction is handled server-side by a <span class="text-violet-400 mono">Cloudflare Worker</span> (<code class="mono text-slate-400">/api/yt-download</code>) that proxies requests to the <span class="text-red-400">Cobalt API</span> — an open-source <span class="mono text-slate-400">yt-dlp</span> wrapper. No data is stored or logged.
-            </p>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </main>
-
-  <!-- ── Footer ── -->
-  <footer class="border-t border-white/5 py-8">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="text-xs text-slate-600">© 2026 Zevbuild Studio</span>
-        <span class="text-slate-700">·</span>
-        <a href="../../index.html" class="text-xs text-slate-600 hover:text-slate-400 transition-colors">Back to Home</a>
-        <span class="text-slate-700">·</span>
-        <a href="README.md" class="text-xs text-slate-600 hover:text-slate-400 transition-colors">Docs</a>
-      </div>
-      <div class="flex items-center gap-2">
-        <span class="text-[10px] px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20 mono">v_yt</span>
-        <span class="text-[10px] text-slate-600">Personal / Fair-Use Only</span>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ── Toast Notification ── -->
-  <div id="toast" class="toast glass-panel rounded-xl px-4 py-3 flex items-center gap-2.5 border border-white/10">
-    <svg id="toast-icon" class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-    </svg>
-    <span id="toast-msg" class="text-xs font-semibold text-slate-200"></span>
-  </div>
-
-  <!-- ═══ Inline Styles for format buttons ═══ -->
-  <style>
-    .format-btn {
-      padding: 12px 8px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(10, 14, 24, 0.6);
-      color: #94a3b8;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-    }
-    .format-btn:hover {
-      border-color: rgba(239,68,68,0.3);
-      background: rgba(239,68,68,0.05);
-      color: #f87171;
-    }
-    .format-btn.selected {
-      border-color: rgba(239,68,68,0.5);
-      background: rgba(239,68,68,0.10);
-      color: #fca5a5;
-      box-shadow: 0 0 16px -4px rgba(239,68,68,0.2);
-    }
-    .format-btn[data-value="mp3"].selected {
-      border-color: rgba(139,92,246,0.5);
-      background: rgba(139,92,246,0.10);
-      color: #c4b5fd;
-      box-shadow: 0 0 16px -4px rgba(139,92,246,0.2);
-    }
-  </style>
-
-  <!-- ═══ Application Logic ═══ -->
-  <script>
-    'use strict';
-
-    // ── State ──
-    let selectedFormat = 'mp4-720';
-    let isFetching = false;
-
-    // ── DOM refs ──
-    const urlInput      = document.getElementById('yt-url');
-    const fetchBtn      = document.getElementById('fetch-btn');
-    const fetchBtnText  = document.getElementById('fetch-btn-text');
-    const pasteBtn      = document.getElementById('paste-btn');
-    const progressWrap  = document.getElementById('progress-wrap');
-    const progressMsg   = document.getElementById('progress-msg');
-    const resultsSection= document.getElementById('results-section');
-    const errorSection  = document.getElementById('error-section');
-    const errorMessage  = document.getElementById('error-message');
-    const downloadLinks = document.getElementById('download-links');
-    const videoInfo     = document.getElementById('video-info');
-    const videoThumb    = document.getElementById('video-thumb');
-    const videoTitle    = document.getElementById('video-title');
-    const videoMeta     = document.getElementById('video-meta');
-
-    // ── Format button logic ──
-    document.querySelectorAll('.format-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.format-btn').forEach(b => {
-          b.classList.remove('selected');
-          b.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('selected');
-        btn.setAttribute('aria-pressed', 'true');
-        selectedFormat = btn.dataset.value;
-      });
-    });
-
-    // ── Paste button ──
-    pasteBtn.addEventListener('click', async () => {
-      try {
-        const text = await navigator.clipboard.readText();
-        urlInput.value = text.trim();
-        urlInput.focus();
-        showToast('Pasted from clipboard ✓', 'success');
-      } catch {
-        showToast('Clipboard access denied', 'error');
-      }
-    });
-
-    // ── Enter key submits ──
-    urlInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !isFetching) fetchDownload();
-    });
-
-    // ── Fetch button ──
-    fetchBtn.addEventListener('click', () => {
-      if (!isFetching) fetchDownload();
-    });
-
-    // ── Core fetch logic ──
-    async function fetchDownload() {
-      const rawUrl = urlInput.value.trim();
-
-      // Basic validation
-      if (!rawUrl) {
-        showToast('Please enter a YouTube URL', 'error');
-        urlInput.focus();
-        return;
-      }
-
-      if (!isValidYouTubeUrl(rawUrl)) {
-        showToast('Please enter a valid YouTube URL', 'error');
-        urlInput.focus();
-        return;
-      }
-
-      setLoading(true);
-      hideAll();
-
-      try {
-        const apiUrl = `/api/yt-download?url=${encodeURIComponent(rawUrl)}&format=${encodeURIComponent(selectedFormat)}`;
-        progressMsg.textContent = 'Fetching download link via yt-dlp…';
-
-        const response = await fetch(apiUrl);
-
-        if (!response.ok) {
-          const errData = await response.json().catch(() => ({}));
-          throw new Error(errData.error || `Server error (${response.status})`);
-        }
-
-        const data = await response.json();
-
-        if (data.error) {
-          throw new Error(data.error);
-        }
-
-        if (!data.downloads || data.downloads.length === 0) {
-          throw new Error('No download links were returned. The video may be private, age-restricted, or unavailable.');
-        }
-
-        renderResults(data);
-        showToast('Download link ready!', 'success');
-
-      } catch (err) {
-        showError(err.message || 'An unknown error occurred.');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    // ── Render download results ──
-    function renderResults(data) {
-      downloadLinks.innerHTML = '';
-
-      data.downloads.forEach(item => {
-        const isAudio = item.label.toLowerCase().includes('mp3') || item.label.toLowerCase().includes('audio');
-        const btn = document.createElement('a');
-        btn.href = item.url;
-        btn.target = '_blank';
-        btn.rel = 'noopener noreferrer';
-        btn.className = `download-btn ${isAudio ? 'audio' : ''} w-full flex items-center justify-between px-5 py-3.5 rounded-xl font-semibold text-sm transition-all`;
-
-        btn.innerHTML = `
-          <div class="flex items-center gap-3">
-            ${isAudio
-              ? `<svg class="w-5 h-5 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>`
-              : `<svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`
-            }
-            <div>
-              <div class="font-bold">${escapeHtml(item.label)}</div>
-              ${item.size ? `<div class="text-[10px] opacity-60 mono">${escapeHtml(item.size)}</div>` : ''}
+            <h3 class="text-sm font-bold text-red-400 mb-1">Extraction Failed</h3>
+            <p id="error-msg" class="text-xs text-slate-400 leading-relaxed"></p>
+            <div class="flex items-center gap-3 mt-3">
+              <button id="retry-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-all">
+                Try Again
+              </button>
+              <span class="text-[11px] text-slate-600">Check URL or try a different video</span>
             </div>
           </div>
-          <div class="flex items-center gap-2 text-xs opacity-70">
-            <span>Download</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          </div>
-        `;
+        </div>
+      </div>
+    </section>
 
-        downloadLinks.appendChild(btn);
-      });
+    <!-- ── History Panel ── -->
+    <section id="history-section" class="mb-10 hidden">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-[11px] font-bold text-slate-600 uppercase tracking-widest">Recent Downloads</h3>
+        <button id="clear-history-btn" class="text-[11px] text-slate-700 hover:text-red-400 transition-colors">Clear</button>
+      </div>
+      <div id="history-list" class="flex flex-col gap-2"></div>
+    </section>
 
-      // Optionally render video info if returned
-      if (data.videoTitle) {
-        videoTitle.textContent = data.videoTitle;
-        videoMeta.textContent = data.videoMeta || '';
-        if (data.thumbnail) {
-          videoThumb.src = data.thumbnail;
-          videoThumb.onerror = () => { videoInfo.classList.add('hidden'); };
-          videoInfo.classList.remove('hidden');
+    <!-- ── How It Works ── -->
+    <section class="mb-10">
+      <h3 class="text-[11px] font-bold text-slate-600 uppercase tracking-widest text-center mb-5">How It Works</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="glass-sm rounded-xl p-5 text-center">
+          <div class="w-8 h-8 rounded-lg mx-auto mb-3 flex items-center justify-center mono text-sm font-bold text-red-400" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.15);">1</div>
+          <h4 class="text-xs font-bold text-slate-300 mb-1">Paste URL</h4>
+          <p class="text-[11px] text-slate-600 leading-relaxed">Copy any YouTube link — video, Shorts, or Live — and paste it above.</p>
+        </div>
+        <div class="glass-sm rounded-xl p-5 text-center">
+          <div class="w-8 h-8 rounded-lg mx-auto mb-3 flex items-center justify-center mono text-sm font-bold text-red-400" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.15);">2</div>
+          <h4 class="text-xs font-bold text-slate-300 mb-1">Pick Format</h4>
+          <p class="text-[11px] text-slate-600 leading-relaxed">Choose MP4 HD video (720p/1080p) or MP3 for audio-only extraction.</p>
+        </div>
+        <div class="glass-sm rounded-xl p-5 text-center">
+          <div class="w-8 h-8 rounded-lg mx-auto mb-3 flex items-center justify-center mono text-sm font-bold text-red-400" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.15);">3</div>
+          <h4 class="text-xs font-bold text-slate-300 mb-1">Download</h4>
+          <p class="text-[11px] text-slate-600 leading-relaxed">Hit the download button — file saves directly to your device.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Tech badge ── -->
+    <div class="flex items-center justify-center gap-3 text-[11px] text-slate-700">
+      <span class="mono bg-white/3 px-2.5 py-1 rounded border border-white/6">yt-dlp</span>
+      <span>+</span>
+      <span class="mono bg-white/3 px-2.5 py-1 rounded border border-white/6">Cobalt API</span>
+      <span>+</span>
+      <span class="mono bg-white/3 px-2.5 py-1 rounded border border-white/6">Cloudflare Worker</span>
+    </div>
+
+  </div>
+</main>
+
+<!-- ── Footer ── -->
+<footer class="border-t border-white/5 py-6 relative z-10">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-3 text-[11px] text-slate-700">
+      <span>© 2026 Zevbuild Studio</span>
+      <span>·</span>
+      <a href="../../index.html" class="hover:text-slate-400 transition-colors">Home</a>
+      <span>·</span>
+      <a href="README.md" class="hover:text-slate-400 transition-colors">Docs</a>
+    </div>
+    <span class="px-2.5 py-1 rounded mono text-[10px] font-semibold text-red-400 bg-red-500/8 border border-red-500/15">v_yt · Personal Use Only</span>
+  </div>
+</footer>
+
+<!-- ── Toast ── -->
+<div id="toast" class="glass-sm rounded-xl px-4 py-2.5 flex items-center gap-2.5 border">
+  <svg id="toast-icon" class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+  <span id="toast-msg" class="text-xs font-semibold text-slate-200"></span>
+</div>
+
+<!-- ═══ Scripts ═══ -->
+<script>
+'use strict';
+
+/* ─── State ─── */
+let selectedFormat  = 'mp4-720';
+let isFetching      = false;
+let previewDebounce = null;
+let currentVideoId  = null;
+let currentTitle    = '';
+let currentAuthor   = '';
+
+/* ─── DOM ─── */
+const urlInput        = document.getElementById('yt-url');
+const urlWrap         = document.getElementById('url-wrap');
+const urlStatus       = document.getElementById('url-status');
+const clearBtn        = document.getElementById('clear-btn');
+const pasteBtn        = document.getElementById('paste-btn');
+const fetchBtn        = document.getElementById('fetch-btn');
+const btnText         = document.getElementById('btn-text');
+const btnIcon         = document.getElementById('btn-icon');
+const previewPanel    = document.getElementById('preview-panel');
+const previewThumb    = document.getElementById('preview-thumb');
+const previewLoading  = document.getElementById('preview-loading');
+const previewTitle    = document.getElementById('preview-title');
+const previewAuthor   = document.getElementById('preview-author');
+const previewIdEl     = document.getElementById('preview-id');
+const previewClose    = document.getElementById('preview-close');
+const progressSection = document.getElementById('progress-section');
+const progFill        = document.getElementById('prog-fill');
+const progPct         = document.getElementById('prog-pct');
+const resultsSection  = document.getElementById('results-section');
+const resultFormatLabel = document.getElementById('result-format-label');
+const resultVideoInfo = document.getElementById('result-video-info');
+const resultThumb     = document.getElementById('result-thumb');
+const resultTitle     = document.getElementById('result-title');
+const resultAuthor    = document.getElementById('result-author');
+const downloadLinks   = document.getElementById('download-links');
+const errorSection    = document.getElementById('error-section');
+const errorMsg        = document.getElementById('error-msg');
+const retryBtn        = document.getElementById('retry-btn');
+const historySec      = document.getElementById('history-section');
+const historyList     = document.getElementById('history-list');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+/* ─── Format selection ─── */
+document.querySelectorAll('.fmt-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.fmt-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedFormat = card.dataset.value;
+  });
+});
+
+/* ─── URL input logic ─── */
+urlInput.addEventListener('input', () => {
+  const val = urlInput.value.trim();
+  toggleClearBtn(val.length > 0);
+
+  if (!val) {
+    setUrlStatus('none');
+    hidePreview();
+    return;
+  }
+
+  const vid = extractVideoId(val);
+  if (vid) {
+    setUrlStatus('valid');
+    if (vid !== currentVideoId) {
+      currentVideoId = vid;
+      clearTimeout(previewDebounce);
+      previewDebounce = setTimeout(() => loadPreview(val, vid), 400);
+    }
+  } else {
+    setUrlStatus(val.length > 10 ? 'invalid' : 'none');
+    hidePreview();
+    currentVideoId = null;
+  }
+});
+
+urlInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !isFetching) doFetch();
+});
+
+/* ─── Clear button ─── */
+clearBtn.addEventListener('click', () => {
+  urlInput.value = '';
+  setUrlStatus('none');
+  toggleClearBtn(false);
+  hidePreview();
+  currentVideoId = null;
+  urlInput.focus();
+});
+
+function toggleClearBtn(show) {
+  clearBtn.style.display = show ? '' : 'none';
+  clearBtn.style.opacity = show ? '1' : '0';
+}
+
+/* ─── Paste ─── */
+pasteBtn.addEventListener('click', async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    urlInput.value = text.trim();
+    urlInput.dispatchEvent(new Event('input'));
+    toast('Pasted ✓', 'success');
+  } catch {
+    toast('Clipboard access denied', 'error');
+  }
+});
+
+/* ─── URL status ring ─── */
+function setUrlStatus(state) {
+  const icons = {
+    valid:   { svg: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>`, color: '#10b981', border: '0 0 0 4px rgba(16,185,129,0.06)' },
+    invalid: { svg: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>`, color: '#ef4444', border: '0 0 0 4px rgba(239,68,68,0.06)' },
+    none:    null,
+  };
+  urlWrap.classList.remove('valid','invalid');
+  if (state === 'valid')   { urlWrap.classList.add('valid'); }
+  if (state === 'invalid') { urlWrap.classList.add('invalid'); }
+
+  if (!icons[state]) { urlStatus.style.opacity = '0'; return; }
+  const ic = icons[state];
+  urlStatus.style.opacity = '1';
+  urlStatus.innerHTML = `<svg width="12" height="12" fill="none" stroke="${ic.color}" viewBox="0 0 24 24">${ic.svg}</svg>`;
+}
+
+/* ─── Live preview ─── */
+async function loadPreview(url, vid) {
+  showPreview(vid);
+  previewLoading.classList.remove('hidden');
+  previewTitle.classList.add('hidden');
+  previewAuthor.classList.add('hidden');
+  previewIdEl.classList.add('hidden');
+
+  try {
+    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`;
+    const res = await fetch(oembedUrl);
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    currentTitle  = data.title || '';
+    currentAuthor = data.author_name || '';
+
+    previewLoading.classList.add('hidden');
+    if (currentTitle) {
+      previewTitle.textContent = currentTitle;
+      previewTitle.classList.remove('hidden');
+    }
+    if (currentAuthor) {
+      previewAuthor.textContent = currentAuthor;
+      previewAuthor.classList.remove('hidden');
+    }
+    previewIdEl.querySelector('span').textContent = vid;
+    previewIdEl.classList.remove('hidden');
+  } catch {
+    previewLoading.classList.add('hidden');
+    previewIdEl.querySelector('span').textContent = vid;
+    previewIdEl.classList.remove('hidden');
+    currentTitle = '';
+    currentAuthor = '';
+  }
+}
+
+function showPreview(vid) {
+  const thumbUrl = `https://img.youtube.com/vi/${vid}/mqdefault.jpg`;
+  previewThumb.src = thumbUrl;
+  previewThumb.onerror = () => { previewThumb.style.display = 'none'; };
+  previewPanel.classList.remove('hidden');
+}
+
+function hidePreview() {
+  previewPanel.classList.add('hidden');
+}
+
+previewClose.addEventListener('click', hidePreview);
+
+/* ─── Fetch ─── */
+fetchBtn.addEventListener('click', () => { if (!isFetching) doFetch(); });
+retryBtn.addEventListener('click', () => { if (!isFetching) doFetch(); });
+
+async function doFetch() {
+  const rawUrl = urlInput.value.trim();
+
+  if (!rawUrl) { toast('Paste a YouTube URL first', 'error'); urlInput.focus(); return; }
+  const vid = extractVideoId(rawUrl);
+  if (!vid)   { toast('Not a valid YouTube URL', 'error'); setUrlStatus('invalid'); return; }
+
+  setLoading(true);
+  hideAll();
+  showSection(progressSection);
+  await animateProgress();
+
+  try {
+    const apiUrl = `/api/yt-download?url=${encodeURIComponent(rawUrl)}&format=${encodeURIComponent(selectedFormat)}`;
+    const res = await fetch(apiUrl);
+    const data = await res.json();
+
+    if (data.error || !res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    if (!data.downloads?.length) throw new Error('No download links returned. Video may be private or unavailable.');
+
+    // fill progress to 100
+    setProgress(100, 'done');
+    await wait(350);
+    hideSection(progressSection);
+
+    renderResults(data, vid);
+    saveHistory(rawUrl, vid, currentTitle, currentAuthor, selectedFormat);
+    renderHistory();
+
+  } catch (err) {
+    setProgress(0, 'error');
+    await wait(200);
+    hideSection(progressSection);
+    showSection(errorSection);
+    errorMsg.textContent = err.message || 'An unknown error occurred.';
+  } finally {
+    setLoading(false);
+  }
+}
+
+/* ─── Progress animation ─── */
+const STEPS = ['step-validate','step-fetch','step-extract','step-ready'];
+const STEP_PROGRESS = [20, 50, 80, 95];
+
+async function animateProgress() {
+  resetSteps();
+  for (let i = 0; i < STEPS.length; i++) {
+    setStepState(STEPS[i], 'active');
+    setProgress(STEP_PROGRESS[i]);
+    await wait(i === 0 ? 300 : i === 1 ? 700 : 500);
+    setStepState(STEPS[i], 'done');
+  }
+}
+
+function resetSteps() {
+  STEPS.forEach(id => setStepState(id, 'pending'));
+  setProgress(0);
+}
+
+function setStepState(id, state) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('pending','active','done');
+  el.classList.add(state);
+}
+
+function setProgress(pct, mode) {
+  progFill.style.width = pct + '%';
+  progPct.textContent = pct + '%';
+  if (mode === 'done') { progFill.style.background = 'linear-gradient(90deg,#10b981,#34d399)'; progFill.style.animation='none'; }
+  if (mode === 'error') { progFill.style.background = 'rgba(239,68,68,0.4)'; progFill.style.animation='none'; }
+}
+
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/* ─── Render results ─── */
+function renderResults(data, vid) {
+  downloadLinks.innerHTML = '';
+
+  // show format label
+  const fmtLabels = { 'mp4-720':'MP4 · 720p', 'mp4-1080':'MP4 · 1080p', 'mp3':'MP3 · Audio' };
+  resultFormatLabel.textContent = fmtLabels[selectedFormat] || selectedFormat;
+
+  // video info
+  if (currentTitle || vid) {
+    resultThumb.src = `https://img.youtube.com/vi/${vid}/mqdefault.jpg`;
+    resultThumb.onerror = () => { resultVideoInfo.classList.add('hidden'); };
+    if (currentTitle) {
+      resultTitle.textContent = currentTitle;
+      if (currentAuthor) resultAuthor.textContent = currentAuthor;
+    }
+    resultVideoInfo.classList.remove('hidden');
+  }
+
+  data.downloads.forEach(item => {
+    const isAudio = item.label.toLowerCase().includes('mp3') || item.label.toLowerCase().includes('audio');
+    const typeClass = isAudio ? 'audio' : 'video';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'flex items-center gap-3';
+
+    // Main download link
+    const a = document.createElement('a');
+    a.href = item.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = `dl-btn ${typeClass} flex-1`;
+    a.innerHTML = `
+      <div class="flex items-center gap-3">
+        ${isAudio
+          ? `<svg class="w-5 h-5 text-violet-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>`
+          : `<svg class="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 10l4.553-2.069A1 1 0 0121 8.854v6.292a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>`
         }
-      }
+        <div>
+          <div class="text-sm font-bold">${esc(item.label)}</div>
+          <div class="text-[10px] opacity-50 mono mt-0.5">${item.filename ? esc(item.filename.slice(0,40)) : 'Click to download'}</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-1 text-xs opacity-60 flex-shrink-0">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+        <span>Save</span>
+      </div>`;
 
-      resultsSection.classList.remove('hidden');
-      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    // ── Show error ──
-    function showError(msg) {
-      errorMessage.textContent = msg;
-      errorSection.classList.remove('hidden');
-      errorSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    // ── Loading state ──
-    function setLoading(loading) {
-      isFetching = loading;
-      fetchBtn.disabled = loading;
-
-      if (loading) {
-        fetchBtnText.innerHTML = `
-          <svg class="spinner w-4 h-4 inline-block mr-2" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-          </svg>
-          Extracting…`;
-        progressWrap.classList.remove('hidden');
-      } else {
-        fetchBtnText.innerHTML = `
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-          </svg>
-          Fetch Download Link`;
-        progressWrap.classList.add('hidden');
-      }
-    }
-
-    // ── Hide results/error ──
-    function hideAll() {
-      resultsSection.classList.add('hidden');
-      errorSection.classList.add('hidden');
-      videoInfo.classList.add('hidden');
-      downloadLinks.innerHTML = '';
-    }
-
-    // ── URL validation ──
-    function isValidYouTubeUrl(url) {
+    // Copy button
+    const copyBtn = document.createElement('button');
+    copyBtn.className = `copy-badge ${isAudio ? 'audio-copy' : 'video-copy'}`;
+    copyBtn.textContent = 'Copy';
+    copyBtn.title = 'Copy download URL to clipboard';
+    copyBtn.addEventListener('click', async () => {
       try {
-        const u = new URL(url);
-        return (
-          (u.hostname === 'www.youtube.com' || u.hostname === 'youtube.com') && u.searchParams.has('v')
-        ) || (
-          u.hostname === 'youtu.be' && u.pathname.length > 1
-        ) || (
-          (u.hostname === 'www.youtube.com' || u.hostname === 'youtube.com') &&
-          (u.pathname.startsWith('/shorts/') || u.pathname.startsWith('/live/'))
-        );
+        await navigator.clipboard.writeText(item.url);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+        toast('Link copied to clipboard ✓', 'success');
       } catch {
-        return false;
+        toast('Copy failed', 'error');
       }
+    });
+
+    wrapper.appendChild(a);
+    wrapper.appendChild(copyBtn);
+    downloadLinks.appendChild(wrapper);
+  });
+
+  showSection(resultsSection);
+  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/* ─── Section helpers ─── */
+function showSection(el) { el.classList.add('visible'); }
+function hideSection(el) { el.classList.remove('visible'); }
+function hideAll() {
+  hideSection(progressSection);
+  hideSection(resultsSection);
+  hideSection(errorSection);
+  downloadLinks.innerHTML = '';
+  resultVideoInfo.classList.add('hidden');
+  resetSteps();
+  progFill.style.background = '';
+  progFill.style.animation = '';
+}
+
+/* ─── Loading state ─── */
+function setLoading(on) {
+  isFetching = on;
+  fetchBtn.disabled = on;
+  if (on) {
+    btnIcon.innerHTML = `<circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>`;
+    btnIcon.setAttribute('fill','none');
+    btnIcon.classList.add('spin');
+    btnText.textContent = 'Extracting…';
+  } else {
+    btnIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>`;
+    btnIcon.setAttribute('fill','none');
+    btnIcon.classList.remove('spin');
+    btnText.textContent = 'Get Download Link';
+  }
+}
+
+/* ─── History ─── */
+const HIST_KEY = 'vyt_history_v2';
+
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveHistory(url, vid, title, author, fmt) {
+  const hist = loadHistory().filter(h => h.vid !== vid);
+  hist.unshift({ url, vid, title: title || vid, author: author || '', fmt, ts: Date.now() });
+  localStorage.setItem(HIST_KEY, JSON.stringify(hist.slice(0, 8)));
+}
+
+function renderHistory() {
+  const hist = loadHistory();
+  if (!hist.length) { historySec.classList.add('hidden'); return; }
+  historySec.classList.remove('hidden');
+  historyList.innerHTML = '';
+  hist.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'hist-item';
+    const fmtBadge = { 'mp4-720':'MP4 720p','mp4-1080':'MP4 1080p','mp3':'MP3' }[item.fmt] || item.fmt;
+    el.innerHTML = `
+      <img class="hist-thumb" src="https://img.youtube.com/vi/${item.vid}/mqdefault.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold text-slate-300 truncate">${esc(item.title)}</p>
+        ${item.author ? `<p class="text-[10px] text-slate-600 truncate mono">${esc(item.author)}</p>` : ''}
+      </div>
+      <span class="text-[10px] mono px-2 py-0.5 rounded flex-shrink-0" style="background:rgba(255,255,255,0.04);color:#6b7280;">${esc(fmtBadge)}</span>`;
+    el.addEventListener('click', () => {
+      urlInput.value = item.url;
+      urlInput.dispatchEvent(new Event('input'));
+      urlInput.scrollIntoView({ behavior: 'smooth' });
+      toast('URL loaded from history', 'success');
+    });
+    historyList.appendChild(el);
+  });
+}
+
+clearHistoryBtn.addEventListener('click', () => {
+  localStorage.removeItem(HIST_KEY);
+  renderHistory();
+  toast('History cleared', 'success');
+});
+
+/* ─── Utils ─── */
+function extractVideoId(url) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, '');
+    if (host === 'youtube.com') {
+      if (u.pathname === '/watch') return u.searchParams.get('v') || null;
+      const m = u.pathname.match(/^\/(shorts|live|embed)\/([A-Za-z0-9_-]{11})/);
+      if (m) return m[2];
     }
-
-    // ── HTML escape ──
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    if (host === 'youtu.be') {
+      const id = u.pathname.slice(1, 12);
+      return id.length === 11 ? id : null;
     }
+  } catch {}
+  return null;
+}
 
-    // ── Toast notification ──
-    let toastTimer;
-    function showToast(msg, type = 'success') {
-      const toast = document.getElementById('toast');
-      const icon  = document.getElementById('toast-icon');
-      const msgEl = document.getElementById('toast-msg');
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-      msgEl.textContent = msg;
+/* ─── Toast ─── */
+let toastTimer;
+function toast(msg, type = 'success') {
+  const el   = document.getElementById('toast');
+  const icon = document.getElementById('toast-icon');
+  const txt  = document.getElementById('toast-msg');
+  txt.textContent = msg;
+  if (type === 'success') {
+    icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>`;
+    icon.style.color = '#10b981';
+    el.style.borderColor = 'rgba(16,185,129,0.2)';
+  } else {
+    icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>`;
+    icon.style.color = '#ef4444';
+    el.style.borderColor = 'rgba(239,68,68,0.2)';
+  }
+  icon.setAttribute('stroke','currentColor');
+  icon.setAttribute('fill','none');
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
 
-      if (type === 'error') {
-        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>`;
-        icon.className = 'w-4 h-4 text-red-400 flex-shrink-0';
-      } else {
-        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>`;
-        icon.className = 'w-4 h-4 text-emerald-400 flex-shrink-0';
-      }
-
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    // ── Mobile menu toggle (header) ──
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu    = document.getElementById('mobileMenu');
-    if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-    }
-  </script>
+/* ─── Init ─── */
+renderHistory();
+</script>
 
 </body>
 </html>
