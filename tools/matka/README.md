@@ -57,6 +57,7 @@ The app will start the server and automatically launch your default browser at:
 
 | Command | Action |
 |---|---|
+| `python sync_and_push.py` | Scrapes latest draws, retrains models, updates all JSON/CSV files, and pushes to web |
 | `python main.py --web` | Starts the web server and opens the browser interface |
 | `python main.py --predict` | Prints upcoming draw predictions to the terminal |
 | `python main.py --backtest` | Executes out-of-sample walk-forward backtest across 2,680 historical draws |

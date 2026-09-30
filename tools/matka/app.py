@@ -176,6 +176,23 @@ def compute_all_predictions(force_refresh: bool = False):
     with open(pred_path_web, "w", encoding="utf-8") as f:
         json.dump(pred_data_to_save, f, indent=2)
 
+    # Persist updated history.json for client
+    history_list = []
+    for _, row in valid_df.iterrows():
+        history_list.append([
+            str(row["Date"]),
+            str(row["Day_Of_Week"]),
+            int(row["Jodi"]),
+            int(row["Open_Digit"]),
+            int(row["Close_Digit"])
+        ])
+    hist_path_root = os.path.join(WORKSPACE_DIR, "history.json")
+    hist_path_web = os.path.join(WEB_DIR, "history.json")
+    with open(hist_path_root, "w", encoding="utf-8") as f:
+        json.dump(history_list, f)
+    with open(hist_path_web, "w", encoding="utf-8") as f:
+        json.dump(history_list, f)
+
     return output_payload
 
 
