@@ -4,50 +4,58 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
           http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <!-- Homepage / Main Portal -->
+  <!-- Homepage / Main Company Portal -->
   <url>
     <loc>https://zevbuild.pages.dev/</loc>
-    <lastmod>2026-09-26</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- Kalyan Auto-Predictor Engine -->
+  <!-- Embedded Tools & Utilities Hub -->
   <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/index.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://zevbuild.pages.dev/tools/</loc>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Kalyan Matka ML & Analytics Engine -->
+  <url>
+    <loc>https://zevbuild.pages.dev/tools/matka/</loc>
+    <lastmod>2026-09-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Kalyan Predictions Dashboard -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/dashboard.html</loc>
-    <lastmod>2026-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Kalyan Historical Penal Chart -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/kalyan_penal_chart.html</loc>
-    <lastmod>2026-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Spotify Playlist Downloader -->
+  <!-- Spotify Playlist Downloader & RetroWave Offline Player -->
   <url>
     <loc>https://zevbuild.pages.dev/tools/spotify/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-09-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
 
-  <!-- v_yt — YouTube Video Downloader -->
+  <!-- Curated Video Downloaders & Media Utilities Guide -->
+  <url>
+    <loc>https://zevbuild.pages.dev/tools/download/</loc>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- v_yt — YouTube Video & Audio Downloader -->
   <url>
     <loc>https://zevbuild.pages.dev/tools/yt/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <lastmod>2026-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- UPI Payment Link Generator -->
+  <url>
+    <loc>https://zevbuild.pages.dev/tools/upi-link-generator/</loc>
+    <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

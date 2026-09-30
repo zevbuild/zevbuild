@@ -29,22 +29,27 @@
 ```
 zevbuild/                             ← Root: org portal & multi-tool monorepo
 ├── index.html                        ← Main company website (1,091 lines, self-contained SPA)
-├── 404.html                          ← Custom 404 error page
+├── 404.html                          ← Smart-routing 404 error page (keyword recovery & auto-redirect)
+├── favicon.svg                       ← Studio SVG vector icon / favicon
 ├── og-image.svg                      ← Open Graph social share image
 ├── robots.txt                        ← SEO crawl rules (blocks /.git/ and /functions/)
-├── sitemap.xml                       ← SEO sitemap
+├── sitemap.xml                       ← SEO sitemap (canonical routes for home and all tools)
 ├── README.md                         ← Public-facing project README
-├── PROJECT_BRAIN.md                  ← YOU ARE HERE
+├── PROJECT_BRAIN.md                  ← Single source of truth architectural brain (YOU ARE HERE)
+├── verify_links_and_assets.py        ← Automated E2E link, asset, and DOM anchor verification crawler
+├── TEST_READY.md                     ← Quick start testing reference & status
+├── TEST_INFRA.md                     ← In-depth 4-tier verification test harness documentation
 │
 ├── functions/                        ← Cloudflare Pages serverless edge functions
 │   └── api/
 │       ├── live-kalyan.js            ← Edge worker: live Kalyan draw fetcher & parser
-│       └── fetch-and-predict.js      ← Edge worker stub (minimal, delegates to live-kalyan)
+│       ├── fetch-and-predict.js      ← Edge worker stub (delegates to live-kalyan)
+│       └── yt-download.js            ← Edge worker: YouTube metadata & download proxy via Cobalt API
 │
 └── tools/                            ← All sub-products live here
-    ├── index.html                    ← Tools index/landing redirect page
+    ├── index.html                    ← Tools catalog & navigation hub
     │
-    ├── satta-matka-tools/            ← Kalyan Matka Predictive Analytics Engine
+    ├── matka/                        ← Kalyan Matka Predictive Analytics & ML Engine
     │   ├── main.py                   ← CLI orchestrator (entry point)
     │   ├── app.py                    ← Threaded HTTP web server + REST API
     │   ├── scraper.py                ← HTML scraper & data sanitizer
@@ -58,23 +63,23 @@ zevbuild/                             ← Root: org portal & multi-tool monorepo
     │   ├── kalyan_penal_chart.html   ← Local HTML cache (avoids re-scraping every run)
     │   ├── history.json              ← Cached history data for the web UI
     │   ├── prediction_data.json      ← Baseline snapshot of latest predictions
-    │   ├── dashboard.html            ← Standalone HTML dashboard (mirrors web/index.html)
-    │   ├── index.html                ← Duplicate/alias of dashboard.html
+    │   ├── dashboard.html            ← Standalone HTML dashboard with studio breadcrumbs
+    │   ├── index.html                ← Browser entry point with studio header breadcrumbs
     │   └── web/                      ← Web server's static root (served by app.py)
-    │       ├── index.html            ← The browser UI served at http://127.0.0.1:8080
+    │       ├── index.html            ← Browser UI served at http://127.0.0.1:8080
     │       ├── history.json          ← History data for the UI
     │       └── prediction_data.json  ← Cached prediction data for the UI
     │
-    ├── sp-ms-downloader/             ← Spotify Playlist Batch Downloader + RetroWave Player
-    │   ├── index.html                ← Offline RetroWave audio player (drag-and-drop MP3)
-    │   ├── spotify_download_script.txt ← Browser console script for spotifymp3.com
+    ├── spotify/                      ← Spotify Playlist Batch Downloader + RetroWave Player
+    │   ├── index.html                ← Offline RetroWave audio player (drag-and-drop MP3, Canvas visualizer)
+    │   ├── spotify_download_script.txt ← Browser console script for spotifymp3.com batch extraction
     │   ├── website.txt               ← Target website URL reference
-    │   └── README.md                 ← Step-by-step usage guide
+    │   └── README.md                 ← Step-by-step usage guide & troubleshooting
     │
-    └── top-10-free-video-downloaders-in-india/
-        └── index.html                ← Static SEO article/landing page (1,684 bytes)
+    ├── download/                     ← Curated Video Downloaders & Media Utilities Guide
+    │   └── index.html                ← Cyber-themed guide to legitimate, open-source video download tools
     │
-    └── v_yt/                         ← YouTube Video Downloader (yt-dlp via Cobalt API)
+    └── yt/                           ← v_yt: YouTube Video & Audio Downloader
         ├── index.html                ← Downloader UI (vanilla HTML + Tailwind + vanilla JS)
         └── README.md                 ← Usage guide & API reference
 ```
@@ -87,17 +92,18 @@ zevbuild/                             ← Root: org portal & multi-tool monorepo
 
 A **fully self-contained single-page app** — no build step, no framework, no CDN dependency at runtime.
 
-- **Size:** ~68 KB, 1,091 lines
+- **Size:** ~76 KB, dark-themed responsive layout
 - **Tech:** Vanilla HTML + Tailwind CSS (CDN) + vanilla JS
-- **SEO:** Full JSON-LD structured data (Organization schema), Open Graph, Twitter Cards, geo-targeting (IN-GA Goa)
-- **Deployed at:** `https://zevbuild.pages.dev/` via GitHub Pages
+- **SEO:** Full JSON-LD structured data (Organization schema), Open Graph, Twitter Cards, geo-targeting (IN-GA Goa), canonical link
+- **Deployed at:** `https://zevbuild.pages.dev/` via Cloudflare Pages
+- **Navigation:** Header anchors (`#products`, `#philosophy`, `#architecture`, `#specs`, `#contact`), mobile menu with auto-closing backdrop, direct links to tools ecosystem (`tools/` and `tools/matka/`)
 - **Notable:** `theme-color: #8b5cf6` (purple branding), 600,000-iteration PBKDF2 referenced in product copy
 
 ---
 
-### 2. Kalyan Matka Predictive Analytics Engine (`tools/satta-matka-tools/`)
+### 2. Kalyan Matka Predictive Analytics Engine (`tools/matka/`)
 
-The most complex tool in this repo. A full **data engineering + ML + web server system**.
+A sophisticated **data engineering + ML + local web server system** with historical analysis from 2012 to 2026.
 
 #### Architecture
 
@@ -114,7 +120,7 @@ dpbossx.net ──► scraper.py ──► kalyan_historical_data.csv
                                         │
                                      app.py (HTTP :8080)
                                         │
-                               web/index.html (browser UI)
+                                web/index.html (browser UI)
 ```
 
 #### File Responsibilities
@@ -127,7 +133,8 @@ dpbossx.net ──► scraper.py ──► kalyan_historical_data.csv
 | `predict.py` | Generates 6-day forward forecasts; builds family/cut bracket jodi sets (+5 mod 10) |
 | `backtest.py` | Strict walk-forward backtesting on 2,680 out-of-sample draws |
 | `eda.py` | Frequency analytics: Top/Bottom Jodis, Open/Close digit distributions |
-| `app.py` | Threaded HTTP server (`ThreadingMixIn + HTTPServer`) on `127.0.0.1:8080`. REST: `GET /api/status`, `GET|POST /api/fetch-and-predict` |
+| `app.py` | Threaded HTTP server (`ThreadingMixIn + HTTPServer`) on `127.0.0.1:8080`. REST: `GET /api/status`, `GET\|POST /api/fetch-and-predict` |
+| `index.html` / `dashboard.html` | Browser entry points featuring top breadcrumb navigation back to Main Hub (`../../index.html`) and Tools Hub (`../index.html`) |
 
 #### Predictive Model Architecture
 
@@ -135,7 +142,7 @@ The `EnsemblePredictor` blends three sub-models:
 
 | Model | Weight | Algorithm |
 |---|---|---|
-| `MarkovChainModel` | **0.30** | First-order Markov: P(Draw_t | Draw_{t-1}). Laplace smoothing (alpha=0.5) |
+| `MarkovChainModel` | **0.30** | First-order Markov: P(Draw_t \| Draw_{t-1}). Laplace smoothing (alpha=0.5) |
 | `RecencyWeightedModel` | **0.40** | Exponential decay w_i = e^(-lambda * delta_t), 60-draw half-life |
 | `DayOfWeekSeasonalModel` | **0.30** | Historical frequency conditioned on day-of-week (Mon–Sat) |
 
@@ -176,29 +183,50 @@ beautifulsoup4>=4.12.0
 pandas>=2.2.0
 tabulate>=0.9.0
 ```
-> **Note:** `numpy` is used in `models.py` but absent from `requirements.txt` — it arrives as a transitive dep of pandas.
 
 ---
 
-### 3. Spotify Playlist Downloader (`tools/sp-ms-downloader/`)
+### 3. Spotify Playlist Downloader & RetroWave Player (`tools/spotify/`)
 
-A **non-code utility toolkit** — no backend, no build step.
+A privacy-focused utility combination for downloading music collections and playing them offline in a rich synthwave environment.
 
-- **`spotify_download_script.txt`** — Browser console JS that auto-iterates all songs on spotifymp3.com and clicks download with a 10-second throttle per song (to evade Cloudflare bot detection).
-- **`index.html`** — Offline "RetroWave" audio player. Drag-and-drop MP3 files, real-time audio visualizer. 100% local browser app.
-- **Workflow:** Firefox → spotifymp3.com → paste script → batch download → drag MP3s to RetroWave player.
+- **`index.html`** — Offline "RetroWave" HTML5 audio player:
+  - Drag-and-drop local audio files (`.mp3`, `.wav`, `.ogg`, `.m4a`)
+  - Web Audio API real-time frequency analyser and animated synthwave Canvas visualizer
+  - Queue management, seek bar, time display, volume control, track metadata parsing
+  - Studio top navigation breadcrumb bar (`../../index.html` and `../index.html`)
+  - 100% offline, zero-telemetry, runs entirely client-side
+- **`spotify_download_script.txt`** — Browser console script that iterates songs on spotifymp3.com and triggers sequential downloads with a 10-second throttle to avoid rate limits
+- **`website.txt`** — Reference endpoint URL for the download utility
+- **`README.md`** — Comprehensive step-by-step instructions and troubleshooting
 
 ---
 
-### 4. SEO Content Page (`tools/top-10-free-video-downloaders-in-india/`)
+### 4. Video Downloaders & Media Utilities Guide (`tools/download/`)
 
-A minimal **static article page** (1,684 bytes). SEO content targeting "top 10 free video downloaders in India" queries. No dynamic content.
+A curated, privacy-first technical resource guide presented in Zevbuild's neon cyber/synthwave design.
+
+- **`index.html`**:
+  - Curated collection of the top 10 legitimate, privacy-first, and open-source video downloaders and transcoding utilities:
+    1. **yt-dlp** (Command-line video/audio extractor)
+    2. **Cobalt** (Privacy-first media downloader web app & API)
+    3. **VLC Media Player** (Universal media player & stream downloader)
+    4. **HandBrake** (Open-source video transcoder)
+    5. **FFmpeg** (Complete cross-platform media processing framework)
+    6. **NewPipe** (Lightweight Android YouTube frontend)
+    7. **Seal** (Android yt-dlp GUI frontend)
+    8. **JDownloader 2** (Open-source automated download manager)
+    9. **4K Video Downloader** (Desktop media grabber)
+    10. **Dirpy** (Digital internet recording studio & audio converter)
+  - **Sanitization:** 100% clean — purged of all adult/NSFW links (removed `hqporner.com`)
+  - Responsive cards with technical specs, licensing info, and verified official URLs
+  - Sticky top navigation breadcrumbs to Main Hub (`../../index.html`) and Tools Catalog (`../index.html`)
 
 ---
 
-### 5. v_yt — YouTube Video Downloader (`tools/v_yt/`)
+### 5. v_yt — YouTube Video & Audio Downloader (`tools/yt/`)
 
-A **browser-based video downloader** powered by yt-dlp via the Cobalt API.
+A browser-based video downloader and media extractor powered by **yt-dlp** via the Cobalt API.
 
 #### Architecture
 
@@ -227,12 +255,36 @@ Cloudflare Worker (functions/api/yt-download.js)
 
 | File | Role |
 |---|---|
-| `tools/v_yt/index.html` | Static UI: URL input, format selector, fetch button, results panel |
-| `tools/v_yt/README.md` | Usage docs, API reference, legal notice |
-| `functions/api/yt-download.js` | CF Worker: validates URL, maps format → Cobalt params, proxies response |
+| `tools/yt/index.html` | Static UI: URL input, format selector, fetch button, results panel, and studio navigation breadcrumbs |
+| `tools/yt/README.md` | Usage docs, API reference, legal disclaimer, and credits |
+| `functions/api/yt-download.js` | Cloudflare Pages Function: validates URLs, proxies requests to Cobalt API |
 
-#### API Endpoint
-`GET /api/yt-download?url=<encoded-url>&format=<format-code>`
+---
+
+### 6. Automated Verification Crawler Harness (`verify_links_and_assets.py`)
+
+A zero-external-dependency automated test crawler and verification harness built using Python 3 standard library.
+
+#### Verification Tiers
+
+| Tier | Focus Area | Checks Covered |
+|---|---|---|
+| **Tier 1** | Feature Coverage | HTML document discovery, non-empty files, required tool entry points, local static assets (`script`, `img`, `css`, `icon`), relative paths |
+| **Tier 2** | Boundary & Corner Cases | Empty/whitespace attribute detection, DOM fragment `#anchor` matching, cross-document anchor resolution, `../../` workspace traversal bounds |
+| **Tier 3** | Cross-Feature Contracts | Main hub-to-tool links, obsolete directory path elimination, sub-tool back-navigation breadcrumbs (`../../index.html` & `../index.html`), 404 smart keyword routing, sitemap validation |
+| **Tier 4** | Real-World Workloads | New visitor navigation walkthrough, tool catalog explorer roundtrip, 404 recovery loop prevention, prohibited/NSFW domain detection, outbound HTTP reachability |
+
+#### Execution Commands
+```bash
+# Fast local-only verification (paths, DOM anchors, assets, breadcrumbs)
+python verify_links_and_assets.py --local-only
+
+# Comprehensive verification including live outbound HTTP status checks
+python verify_links_and_assets.py --check-external
+
+# Targeted tier execution
+python verify_links_and_assets.py --tier 1
+```
 
 ---
 
@@ -312,28 +364,46 @@ Stub file (46 bytes) — delegates to live-kalyan.
 - Self-contained — no build step. Edit directly.
 - Tailwind CSS via CDN — use utility classes, no separate CSS files.
 - JSON-LD structured data in `<head>` must stay consistent with product details.
-- All SEO tags (OG, Twitter, canonical) are in `<head>`.
+- All SEO tags (OG, Twitter, canonical, favicon) are in `<head>`.
 
-### Editing the Kalyan Analytics Engine
+### Editing the Kalyan Analytics Engine (`tools/matka/`)
 - **Entry point for all work:** `main.py`
 - **Model logic lives exclusively in:** `models.py` — do not scatter model code into other files
-- **Web server static root:** `tools/satta-matka-tools/web/` (NOT the tool root)
+- **Web server static root:** `tools/matka/web/` (NOT the tool root)
 - **CSV + HTML cache files** are generated artifacts — be mindful before committing large updates
 - `app.py` uses `ThreadingMixIn` — API handlers are concurrent; be careful with shared mutable state
 
-### Editing Cloudflare Functions
+### Editing the Spotify RetroWave Player (`tools/spotify/`)
+- Offline player in `tools/spotify/index.html` uses Web Audio API and Canvas.
+- Keep external asset dependencies to zero for offline resilience.
+- Maintain top navigation breadcrumb links (`../../index.html` and `../index.html`).
+
+### Editing the Video Downloaders Guide (`tools/download/`)
+- Pure static HTML with embedded CSS styling.
+- Strictly adhere to content safety guidelines: NO adult/NSFW links or redirects.
+- Maintain top navigation breadcrumbs (`../../index.html` and `../index.html`).
+
+### Editing the YouTube Downloader (`tools/yt/`)
+- UI in `tools/yt/index.html` coordinates with `functions/api/yt-download.js`.
+- Provide graceful offline and rate limit handling for users.
+- Maintain top navigation breadcrumbs (`../../index.html` and `../index.html`).
+
+### Editing Cloudflare Functions (`functions/api/`)
 - Files in `functions/api/` are auto-deployed on push — changes go live immediately
 - Use Cloudflare Workers APIs (`fetch`, `Response`, `context.request`) — no Node.js APIs
 - CORS headers are set manually in every response — **do not remove them**
 - `cf: { cacheTtl: 0, cacheEverything: false }` is intentional to prevent stale draw data
 
+### Verification
+- Always execute `python verify_links_and_assets.py --local-only` after touching HTML, links, or documentation.
+
 ### Conventions
 
 | Convention | Details |
 |---|---|
-| Python version | Python 3.14 (per README); 3.10+ safe in practice |
+| Python version | Python 3.10+ safe in practice |
 | JS style | ESM modules (`export async function`), no bundler |
-| HTML style | Vanilla HTML, Tailwind via CDN, no frameworks |
+| HTML style | Vanilla HTML, Tailwind via CDN or embedded CSS, no frameworks |
 | Indentation | 4 spaces (Python), 2 spaces (HTML/JS) |
 | No build tools | No webpack, vite, or npm — zero dependency toolchain |
 
@@ -372,8 +442,7 @@ Stub file (46 bytes) — delegates to live-kalyan.
 > Not bugs — just things a new contributor should be aware of.
 
 - `numpy` is used in `models.py` but missing from `requirements.txt` (arrives via pandas)
-- `fetch-and-predict.js` is only 46 bytes — appears to be a placeholder stub
-- `dashboard.html` and `index.html` at the tool root look like duplicates of `web/index.html`
-- `kalyan_penal_chart.html` (317 KB) and `kalyan_historical_data.csv` (101 KB) are committed artifacts — consider `.gitignore`-ing these generated files
-- No automated unit tests exist for any Python modules
+- `fetch-and-predict.js` is only 46 bytes — delegates to live-kalyan
+- `dashboard.html` and `index.html` at the `tools/matka/` root are standalone dashboards with back-navigation breadcrumbs
+- `kalyan_penal_chart.html` (331 KB) and `kalyan_historical_data.csv` (101 KB) are cached data artifacts
 - ZevSafe and ZevSync live in **separate GitHub repos** (not present in this directory)

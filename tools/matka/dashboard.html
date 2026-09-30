@@ -7,6 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>Kalyan Live Predictor & Auto-Fetch Engine</title>
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -22,6 +23,28 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-indigo-500 selection:text-white p-3 sm:p-6">
 
   <div class="max-w-5xl mx-auto space-y-4 sm:space-y-6">
+
+    <!-- Top Navigation Breadcrumbs -->
+    <nav class="flex items-center justify-between text-xs py-2 px-1 text-slate-400 border-b border-slate-800/80 mb-2">
+      <div class="flex items-center gap-2">
+        <a href="../../index.html" class="flex items-center gap-1.5 hover:text-indigo-400 transition-colors font-medium">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>Zevbuild Studio</span>
+        </a>
+        <span class="text-slate-600">/</span>
+        <a href="../index.html" class="hover:text-indigo-400 transition-colors font-medium">Tools</a>
+        <span class="text-slate-600">/</span>
+        <span class="text-indigo-400 font-semibold">Kalyan Matka Analytics</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-2">
+        <a href="kalyan_penal_chart.html" class="hover:text-slate-200 transition-colors text-[11px] bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-lg">
+          Historical Penal Chart
+        </a>
+      </div>
+    </nav>
 
     <!-- Top Header & Live Sync Bar -->
     <header class="bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

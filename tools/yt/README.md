@@ -23,7 +23,7 @@ A browser-based YouTube video downloader powered by **yt-dlp** via the Cobalt AP
 
 ## 🚀 Usage
 
-1. Open [`tools/v_yt/index.html`](index.html) in your browser
+1. Open [`tools/yt/index.html`](index.html) in your browser
 2. Paste a YouTube video URL (e.g. `https://www.youtube.com/watch?v=dQw4w9WgXcQ`)
 3. Select your desired format (MP4 720p / MP4 1080p / MP3 Audio)
 4. Click **Fetch Download Link**
@@ -53,7 +53,7 @@ Cloudflare Worker (functions/api/yt-download.js)
 
 | File | Role |
 |---|---|
-| `tools/v_yt/index.html` | Static frontend UI (vanilla HTML + Tailwind + vanilla JS) |
+| `tools/yt/index.html` | Static frontend UI (vanilla HTML + Tailwind + vanilla JS) |
 | `functions/api/yt-download.js` | Cloudflare Pages Function — proxies to Cobalt API |
 
 **Why a backend worker?** `yt-dlp` is a Python CLI tool — it cannot run in a browser. The Cloudflare Worker acts as a server-side proxy that calls Cobalt (an open-source yt-dlp web service) and returns direct download URLs to the browser.

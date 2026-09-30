@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="ZevBuild Studio">
+  <meta name="description" content="Generate UPI payment links instantly for Indian payments. Create shareable links, QR codes, and send via WhatsApp or SMS with a secure UPI link generator.">
+  <link rel="canonical" href="https://zevbuild.pages.dev/upi-link-generator/">
+  <meta property="og:title" content="UPI Link Generator - Pay Anyone Instantly">
+  <meta property="og:description" content="Create UPI payment links and QR codes for fast, secure Indian payments. Share via WhatsApp, SMS and accept payments instantly.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:url" content="https://zevbuild.pages.dev/upi-link-generator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UPI Link Generator - Pay Anyone Instantly">
+  <meta name="twitter:description" content="Generate UPI payment links and QR codes fast. Perfect for India: payers can open the payment request and complete transactions with one tap.">
+  <meta name="theme-color" content="#4F46E5">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>UPI Link Generator - Pay Anyone, Instantly</title>
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- External libraries (no integrity checks so they always load) -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "UPI Link Generator - Pay Anyone Instantly",
+    "description": "Generate UPI payment links and QR codes for India. Share by WhatsApp or SMS and collect payments faster without manual typing.",
+    "url": "https://zevbuild.pages.dev/upi-link-generator/",
+    "inLanguage": "en-IN",
+    "publisher": {
+      "@type": "Organization",
+      "name": "ZevBuild Studio"
+    }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-icon">UPI</div>
+    <div class="logo-text">UPI <span>Link</span></div>
+  </div>
+  <div class="header-badge">India</div>
+</header>
+<div class="trial-pill" id="trial-pill" style="display:none;">
+  <span><strong id="trial-time">05:00</strong> free preview before login is required.</span>
+  <a href="../index.html">Login</a>
+</div>
+<main>
+  <!-- Security warning -->
+  <div style="background:#FFF3CD; border:1px solid #FFEEBA; color:#856404; padding:10px 16px; border-radius:12px; margin-bottom:16px; font-size:13px; line-height:1.4;">
+     <strong>Fraud Alert:</strong> Always verify the UPI ID before paying. Never share your PIN.
+  </div>
+  <div class="hero">
+    <h1>Pay Anyone with<br><em>One Click</em></h1>
+    <p>Generate a payment link - no QR scanning needed.<br>Just click and enter PIN. That's it.</p>
+  </div>
+  <div class="card" id="input-section">
+    <div class="card-header">
+      <div class="card-icon purple">Pay</div>
+      <div><div class="card-title">Payment Details</div><div class="card-subtitle">Enter details or scan a QR code</div></div>
+    </div>
+    <div class="input-tabs">
+      <button class="tab-btn active" onclick="switchTab('manual')" id="tab-manual"> Manual Entry</button>
+      <button class="tab-btn" onclick="switchTab('qr')" id="tab-qr"> Scan QR</button>
+    </div>
+    <div id="panel-manual">
+      <div class="field">
+        <label>UPI ID *</label>
+        <div class="field-wrap">
+          <span class="field-icon">*</span>
+          <input type="text" id="upi-id" placeholder="name@bank or 9876543210@upi" autocomplete="off" autocorrect="off" spellcheck="false" oninput="validateUPI(this)" onfocus="showRecent()">
+          <span class="field-valid-badge">OK</span>
+        </div>
+        <div class="field-error" id="upi-error">Please enter a valid UPI ID (e.g. raju@okaxis)</div>
+        <div class="field-hint">e.g. name@paytm - 9876543210@ybl - name@upi</div>
+      </div>
+      <div class="recent-section" id="recent-section">
+        <div class="recent-label">Recent <button onclick="clearRecent()" style="background:none;border:none;color:var(--danger);font-size:11px;cursor:pointer;margin-left:8px;">Clear all</button></div>
+        <div class="recent-chips" id="recent-chips"></div>
+      </div>
+      <div class="field">
+        <label>Payee Name</label>
+        <div class="field-wrap"><span class="field-icon">*</span><input type="text" id="payee-name" placeholder="Shop or person name" autocomplete="off"></div>
+      </div>
+      <div class="field">
+        <label>Amount (Rs) *</label>
+        <div class="field-wrap amount-wrap">
+          <span class="amount-symbol">Rs</span>
+          <input type="number" id="amount" placeholder="0" min="1" max="100000" class="amount-input" oninput="validateAmount(this)" inputmode="decimal">
+        </div>
+        <div class="quick-amounts">
+          <button class="quick-amt" onclick="setAmount(100)">Rs 100</button>
+          <button class="quick-amt" onclick="setAmount(500)">Rs 500</button>
+          <button class="quick-amt" onclick="setAmount(1000)">Rs 1,000</button>
+          <button class="quick-amt" onclick="setAmount(2000)">Rs 2,000</button>
+          <button class="quick-amt" onclick="setAmount(5000)">Rs 5,000</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Note / Remark</label>
+        <div class="field-wrap"><span class="field-icon">*</span><input type="text" id="note" placeholder="E.g. Grocery bill, Tuition fee..." maxlength="50" autocomplete="off"></div>
+      </div>
+    </div>
+    <div id="panel-qr" style="display:none">
+      <div class="qr-upload-area" id="qr-drop-zone"
+        ondragover="event.preventDefault();this.classList.add('dragover')"
+        ondragleave="this.classList.remove('dragover')"
+        ondrop="handleQRDrop(event)">
+        <input type="file" accept="image/*" onchange="handleQRUpload(event)" id="qr-file-input">
+        <div class="qr-upload-icon">QR</div>
+        <div class="qr-upload-text">Upload QR Code Image</div>
+        <div class="qr-upload-hint">Take a screenshot or photo of the QR code<br>and upload it here</div>
+      </div>
+      <button class="btn-camera-scan" id="start-camera-btn" onclick="startCameraScan()"> Scan with Camera</button>
+      <video id="camera-preview" style="width:100%; border-radius:12px; display:none;" autoplay playsinline></video>
+      <canvas id="camera-canvas" style="display:none;"></canvas>
+      <button class="btn-cancel-scan" id="stop-camera-btn" onclick="stopCameraScan()" style="display:none;"> Cancel Scan</button>
+      <div id="qr-preview-container">
+        <img id="qr-preview-img" src="" alt="QR Preview">
+        <canvas id="qr-scan-canvas" style="display:none"></canvas>
+      </div>
+      <div class="qr-scan-result" id="qr-scan-result"></div>
+      <div style="height:14px"></div>
+      <div class="field">
+        <label>Name (Optional)</label>
+        <div class="field-wrap"><span class="field-icon">*</span><input type="text" id="qr-name" placeholder="Payee name"></div>
+      </div>
+      <div class="field">
+        <label>Amount (Rs) *</label>
+        <div class="field-wrap amount-wrap">
+          <span class="amount-symbol">Rs</span>
+          <input type="number" id="qr-amount" placeholder="0" min="1" class="amount-input" inputmode="decimal">
+        </div>
+        <div class="quick-amounts">
+          <button class="quick-amt" onclick="setAmount(100,'qr')">Rs 100</button>
+          <button class="quick-amt" onclick="setAmount(500,'qr')">Rs 500</button>
+          <button class="quick-amt" onclick="setAmount(1000,'qr')">Rs 1,000</button>
+          <button class="quick-amt" onclick="setAmount(2000,'qr')">Rs 2,000</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Note</label>
+        <div class="field-wrap"><span class="field-icon">*</span><input type="text" id="qr-note" placeholder="Payment note..." maxlength="50"></div>
+      </div>
+    </div>
+    <div style="height:4px"></div>
+    <button class="btn-generate" onclick="handleGenerate()"> Generate Payment Link</button>
+  </div>
+  <div class="how-section" id="how-section">
+    <div class="how-title">How it works</div>
+    <div class="how-steps">
+      <div class="how-step"><div class="how-num">1</div><div class="how-step-text">Enter UPI ID and amount, then <strong>Generate Link</strong></div></div>
+      <div class="how-step"><div class="how-num">2</div><div class="how-step-text"><strong>Share via WhatsApp</strong> or SMS to the payer</div></div>
+      <div class="how-step"><div class="how-num">3</div><div class="how-step-text">They <strong>click the link</strong> and the UPI app opens with details pre-filled</div></div>
+      <div class="how-step"><div class="how-num">4</div><div class="how-step-text">They just <strong>enter their PIN</strong> and the payment is done. </div></div>
+    </div>
+  </div>
+  <div id="output-section">
+    <div class="pay-card" id="pay-card">
+      <div class="pay-card-label">Payment Request</div>
+      <div class="pay-card-name" id="out-name">-</div>
+      <div class="pay-card-upi" id="out-upi">-</div>
+      <div class="pay-card-amount" id="out-amount">Rs 0</div>
+      <div class="pay-card-currency">Indian Rupees</div>
+      <div class="pay-card-note" id="out-note"></div>
+    </div>
+    <a href="#" id="pay-btn" class="btn-pay-now" onclick="handlePayNow(event)"> Click to Pay Now</a>
+    <div class="link-box">
+      <div class="link-text" id="link-display">-</div>
+      <button class="btn-copy" id="copy-btn" onclick="copyLink()">Copy</button>
+    </div>
+    <div class="share-grid">
+      <a href="#" id="whatsapp-btn" class="btn-share btn-whatsapp" onclick="shareWhatsApp(event)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="#" id="sms-btn" class="btn-share btn-sms" onclick="shareSMS(event)"> Send SMS</a>
+    </div>
+    <div class="status-tracker" id="status-tracker">
+      <div class="status-left">
+        <div class="status-dot" id="status-dot"></div>
+        <div>
+          <div class="status-text" id="status-text">Awaiting Payment</div>
+          <div class="status-sub" id="status-sub">Mark as done when received</div>
+        </div>
+      </div>
+      <button class="btn-status-toggle" onclick="toggleStatus()" id="status-btn">Mark Done</button>
+    </div>
+    <div class="qr-output-section" id="qr-desktop-section">
+      <div class="qr-output-label"> QR Code - Scan to Pay</div>
+      <div id="qr-output"></div>
+      <div class="qr-output-hint">Share this QR code for scanning,<br>or use the WhatsApp link for easier payments</div>
+    </div>
+    <button class="btn-reset" onclick="resetAll()"> Create New Payment Link</button>
+  </div>
+</main>
+<div class="modal-overlay" id="confirm-modal" onclick="handleModalBg(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Confirm Details</div>
+    <div class="modal-subtitle">Please verify before generating the link</div>
+    <div class="confirm-card">
+      <div class="confirm-row"><span class="confirm-row-label">Paying To</span><span class="confirm-row-value" id="cm-name"></span></div>
+      <div class="confirm-row"><span class="confirm-row-label">UPI ID</span><span class="confirm-row-value" id="cm-upi" style="font-family:var(--mono);font-size:12px"></span></div>
+      <div class="confirm-row"><span class="confirm-row-label">Amount</span><span class="confirm-amount-value" id="cm-amount">Rs 0</span></div>
+      <div class="confirm-row" id="cm-note-row"><span class="confirm-row-label">Note</span><span class="confirm-row-value" id="cm-note"></span></div>
+    </div>
+    <div class="confirm-warning"> Double-check the UPI ID and amount. Payments are instant and cannot be reversed easily.</div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()"> Edit</button>
+      <button class="btn-confirm" onclick="generateLink()"> Looks Correct</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="access-lock" id="access-lock" role="dialog" aria-modal="true" aria-labelledby="lock-title">
+  <div class="lock-card">
+    <div class="lock-icon">Lock</div>
+    <h2 id="lock-title">Login Required</h2>
+    <p>Your 5 minute preview is over. Please login with your ZevBuild account to continue using the UPI Link Generator and other tools.</p>
+    <div class="lock-actions">
+      <a class="lock-login" href="../index.html">Login to Continue</a>
+      <a class="lock-home" href="../index.html">Back to Tools</a>
+    </div>
+  </div>
+</div>
+<footer>Made for India - Works with UPI apps - No data stored online</footer>
+  <script src="app.js" defer></script>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RetroWave Offline Audio Player | Zevbuild Tools</title>
+  <meta name="description" content="Privacy-first, zero-telemetry offline audio player with real-time synthwave canvas visualizers. Drag-and-drop local MP3, WAV, OGG, and M4A files.">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="canonical" href="https://zevbuild.pages.dev/tools/spotify/">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0d18;
+      --bg-card: #0f1527;
+      --bg-card-hover: #151d36;
+      --border-color: rgba(139, 92, 246, 0.22);
+      --border-glow: rgba(0, 240, 255, 0.4);
+      --neon-cyan: #00f0ff;
+      --neon-pink: #ff007f;
+      --neon-purple: #8b5cf6;
+      --text-main: #f1f5f9;
+      --text-dim: #94a3b8;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.15), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 85% 60%, rgba(0, 240, 255, 0.08), transparent 60%),
+        linear-gradient(to bottom, rgba(10, 13, 24, 0.95), #060810);
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Top Navigation Breadcrumb */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 13, 24, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .breadcrumb a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--neon-cyan);
+    }
+
+    .breadcrumb-sep {
+      color: var(--text-muted);
+    }
+
+    .breadcrumb-current {
+      color: var(--neon-pink);
+      font-weight: 600;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #34d399;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #34d399;
+    }
+
+    /* Main Container */
+    .main-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Hero header */
+    .hero-header {
+      margin-bottom: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #00f0ff 0%, #b34eff 50%, #ff007f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-desc {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      max-width: 760px;
+      line-height: 1.5;
+    }
+
+    /* Player Grid Layout */
+    .player-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .player-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.25rem;
+      position: relative;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), transparent 40%, rgba(255, 0, 127, 0.15));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Visualizer Section */
+    .visualizer-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .visualizer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mode-pills {
+      display: flex;
+      gap: 0.35rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.25rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .mode-pill {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mode-pill.active {
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #05070e;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(139, 92, 246, 0.15);
+    }
+
+    #visualizer-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Now Playing Track Info */
+    .track-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 0;
+    }
+
+    .album-art {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e1035, #0d1e3d);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neon-cyan);
+      flex-shrink: 0;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+    }
+
+    .track-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .track-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #ffffff;
+    }
+
+    .track-artist {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Seekbar */
+    .seek-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .timeline-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .timeline-slider:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .timeline-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .timeline-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+    }
+
+    .timeline-slider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+      cursor: pointer;
+      border: none;
+    }
+
+    .time-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Playback Controls */
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.5rem;
+    }
+
+    .main-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-ctrl {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-ctrl:hover {
+      color: var(--text-main);
+      transform: scale(1.1);
+    }
+
+    .btn-ctrl.active {
+      color: var(--neon-pink);
+    }
+
+    .btn-play {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+    }
+
+    .btn-play:hover {
+      background: linear-gradient(135deg, #ff1a8c, #9d6fff);
+      box-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+      transform: scale(1.05);
+    }
+
+    .volume-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 120px;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 80px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      cursor: pointer;
+    }
+
+    /* Queue & Drop Area Column */
+    .queue-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      height: 100%;
+    }
+
+    .queue-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .queue-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .queue-badge {
+      font-size: 0.75rem;
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid var(--border-color);
+      color: #c4b5fd;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+    }
+
+    .btn-text {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .btn-text:hover {
+      color: var(--neon-pink);
+    }
+
+    /* Dropzone */
+    .dropzone {
+      border: 2px dashed rgba(139, 92, 246, 0.4);
+      background: rgba(15, 21, 39, 0.5);
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.05);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+    }
+
+    .drop-icon {
+      width: 40px;
+      height: 40px;
+      color: var(--neon-cyan);
+    }
+
+    .drop-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .drop-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .btn-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(139, 92, 246, 0.2));
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      color: var(--neon-cyan);
+      font-size: 0.825rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.25rem;
+      transition: all 0.2s;
+    }
+
+    .btn-demo:hover {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(139, 92, 246, 0.35));
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* Queue Track List */
+    .playlist-list {
+      list-style: none;
+      max-height: 280px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      padding-right: 0.25rem;
+    }
+
+    .playlist-list::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .playlist-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .playlist-item:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+
+    .playlist-item.active {
+      background: linear-gradient(90deg, rgba(139, 92, 246, 0.2), rgba(0, 240, 255, 0.1));
+      border-color: var(--neon-cyan);
+    }
+
+    .item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .item-index {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      width: 16px;
+      text-align: right;
+    }
+
+    .playlist-item.active .item-index {
+      color: var(--neon-cyan);
+    }
+
+    .item-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .playlist-item.active .item-title {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .item-remove {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      opacity: 0.5;
+      transition: all 0.2s;
+    }
+
+    .item-remove:hover {
+      color: #ef4444;
+      opacity: 1;
+    }
+
+    .empty-queue {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Offline Guide Section */
+    .guide-card {
+      margin-top: 2rem;
+      background: rgba(15, 21, 39, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .guide-header {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .guide-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .step-box {
+      background: rgba(10, 13, 24, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--neon-purple);
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .step-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .step-desc {
+      font-size: 0.825rem;
+      color: var(--text-dim);
+      line-height: 1.45;
+    }
+
+    .step-desc a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+    }
+
+    .step-desc a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+    }
+
+    footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--neon-cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation & Breadcrumbs -->
+  <nav class="top-nav">
+    <div class="nav-container">
+      <div class="breadcrumb">
+        <a href="../../index.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Zevbuild Studio
+        </a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="../index.html">Tools</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">RetroWave Player</span>
+      </div>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        100% Offline & Private
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-wrapper">
+
+    <!-- Header Section -->
+    <header class="hero-header">
+      <h1 class="hero-title">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--neon-pink);">
+          <path d="M9 18V5l12-2v13"/>
+          <circle cx="6" cy="18" r="3"/>
+          <circle cx="18" cy="16" r="3"/>
+        </svg>
+        RetroWave Audio Player
+      </h1>
+      <p class="hero-desc">
+        A zero-telemetry offline audio player built with the Web Audio API and HTML5 Canvas. Drag and drop your local audio files, enjoy vibrant synthwave real-time visualization, or synthesize an offline demo loop instantly.
+      </p>
+    </header>
+
+    <!-- Player Grid -->
+    <div class="player-grid">
+
+      <!-- Left Column: Visualizer & Player Controls -->
+      <section class="card visualizer-card">
+        <div class="visualizer-header">
+          <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim);">
+            Real-Time Visualizer
+          </span>
+          <div class="mode-pills">
+            <button class="mode-pill active" data-mode="bars" onclick="setVisualizerMode('bars')">Neon Bars</button>
+            <button class="mode-pill" data-mode="wave" onclick="setVisualizerMode('wave')">Oscilloscope</button>
+            <button class="mode-pill" data-mode="circle" onclick="setVisualizerMode('circle')">Radial Sun</button>
+          </div>
+        </div>
+
+        <!-- Canvas Visualizer Screen -->
+        <div class="canvas-container">
+          <canvas id="visualizer-canvas"></canvas>
+        </div>
+
+        <!-- Now Playing Track Metadata -->
+        <div class="track-info">
+          <div class="album-art" id="album-art">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+          </div>
+          <div class="track-details">
+            <div class="track-title" id="track-title">No Track Loaded</div>
+            <div class="track-artist mono" id="track-artist">Drop audio files or click Demo Loop</div>
+          </div>
+        </div>
+
+        <!-- Seek Timeline -->
+        <div class="seek-container">
+          <input type="range" id="seek-slider" class="timeline-slider" min="0" max="100" value="0" step="0.1">
+          <div class="time-labels mono">
+            <span id="current-time">0:00</span>
+            <span id="total-duration">0:00</span>
+          </div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="controls-row">
+          <div class="main-controls">
+            <!-- Shuffle -->
+            <button class="btn-ctrl" id="btn-shuffle" title="Shuffle" onclick="toggleShuffle()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 3 21 3 21 8"/>
+                <line x1="4" y1="20" x2="21" y2="3"/>
+                <polyline points="21 16 21 21 16 21"/>
+                <line x1="15" y1="15" x2="21" y2="21"/>
+                <line x1="4" y1="4" x2="9" y2="9"/>
+              </svg>
+            </button>
+
+            <!-- Previous -->
+            <button class="btn-ctrl" title="Previous Track" onclick="playPreviousTrack()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="19 20 9 12 19 4 19 20"/>
+                <line x1="5" y1="19" x2="5" y2="5"/>
+              </svg>
+            </button>
+
+            <!-- Play / Pause -->
+            <button class="btn-ctrl btn-play" id="btn-play" title="Play / Pause" onclick="togglePlay()">
+              <svg id="icon-play" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="6 3 20 12 6 21 6 3"/>
+              </svg>
+              <svg id="icon-pause" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+              </svg>
+            </button>
+
+            <!-- Next -->
+            <button class="btn-ctrl" title="Next Track" onclick="playNextTrack()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 4 15 12 5 20 5 4"/>
+                <line x1="19" y1="5" x2="19" y2="19"/>
+              </svg>
+            </button>
+
+            <!-- Repeat -->
+            <button class="btn-ctrl" id="btn-repeat" title="Repeat Mode" onclick="toggleRepeat()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="17 1 21 5 17 9"/>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                <polyline points="7 23 3 19 7 15"/>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Volume Controls -->
+          <div class="volume-group">
+            <button class="btn-ctrl" id="btn-mute" title="Mute" onclick="toggleMute()">
+              <svg id="icon-vol-high" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+              </svg>
+              <svg id="icon-vol-mute" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <line x1="1" y1="1" x2="23" y2="23"/>
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              </svg>
+            </button>
+            <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.02" value="0.8">
+          </div>
+        </div>
+
+        <!-- Hidden Audio Element -->
+        <audio id="audio-element"></audio>
+      </section>
+
+      <!-- Right Column: Queue & Import Zone -->
+      <section class="card queue-card">
+        <div class="queue-header">
+          <div class="queue-title">
+            Playlist Queue
+            <span class="queue-badge mono" id="queue-count">0 tracks</span>
+          </div>
+          <button class="btn-text" onclick="clearQueue()">Clear Queue</button>
+        </div>
+
+        <!-- Drag & Drop Zone -->
+        <div class="dropzone" id="dropzone">
+          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <div class="drop-title">Drag & Drop Audio Files Here</div>
+          <div class="drop-sub">Supports .mp3, .wav, .ogg, .m4a (100% Client-side)</div>
+          <input type="file" id="file-input" multiple accept="audio/*,.mp3,.wav,.ogg,.m4a" style="display: none;">
+          <button class="btn-demo" type="button" onclick="document.getElementById('file-input').click()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Choose Audio Files
+          </button>
+          <button class="btn-demo" type="button" onclick="generateDemoSynthTrack()" style="border-color: rgba(255, 0, 127, 0.4); color: var(--neon-pink);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            </svg>
+            Synthesize Demo Synth Loop
+          </button>
+        </div>
+
+        <!-- Playlist Items -->
+        <ul class="playlist-list" id="playlist-list">
+          <div class="empty-queue" id="empty-queue-msg">
+            Queue is empty. Drag MP3 files or click "Synthesize Demo Synth Loop" to start listening!
+          </div>
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- Offline Workflow Instructions -->
+    <section class="guide-card">
+      <div class="guide-header">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--neon-cyan);">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        How to Use Offline with Spotify Playlists
+      </div>
+      <div class="guide-steps">
+        <div class="step-box">
+          <span class="step-num">1</span>
+          <div class="step-title">Batch Download Songs</div>
+          <div class="step-desc">
+            Use the included automated browser script <a href="spotify_download_script.txt">spotify_download_script.txt</a> to safely download your playlist MP3s from spotifymp3.com into your Downloads folder.
+          </div>
+        </div>
+        <div class="step-box">
+          <span class="step-num">2</span>
+          <div class="step-title">Drag & Drop into Player</div>
+          <div class="step-desc">
+            Select the downloaded audio files from your computer and drop them into the glowing dropzone above. All files stay strictly on your device.
+          </div>
+        </div>
+        <div class="step-box">
+          <span class="step-num">3</span>
+          <div class="step-title">Full Visualizer Experience</div>
+          <div class="step-desc">
+            Toggle between Neon Bars, Oscilloscope, and Radial Sun visualizers. Enjoy zero telemetry, zero buffering, and 100% offline audio playback.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Zevbuild Studio • RetroWave Offline Player • <a href="../../index.html">Main Hub</a> • <a href="../index.html">Tools Catalog</a> • MIT Open Source
+    </p>
+  </footer>
+
+  <!-- Audio Player & Visualizer Script -->
+  <script>
+    // State management
+    let playlist = [];
+    let currentIndex = -1;
+    let isPlaying = false;
+    let isShuffle = false;
+    let repeatMode = 0; // 0: None, 1: Repeat All, 2: Repeat One
+    let visualizerMode = 'bars';
+    let audioContext = null;
+    let analyserNode = null;
+    let mediaSourceNode = null;
+    let animationFrameId = null;
+
+    // DOM Elements
+    const audio = document.getElementById('audio-element');
+    const canvas = document.getElementById('visualizer-canvas');
+    const canvasCtx = canvas.getContext('2d');
+    const trackTitle = document.getElementById('track-title');
+    const trackArtist = document.getElementById('track-artist');
+    const currentTimeEl = document.getElementById('current-time');
+    const totalDurationEl = document.getElementById('total-duration');
+    const seekSlider = document.getElementById('seek-slider');
+    const volumeSlider = document.getElementById('volume-slider');
+    const btnPlay = document.getElementById('btn-play');
+    const iconPlay = document.getElementById('icon-play');
+    const iconPause = document.getElementById('icon-pause');
+    const btnMute = document.getElementById('btn-mute');
+    const iconVolHigh = document.getElementById('icon-vol-high');
+    const iconVolMute = document.getElementById('icon-vol-mute');
+    const btnShuffle = document.getElementById('btn-shuffle');
+    const btnRepeat = document.getElementById('btn-repeat');
+    const playlistList = document.getElementById('playlist-list');
+    const emptyQueueMsg = document.getElementById('empty-queue-msg');
+    const queueCount = document.getElementById('queue-count');
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('file-input');
+
+    // Canvas resize handling
+    function resizeCanvas() {
+      canvas.width = canvas.parentElement.clientWidth * window.devicePixelRatio;
+      canvas.height = canvas.parentElement.clientHeight * window.devicePixelRatio;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Audio Context Setup
+    function initAudioContext() {
+      if (!audioContext) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioCtx();
+        analyserNode = audioContext.createAnalyser();
+        analyserNode.fftSize = 256;
+        analyserNode.smoothingTimeConstant = 0.82;
+
+        mediaSourceNode = audioContext.createMediaElementSource(audio);
+        mediaSourceNode.connect(analyserNode);
+        analyserNode.connect(audioContext.destination);
+
+        startVisualizerLoop();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+    }
+
+    // Format seconds to mm:ss
+    function formatTime(seconds) {
+      if (isNaN(seconds) || seconds < 0) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Load and play a track by index
+    function loadTrack(index, autoPlay = true) {
+      if (index < 0 || index >= playlist.length) return;
+      currentIndex = index;
+      const track = playlist[currentIndex];
+
+      audio.src = track.url;
+      trackTitle.textContent = track.name;
+      trackArtist.textContent = track.isDemo ? 'Synthesized 80s Synthwave (Offline)' : 'Local Audio Track';
+
+      renderPlaylist();
+
+      if (autoPlay) {
+        initAudioContext();
+        audio.play().then(() => {
+          isPlaying = true;
+          updatePlayPauseUI();
+        }).catch(err => {
+          console.warn('Playback prevented or file loading:', err);
+        });
+      }
+    }
+
+    // Play/Pause toggle
+    function togglePlay() {
+      if (playlist.length === 0) {
+        generateDemoSynthTrack();
+        return;
+      }
+      initAudioContext();
+
+      if (audio.paused) {
+        if (currentIndex === -1) {
+          loadTrack(0, true);
+        } else {
+          audio.play();
+          isPlaying = true;
+          updatePlayPauseUI();
+        }
+      } else {
+        audio.pause();
+        isPlaying = false;
+        updatePlayPauseUI();
+      }
+    }
+
+    function updatePlayPauseUI() {
+      if (isPlaying) {
+        iconPlay.style.display = 'none';
+        iconPause.style.display = 'block';
+      } else {
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+      }
+    }
+
+    // Next / Previous
+    function playNextTrack() {
+      if (playlist.length === 0) return;
+      if (isShuffle && playlist.length > 1) {
+        let nextIdx;
+        do {
+          nextIdx = Math.floor(Math.random() * playlist.length);
+        } while (nextIdx === currentIndex);
+        loadTrack(nextIdx, true);
+      } else {
+        const nextIdx = (currentIndex + 1) % playlist.length;
+        loadTrack(nextIdx, true);
+      }
+    }
+
+    function playPreviousTrack() {
+      if (playlist.length === 0) return;
+      if (audio.currentTime > 3) {
+        audio.currentTime = 0;
+      } else {
+        const prevIdx = (currentIndex - 1 + playlist.length) % playlist.length;
+        loadTrack(prevIdx, true);
+      }
+    }
+
+    // Shuffle & Repeat
+    function toggleShuffle() {
+      isShuffle = !isShuffle;
+      btnShuffle.classList.toggle('active', isShuffle);
+    }
+
+    function toggleRepeat() {
+      repeatMode = (repeatMode + 1) % 3;
+      btnRepeat.classList.remove('active');
+      if (repeatMode === 1) {
+        btnRepeat.classList.add('active');
+        btnRepeat.title = 'Repeat All';
+      } else if (repeatMode === 2) {
+        btnRepeat.classList.add('active');
+        btnRepeat.title = 'Repeat One';
+      } else {
+        btnRepeat.title = 'Repeat Off';
+      }
+    }
+
+    // Volume & Mute
+    let lastVolume = 0.8;
+    audio.volume = 0.8;
+
+    volumeSlider.addEventListener('input', (e) => {
+      audio.volume = e.target.value;
+      updateVolumeUI();
+    });
+
+    function toggleMute() {
+      if (audio.volume > 0) {
+        lastVolume = audio.volume;
+        audio.volume = 0;
+        volumeSlider.value = 0;
+      } else {
+        audio.volume = lastVolume || 0.8;
+        volumeSlider.value = audio.volume;
+      }
+      updateVolumeUI();
+    }
+
+    function updateVolumeUI() {
+      if (audio.volume === 0) {
+        iconVolHigh.style.display = 'none';
+        iconVolMute.style.display = 'block';
+      } else {
+        iconVolHigh.style.display = 'block';
+        iconVolMute.style.display = 'none';
+      }
+    }
+
+    // Audio element event listeners
+    audio.addEventListener('timeupdate', () => {
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        seekSlider.value = progress;
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+        totalDurationEl.textContent = formatTime(audio.duration);
+      }
+    });
+
+    audio.addEventListener('ended', () => {
+      if (repeatMode === 2) {
+        audio.currentTime = 0;
+        audio.play();
+      } else if (repeatMode === 1 || currentIndex < playlist.length - 1 || isShuffle) {
+        playNextTrack();
+      } else {
+        isPlaying = false;
+        updatePlayPauseUI();
+      }
+    });
+
+    seekSlider.addEventListener('input', (e) => {
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        const seekTime = (e.target.value / 100) * audio.duration;
+        audio.currentTime = seekTime;
+      }
+    });
+
+    // Playlist Management
+    function addFilesToPlaylist(files) {
+      let added = 0;
+      for (const file of files) {
+        if (file.type.startsWith('audio/') || /\.(mp3|wav|ogg|m4a|aac|flac)$/i.test(file.name)) {
+          const url = URL.createObjectURL(file);
+          playlist.push({
+            name: file.name.replace(/\.[^/.]+$/, ''),
+            url: url,
+            isDemo: false
+          });
+          added++;
+        }
+      }
+      if (added > 0) {
+        renderPlaylist();
+        if (currentIndex === -1) {
+          loadTrack(0, true);
+        }
+      }
+    }
+
+    function renderPlaylist() {
+      playlistList.innerHTML = '';
+      queueCount.textContent = `${playlist.length} track${playlist.length === 1 ? '' : 's'}`;
+
+      if (playlist.length === 0) {
+        emptyQueueMsg.style.display = 'block';
+        playlistList.appendChild(emptyQueueMsg);
+        return;
+      }
+
+      playlist.forEach((track, idx) => {
+        const li = document.createElement('li');
+        li.className = `playlist-item ${idx === currentIndex ? 'active' : ''}`;
+        li.innerHTML = `
+          <div class="item-left">
+            <span class="item-index mono">${idx + 1}</span>
+            <span class="item-title">${escapeHtml(track.name)}</span>
+          </div>
+          <button class="item-remove" title="Remove track" onclick="removeTrack(event, ${idx})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        `;
+        li.addEventListener('click', (e) => {
+          if (!e.target.closest('.item-remove')) {
+            loadTrack(idx, true);
+          }
+        });
+        playlistList.appendChild(li);
+      });
+    }
+
+    function removeTrack(e, idx) {
+      e.stopPropagation();
+      playlist.splice(idx, 1);
+      if (currentIndex === idx) {
+        if (playlist.length > 0) {
+          const next = idx >= playlist.length ? 0 : idx;
+          loadTrack(next, isPlaying);
+        } else {
+          audio.pause();
+          audio.src = '';
+          isPlaying = false;
+          currentIndex = -1;
+          trackTitle.textContent = 'No Track Loaded';
+          trackArtist.textContent = 'Drop audio files or click Demo Loop';
+          updatePlayPauseUI();
+        }
+      } else if (currentIndex > idx) {
+        currentIndex--;
+      }
+      renderPlaylist();
+    }
+
+    function clearQueue() {
+      audio.pause();
+      audio.src = '';
+      isPlaying = false;
+      currentIndex = -1;
+      playlist = [];
+      trackTitle.textContent = 'No Track Loaded';
+      trackArtist.textContent = 'Drop audio files or click Demo Loop';
+      updatePlayPauseUI();
+      renderPlaylist();
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Drag and Drop listeners
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        addFilesToPlaylist(e.dataTransfer.files);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        addFilesToPlaylist(e.target.files);
+        fileInput.value = '';
+      }
+    });
+
+    // Visualizer Mode
+    function setVisualizerMode(mode) {
+      visualizerMode = mode;
+      document.querySelectorAll('.mode-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+      });
+    }
+
+    // Visualizer Animation Loop
+    function startVisualizerLoop() {
+      if (animationFrameId) return;
+
+      const bufferLength = analyserNode.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      const timeArray = new Uint8Array(bufferLength);
+
+      function draw() {
+        animationFrameId = requestAnimationFrame(draw);
+
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Clear with slight dark fade for motion blur
+        canvasCtx.fillStyle = '#060810';
+        canvasCtx.fillRect(0, 0, width, height);
+
+        // Draw synthwave horizon grid
+        drawSynthwaveGrid(canvasCtx, width, height);
+
+        if (!analyserNode) return;
+
+        analyserNode.getByteFrequencyData(dataArray);
+        analyserNode.getByteTimeDomainData(timeArray);
+
+        if (visualizerMode === 'bars') {
+          drawBars(canvasCtx, dataArray, bufferLength, width, height);
+        } else if (visualizerMode === 'wave') {
+          drawOscilloscope(canvasCtx, timeArray, bufferLength, width, height);
+        } else if (visualizerMode === 'circle') {
+          drawRadialSun(canvasCtx, dataArray, bufferLength, width, height);
+        }
+      }
+
+      draw();
+    }
+
+    // Horizon Grid background
+    function drawSynthwaveGrid(ctx, w, h) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(139, 92, 246, 0.12)';
+      ctx.lineWidth = 1;
+
+      const horizon = h * 0.7;
+
+      // Horizontal lines with perspective
+      for (let y = horizon; y < h; y += (y - horizon + 6) * 0.4) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Vanishing lines
+      const cx = w / 2;
+      for (let x = -w; x < w * 2; x += w / 10) {
+        ctx.beginPath();
+        ctx.moveTo(cx, horizon);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Mode 1: Neon Spectrum Bars
+    function drawBars(ctx, data, len, w, h) {
+      const barCount = 48;
+      const barWidth = (w / barCount) * 0.8;
+      const spacing = (w / barCount) * 0.2;
+
+      for (let i = 0; i < barCount; i++) {
+        const dataIdx = Math.floor((i / barCount) * (len * 0.75));
+        const val = data[dataIdx] || 0;
+        const barHeight = (val / 255) * (h * 0.65) + 4;
+        const x = i * (barWidth + spacing) + spacing / 2;
+        const y = h * 0.7 - barHeight;
+
+        // Gradient from cyan to magenta
+        const grad = ctx.createLinearGradient(0, y, 0, h * 0.7);
+        grad.addColorStop(0, '#00f0ff');
+        grad.addColorStop(0.5, '#b34eff');
+        grad.addColorStop(1, '#ff007f');
+
+        ctx.fillStyle = grad;
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = val > 140 ? 12 : 4;
+        ctx.fillRect(x, y, barWidth, barHeight);
+
+        // Peak floating cap
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#ffffff';
+        ctx.shadowBlur = 6;
+        ctx.fillRect(x, y - 3, barWidth, 2);
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    // Mode 2: Neon Oscilloscope Laser
+    function drawOscilloscope(ctx, data, len, w, h) {
+      ctx.save();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#00f0ff';
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = 15;
+
+      ctx.beginPath();
+      const sliceWidth = w / len;
+      let x = 0;
+
+      for (let i = 0; i < len; i++) {
+        const v = data[i] / 128.0;
+        const y = (v * (h * 0.5) / 2) + (h * 0.35);
+
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+        x += sliceWidth;
+      }
+
+      ctx.stroke();
+
+      // Mirror reflection underneath
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgba(255, 0, 127, 0.4)';
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Mode 3: Radial Sun Visualizer
+    function drawRadialSun(ctx, data, len, w, h) {
+      const cx = w / 2;
+      const cy = h * 0.42;
+      const baseRadius = Math.min(w, h) * 0.18;
+
+      ctx.save();
+
+      // Glowing Center Sun
+      const sunGrad = ctx.createRadialGradient(cx, cy, 5, cx, cy, baseRadius);
+      sunGrad.addColorStop(0, '#ff9900');
+      sunGrad.addColorStop(0.5, '#ff007f');
+      sunGrad.addColorStop(1, 'rgba(139, 92, 246, 0.4)');
+      ctx.fillStyle = sunGrad;
+      ctx.shadowColor = '#ff007f';
+      ctx.shadowBlur = 25;
+      ctx.beginPath();
+      ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Radial Frequency Rays
+      const numRays = 40;
+      for (let i = 0; i < numRays; i++) {
+        const angle = (i / numRays) * Math.PI * 2;
+        const dataIdx = Math.floor((i / numRays) * (len * 0.6));
+        const val = data[dataIdx] || 0;
+        const rayLen = (val / 255) * (baseRadius * 0.9) + 6;
+
+        const x1 = cx + Math.cos(angle) * (baseRadius + 4);
+        const y1 = cy + Math.sin(angle) * (baseRadius + 4);
+        const x2 = cx + Math.cos(angle) * (baseRadius + rayLen);
+        const y2 = cy + Math.sin(angle) * (baseRadius + rayLen);
+
+        ctx.strokeStyle = i % 2 === 0 ? '#00f0ff' : '#ff007f';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Synthesized 80s Demo Track Generator (WAV Blob Synthesis)
+    function generateDemoSynthTrack() {
+      const sampleRate = 44100;
+      const bpm = 124;
+      const secondsPerBeat = 60 / bpm;
+      const totalMeasures = 8; // 32 beats ≈ 15.5 seconds loop
+      const totalDuration = totalMeasures * 4 * secondsPerBeat;
+      const offlineCtx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(2, Math.floor(sampleRate * totalDuration), sampleRate);
+
+      // Bass notes: F2, G#2, A#2, C3
+      const bassNotes = [87.31, 103.83, 116.54, 130.81];
+
+      // Synthesize 16th-note rolling synthwave bass
+      for (let beat = 0; beat < totalMeasures * 4; beat++) {
+        const noteIdx = Math.floor(beat / 8) % bassNotes.length;
+        const freq = bassNotes[noteIdx];
+
+        for (let sub = 0; sub < 4; sub++) {
+          const time = (beat + sub * 0.25) * secondsPerBeat;
+          const osc = offlineCtx.createOscillator();
+          const gain = offlineCtx.createGain();
+          const filter = offlineCtx.createBiquadFilter();
+
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, time);
+
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(350, time);
+          filter.frequency.exponentialRampToValueAtTime(120, time + 0.12);
+
+          gain.gain.setValueAtTime(0.28, time);
+          gain.gain.exponentialRampToValueAtTime(0.001, time + 0.12);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(offlineCtx.destination);
+
+          osc.start(time);
+          osc.stop(time + 0.13);
+        }
+      }
+
+      // Synthesize Kick Drum (Four-on-the-floor)
+      for (let beat = 0; beat < totalMeasures * 4; beat++) {
+        const time = beat * secondsPerBeat;
+        const kickOsc = offlineCtx.createOscillator();
+        const kickGain = offlineCtx.createGain();
+
+        kickOsc.frequency.setValueAtTime(140, time);
+        kickOsc.frequency.exponentialRampToValueAtTime(38, time + 0.12);
+
+        kickGain.gain.setValueAtTime(0.7, time);
+        kickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+
+        kickOsc.connect(kickGain);
+        kickGain.connect(offlineCtx.destination);
+
+        kickOsc.start(time);
+        kickOsc.stop(time + 0.26);
+      }
+
+      // Synthesize Snare / Clap (Beats 2 and 4)
+      for (let beat = 0; beat < totalMeasures * 4; beat++) {
+        if (beat % 2 === 1) {
+          const time = beat * secondsPerBeat;
+          // Noise buffer
+          const noiseLength = Math.floor(sampleRate * 0.15);
+          const noiseBuf = offlineCtx.createBuffer(1, noiseLength, sampleRate);
+          const noiseData = noiseBuf.getChannelData(0);
+          for (let i = 0; i < noiseLength; i++) {
+            noiseData[i] = Math.random() * 2 - 1;
+          }
+
+          const noiseNode = offlineCtx.createBufferSource();
+          noiseNode.buffer = noiseBuf;
+
+          const snareFilter = offlineCtx.createBiquadFilter();
+          snareFilter.type = 'highpass';
+          snareFilter.frequency.value = 1000;
+
+          const snareGain = offlineCtx.createGain();
+          snareGain.gain.setValueAtTime(0.3, time);
+          snareGain.gain.exponentialRampToValueAtTime(0.001, time + 0.14);
+
+          noiseNode.connect(snareFilter);
+          snareFilter.connect(snareGain);
+          snareGain.connect(offlineCtx.destination);
+
+          noiseNode.start(time);
+          noiseNode.stop(time + 0.15);
+        }
+      }
+
+      // Synthesize Lead Arpeggio
+      const melodyFreqs = [349.23, 415.30, 466.16, 523.25, 622.25, 698.46];
+      for (let step = 0; step < totalMeasures * 16; step++) {
+        const time = step * (secondsPerBeat / 4);
+        const freq = melodyFreqs[step % melodyFreqs.length];
+
+        const leadOsc = offlineCtx.createOscillator();
+        const leadGain = offlineCtx.createGain();
+
+        leadOsc.type = 'square';
+        leadOsc.frequency.setValueAtTime(freq, time);
+
+        leadGain.gain.setValueAtTime(0.12, time);
+        leadGain.gain.exponentialRampToValueAtTime(0.001, time + 0.14);
+
+        leadOsc.connect(leadGain);
+        leadGain.connect(offlineCtx.destination);
+
+        leadOsc.start(time);
+        leadOsc.stop(time + 0.15);
+      }
+
+      // Render offline buffer to WAV
+      offlineCtx.startRendering().then(renderedBuffer => {
+        const wavBlob = audioBufferToWav(renderedBuffer);
+        const demoUrl = URL.createObjectURL(wavBlob);
+
+        playlist.unshift({
+          name: 'Synthwave Drift 1984 (Synthesized Demo)',
+          url: demoUrl,
+          isDemo: true
+        });
+
+        renderPlaylist();
+        loadTrack(0, true);
+      }).catch(err => {
+        console.error('Failed to synthesize demo synth track:', err);
+      });
+    }
+
+    // Helper: AudioBuffer to standard PCM WAV Blob
+    function audioBufferToWav(buffer) {
+      const numChannels = buffer.numberOfChannels;
+      const sampleRate = buffer.sampleRate;
+      const format = 1; // PCM
+      const bitDepth = 16;
+      const bytesPerSample = bitDepth / 8;
+      const blockAlign = numChannels * bytesPerSample;
+      const numSamples = buffer.length;
+      const dataSize = numSamples * blockAlign;
+      const headerSize = 44;
+      const totalSize = headerSize + dataSize;
+      const arrayBuffer = new ArrayBuffer(totalSize);
+      const view = new DataView(arrayBuffer);
+
+      function writeString(offset, str) {
+        for (let i = 0; i < str.length; i++) {
+          view.setUint8(offset + i, str.charCodeAt(i));
+        }
+      }
+
+      // RIFF chunk descriptor
+      writeString(0, 'RIFF');
+      view.setUint32(4, 36 + dataSize, true);
+      writeString(8, 'WAVE');
+
+      // FMT sub-chunk
+      writeString(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, format, true);
+      view.setUint16(22, numChannels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * blockAlign, true);
+      view.setUint16(32, blockAlign, true);
+      view.setUint16(34, bitDepth, true);
+
+      // DATA sub-chunk
+      writeString(36, 'data');
+      view.setUint32(40, dataSize, true);
+
+      // Write PCM samples interleaved
+      const channels = [];
+      for (let i = 0; i < numChannels; i++) {
+        channels.push(buffer.getChannelData(i));
+      }
+
+      let offset = 44;
+      for (let i = 0; i < numSamples; i++) {
+        for (let ch = 0; ch < numChannels; ch++) {
+          let s = Math.max(-1, Math.min(1, channels[ch][i]));
+          s = s < 0 ? s * 0x8000 : s * 0x7FFF;
+          view.setInt16(offset, s, true);
+          offset += 2;
+        }
+      }
+
+      return new Blob([view], { type: 'audio/wav' });
+    }
+
+    // Keyboard Spacebar Play/Pause
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target === document.body) {
+        e.preventDefault();
+        togglePlay();
+      }
+    });
+  </script>
+</body>
+</html>

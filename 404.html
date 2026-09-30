@@ -6,6 +6,7 @@
   <title>404 — Page Not Found | Zevbuild</title>
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://zevbuild.pages.dev/">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta name="theme-color" content="#8b5cf6">
   <meta name="application-name" content="Zevbuild">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,7 +61,7 @@
 
     <!-- Countdown & Redirect Trigger -->
     <div class="space-y-3">
-      <a id="redirect-btn" href="index.html" 
+      <a id="redirect-btn" href="/index.html" 
          class="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-xl shadow-purple-600/25 border border-purple-400/20 transition-all">
         <span id="redirect-label">Redirecting to Main Portal in 5s</span>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,8 +69,8 @@
         </svg>
       </a>
 
-      <a href="index.html" class="inline-block text-xs text-slate-500 hover:text-slate-300 transition-colors">
-        Cancel redirect and go to Home
+      <a href="/index.html" class="inline-block text-xs text-slate-500 hover:text-slate-300 transition-colors">
+        Cancel redirect and return to Home
       </a>
     </div>
 
@@ -81,7 +82,7 @@
       <span>·</span>
       <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors">CollegeBus</a>
       <span>·</span>
-      <a href="tools/satta-matka-tools/index.html" class="hover:text-indigo-400 transition-colors">Analytics</a>
+      <a href="tools/matka/index.html" class="hover:text-indigo-400 transition-colors">Analytics</a>
       <span>·</span>
       <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="hover:text-slate-200 transition-colors">GitHub</a>
     </div>
@@ -98,12 +99,25 @@
     const redirectLabel = document.getElementById('redirect-label');
     const errorMessage = document.getElementById('error-message');
 
-    let destination = 'index.html';
+    // Determine site root prefix for resilient navigation across nested 404 routes
+    const isLocal = window.location.protocol === 'file:';
+    const rootPath = isLocal ? 'index.html' : '/index.html';
+
+    let destination = rootPath;
     let destTitle = 'Zevbuild Main Portal';
 
     if (currentPath.includes('satta') || currentPath.includes('matka')) {
-      destination = 'tools/satta-matka-tools/index.html';
+      destination = isLocal ? 'tools/matka/index.html' : '/tools/matka/index.html';
       destTitle = 'Predictive Analytics & Kalyan Engine';
+    } else if (currentPath.includes('spotify') || currentPath.includes('music') || currentPath.includes('player')) {
+      destination = isLocal ? 'tools/spotify/index.html' : '/tools/spotify/index.html';
+      destTitle = 'Spotify RetroWave Player';
+    } else if (currentPath.includes('download') || currentPath.includes('video')) {
+      destination = isLocal ? 'tools/download/index.html' : '/tools/download/index.html';
+      destTitle = 'Video Downloaders Guide';
+    } else if (currentPath.includes('yt') || currentPath.includes('youtube')) {
+      destination = isLocal ? 'tools/yt/index.html' : '/tools/yt/index.html';
+      destTitle = 'YouTube Video Downloader';
     } else if (currentPath.includes('zevsafe')) {
       destination = 'https://zevsafe.pages.dev';
       destTitle = 'ZevSafe — Offline Folder Encryption Portal';
@@ -115,7 +129,7 @@
       destTitle = 'CollegeBus — Student Transit Tracker';
     }
 
-    if (destination !== 'index.html') {
+    if (destination !== rootPath) {
       targetBox.classList.remove('hidden');
       targetName.innerText = destTitle;
       targetUrl.innerText = destination;
