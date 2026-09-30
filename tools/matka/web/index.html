@@ -99,10 +99,10 @@
             <span id="live-indicator-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
           </div>
           <div class="flex items-baseline gap-2 mt-0.5">
-            <span id="latest-jodi" class="text-2xl sm:text-3xl font-black font-mono text-amber-400">15</span>
-            <span id="latest-patti" class="text-xs text-slate-400 font-mono">560 - 15 - 249</span>
+            <span id="latest-jodi" class="text-2xl sm:text-3xl font-black font-mono text-amber-400">22</span>
+            <span id="latest-patti" class="text-xs text-slate-400 font-mono">147 - 22 - 679</span>
           </div>
-          <div id="latest-date" class="text-[11px] text-slate-400 mt-0.5">Saturday, 2026-09-12</div>
+          <div id="latest-date" class="text-[11px] text-slate-400 mt-0.5">Tuesday, 2026-09-29</div>
         </div>
         <div class="text-right">
           <span id="draw-status-badge" class="inline-block px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold text-xs">Official</span>
@@ -155,26 +155,26 @@
     <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2">
       <div class="flex items-center justify-between">
         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Select Forecast Day:</span>
-        <span id="target-day-banner" class="text-xs font-mono font-bold text-indigo-400">TARGET: 2026-09-14 (Monday)</span>
+        <span id="target-day-banner" class="text-xs font-mono font-bold text-indigo-400">TARGET: 2026-09-30 (Wednesday)</span>
       </div>
       <div class="grid grid-cols-6 gap-1.5 sm:gap-2">
-        <button onclick="changeDay('Mon')" id="btn-Mon" class="day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow">
-          Mon<span class="block text-[10px] font-normal opacity-80" id="date-Mon">14 Sep</span>
+        <button onclick="changeDay('Mon')" id="btn-Mon" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Mon<span class="block text-[10px] font-normal opacity-80" id="date-Mon">05 Oct</span>
         </button>
         <button onclick="changeDay('Tue')" id="btn-Tue" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
-          Tue<span class="block text-[10px] font-normal opacity-80" id="date-Tue">15 Sep</span>
+          Tue<span class="block text-[10px] font-normal opacity-80" id="date-Tue">06 Oct</span>
         </button>
-        <button onclick="changeDay('Wed')" id="btn-Wed" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
-          Wed<span class="block text-[10px] font-normal opacity-80" id="date-Wed">16 Sep</span>
+        <button onclick="changeDay('Wed')" id="btn-Wed" class="day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow">
+          Wed<span class="block text-[10px] font-normal opacity-80" id="date-Wed">30 Sep</span>
         </button>
         <button onclick="changeDay('Thu')" id="btn-Thu" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
-          Thu<span class="block text-[10px] font-normal opacity-80" id="date-Thu">17 Sep</span>
+          Thu<span class="block text-[10px] font-normal opacity-80" id="date-Thu">01 Oct</span>
         </button>
         <button onclick="changeDay('Fri')" id="btn-Fri" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
-          Fri<span class="block text-[10px] font-normal opacity-80" id="date-Fri">18 Sep</span>
+          Fri<span class="block text-[10px] font-normal opacity-80" id="date-Fri">02 Oct</span>
         </button>
         <button onclick="changeDay('Sat')" id="btn-Sat" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
-          Sat<span class="block text-[10px] font-normal opacity-80" id="date-Sat">19 Sep</span>
+          Sat<span class="block text-[10px] font-normal opacity-80" id="date-Sat">03 Oct</span>
         </button>
       </div>
     </div>
@@ -2161,7 +2161,7 @@
     const FALLBACK_HISTORY = [["2026-05-19", "Tue", 64, 6, 4], ["2026-05-20", "Wed", 31, 3, 1], ["2026-05-21", "Thu", 24, 2, 4], ["2026-05-22", "Fri", 0, 0, 0], ["2026-05-23", "Sat", 13, 1, 3], ["2026-05-25", "Mon", 72, 7, 2], ["2026-05-26", "Tue", 71, 7, 1], ["2026-05-27", "Wed", 21, 2, 1], ["2026-05-28", "Thu", 75, 7, 5], ["2026-05-29", "Fri", 1, 0, 1], ["2026-05-30", "Sat", 95, 9, 5], ["2026-06-01", "Mon", 2, 0, 2], ["2026-06-02", "Tue", 38, 3, 8], ["2026-06-03", "Wed", 31, 3, 1], ["2026-06-04", "Thu", 83, 8, 3], ["2026-06-05", "Fri", 80, 8, 0], ["2026-06-06", "Sat", 50, 5, 0], ["2026-06-08", "Mon", 92, 9, 2], ["2026-06-09", "Tue", 62, 6, 2], ["2026-06-10", "Wed", 95, 9, 5], ["2026-06-11", "Thu", 30, 3, 0], ["2026-06-12", "Fri", 78, 7, 8], ["2026-06-13", "Sat", 17, 1, 7], ["2026-06-15", "Mon", 50, 5, 0], ["2026-06-16", "Tue", 23, 2, 3], ["2026-06-17", "Wed", 2, 0, 2], ["2026-06-18", "Thu", 13, 1, 3], ["2026-06-19", "Fri", 96, 9, 6], ["2026-06-20", "Sat", 92, 9, 2], ["2026-06-22", "Mon", 8, 0, 8], ["2026-06-23", "Tue", 34, 3, 4], ["2026-06-24", "Wed", 57, 5, 7], ["2026-06-25", "Thu", 21, 2, 1], ["2026-06-26", "Fri", 93, 9, 3], ["2026-06-27", "Sat", 97, 9, 7], ["2026-06-29", "Mon", 34, 3, 4], ["2026-06-30", "Tue", 6, 0, 6], ["2026-07-01", "Wed", 94, 9, 4], ["2026-07-02", "Thu", 6, 0, 6], ["2026-07-03", "Fri", 3, 0, 3], ["2026-07-04", "Sat", 49, 4, 9], ["2026-07-06", "Mon", 95, 9, 5], ["2026-07-07", "Tue", 75, 7, 5], ["2026-07-08", "Wed", 69, 6, 9], ["2026-07-09", "Thu", 14, 1, 4], ["2026-07-10", "Fri", 64, 6, 4], ["2026-07-11", "Sat", 96, 9, 6], ["2026-07-13", "Mon", 74, 7, 4], ["2026-07-14", "Tue", 1, 0, 1], ["2026-07-15", "Wed", 14, 1, 4], ["2026-07-16", "Thu", 45, 4, 5], ["2026-07-17", "Fri", 81, 8, 1], ["2026-07-18", "Sat", 62, 6, 2], ["2026-07-20", "Mon", 31, 3, 1], ["2026-07-21", "Tue", 31, 3, 1], ["2026-07-22", "Wed", 78, 7, 8], ["2026-07-23", "Thu", 0, 0, 0], ["2026-07-24", "Fri", 4, 0, 4], ["2026-07-25", "Sat", 74, 7, 4], ["2026-07-27", "Mon", 26, 2, 6], ["2026-07-28", "Tue", 26, 2, 6], ["2026-07-29", "Wed", 45, 4, 5], ["2026-07-30", "Thu", 28, 2, 8], ["2026-07-31", "Fri", 23, 2, 3], ["2026-08-01", "Sat", 32, 3, 2], ["2026-08-03", "Mon", 99, 9, 9], ["2026-08-04", "Tue", 65, 6, 5], ["2026-08-05", "Wed", 66, 6, 6], ["2026-08-06", "Thu", 89, 8, 9], ["2026-08-07", "Fri", 59, 5, 9], ["2026-08-08", "Sat", 67, 6, 7], ["2026-08-10", "Mon", 26, 2, 6], ["2026-08-11", "Tue", 81, 8, 1], ["2026-08-12", "Wed", 38, 3, 8], ["2026-08-13", "Thu", 37, 3, 7], ["2026-08-14", "Fri", 26, 2, 6], ["2026-08-17", "Mon", 33, 3, 3], ["2026-08-18", "Tue", 20, 2, 0], ["2026-08-19", "Wed", 73, 7, 3], ["2026-08-20", "Thu", 88, 8, 8], ["2026-08-21", "Fri", 99, 9, 9], ["2026-08-22", "Sat", 31, 3, 1], ["2026-08-24", "Mon", 7, 0, 7], ["2026-08-25", "Tue", 17, 1, 7], ["2026-08-26", "Wed", 33, 3, 3], ["2026-08-27", "Thu", 92, 9, 2], ["2026-08-28", "Fri", 32, 3, 2], ["2026-08-29", "Sat", 50, 5, 0], ["2026-08-31", "Mon", 69, 6, 9], ["2026-09-01", "Tue", 5, 0, 5], ["2026-09-02", "Wed", 18, 1, 8], ["2026-09-03", "Thu", 65, 6, 5], ["2026-09-04", "Fri", 70, 7, 0], ["2026-09-05", "Sat", 63, 6, 3], ["2026-09-07", "Mon", 96, 9, 6], ["2026-09-08", "Tue", 76, 7, 6], ["2026-09-09", "Wed", 27, 2, 7], ["2026-09-10", "Thu", 15, 1, 5], ["2026-09-11", "Fri", 59, 5, 9], ["2026-09-12", "Sat", 15, 1, 5]];
     let HISTORY_RECORDS = [];
     let APP_STATE = JSON.parse(JSON.stringify(BASELINE_DATA));
-    let selectedDay = "Mon";
+    let selectedDay = "Wed";
     let autoSyncEnabled = true;
     let countdownSec = 45;
     let autoSyncTimerId = null;
@@ -2170,13 +2170,13 @@
 
     // Current known latest draw tracker
     let CURRENT_LATEST_DRAW = {
-      date: "2026-09-12",
-      day: "Sat",
-      jodi: "15",
-      open: 1,
-      close: 5,
-      openPatti: "560",
-      closePatti: "249",
+      date: "2026-09-29",
+      day: "Tue",
+      jodi: "22",
+      open: 2,
+      close: 2,
+      openPatti: "147",
+      closePatti: "679",
       status: "FULL_JODI_DECLARED",
     };
 
@@ -2399,7 +2399,7 @@
       const ensemble = new BrowserEnsemblePredictor(0.30, 0.40, 0.30);
       ensemble.fit(HISTORY_RECORDS);
 
-      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const dayAbbrs = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const byDay = {};
 
       const lastRec = HISTORY_RECORDS[HISTORY_RECORDS.length - 1];
@@ -2407,14 +2407,21 @@
       const prevOpen = lastRec[3];
       const prevClose = lastRec[4];
 
-      const baseDate = new Date();
-      for (let offset = 0; offset < 6; offset++) {
-        const targetD = new Date(baseDate);
-        targetD.setDate(baseDate.getDate() + offset + 1);
-        if (targetD.getDay() === 0) targetD.setDate(targetD.getDate() + 1); // Skip Sunday
+      let baseDate = new Date();
+      if (lastRec && lastRec[0]) {
+        const parsed = new Date(lastRec[0] + 'T00:00:00');
+        if (!isNaN(parsed.getTime())) baseDate = parsed;
+      }
 
-        const dayName = days[targetD.getDay() === 0 ? 0 : targetD.getDay() - 1];
-        const dateStr = targetD.toISOString().split('T')[0];
+      let dDate = new Date(baseDate);
+      let count = 0;
+      while (count < 6) {
+        dDate.setDate(dDate.getDate() + 1);
+        if (dDate.getDay() === 0) continue; // Skip Sunday
+        count++;
+
+        const dayName = dayAbbrs[dDate.getDay()];
+        const dateStr = dDate.toISOString().split('T')[0];
 
         const preds = ensemble.predict(dayName, prevJodi, prevOpen, prevClose);
 
@@ -2517,6 +2524,23 @@
       });
     }
 
+    function updateDayTabDates() {
+      if (!APP_STATE || !APP_STATE.by_day) return;
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      days.forEach(day => {
+        const el = document.getElementById('date-' + day);
+        if (el && APP_STATE.by_day[day] && APP_STATE.by_day[day].date) {
+          const parts = APP_STATE.by_day[day].date.split('-');
+          if (parts.length === 3) {
+            const d = String(parseInt(parts[2], 10)).padStart(2, '0');
+            const m = parseInt(parts[1], 10) - 1;
+            el.textContent = `${d} ${monthNames[m] || ''}`;
+          }
+        }
+      });
+    }
+
     function renderAll() {
       if (!APP_STATE) return;
 
@@ -2534,6 +2558,9 @@
         }
         document.getElementById('latest-date').textContent = `${CURRENT_LATEST_DRAW.day}, ${CURRENT_LATEST_DRAW.date}`;
       }
+
+      // Update date sub-labels on day selector tabs
+      updateDayTabDates();
 
       // Render Selected Day Forecast
       renderDayForecast();
@@ -2730,34 +2757,63 @@
     // 6. APPLICATION BOOTSTRAP
     // ==========================================
     async function initApp() {
-      renderAll();
-
-      // Load historical records into in-memory store
+      // 1. Fetch server-generated prediction_data.json snapshot
       try {
-        const cached = localStorage.getItem('kalyan_custom_history_v2');
-        if (cached) {
-          HISTORY_RECORDS = JSON.parse(cached);
-          console.log(`[BOOT] Restored ${HISTORY_RECORDS.length} historical records from localStorage.`);
-        }
-      } catch (e) {}
-
-      if (HISTORY_RECORDS.length === 0) {
-        try {
-          const res = await fetch('history.json?_t=' + Date.now(), { cache: 'no-store' });
-          if (res.ok) {
-            HISTORY_RECORDS = await res.json();
-            console.log(`[BOOT] Loaded ${HISTORY_RECORDS.length} historical records from history.json.`);
+        const pRes = await fetch('prediction_data.json?_t=' + Date.now(), { cache: 'no-store' });
+        if (pRes.ok) {
+          const pData = await pRes.json();
+          if (pData.latest_draw) {
+            CURRENT_LATEST_DRAW = pData.latest_draw;
           }
-        } catch (e) {
-          console.warn('[BOOT] Using embedded fallback history records.');
+          if (pData.by_day) {
+            APP_STATE = pData;
+            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const todayDay = dayNames[new Date().getDay()];
+            if (pData.by_day[todayDay]) {
+              selectedDay = todayDay;
+            } else {
+              const keys = Object.keys(pData.by_day);
+              if (keys.length > 0) selectedDay = keys[0];
+            }
+          }
+          console.log('[BOOT] Loaded fresh prediction_data.json snapshot.');
+        }
+      } catch (e) {
+        console.warn('[BOOT] Could not load prediction_data.json, using embedded baseline.', e);
+      }
+
+      // Initial render with latest snapshot
+      renderAll();
+      changeDay(selectedDay);
+
+      // 2. Fetch fresh historical records from history.json (bypass stale localStorage)
+      try {
+        const res = await fetch('history.json?_t=' + Date.now(), { cache: 'no-store' });
+        if (res.ok) {
+          HISTORY_RECORDS = await res.json();
+          try {
+            localStorage.setItem('kalyan_custom_history_v2', JSON.stringify(HISTORY_RECORDS));
+          } catch (e) {}
+          console.log(`[BOOT] Loaded ${HISTORY_RECORDS.length} fresh historical records from history.json.`);
+          const countEl = document.getElementById('dataset-count');
+          if (countEl) countEl.textContent = `${HISTORY_RECORDS.length.toLocaleString()} Historical Records`;
+        } else {
+          throw new Error('HTTP ' + res.status);
+        }
+      } catch (e) {
+        try {
+          const cached = localStorage.getItem('kalyan_custom_history_v2');
+          if (cached) HISTORY_RECORDS = JSON.parse(cached);
+        } catch (err) {}
+        if (!HISTORY_RECORDS || HISTORY_RECORDS.length === 0) {
           HISTORY_RECORDS = Array.from(FALLBACK_HISTORY);
         }
       }
 
-      // Start timer
+      // 3. Start timer
       startAutoSyncTimer();
 
-      // Immediate first sync to check if today has new results
+      // 4. Immediate first sync to check if today has new results
       executeSyncPipeline({ isManual: false });
     }
 
