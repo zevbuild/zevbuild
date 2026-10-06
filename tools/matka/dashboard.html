@@ -180,7 +180,7 @@
         </span>
         <div>
           <span class="font-bold text-slate-200">Last Week Prediction Data:</span>
-          <span class="text-slate-400 ml-1.5" id="lw-strip-text">Mon 28 Sep – Sat 03 Oct (3 Verified Single/Double Ank Hits against official draws)</span>
+          <span class="text-slate-400 ml-1.5" id="lw-strip-text">Mon 28 Sep – Sat 03 Oct (5 Verified Single/Double Ank Hits against official draws)</span>
         </div>
       </div>
       <button onclick="setTab('lastweek')" class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 transition-all flex items-center gap-1.5 whitespace-nowrap active:scale-95">
@@ -346,7 +346,7 @@
           </div>
           <div class="flex items-center gap-2 flex-wrap">
             <span class="text-xs px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold" id="lw-summary-badge">
-              3 Verified Ank Hits
+              5 Verified Ank Hits
             </span>
             <span class="text-xs px-2.5 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 font-bold">
               Walk-Forward Validated
@@ -440,8 +440,9 @@
     // 1. IN-BROWSER MACHINE LEARNING MODELS
     // ==========================================
     class BrowserMarkovModel {
-      constructor(alpha = 0.5) {
-        this.alpha = alpha;
+      constructor(alphaDigit = 0.6, alphaJodi = 0.1) {
+        this.alphaDigit = alphaDigit;
+        this.alphaJodi = alphaJodi;
         this.jodiTrans = Array.from({ length: 100 }, () => new Float64Array(100));
         this.openTrans = Array.from({ length: 10 }, () => new Float64Array(10));
         this.closeTrans = Array.from({ length: 10 }, () => new Float64Array(10));
@@ -467,8 +468,8 @@
         let total = 0;
         for (let i = 0; i < 100; i++) total += counts[i];
         const probs = new Float64Array(100);
-        const denom = total + 100 * this.alpha;
-        for (let i = 0; i < 100; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        const denom = total + 100 * this.alphaJodi;
+        for (let i = 0; i < 100; i++) probs[i] = (counts[i] + this.alphaJodi) / denom;
         return probs;
       }
 
@@ -477,8 +478,8 @@
         let total = 0;
         for (let i = 0; i < 10; i++) total += counts[i];
         const probs = new Float64Array(10);
-        const denom = total + 10 * this.alpha;
-        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        const denom = total + 10 * this.alphaDigit;
+        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alphaDigit) / denom;
         return probs;
       }
 
@@ -487,33 +488,41 @@
         let total = 0;
         for (let i = 0; i < 10; i++) total += counts[i];
         const probs = new Float64Array(10);
-        const denom = total + 10 * this.alpha;
-        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        const denom = total + 10 * this.alphaDigit;
+        for (let i = 0; i < 10; i++) probs[i] = (counts[i] + this.alphaDigit) / denom;
         return probs;
       }
     }
 
-    class BrowserRecencyModel {
-      constructor(halfLife = 60.0, alpha = 0.5) {
-        this.decayRate = Math.log(2.0) / halfLife;
+    class BrowserDualHorizonRecencyModel {
+      constructor(halfLifeFast = 10.0, halfLifeMed = 40.0, alpha = 0.6) {
+        this.decayFast = Math.log(2.0) / halfLifeFast;
+        this.decayMed = Math.log(2.0) / halfLifeMed;
         this.alpha = alpha;
         this.jodiWeights = new Float64Array(100);
-        this.openWeights = new Float64Array(10);
-        this.closeWeights = new Float64Array(10);
+        this.openFast = new Float64Array(10);
+        this.openMed = new Float64Array(10);
+        this.closeFast = new Float64Array(10);
+        this.closeMed = new Float64Array(10);
       }
 
       fit(records) {
         this.jodiWeights.fill(0);
-        this.openWeights.fill(0);
-        this.closeWeights.fill(0);
+        this.openFast.fill(0);
+        this.openMed.fill(0);
+        this.closeFast.fill(0);
+        this.closeMed.fill(0);
         const n = records.length;
         for (let i = 0; i < n; i++) {
           const lag = n - 1 - i;
-          const w = Math.exp(-this.decayRate * lag);
+          const wf = Math.exp(-this.decayFast * lag);
+          const wm = Math.exp(-this.decayMed * lag);
           const r = records[i];
-          this.jodiWeights[r[2]] += w;
-          this.openWeights[r[3]] += w;
-          this.closeWeights[r[4]] += w;
+          this.jodiWeights[r[2]] += wm;
+          this.openFast[r[3]] += wf;
+          this.openMed[r[3]] += wm;
+          this.closeFast[r[4]] += wf;
+          this.closeMed[r[4]] += wm;
         }
       }
 
@@ -521,32 +530,48 @@
         let total = 0;
         for (let i = 0; i < 100; i++) total += this.jodiWeights[i];
         const probs = new Float64Array(100);
-        const denom = total + 100 * this.alpha;
-        for (let i = 0; i < 100; i++) probs[i] = (this.jodiWeights[i] + this.alpha) / denom;
+        const denom = total + 100 * 0.1;
+        for (let i = 0; i < 100; i++) probs[i] = (this.jodiWeights[i] + 0.1) / denom;
         return probs;
       }
 
       predictOpenProbs() {
-        let total = 0;
-        for (let i = 0; i < 10; i++) total += this.openWeights[i];
+        let totF = 0, totM = 0;
+        for (let i = 0; i < 10; i++) { totF += this.openFast[i]; totM += this.openMed[i]; }
         const probs = new Float64Array(10);
-        const denom = total + 10 * this.alpha;
-        for (let i = 0; i < 10; i++) probs[i] = (this.openWeights[i] + this.alpha) / denom;
+        const denomF = totF + 10 * this.alpha;
+        const denomM = totM + 10 * this.alpha;
+        let sum = 0;
+        for (let i = 0; i < 10; i++) {
+          const pf = (this.openFast[i] + this.alpha) / denomF;
+          const pm = (this.openMed[i] + this.alpha) / denomM;
+          probs[i] = 0.60 * pf + 0.40 * pm;
+          sum += probs[i];
+        }
+        for (let i = 0; i < 10; i++) probs[i] /= sum;
         return probs;
       }
 
       predictCloseProbs() {
-        let total = 0;
-        for (let i = 0; i < 10; i++) total += this.closeWeights[i];
+        let totF = 0, totM = 0;
+        for (let i = 0; i < 10; i++) { totF += this.closeFast[i]; totM += this.closeMed[i]; }
         const probs = new Float64Array(10);
-        const denom = total + 10 * this.alpha;
-        for (let i = 0; i < 10; i++) probs[i] = (this.closeWeights[i] + this.alpha) / denom;
+        const denomF = totF + 10 * this.alpha;
+        const denomM = totM + 10 * this.alpha;
+        let sum = 0;
+        for (let i = 0; i < 10; i++) {
+          const pf = (this.closeFast[i] + this.alpha) / denomF;
+          const pm = (this.closeMed[i] + this.alpha) / denomM;
+          probs[i] = 0.60 * pf + 0.40 * pm;
+          sum += probs[i];
+        }
+        for (let i = 0; i < 10; i++) probs[i] /= sum;
         return probs;
       }
     }
 
     class BrowserSeasonalModel {
-      constructor(alpha = 0.5) {
+      constructor(alpha = 0.6) {
         this.alpha = alpha;
         this.dayJodi = { Mon: new Float64Array(100), Tue: new Float64Array(100), Wed: new Float64Array(100), Thu: new Float64Array(100), Fri: new Float64Array(100), Sat: new Float64Array(100) };
         this.dayOpen = { Mon: new Float64Array(10), Tue: new Float64Array(10), Wed: new Float64Array(10), Thu: new Float64Array(10), Fri: new Float64Array(10), Sat: new Float64Array(10) };
@@ -575,8 +600,8 @@
         let total = 0;
         for (let i = 0; i < 100; i++) total += counts[i];
         const probs = new Float64Array(100);
-        const denom = total + 100 * this.alpha;
-        for (let i = 0; i < 100; i++) probs[i] = (counts[i] + this.alpha) / denom;
+        const denom = total + 100 * 0.1;
+        for (let i = 0; i < 100; i++) probs[i] = (counts[i] + 0.1) / denom;
         return probs;
       }
 
@@ -601,55 +626,140 @@
       }
     }
 
+    class BrowserIntraConditionalModel {
+      constructor(alpha = 0.8) {
+        this.alpha = alpha;
+        this.matrix = Array.from({ length: 10 }, () => new Float64Array(10));
+      }
+
+      fit(records) {
+        for (let i = 0; i < 100; i++) this.matrix[Math.floor(i / 10)][i % 10] = 0;
+        for (let i = 0; i < records.length; i++) {
+          const r = records[i];
+          this.matrix[r[3]][r[4]]++;
+        }
+      }
+
+      getCloseGivenOpen(o, c) {
+        let rowSum = 0;
+        for (let j = 0; j < 10; j++) rowSum += this.matrix[o][j];
+        return (this.matrix[o][c] + this.alpha) / (rowSum + 10 * this.alpha);
+      }
+    }
+
+    class BrowserJodiTotalModel {
+      constructor(halfLife = 40.0, alpha = 0.5) {
+        this.decay = Math.log(2.0) / halfLife;
+        this.alpha = alpha;
+        this.weights = new Float64Array(10);
+      }
+
+      fit(records) {
+        this.weights.fill(0);
+        const n = records.length;
+        for (let i = 0; i < n; i++) {
+          const lag = n - 1 - i;
+          const w = Math.exp(-this.decay * lag);
+          const r = records[i];
+          const tot = (r[3] + r[4]) % 10;
+          this.weights[tot] += w;
+        }
+      }
+
+      predictTotalProbs() {
+        let total = 0;
+        for (let i = 0; i < 10; i++) total += this.weights[i];
+        const probs = new Float64Array(10);
+        const denom = total + 10 * this.alpha;
+        for (let i = 0; i < 10; i++) probs[i] = (this.weights[i] + this.alpha) / denom;
+        return probs;
+      }
+    }
+
     class BrowserEnsemblePredictor {
-      constructor(wMarkov = 0.30, wRecency = 0.40, wSeasonal = 0.30) {
-        this.wMarkov = wMarkov;
-        this.wRecency = wRecency;
-        this.wSeasonal = wSeasonal;
+      constructor() {
+        this.wMarkov = 0.20;
+        this.wRecency = 0.65;
+        this.wSeasonal = 0.15;
+        this.cutResonance = 0.14;
+        this.wJoint = 0.55;
+        this.wTotal = 0.20;
+        this.wDirect = 0.25;
+
         this.markov = new BrowserMarkovModel();
-        this.recency = new BrowserRecencyModel();
+        this.recency = new BrowserDualHorizonRecencyModel();
         this.seasonal = new BrowserSeasonalModel();
+        this.intra = new BrowserIntraConditionalModel();
+        this.totalModel = new BrowserJodiTotalModel();
       }
 
       fit(records) {
         this.markov.fit(records);
         this.recency.fit(records);
         this.seasonal.fit(records);
+        this.intra.fit(records);
+        this.totalModel.fit(records);
       }
 
       predict(day, prevJodi, prevOpen, prevClose) {
-        const pjM = this.markov.predictJodiProbs(prevJodi);
-        const pjR = this.recency.predictJodiProbs();
-        const pjS = this.seasonal.predictJodiProbs(day);
-        const jodiProbs = new Float64Array(100);
-        let sumJ = 0;
-        for (let i = 0; i < 100; i++) {
-          jodiProbs[i] = this.wMarkov * pjM[i] + this.wRecency * pjR[i] + this.wSeasonal * pjS[i];
-          sumJ += jodiProbs[i];
-        }
-        for (let i = 0; i < 100; i++) jodiProbs[i] /= sumJ;
-
+        // 1. Open Digit Distribution with Cut Resonance
         const poM = this.markov.predictOpenProbs(prevOpen);
         const poR = this.recency.predictOpenProbs();
         const poS = this.seasonal.predictOpenProbs(day);
+        const openBlend = new Float64Array(10);
+        for (let i = 0; i < 10; i++) {
+          openBlend[i] = this.wMarkov * poM[i] + this.wRecency * poR[i] + this.wSeasonal * poS[i];
+        }
         const openProbs = new Float64Array(10);
         let sumO = 0;
         for (let i = 0; i < 10; i++) {
-          openProbs[i] = this.wMarkov * poM[i] + this.wRecency * poR[i] + this.wSeasonal * poS[i];
+          const cutIdx = (i + 5) % 10;
+          openProbs[i] = (1.0 - this.cutResonance) * openBlend[i] + this.cutResonance * openBlend[cutIdx];
           sumO += openProbs[i];
         }
         for (let i = 0; i < 10; i++) openProbs[i] /= sumO;
 
+        // 2. Close Digit Distribution with Cut Resonance
         const pcM = this.markov.predictCloseProbs(prevClose);
         const pcR = this.recency.predictCloseProbs();
         const pcS = this.seasonal.predictCloseProbs(day);
+        const closeBlend = new Float64Array(10);
+        for (let i = 0; i < 10; i++) {
+          closeBlend[i] = this.wMarkov * pcM[i] + this.wRecency * pcR[i] + this.wSeasonal * pcS[i];
+        }
         const closeProbs = new Float64Array(10);
         let sumC = 0;
         for (let i = 0; i < 10; i++) {
-          closeProbs[i] = this.wMarkov * pcM[i] + this.wRecency * pcR[i] + this.wSeasonal * pcS[i];
+          const cutIdx = (i + 5) % 10;
+          closeProbs[i] = (1.0 - this.cutResonance) * closeBlend[i] + this.cutResonance * closeBlend[cutIdx];
           sumC += closeProbs[i];
         }
         for (let i = 0; i < 10; i++) closeProbs[i] /= sumC;
+
+        // 3. Jodi Total Prior Distribution
+        const pTot = this.totalModel.predictTotalProbs();
+
+        // 4. Direct Jodi Recency
+        const pjRec = this.recency.predictJodiProbs();
+
+        // 5. Coherent Marginal-Joint Synthesis
+        const jodiProbs = new Float64Array(100);
+        let sumJ = 0;
+        for (let o = 0; o < 10; o++) {
+          for (let c = 0; c < 10; c++) {
+            const idx = o * 10 + c;
+            const pIntra = this.intra.getCloseGivenOpen(o, c);
+            const pCloseEff = 0.60 * closeProbs[c] + 0.40 * pIntra;
+            const pJoint = openProbs[o] * pCloseEff;
+            const t = (o + c) % 10;
+            const pTotalPrior = pTot[t] / 10.0;
+            const pDirect = pjRec[idx];
+
+            jodiProbs[idx] = this.wJoint * pJoint + this.wTotal * pTotalPrior + this.wDirect * pDirect;
+            sumJ += jodiProbs[idx];
+          }
+        }
+        for (let i = 0; i < 100; i++) jodiProbs[i] /= sumJ;
 
         return { jodiProbs, openProbs, closeProbs };
       }

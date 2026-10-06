@@ -88,7 +88,7 @@ def compute_last_week_performance(valid_df, html=""):
         actual_row = valid_df.iloc[idx]
         prev_row = valid_df.iloc[idx - 1]
 
-        m = EnsemblePredictor(w_markov=0.30, w_recency=0.40, w_seasonal=0.30)
+        m = EnsemblePredictor()
         m.fit(train_df)
         preds = m.predict(
             day_of_week=str(actual_row["Day_Of_Week"]),
@@ -214,8 +214,8 @@ def compute_all_predictions(force_refresh: bool = False):
     except Exception:
         pass
 
-    # Fit Ensemble Model
-    ensemble = EnsemblePredictor(w_markov=0.30, w_recency=0.40, w_seasonal=0.30)
+    # Fit Optimized Hybrid Ensemble Model
+    ensemble = EnsemblePredictor()
     ensemble.fit(valid_df)
 
     # Compute last week prediction performance

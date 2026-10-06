@@ -78,8 +78,8 @@ def generate_upcoming_prediction(csv_path: str = "kalyan_historical_data.csv") -
     target_day = day_map[next_date.weekday()]
     target_date_str = next_date.strftime("%Y-%m-%d")
 
-    # Fit Ensemble Predictor on full historical data
-    ensemble = EnsemblePredictor(w_markov=0.30, w_recency=0.40, w_seasonal=0.30)
+    # Fit Optimized Hybrid Ensemble Predictor on full historical data
+    ensemble = EnsemblePredictor()
     ensemble.fit(valid_df)
 
     # Generate probabilities for target draw

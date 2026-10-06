@@ -14,7 +14,7 @@
     "week_range": "28 Sep 2026 \u2013 03 Oct 2026",
     "summary": {
       "total_draws": 6,
-      "ank_hits": 3,
+      "ank_hits": 5,
       "double_ank_hits": 1,
       "edge": "+2.2% Walk-Forward"
     },
@@ -27,23 +27,23 @@
         "actual_close": 7,
         "open_patti": "560",
         "close_patti": "700",
-        "predicted_top_pick": "65",
+        "predicted_top_pick": "15",
         "predicted_top_5": [
+          "15",
           "65",
-          "01",
-          "02",
-          "31",
-          "93"
+          "05",
+          "50",
+          "26"
         ],
         "predicted_top_open": [
-          9,
-          3,
+          1,
+          2,
           0
         ],
         "predicted_top_close": [
-          1,
           5,
-          4
+          6,
+          3
         ],
         "family_bracket": [
           "01",
@@ -55,11 +55,11 @@
           "60",
           "65"
         ],
-        "open_hit": false,
+        "open_hit": true,
         "close_hit": false,
         "jodi_hit": false,
-        "status_label": "Standard Variance",
-        "badge_type": "neutral"
+        "status_label": "Open Ank Hit (1)",
+        "badge_type": "highlight"
       },
       {
         "date": "2026-09-29",
@@ -69,39 +69,39 @@
         "actual_close": 2,
         "open_patti": "147",
         "close_patti": "679",
-        "predicted_top_pick": "58",
+        "predicted_top_pick": "17",
         "predicted_top_5": [
-          "58",
-          "31",
-          "99",
-          "33",
+          "17",
+          "15",
+          "65",
+          "05",
           "50"
         ],
         "predicted_top_open": [
-          9,
           1,
-          3
+          2,
+          6
         ],
         "predicted_top_close": [
-          1,
-          8,
-          4
+          5,
+          7,
+          3
         ],
         "family_bracket": [
-          "03",
-          "08",
-          "30",
-          "35",
-          "53",
-          "58",
-          "80",
-          "85"
+          "12",
+          "17",
+          "21",
+          "26",
+          "62",
+          "67",
+          "71",
+          "76"
         ],
-        "open_hit": false,
+        "open_hit": true,
         "close_hit": false,
         "jodi_hit": false,
-        "status_label": "Standard Variance",
-        "badge_type": "neutral"
+        "status_label": "Open Ank Hit (2)",
+        "badge_type": "highlight"
       },
       {
         "date": "2026-09-30",
@@ -111,23 +111,23 @@
         "actual_close": 8,
         "open_patti": "477",
         "close_patti": "369",
-        "predicted_top_pick": "26",
+        "predicted_top_pick": "17",
         "predicted_top_5": [
-          "26",
+          "17",
           "15",
-          "18",
-          "33",
-          "11"
+          "26",
+          "27",
+          "65"
         ],
         "predicted_top_open": [
           2,
-          9,
-          3
+          1,
+          6
         ],
         "predicted_top_close": [
           5,
           7,
-          1
+          6
         ],
         "family_bracket": [
           "12",
@@ -153,103 +153,23 @@
         "actual_close": 8,
         "open_patti": "399",
         "close_patti": "567",
-        "predicted_top_pick": "99",
-        "predicted_top_5": [
-          "99",
-          "95",
-          "11",
-          "15",
-          "14"
-        ],
-        "predicted_top_open": [
-          9,
-          2,
-          3
-        ],
-        "predicted_top_close": [
-          8,
-          4,
-          2
-        ],
-        "family_bracket": [
-          "44",
-          "49",
-          "94",
-          "99"
-        ],
-        "open_hit": false,
-        "close_hit": true,
-        "jodi_hit": false,
-        "status_label": "Close Ank Hit (8)",
-        "badge_type": "highlight"
-      },
-      {
-        "date": "2026-10-02",
-        "day": "Fri",
-        "actual_jodi": "84",
-        "actual_open": 8,
-        "actual_close": 4,
-        "open_patti": "378",
-        "close_patti": "347",
-        "predicted_top_pick": "65",
-        "predicted_top_5": [
-          "65",
-          "17",
-          "32",
-          "99",
-          "18"
-        ],
-        "predicted_top_open": [
-          9,
-          1,
-          3
-        ],
-        "predicted_top_close": [
-          5,
-          2,
-          8
-        ],
-        "family_bracket": [
-          "01",
-          "06",
-          "10",
-          "15",
-          "51",
-          "56",
-          "60",
-          "65"
-        ],
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "Standard Variance",
-        "badge_type": "neutral"
-      },
-      {
-        "date": "2026-10-03",
-        "day": "Sat",
-        "actual_jodi": "98",
-        "actual_open": 9,
-        "actual_close": 8,
-        "open_patti": "234",
-        "close_patti": "350",
         "predicted_top_pick": "17",
         "predicted_top_5": [
           "17",
-          "18",
-          "68",
-          "76",
-          "32"
+          "15",
+          "26",
+          "65",
+          "27"
         ],
         "predicted_top_open": [
           1,
-          9,
+          2,
           6
         ],
         "predicted_top_close": [
           5,
-          1,
-          8
+          8,
+          7
         ],
         "family_bracket": [
           "12",
@@ -266,6 +186,90 @@
         "jodi_hit": false,
         "status_label": "Double Ank Hit (Open & Close)",
         "badge_type": "success"
+      },
+      {
+        "date": "2026-10-02",
+        "day": "Fri",
+        "actual_jodi": "84",
+        "actual_open": 8,
+        "actual_close": 4,
+        "open_patti": "378",
+        "close_patti": "347",
+        "predicted_top_pick": "18",
+        "predicted_top_5": [
+          "18",
+          "17",
+          "15",
+          "65",
+          "26"
+        ],
+        "predicted_top_open": [
+          1,
+          2,
+          6
+        ],
+        "predicted_top_close": [
+          8,
+          5,
+          7
+        ],
+        "family_bracket": [
+          "13",
+          "18",
+          "31",
+          "36",
+          "63",
+          "68",
+          "81",
+          "86"
+        ],
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-03",
+        "day": "Sat",
+        "actual_jodi": "98",
+        "actual_open": 9,
+        "actual_close": 8,
+        "open_patti": "234",
+        "close_patti": "350",
+        "predicted_top_pick": "18",
+        "predicted_top_5": [
+          "18",
+          "17",
+          "15",
+          "65",
+          "26"
+        ],
+        "predicted_top_open": [
+          1,
+          2,
+          8
+        ],
+        "predicted_top_close": [
+          8,
+          5,
+          7
+        ],
+        "family_bracket": [
+          "13",
+          "18",
+          "31",
+          "36",
+          "63",
+          "68",
+          "81",
+          "86"
+        ],
+        "open_hit": false,
+        "close_hit": true,
+        "jodi_hit": false,
+        "status_label": "Close Ank Hit (8)",
+        "badge_type": "highlight"
       }
     ]
   },
@@ -276,8 +280,34 @@
       "top_jodis": [
         {
           "rank": 1,
-          "jodi": "01",
-          "prob": 1.91,
+          "jodi": "18",
+          "prob": 1.97,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "16",
+          "prob": 1.94,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "15",
+          "prob": 1.81,
           "family": [
             "01",
             "06",
@@ -290,7 +320,7 @@
           ]
         },
         {
-          "rank": 2,
+          "rank": 4,
           "jodi": "17",
           "prob": 1.8,
           "family": [
@@ -305,76 +335,24 @@
           ]
         },
         {
-          "rank": 3,
-          "jodi": "22",
-          "prob": 1.72,
-          "family": [
-            "22",
-            "27",
-            "72",
-            "77"
-          ]
-        },
-        {
-          "rank": 4,
-          "jodi": "95",
-          "prob": 1.72,
-          "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
-          ]
-        },
-        {
           "rank": 5,
-          "jodi": "02",
-          "prob": 1.71,
+          "jodi": "26",
+          "prob": 1.58,
           "family": [
-            "02",
-            "07",
-            "20",
-            "25",
-            "52",
-            "57",
-            "70",
-            "75"
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
           ]
         },
         {
           "rank": 6,
-          "jodi": "16",
-          "prob": 1.66,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 7,
-          "jodi": "93",
-          "prob": 1.61,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 8,
           "jodi": "14",
-          "prob": 1.6,
+          "prob": 1.54,
           "family": [
             "14",
             "19",
@@ -387,9 +365,9 @@
           ]
         },
         {
-          "rank": 9,
+          "rank": 7,
           "jodi": "65",
-          "prob": 1.55,
+          "prob": 1.51,
           "family": [
             "01",
             "06",
@@ -402,9 +380,9 @@
           ]
         },
         {
-          "rank": 10,
+          "rank": 8,
           "jodi": "58",
-          "prob": 1.54,
+          "prob": 1.51,
           "family": [
             "03",
             "08",
@@ -415,122 +393,144 @@
             "80",
             "85"
           ]
+        },
+        {
+          "rank": 9,
+          "jodi": "11",
+          "prob": 1.47,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "27",
+          "prob": 1.45,
+          "family": [
+            "22",
+            "27",
+            "72",
+            "77"
+          ]
         }
       ],
       "open_digits": [
         {
           "rank": 1,
-          "digit": 9,
-          "prob": 12.05
+          "digit": 1,
+          "prob": 15.91
         },
         {
           "rank": 2,
-          "digit": 1,
-          "prob": 12.05
+          "digit": 2,
+          "prob": 11.45
         },
         {
           "rank": 3,
-          "digit": 2,
-          "prob": 10.9
+          "digit": 6,
+          "prob": 10.43
         },
         {
           "rank": 4,
-          "digit": 3,
-          "prob": 10.68
+          "digit": 9,
+          "prob": 10.07
         },
         {
           "rank": 5,
-          "digit": 6,
-          "prob": 10.41
+          "digit": 8,
+          "prob": 9.79
         },
         {
           "rank": 6,
-          "digit": 0,
-          "prob": 10.16
+          "digit": 5,
+          "prob": 9.45
         },
         {
           "rank": 7,
-          "digit": 5,
-          "prob": 9.46
+          "digit": 0,
+          "prob": 9.37
         },
         {
           "rank": 8,
-          "digit": 8,
-          "prob": 9.18
+          "digit": 3,
+          "prob": 8.6
         },
         {
           "rank": 9,
           "digit": 7,
-          "prob": 8.42
+          "prob": 8.37
         },
         {
           "rank": 10,
           "digit": 4,
-          "prob": 6.7
+          "prob": 6.57
         }
       ],
       "close_digits": [
         {
           "rank": 1,
-          "digit": 1,
-          "prob": 11.96
+          "digit": 8,
+          "prob": 13.8
         },
         {
           "rank": 2,
-          "digit": 8,
-          "prob": 11.04
+          "digit": 6,
+          "prob": 11.27
         },
         {
           "rank": 3,
-          "digit": 4,
-          "prob": 10.72
+          "digit": 5,
+          "prob": 10.85
         },
         {
           "rank": 4,
-          "digit": 5,
-          "prob": 10.61
+          "digit": 3,
+          "prob": 9.94
         },
         {
           "rank": 5,
-          "digit": 6,
-          "prob": 10.04
+          "digit": 7,
+          "prob": 9.93
         },
         {
           "rank": 6,
-          "digit": 2,
-          "prob": 9.77
+          "digit": 1,
+          "prob": 9.63
         },
         {
           "rank": 7,
-          "digit": 0,
-          "prob": 9.52
+          "digit": 4,
+          "prob": 9.58
         },
         {
           "rank": 8,
-          "digit": 7,
-          "prob": 9.51
+          "digit": 0,
+          "prob": 9.05
         },
         {
           "rank": 9,
-          "digit": 3,
-          "prob": 9.4
+          "digit": 2,
+          "prob": 8.85
         },
         {
           "rank": 10,
           "digit": 9,
-          "prob": 7.43
+          "prob": 7.1
         }
       ],
-      "top_pick": "01",
+      "top_pick": "18",
       "top_family": [
-        "01",
-        "06",
-        "10",
-        "15",
-        "51",
-        "56",
-        "60",
-        "65"
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
       ]
     },
     "Wed": {
@@ -539,53 +539,49 @@
       "top_jodis": [
         {
           "rank": 1,
-          "jodi": "02",
-          "prob": 1.76,
+          "jodi": "18",
+          "prob": 1.95,
           "family": [
-            "02",
-            "07",
-            "20",
-            "25",
-            "52",
-            "57",
-            "70",
-            "75"
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
           ]
         },
         {
           "rank": 2,
-          "jodi": "93",
-          "prob": 1.71,
+          "jodi": "16",
+          "prob": 1.94,
           "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
+            "11",
+            "16",
+            "61",
+            "66"
           ]
         },
         {
           "rank": 3,
-          "jodi": "65",
-          "prob": 1.65,
+          "jodi": "17",
+          "prob": 1.8,
           "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
           ]
         },
         {
           "rank": 4,
-          "jodi": "01",
-          "prob": 1.6,
+          "jodi": "15",
+          "prob": 1.8,
           "family": [
             "01",
             "06",
@@ -599,533 +595,7 @@
         },
         {
           "rank": 5,
-          "jodi": "95",
-          "prob": 1.56,
-          "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
-          ]
-        },
-        {
-          "rank": 6,
-          "jodi": "17",
-          "prob": 1.49,
-          "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
-          ]
-        },
-        {
-          "rank": 7,
-          "jodi": "16",
-          "prob": 1.45,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 8,
           "jodi": "26",
-          "prob": 1.41,
-          "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
-          ]
-        },
-        {
-          "rank": 9,
-          "jodi": "22",
-          "prob": 1.36,
-          "family": [
-            "22",
-            "27",
-            "72",
-            "77"
-          ]
-        },
-        {
-          "rank": 10,
-          "jodi": "14",
-          "prob": 1.34,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        }
-      ],
-      "open_digits": [
-        {
-          "rank": 1,
-          "digit": 9,
-          "prob": 12.37
-        },
-        {
-          "rank": 2,
-          "digit": 1,
-          "prob": 11.54
-        },
-        {
-          "rank": 3,
-          "digit": 2,
-          "prob": 11.0
-        },
-        {
-          "rank": 4,
-          "digit": 3,
-          "prob": 10.67
-        },
-        {
-          "rank": 5,
-          "digit": 6,
-          "prob": 10.17
-        },
-        {
-          "rank": 6,
-          "digit": 0,
-          "prob": 9.93
-        },
-        {
-          "rank": 7,
-          "digit": 8,
-          "prob": 9.39
-        },
-        {
-          "rank": 8,
-          "digit": 5,
-          "prob": 9.06
-        },
-        {
-          "rank": 9,
-          "digit": 7,
-          "prob": 8.97
-        },
-        {
-          "rank": 10,
-          "digit": 4,
-          "prob": 6.91
-        }
-      ],
-      "close_digits": [
-        {
-          "rank": 1,
-          "digit": 1,
-          "prob": 11.34
-        },
-        {
-          "rank": 2,
-          "digit": 8,
-          "prob": 11.09
-        },
-        {
-          "rank": 3,
-          "digit": 5,
-          "prob": 10.88
-        },
-        {
-          "rank": 4,
-          "digit": 6,
-          "prob": 10.81
-        },
-        {
-          "rank": 5,
-          "digit": 7,
-          "prob": 10.05
-        },
-        {
-          "rank": 6,
-          "digit": 4,
-          "prob": 9.6
-        },
-        {
-          "rank": 7,
-          "digit": 0,
-          "prob": 9.57
-        },
-        {
-          "rank": 8,
-          "digit": 3,
-          "prob": 9.5
-        },
-        {
-          "rank": 9,
-          "digit": 2,
-          "prob": 9.48
-        },
-        {
-          "rank": 10,
-          "digit": 9,
-          "prob": 7.69
-        }
-      ],
-      "top_pick": "02",
-      "top_family": [
-        "02",
-        "07",
-        "20",
-        "25",
-        "52",
-        "57",
-        "70",
-        "75"
-      ]
-    },
-    "Thu": {
-      "date": "2026-10-08",
-      "day": "Thu",
-      "top_jodis": [
-        {
-          "rank": 1,
-          "jodi": "17",
-          "prob": 1.69,
-          "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
-          ]
-        },
-        {
-          "rank": 2,
-          "jodi": "93",
-          "prob": 1.66,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 3,
-          "jodi": "01",
-          "prob": 1.66,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 4,
-          "jodi": "02",
-          "prob": 1.66,
-          "family": [
-            "02",
-            "07",
-            "20",
-            "25",
-            "52",
-            "57",
-            "70",
-            "75"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "14",
-          "prob": 1.6,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
-          "rank": 6,
-          "jodi": "65",
-          "prob": 1.55,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 7,
-          "jodi": "95",
-          "prob": 1.51,
-          "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "16",
-          "prob": 1.5,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 9,
-          "jodi": "59",
-          "prob": 1.5,
-          "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
-          ]
-        },
-        {
-          "rank": 10,
-          "jodi": "34",
-          "prob": 1.49,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        }
-      ],
-      "open_digits": [
-        {
-          "rank": 1,
-          "digit": 9,
-          "prob": 11.82
-        },
-        {
-          "rank": 2,
-          "digit": 1,
-          "prob": 11.55
-        },
-        {
-          "rank": 3,
-          "digit": 3,
-          "prob": 11.23
-        },
-        {
-          "rank": 4,
-          "digit": 2,
-          "prob": 11.06
-        },
-        {
-          "rank": 5,
-          "digit": 0,
-          "prob": 10.49
-        },
-        {
-          "rank": 6,
-          "digit": 6,
-          "prob": 10.12
-        },
-        {
-          "rank": 7,
-          "digit": 5,
-          "prob": 9.23
-        },
-        {
-          "rank": 8,
-          "digit": 7,
-          "prob": 8.86
-        },
-        {
-          "rank": 9,
-          "digit": 8,
-          "prob": 8.84
-        },
-        {
-          "rank": 10,
-          "digit": 4,
-          "prob": 6.8
-        }
-      ],
-      "close_digits": [
-        {
-          "rank": 1,
-          "digit": 8,
-          "prob": 11.7
-        },
-        {
-          "rank": 2,
-          "digit": 4,
-          "prob": 11.22
-        },
-        {
-          "rank": 3,
-          "digit": 1,
-          "prob": 11.07
-        },
-        {
-          "rank": 4,
-          "digit": 6,
-          "prob": 10.26
-        },
-        {
-          "rank": 5,
-          "digit": 5,
-          "prob": 10.05
-        },
-        {
-          "rank": 6,
-          "digit": 2,
-          "prob": 9.76
-        },
-        {
-          "rank": 7,
-          "digit": 7,
-          "prob": 9.39
-        },
-        {
-          "rank": 8,
-          "digit": 0,
-          "prob": 9.18
-        },
-        {
-          "rank": 9,
-          "digit": 3,
-          "prob": 9.17
-        },
-        {
-          "rank": 10,
-          "digit": 9,
-          "prob": 8.2
-        }
-      ],
-      "top_pick": "17",
-      "top_family": [
-        "12",
-        "17",
-        "21",
-        "26",
-        "62",
-        "67",
-        "71",
-        "76"
-      ]
-    },
-    "Fri": {
-      "date": "2026-10-09",
-      "day": "Fri",
-      "top_jodis": [
-        {
-          "rank": 1,
-          "jodi": "65",
-          "prob": 1.86,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 2,
-          "jodi": "93",
-          "prob": 1.77,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 3,
-          "jodi": "16",
-          "prob": 1.71,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 4,
-          "jodi": "01",
-          "prob": 1.61,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "17",
           "prob": 1.59,
           "family": [
             "12",
@@ -1140,34 +610,38 @@
         },
         {
           "rank": 6,
-          "jodi": "22",
-          "prob": 1.57,
+          "jodi": "65",
+          "prob": 1.51,
           "family": [
-            "22",
-            "27",
-            "72",
-            "77"
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
           ]
         },
         {
           "rank": 7,
-          "jodi": "95",
-          "prob": 1.56,
+          "jodi": "14",
+          "prob": 1.51,
           "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
           ]
         },
         {
           "rank": 8,
           "jodi": "58",
-          "prob": 1.54,
+          "prob": 1.49,
           "family": [
             "03",
             "08",
@@ -1181,497 +655,8 @@
         },
         {
           "rank": 9,
-          "jodi": "59",
-          "prob": 1.5,
-          "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
-          ]
-        },
-        {
-          "rank": 10,
-          "jodi": "14",
-          "prob": 1.5,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        }
-      ],
-      "open_digits": [
-        {
-          "rank": 1,
-          "digit": 9,
-          "prob": 11.78
-        },
-        {
-          "rank": 2,
-          "digit": 1,
-          "prob": 11.67
-        },
-        {
-          "rank": 3,
-          "digit": 3,
-          "prob": 10.96
-        },
-        {
-          "rank": 4,
-          "digit": 2,
-          "prob": 10.51
-        },
-        {
-          "rank": 5,
-          "digit": 0,
-          "prob": 10.28
-        },
-        {
-          "rank": 6,
-          "digit": 6,
-          "prob": 10.02
-        },
-        {
-          "rank": 7,
-          "digit": 5,
-          "prob": 9.91
-        },
-        {
-          "rank": 8,
-          "digit": 8,
-          "prob": 9.24
-        },
-        {
-          "rank": 9,
-          "digit": 7,
-          "prob": 8.48
-        },
-        {
-          "rank": 10,
-          "digit": 4,
-          "prob": 7.15
-        }
-      ],
-      "close_digits": [
-        {
-          "rank": 1,
-          "digit": 4,
-          "prob": 11.12
-        },
-        {
-          "rank": 2,
-          "digit": 8,
-          "prob": 10.99
-        },
-        {
-          "rank": 3,
-          "digit": 1,
-          "prob": 10.74
-        },
-        {
-          "rank": 4,
-          "digit": 5,
-          "prob": 10.56
-        },
-        {
-          "rank": 5,
-          "digit": 6,
-          "prob": 10.54
-        },
-        {
-          "rank": 6,
-          "digit": 3,
-          "prob": 10.19
-        },
-        {
-          "rank": 7,
-          "digit": 2,
-          "prob": 10.05
-        },
-        {
-          "rank": 8,
-          "digit": 0,
-          "prob": 9.36
-        },
-        {
-          "rank": 9,
-          "digit": 7,
-          "prob": 9.12
-        },
-        {
-          "rank": 10,
-          "digit": 9,
-          "prob": 7.32
-        }
-      ],
-      "top_pick": "65",
-      "top_family": [
-        "01",
-        "06",
-        "10",
-        "15",
-        "51",
-        "56",
-        "60",
-        "65"
-      ]
-    },
-    "Sat": {
-      "date": "2026-10-10",
-      "day": "Sat",
-      "top_jodis": [
-        {
-          "rank": 1,
-          "jodi": "17",
-          "prob": 1.85,
-          "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
-          ]
-        },
-        {
-          "rank": 2,
-          "jodi": "65",
-          "prob": 1.75,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 3,
-          "jodi": "01",
-          "prob": 1.66,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 4,
-          "jodi": "02",
-          "prob": 1.66,
-          "family": [
-            "02",
-            "07",
-            "20",
-            "25",
-            "52",
-            "57",
-            "70",
-            "75"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "93",
-          "prob": 1.61,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 6,
-          "jodi": "16",
-          "prob": 1.61,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 7,
-          "jodi": "95",
-          "prob": 1.56,
-          "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "34",
-          "prob": 1.54,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 9,
-          "jodi": "64",
-          "prob": 1.5,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
-          "rank": 10,
-          "jodi": "31",
-          "prob": 1.49,
-          "family": [
-            "13",
-            "18",
-            "31",
-            "36",
-            "63",
-            "68",
-            "81",
-            "86"
-          ]
-        }
-      ],
-      "open_digits": [
-        {
-          "rank": 1,
-          "digit": 1,
-          "prob": 11.62
-        },
-        {
-          "rank": 2,
-          "digit": 9,
-          "prob": 11.34
-        },
-        {
-          "rank": 3,
-          "digit": 3,
-          "prob": 11.31
-        },
-        {
-          "rank": 4,
-          "digit": 6,
-          "prob": 10.92
-        },
-        {
-          "rank": 5,
-          "digit": 2,
-          "prob": 10.24
-        },
-        {
-          "rank": 6,
-          "digit": 0,
-          "prob": 9.78
-        },
-        {
-          "rank": 7,
-          "digit": 8,
-          "prob": 9.3
-        },
-        {
-          "rank": 8,
-          "digit": 5,
-          "prob": 9.13
-        },
-        {
-          "rank": 9,
-          "digit": 7,
-          "prob": 8.93
-        },
-        {
-          "rank": 10,
-          "digit": 4,
-          "prob": 7.43
-        }
-      ],
-      "close_digits": [
-        {
-          "rank": 1,
-          "digit": 8,
-          "prob": 10.94
-        },
-        {
-          "rank": 2,
-          "digit": 6,
-          "prob": 10.83
-        },
-        {
-          "rank": 3,
-          "digit": 5,
-          "prob": 10.79
-        },
-        {
-          "rank": 4,
-          "digit": 1,
-          "prob": 10.69
-        },
-        {
-          "rank": 5,
-          "digit": 4,
-          "prob": 10.45
-        },
-        {
-          "rank": 6,
-          "digit": 2,
-          "prob": 9.83
-        },
-        {
-          "rank": 7,
-          "digit": 7,
-          "prob": 9.8
-        },
-        {
-          "rank": 8,
-          "digit": 3,
-          "prob": 9.69
-        },
-        {
-          "rank": 9,
-          "digit": 0,
-          "prob": 8.86
-        },
-        {
-          "rank": 10,
-          "digit": 9,
-          "prob": 8.11
-        }
-      ],
-      "top_pick": "17",
-      "top_family": [
-        "12",
-        "17",
-        "21",
-        "26",
-        "62",
-        "67",
-        "71",
-        "76"
-      ]
-    },
-    "Mon": {
-      "date": "2026-10-12",
-      "day": "Mon",
-      "top_jodis": [
-        {
-          "rank": 1,
-          "jodi": "65",
-          "prob": 1.81,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 2,
-          "jodi": "16",
-          "prob": 1.71,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 3,
-          "jodi": "01",
-          "prob": 1.66,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 4,
-          "jodi": "02",
-          "prob": 1.66,
-          "family": [
-            "02",
-            "07",
-            "20",
-            "25",
-            "52",
-            "57",
-            "70",
-            "75"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "17",
-          "prob": 1.59,
-          "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
-          ]
-        },
-        {
-          "rank": 6,
-          "jodi": "22",
-          "prob": 1.57,
+          "jodi": "27",
+          "prob": 1.46,
           "family": [
             "22",
             "27",
@@ -1680,24 +665,141 @@
           ]
         },
         {
-          "rank": 7,
-          "jodi": "93",
-          "prob": 1.56,
+          "rank": 10,
+          "jodi": "88",
+          "prob": 1.45,
           "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
+            "33",
+            "38",
+            "83",
+            "88"
           ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 15.67
+        },
+        {
+          "rank": 2,
+          "digit": 2,
+          "prob": 11.53
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.29
+        },
+        {
+          "rank": 4,
+          "digit": 9,
+          "prob": 10.22
+        },
+        {
+          "rank": 5,
+          "digit": 8,
+          "prob": 9.88
+        },
+        {
+          "rank": 6,
+          "digit": 5,
+          "prob": 9.26
+        },
+        {
+          "rank": 7,
+          "digit": 0,
+          "prob": 9.24
         },
         {
           "rank": 8,
-          "jodi": "31",
-          "prob": 1.54,
+          "digit": 7,
+          "prob": 8.61
+        },
+        {
+          "rank": 9,
+          "digit": 3,
+          "prob": 8.61
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 6.68
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 8,
+          "prob": 13.83
+        },
+        {
+          "rank": 2,
+          "digit": 6,
+          "prob": 11.55
+        },
+        {
+          "rank": 3,
+          "digit": 5,
+          "prob": 10.97
+        },
+        {
+          "rank": 4,
+          "digit": 7,
+          "prob": 10.14
+        },
+        {
+          "rank": 5,
+          "digit": 3,
+          "prob": 9.99
+        },
+        {
+          "rank": 6,
+          "digit": 1,
+          "prob": 9.42
+        },
+        {
+          "rank": 7,
+          "digit": 4,
+          "prob": 9.12
+        },
+        {
+          "rank": 8,
+          "digit": 0,
+          "prob": 9.08
+        },
+        {
+          "rank": 9,
+          "digit": 2,
+          "prob": 8.77
+        },
+        {
+          "rank": 10,
+          "digit": 9,
+          "prob": 7.14
+        }
+      ],
+      "top_pick": "18",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ]
+    },
+    "Thu": {
+      "date": "2026-10-08",
+      "day": "Thu",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "18",
+          "prob": 1.97,
           "family": [
             "13",
             "18",
@@ -1710,124 +812,480 @@
           ]
         },
         {
-          "rank": 9,
-          "jodi": "05",
+          "rank": 2,
+          "jodi": "16",
+          "prob": 1.93,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "17",
+          "prob": 1.79,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "15",
+          "prob": 1.78,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "26",
+          "prob": 1.58,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "14",
+          "prob": 1.54,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "58",
+          "prob": 1.51,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "65",
           "prob": 1.49,
           "family": [
-            "00",
-            "05",
-            "50",
-            "55"
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "27",
+          "prob": 1.45,
+          "family": [
+            "22",
+            "27",
+            "72",
+            "77"
           ]
         },
         {
           "rank": 10,
-          "jodi": "59",
-          "prob": 1.45,
+          "jodi": "88",
+          "prob": 1.44,
           "family": [
-            "04",
-            "09",
-            "40",
-            "45",
-            "54",
-            "59",
-            "90",
-            "95"
+            "33",
+            "38",
+            "83",
+            "88"
           ]
         }
       ],
       "open_digits": [
         {
           "rank": 1,
-          "digit": 9,
-          "prob": 11.69
+          "digit": 1,
+          "prob": 15.67
         },
         {
           "rank": 2,
-          "digit": 0,
-          "prob": 11.14
+          "digit": 2,
+          "prob": 11.55
         },
         {
           "rank": 3,
-          "digit": 3,
-          "prob": 11.1
+          "digit": 6,
+          "prob": 10.27
         },
         {
           "rank": 4,
-          "digit": 1,
-          "prob": 11.01
+          "digit": 9,
+          "prob": 9.97
         },
         {
           "rank": 5,
-          "digit": 6,
-          "prob": 10.49
+          "digit": 8,
+          "prob": 9.68
         },
         {
           "rank": 6,
-          "digit": 2,
-          "prob": 10.42
+          "digit": 0,
+          "prob": 9.5
         },
         {
           "rank": 7,
-          "digit": 8,
-          "prob": 9.43
+          "digit": 5,
+          "prob": 9.38
         },
         {
           "rank": 8,
-          "digit": 5,
-          "prob": 9.09
+          "digit": 3,
+          "prob": 8.81
         },
         {
           "rank": 9,
           "digit": 7,
-          "prob": 8.44
+          "prob": 8.57
         },
         {
           "rank": 10,
           "digit": 4,
-          "prob": 7.17
+          "prob": 6.6
         }
       ],
       "close_digits": [
         {
           "rank": 1,
           "digit": 8,
-          "prob": 11.46
+          "prob": 14.07
         },
         {
           "rank": 2,
-          "digit": 1,
-          "prob": 11.1
+          "digit": 6,
+          "prob": 11.3
         },
         {
           "rank": 3,
-          "digit": 4,
-          "prob": 10.75
+          "digit": 5,
+          "prob": 10.59
         },
         {
           "rank": 4,
-          "digit": 6,
-          "prob": 10.73
+          "digit": 3,
+          "prob": 9.89
         },
         {
           "rank": 5,
-          "digit": 5,
-          "prob": 10.47
+          "digit": 7,
+          "prob": 9.88
         },
         {
           "rank": 6,
-          "digit": 7,
-          "prob": 9.48
+          "digit": 4,
+          "prob": 9.85
+        },
+        {
+          "rank": 7,
+          "digit": 1,
+          "prob": 9.26
+        },
+        {
+          "rank": 8,
+          "digit": 0,
+          "prob": 8.86
+        },
+        {
+          "rank": 9,
+          "digit": 2,
+          "prob": 8.84
+        },
+        {
+          "rank": 10,
+          "digit": 9,
+          "prob": 7.47
+        }
+      ],
+      "top_pick": "18",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ]
+    },
+    "Fri": {
+      "date": "2026-10-09",
+      "day": "Fri",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "18",
+          "prob": 1.96,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "16",
+          "prob": 1.94,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "15",
+          "prob": 1.79,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "17",
+          "prob": 1.78,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "26",
+          "prob": 1.57,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "14",
+          "prob": 1.54,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "58",
+          "prob": 1.52,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "65",
+          "prob": 1.5,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "88",
+          "prob": 1.45,
+          "family": [
+            "33",
+            "38",
+            "83",
+            "88"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "27",
+          "prob": 1.44,
+          "family": [
+            "22",
+            "27",
+            "72",
+            "77"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 15.72
+        },
+        {
+          "rank": 2,
+          "digit": 2,
+          "prob": 11.29
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.24
+        },
+        {
+          "rank": 4,
+          "digit": 9,
+          "prob": 9.98
+        },
+        {
+          "rank": 5,
+          "digit": 8,
+          "prob": 9.84
+        },
+        {
+          "rank": 6,
+          "digit": 5,
+          "prob": 9.65
         },
         {
           "rank": 7,
           "digit": 0,
-          "prob": 9.44
+          "prob": 9.45
         },
         {
           "rank": 8,
           "digit": 3,
-          "prob": 9.37
+          "prob": 8.73
+        },
+        {
+          "rank": 9,
+          "digit": 7,
+          "prob": 8.37
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 6.74
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 8,
+          "prob": 13.84
+        },
+        {
+          "rank": 2,
+          "digit": 6,
+          "prob": 11.4
+        },
+        {
+          "rank": 3,
+          "digit": 5,
+          "prob": 10.82
+        },
+        {
+          "rank": 4,
+          "digit": 3,
+          "prob": 10.27
+        },
+        {
+          "rank": 5,
+          "digit": 7,
+          "prob": 9.78
+        },
+        {
+          "rank": 6,
+          "digit": 4,
+          "prob": 9.75
+        },
+        {
+          "rank": 7,
+          "digit": 1,
+          "prob": 9.14
+        },
+        {
+          "rank": 8,
+          "digit": 0,
+          "prob": 8.97
         },
         {
           "rank": 9,
@@ -1837,19 +1295,537 @@
         {
           "rank": 10,
           "digit": 9,
-          "prob": 8.24
+          "prob": 7.08
         }
       ],
-      "top_pick": "65",
+      "top_pick": "18",
       "top_family": [
-        "01",
-        "06",
-        "10",
-        "15",
-        "51",
-        "56",
-        "60",
-        "65"
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ]
+    },
+    "Sat": {
+      "date": "2026-10-10",
+      "day": "Sat",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "18",
+          "prob": 1.96,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "16",
+          "prob": 1.95,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "17",
+          "prob": 1.8,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "15",
+          "prob": 1.8,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "26",
+          "prob": 1.57,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "14",
+          "prob": 1.53,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "65",
+          "prob": 1.53,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "58",
+          "prob": 1.49,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "88",
+          "prob": 1.45,
+          "family": [
+            "33",
+            "38",
+            "83",
+            "88"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "27",
+          "prob": 1.44,
+          "family": [
+            "22",
+            "27",
+            "72",
+            "77"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 15.76
+        },
+        {
+          "rank": 2,
+          "digit": 2,
+          "prob": 11.2
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.62
+        },
+        {
+          "rank": 4,
+          "digit": 8,
+          "prob": 9.89
+        },
+        {
+          "rank": 5,
+          "digit": 9,
+          "prob": 9.81
+        },
+        {
+          "rank": 6,
+          "digit": 5,
+          "prob": 9.28
+        },
+        {
+          "rank": 7,
+          "digit": 0,
+          "prob": 9.19
+        },
+        {
+          "rank": 8,
+          "digit": 3,
+          "prob": 8.88
+        },
+        {
+          "rank": 9,
+          "digit": 7,
+          "prob": 8.54
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 6.84
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 8,
+          "prob": 13.78
+        },
+        {
+          "rank": 2,
+          "digit": 6,
+          "prob": 11.52
+        },
+        {
+          "rank": 3,
+          "digit": 5,
+          "prob": 10.88
+        },
+        {
+          "rank": 4,
+          "digit": 3,
+          "prob": 10.06
+        },
+        {
+          "rank": 5,
+          "digit": 7,
+          "prob": 10.06
+        },
+        {
+          "rank": 6,
+          "digit": 4,
+          "prob": 9.52
+        },
+        {
+          "rank": 7,
+          "digit": 1,
+          "prob": 9.14
+        },
+        {
+          "rank": 8,
+          "digit": 2,
+          "prob": 8.9
+        },
+        {
+          "rank": 9,
+          "digit": 0,
+          "prob": 8.78
+        },
+        {
+          "rank": 10,
+          "digit": 9,
+          "prob": 7.37
+        }
+      ],
+      "top_pick": "18",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ]
+    },
+    "Mon": {
+      "date": "2026-10-12",
+      "day": "Mon",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "18",
+          "prob": 1.95,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "16",
+          "prob": 1.93,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "15",
+          "prob": 1.78,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "17",
+          "prob": 1.77,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "26",
+          "prob": 1.57,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "14",
+          "prob": 1.52,
+          "family": [
+            "14",
+            "19",
+            "41",
+            "46",
+            "64",
+            "69",
+            "91",
+            "96"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "65",
+          "prob": 1.51,
+          "family": [
+            "01",
+            "06",
+            "10",
+            "15",
+            "51",
+            "56",
+            "60",
+            "65"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "58",
+          "prob": 1.51,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "88",
+          "prob": 1.46,
+          "family": [
+            "33",
+            "38",
+            "83",
+            "88"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "05",
+          "prob": 1.44,
+          "family": [
+            "00",
+            "05",
+            "50",
+            "55"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 1,
+          "prob": 15.47
+        },
+        {
+          "rank": 2,
+          "digit": 2,
+          "prob": 11.25
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.39
+        },
+        {
+          "rank": 4,
+          "digit": 9,
+          "prob": 9.94
+        },
+        {
+          "rank": 5,
+          "digit": 8,
+          "prob": 9.93
+        },
+        {
+          "rank": 6,
+          "digit": 0,
+          "prob": 9.77
+        },
+        {
+          "rank": 7,
+          "digit": 5,
+          "prob": 9.36
+        },
+        {
+          "rank": 8,
+          "digit": 3,
+          "prob": 8.8
+        },
+        {
+          "rank": 9,
+          "digit": 7,
+          "prob": 8.35
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 6.75
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 8,
+          "prob": 13.98
+        },
+        {
+          "rank": 2,
+          "digit": 6,
+          "prob": 11.5
+        },
+        {
+          "rank": 3,
+          "digit": 5,
+          "prob": 10.78
+        },
+        {
+          "rank": 4,
+          "digit": 3,
+          "prob": 9.96
+        },
+        {
+          "rank": 5,
+          "digit": 7,
+          "prob": 9.86
+        },
+        {
+          "rank": 6,
+          "digit": 4,
+          "prob": 9.65
+        },
+        {
+          "rank": 7,
+          "digit": 1,
+          "prob": 9.31
+        },
+        {
+          "rank": 8,
+          "digit": 0,
+          "prob": 9.0
+        },
+        {
+          "rank": 9,
+          "digit": 2,
+          "prob": 8.5
+        },
+        {
+          "rank": 10,
+          "digit": 9,
+          "prob": 7.45
+        }
+      ],
+      "top_pick": "18",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
       ]
     }
   }
