@@ -41,6 +41,8 @@ def sync_and_push(push: bool = True, custom_msg: str = None):
     latest_draw = payload.get("latest_draw", {})
     latest_date = latest_draw.get("date", datetime.now().strftime("%Y-%m-%d"))
     latest_jodi = latest_draw.get("jodi", "--")
+    dev_update = payload.get("last_update_by_developer", datetime.now().strftime("%d %b %Y"))
+    print(f" -> Last Developer Update : {dev_update}")
     print(f" -> Latest Recorded Draw : {latest_draw.get('day')} {latest_date} (Jodi: {latest_jodi})")
     print(f" -> Total Historical Draws: {payload.get('valid_records', 0)}")
     print(f" -> Files Updated:")

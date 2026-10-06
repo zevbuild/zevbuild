@@ -483,12 +483,20 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                   Live Engine
                 </span>
                 <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 mono">
                   v2.4 Auto-Sync
+                </span>
+                <a href="tools/matka/index.html#lastweek" class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors mono flex items-center gap-1.5" title="View last week verified predictions">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span id="matka-lw-badge">Last Week: 3 Ank Hits</span>
+                </a>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 mono flex items-center gap-1.5" title="Latest developer release">
+                  <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                  Last Update: <span id="matka-dev-badge-date">06 Oct 2026</span>
                 </span>
               </div>
             </div>
@@ -504,13 +512,39 @@
             </p>
 
             <!-- Feature Badges -->
-            <div class="flex flex-wrap gap-2 mb-6">
+            <div class="flex flex-wrap gap-2 mb-4">
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">Live Auto-Fetch</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">Markov Recalibration</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Multi-Day Forecast</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Cut Family Brackets</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">100% Client Sync</span>
             </div>
+
+            <!-- Developer Update Status Banner -->
+            <div class="mb-3 flex items-center justify-between text-xs bg-purple-950/40 border border-purple-500/25 rounded-xl px-3.5 py-2">
+              <div class="flex items-center gap-2 text-slate-300">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                </span>
+                <span class="text-slate-300 font-medium">Last update on main page by developer:</span>
+              </div>
+              <span id="matka-main-last-update" class="font-mono text-purple-300 font-bold text-[11px] bg-purple-500/20 px-2.5 py-0.5 rounded border border-purple-500/30">
+                06 Oct 2026
+              </span>
+            </div>
+
+            <!-- Last Week Prediction Accuracy Banner -->
+            <a href="tools/matka/index.html#lastweek" class="mb-5 flex items-center justify-between text-xs bg-slate-950/60 border border-emerald-500/25 rounded-xl px-3.5 py-2 hover:border-emerald-500/40 hover:bg-slate-900/60 transition-all group/lw">
+              <div class="flex items-center gap-2 text-slate-300">
+                <svg class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="text-slate-300 font-medium">Last Week Predictions (28 Sep – 03 Oct):</span>
+                <span class="text-emerald-400 font-bold" id="matka-lw-strip-hits">3 Verified Hits</span>
+              </div>
+              <span class="text-[11px] text-emerald-400 group-hover/lw:underline flex items-center gap-1 font-semibold">
+                View Proof ↗
+              </span>
+            </a>
 
             <!-- Highlights list -->
             <ul class="space-y-2 text-xs text-slate-400 mb-6">
@@ -522,21 +556,34 @@
                 <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 Top 10 Jodis with probability edge gauges and bankroll sizing guardrails
               </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Last week predictions validated: <strong class="text-emerald-400">3 Verified Hits (including 1 Double Ank Hit)</strong>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Last update by developer: <span class="text-purple-300 font-mono font-semibold" id="matka-highlight-last-update">06 Oct 2026</span>
+              </li>
             </ul>
           </div>
 
           <!-- Buttons -->
-          <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+          <div class="flex items-center gap-2.5 pt-4 border-t border-white/5 flex-wrap sm:flex-nowrap">
             <a href="tools/matka/index.html" 
-               class="flex-1 text-center py-2.5 px-4 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/20 transition-all">
+               class="flex-1 text-center py-2.5 px-3 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/20 transition-all">
               Launch Live Engine ↗
+            </a>
+            <a href="tools/matka/index.html#lastweek" 
+               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/25 transition-all flex items-center gap-1.5" title="View Last Week Historical Predictions & Verification">
+              <span>Last Week</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             </a>
             <a href="tools/matka/dashboard.html" 
                class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all" title="Open Upcoming Predictions Dashboard">
               Dashboard
             </a>
             <a href="tools/matka/README.md" 
-               class="py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all" title="View Documentation">
+               class="py-2.5 px-2.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all" title="View Documentation">
               Docs
             </a>
           </div>
@@ -695,12 +742,16 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                 </svg>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
                   Historical Records
                 </span>
                 <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 mono">
                   2012–2026
+                </span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 mono flex items-center gap-1.5" title="Latest developer release">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                  Last Update: <span id="matka-penal-badge-date">06 Oct 2026</span>
                 </span>
               </div>
             </div>
@@ -716,12 +767,25 @@
             </p>
 
             <!-- Feature Badges -->
-            <div class="flex flex-wrap gap-2 mb-6">
+            <div class="flex flex-wrap gap-2 mb-4">
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">14-Year Records</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5 mono">Penal Matrix</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Pattern Recognition</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">High Density UI</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Fast Local Query</span>
+            </div>
+
+            <!-- Developer Update Status Banner -->
+            <div class="mb-5 flex items-center justify-between text-xs bg-indigo-950/40 border border-indigo-500/25 rounded-xl px-3.5 py-2">
+              <div class="flex items-center gap-2 text-slate-300">
+                <span class="relative flex h-2 w-2">
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                </span>
+                <span class="text-slate-300 font-medium">Last update on main page by developer:</span>
+              </div>
+              <span id="matka-penal-last-update" class="font-mono text-indigo-300 font-bold text-[11px] bg-indigo-500/20 px-2.5 py-0.5 rounded border border-indigo-500/30">
+                06 Oct 2026
+              </span>
             </div>
 
             <!-- Highlights list -->
@@ -733,6 +797,10 @@
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 Synchronized historical CSV data pipeline for statistical modeling
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Last update by developer: <span class="text-indigo-300 font-mono font-semibold" id="matka-penal-highlight-last-update">06 Oct 2026</span>
               </li>
             </ul>
           </div>
@@ -1219,6 +1287,43 @@
       } catch (_) {
         el.textContent = raw;
       }
+    })();
+
+    // ── Matka Last Developer Update & Last Week Performance Dynamic Sync ─────
+    (async function () {
+      try {
+        const res = await fetch('tools/matka/prediction_data.json?_t=' + Date.now(), { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          const devDate = data.last_update_by_developer || data.last_developer_update;
+          if (devDate) {
+            const targets = [
+              'matka-dev-badge-date',
+              'matka-main-last-update',
+              'matka-highlight-last-update',
+              'matka-penal-badge-date',
+              'matka-penal-last-update',
+              'matka-penal-highlight-last-update'
+            ];
+            targets.forEach(id => {
+              const el = document.getElementById(id);
+              if (el) el.textContent = devDate;
+            });
+          }
+
+          if (data.last_week_data && data.last_week_data.summary) {
+            const hits = data.last_week_data.summary.ank_hits;
+            const bEl = document.getElementById('matka-lw-badge');
+            if (bEl && hits !== undefined) {
+              bEl.textContent = `Last Week: ${hits} Ank Hits`;
+            }
+            const sEl = document.getElementById('matka-lw-strip-hits');
+            if (sEl && hits !== undefined) {
+              sEl.textContent = `${hits} Verified Ank Hits`;
+            }
+          }
+        }
+      } catch (_) {}
     })();
   </script>
 

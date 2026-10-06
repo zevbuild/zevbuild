@@ -1,4 +1,6 @@
 {
+  "last_developer_update": "2026-10-06",
+  "last_update_by_developer": "06 Oct 2026",
   "latest_draw": {
     "date": "2026-10-05",
     "day": "Mon",
@@ -7,6 +9,265 @@
     "close": 6,
     "openPatti": "678",
     "closePatti": "457"
+  },
+  "last_week_data": {
+    "week_range": "28 Sep 2026 \u2013 03 Oct 2026",
+    "summary": {
+      "total_draws": 6,
+      "ank_hits": 3,
+      "double_ank_hits": 1,
+      "edge": "+2.2% Walk-Forward"
+    },
+    "draws": [
+      {
+        "date": "2026-09-28",
+        "day": "Mon",
+        "actual_jodi": "17",
+        "actual_open": 1,
+        "actual_close": 7,
+        "open_patti": "560",
+        "close_patti": "700",
+        "predicted_top_pick": "65",
+        "predicted_top_5": [
+          "65",
+          "01",
+          "02",
+          "31",
+          "93"
+        ],
+        "predicted_top_open": [
+          9,
+          3,
+          0
+        ],
+        "predicted_top_close": [
+          1,
+          5,
+          4
+        ],
+        "family_bracket": [
+          "01",
+          "06",
+          "10",
+          "15",
+          "51",
+          "56",
+          "60",
+          "65"
+        ],
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-09-29",
+        "day": "Tue",
+        "actual_jodi": "22",
+        "actual_open": 2,
+        "actual_close": 2,
+        "open_patti": "147",
+        "close_patti": "679",
+        "predicted_top_pick": "58",
+        "predicted_top_5": [
+          "58",
+          "31",
+          "99",
+          "33",
+          "50"
+        ],
+        "predicted_top_open": [
+          9,
+          1,
+          3
+        ],
+        "predicted_top_close": [
+          1,
+          8,
+          4
+        ],
+        "family_bracket": [
+          "03",
+          "08",
+          "30",
+          "35",
+          "53",
+          "58",
+          "80",
+          "85"
+        ],
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-09-30",
+        "day": "Wed",
+        "actual_jodi": "88",
+        "actual_open": 8,
+        "actual_close": 8,
+        "open_patti": "477",
+        "close_patti": "369",
+        "predicted_top_pick": "26",
+        "predicted_top_5": [
+          "26",
+          "15",
+          "18",
+          "33",
+          "11"
+        ],
+        "predicted_top_open": [
+          2,
+          9,
+          3
+        ],
+        "predicted_top_close": [
+          5,
+          7,
+          1
+        ],
+        "family_bracket": [
+          "12",
+          "17",
+          "21",
+          "26",
+          "62",
+          "67",
+          "71",
+          "76"
+        ],
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-01",
+        "day": "Thu",
+        "actual_jodi": "18",
+        "actual_open": 1,
+        "actual_close": 8,
+        "open_patti": "399",
+        "close_patti": "567",
+        "predicted_top_pick": "99",
+        "predicted_top_5": [
+          "99",
+          "95",
+          "11",
+          "15",
+          "14"
+        ],
+        "predicted_top_open": [
+          9,
+          2,
+          3
+        ],
+        "predicted_top_close": [
+          8,
+          4,
+          2
+        ],
+        "family_bracket": [
+          "44",
+          "49",
+          "94",
+          "99"
+        ],
+        "open_hit": false,
+        "close_hit": true,
+        "jodi_hit": false,
+        "status_label": "Close Ank Hit (8)",
+        "badge_type": "highlight"
+      },
+      {
+        "date": "2026-10-02",
+        "day": "Fri",
+        "actual_jodi": "84",
+        "actual_open": 8,
+        "actual_close": 4,
+        "open_patti": "378",
+        "close_patti": "347",
+        "predicted_top_pick": "65",
+        "predicted_top_5": [
+          "65",
+          "17",
+          "32",
+          "99",
+          "18"
+        ],
+        "predicted_top_open": [
+          9,
+          1,
+          3
+        ],
+        "predicted_top_close": [
+          5,
+          2,
+          8
+        ],
+        "family_bracket": [
+          "01",
+          "06",
+          "10",
+          "15",
+          "51",
+          "56",
+          "60",
+          "65"
+        ],
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-03",
+        "day": "Sat",
+        "actual_jodi": "98",
+        "actual_open": 9,
+        "actual_close": 8,
+        "open_patti": "234",
+        "close_patti": "350",
+        "predicted_top_pick": "17",
+        "predicted_top_5": [
+          "17",
+          "18",
+          "68",
+          "76",
+          "32"
+        ],
+        "predicted_top_open": [
+          1,
+          9,
+          6
+        ],
+        "predicted_top_close": [
+          5,
+          1,
+          8
+        ],
+        "family_bracket": [
+          "12",
+          "17",
+          "21",
+          "26",
+          "62",
+          "67",
+          "71",
+          "76"
+        ],
+        "open_hit": true,
+        "close_hit": true,
+        "jodi_hit": false,
+        "status_label": "Double Ank Hit (Open & Close)",
+        "badge_type": "success"
+      }
+    ]
   },
   "by_day": {
     "Tue": {

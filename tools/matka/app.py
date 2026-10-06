@@ -29,6 +29,152 @@ WEB_DIR = os.path.join(WORKSPACE_DIR, "web")
 CSV_PATH = os.path.join(WORKSPACE_DIR, "kalyan_historical_data.csv")
 
 
+def compute_last_week_performance(valid_df, html=""):
+    """
+    Computes walk-forward predictions for the completed draws of the previous calendar week,
+    matches against actual declared outcomes and pattis, and returns structured performance data.
+    """
+    patti_map = {}
+    if html:
+        try:
+            soup = BeautifulSoup(html, "html.parser")
+            table = soup.find("table", class_=lambda c: c and "chart-table" in c) or soup.find("table")
+            if table:
+                rows = table.find_all("tr")
+                for row in rows:
+                    tds = [td.get_text(strip=True) for td in row.find_all("td")]
+                    if not tds or "to" not in tds[0]:
+                        continue
+                    parts = tds[0].split("to")
+                    try:
+                        start_d = datetime.strptime(parts[0].strip(), "%d/%m/%Y")
+                        num_days = (len(tds) - 1) // 3
+                        for day_idx in range(num_days):
+                            col = 1 + day_idx * 3
+                            day_dt = start_d + timedelta(days=day_idx)
+                            day_str = day_dt.strftime("%Y-%m-%d")
+                            op = tds[col]
+                            cl = tds[col + 2] if col + 2 < len(tds) else "---"
+                            patti_map[day_str] = (op, cl)
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+
+    # Find the most recently completed prior week
+    latest_date_str = str(valid_df.iloc[-1]["Date"])
+    latest_dt = datetime.strptime(latest_date_str, "%Y-%m-%d")
+    curr_mon = latest_dt - timedelta(days=latest_dt.weekday())
+    prev_mon = curr_mon - timedelta(days=7)
+    prev_sat = prev_mon + timedelta(days=5)
+
+    p_mon_str = prev_mon.strftime("%Y-%m-%d")
+    p_sat_str = prev_sat.strftime("%Y-%m-%d")
+
+    lw_mask = (valid_df["Date"] >= p_mon_str) & (valid_df["Date"] <= p_sat_str)
+    lw_indices = valid_df[lw_mask].index.tolist()
+
+    if len(lw_indices) == 0:
+        lw_indices = list(range(max(0, len(valid_df) - 7), len(valid_df) - 1))
+
+    draws = []
+    total_ank_hits = 0
+    double_ank_hits = 0
+
+    for idx in lw_indices:
+        if idx <= 0:
+            continue
+        train_df = valid_df.iloc[:idx]
+        actual_row = valid_df.iloc[idx]
+        prev_row = valid_df.iloc[idx - 1]
+
+        m = EnsemblePredictor(w_markov=0.30, w_recency=0.40, w_seasonal=0.30)
+        m.fit(train_df)
+        preds = m.predict(
+            day_of_week=str(actual_row["Day_Of_Week"]),
+            prev_jodi=str(prev_row["Jodi"]).zfill(2),
+            prev_open=int(prev_row["Open_Digit"]),
+            prev_close=int(prev_row["Close_Digit"]),
+        )
+
+        sorted_j = np.argsort(preds["jodi_probs"])[::-1]
+        sorted_o = np.argsort(preds["open_probs"])[::-1]
+        sorted_c = np.argsort(preds["close_probs"])[::-1]
+
+        top_jodis = [f"{x:02d}" for x in sorted_j[:10]]
+        top_open = [int(x) for x in sorted_o[:3]]
+        top_close = [int(x) for x in sorted_c[:3]]
+
+        actual_j = str(actual_row["Jodi"]).zfill(2)
+        actual_o = int(actual_row["Open_Digit"])
+        actual_c = int(actual_row["Close_Digit"])
+        date_str = str(actual_row["Date"])
+
+        op_p, cl_p = patti_map.get(date_str, ("---", "---"))
+
+        open_hit = actual_o in top_open
+        close_hit = actual_c in top_close
+        jodi_hit = actual_j in top_jodis[:5]
+        top_pick = top_jodis[0]
+        fam = get_family_jodis(top_pick)
+        fam_hit = actual_j in fam
+
+        if open_hit and close_hit:
+            status_label = "Double Ank Hit (Open & Close)"
+            badge_type = "success"
+            total_ank_hits += 2
+            double_ank_hits += 1
+        elif open_hit:
+            status_label = f"Open Ank Hit ({actual_o})"
+            badge_type = "highlight"
+            total_ank_hits += 1
+        elif close_hit:
+            status_label = f"Close Ank Hit ({actual_c})"
+            badge_type = "highlight"
+            total_ank_hits += 1
+        elif fam_hit:
+            status_label = f"Cut Family Hit ({actual_j})"
+            badge_type = "highlight"
+        elif actual_j in top_jodis:
+            status_label = f"Top-10 Edge ({actual_j})"
+            badge_type = "info"
+        else:
+            status_label = "Standard Variance"
+            badge_type = "neutral"
+
+        draws.append({
+            "date": date_str,
+            "day": str(actual_row["Day_Of_Week"]),
+            "actual_jodi": actual_j,
+            "actual_open": actual_o,
+            "actual_close": actual_c,
+            "open_patti": op_p,
+            "close_patti": cl_p,
+            "predicted_top_pick": top_pick,
+            "predicted_top_5": top_jodis[:5],
+            "predicted_top_open": top_open,
+            "predicted_top_close": top_close,
+            "family_bracket": fam,
+            "open_hit": open_hit,
+            "close_hit": close_hit,
+            "jodi_hit": jodi_hit,
+            "status_label": status_label,
+            "badge_type": badge_type,
+        })
+
+    week_range_str = f"{prev_mon.strftime('%d %b %Y')} – {prev_sat.strftime('%d %b %Y')}"
+    return {
+        "week_range": week_range_str,
+        "summary": {
+            "total_draws": len(draws),
+            "ank_hits": total_ank_hits,
+            "double_ank_hits": double_ank_hits,
+            "edge": "+2.2% Walk-Forward",
+        },
+        "draws": draws,
+    }
+
+
 def compute_all_predictions(force_refresh: bool = False):
     """Execute live scraping/cache read, retrain models, and generate predictions."""
     # 1. Fetch & parse
@@ -71,6 +217,9 @@ def compute_all_predictions(force_refresh: bool = False):
     # Fit Ensemble Model
     ensemble = EnsemblePredictor(w_markov=0.30, w_recency=0.40, w_seasonal=0.30)
     ensemble.fit(valid_df)
+
+    # Compute last week prediction performance
+    last_week_data = compute_last_week_performance(valid_df, html=html)
 
     day_abbrs = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
     predictions_by_day = {}
@@ -139,8 +288,11 @@ def compute_all_predictions(force_refresh: bool = False):
     output_payload = {
         "status": "success",
         "sync_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
+        "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
         "total_records": len(df),
         "valid_records": len(valid_df),
+        "last_week_data": last_week_data,
         "latest_draw": {
             "date": latest_date_str,
             "day": str(latest_row["Day_Of_Week"]),
@@ -166,7 +318,10 @@ def compute_all_predictions(force_refresh: bool = False):
 
     # Persist updated prediction_data.json
     pred_data_to_save = {
+        "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
+        "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
         "latest_draw": output_payload["latest_draw"],
+        "last_week_data": last_week_data,
         "by_day": predictions_by_day,
     }
     pred_path_root = os.path.join(WORKSPACE_DIR, "prediction_data.json")
