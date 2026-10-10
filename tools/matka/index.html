@@ -12,13 +12,14 @@
   <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
 
   <style>
     :root {
       --bg-base: #06080d;
       --bg-surface: #0b0f19;
+      --bg-surface-elevated: rgba(14, 20, 34, 0.7);
       --border-subtle: rgba(255, 255, 255, 0.08);
       --border-glow: rgba(139, 92, 246, 0.35);
     }
@@ -29,7 +30,7 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-    .mono { font-family: 'JetBrains Mono', monospace; }
+    .mono, .font-mono { font-family: 'JetBrains Mono', monospace; }
     .bg-grid-ambient {
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.16) 0%, transparent 50%),
@@ -38,8 +39,14 @@
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
+    .glass-nav {
+      background: rgba(7, 10, 18, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
     .glass-card {
-      background: linear-gradient(145deg, rgba(14, 20, 34, 0.7) 0%, rgba(9, 13, 23, 0.85) 100%);
+      background: linear-gradient(145deg, rgba(14, 20, 34, 0.72) 0%, rgba(9, 13, 23, 0.88) 100%);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -55,7 +62,7 @@
 <body class="bg-grid-ambient selection:bg-purple-600 selection:text-white flex flex-col min-h-screen">
 
   <!-- ═══ Studio Top Navigation Breadcrumbs ═══ -->
-  <nav class="sticky top-0 z-50 bg-[#070a12]/85 backdrop-blur-md border-b border-white/10 px-4 sm:px-6 py-3">
+  <nav class="sticky top-0 z-50 glass-nav px-4 sm:px-6 py-3">
     <div class="max-w-6xl mx-auto flex items-center justify-between text-xs text-slate-400">
       <div class="flex items-center gap-2">
         <a href="../../index.html" class="flex items-center gap-1.5 hover:text-purple-400 transition-colors font-medium">
@@ -79,10 +86,10 @@
   </nav>
 
   <!-- ═══ Main Content ═══ -->
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 flex-grow w-full">
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 flex-grow w-full">
     
     <!-- Hero Header -->
-    <div class="mb-10 text-center sm:text-left">
+    <div class="mb-8 text-center sm:text-left">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-purple-300 text-xs font-semibold mb-4">
         <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
         <span>Quantitative Predictive Platform · Kalyan Market</span>
@@ -95,6 +102,42 @@
       <p class="text-sm sm:text-base text-slate-400 max-w-2xl leading-relaxed">
         Select a dedicated operational engine or inspect our 14-year normalized dataset. Powered by first-order Markov transitions, recency exponential decay, and seasonal Bayesian conditioning.
       </p>
+    </div>
+
+    <!-- ═══ Live IST Market Timing Countdown Card ═══ -->
+    <div class="glass-card rounded-2xl p-5 sm:p-6 mb-8 border-purple-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1.5">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+          </span>
+          <span class="text-xs font-bold uppercase tracking-wider text-purple-300">Live IST Market Draw Clock</span>
+          <span id="market-countdown-badge" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border bg-amber-500/15 text-amber-300 border-amber-500/30">
+            PRE-OPEN WINDOW
+          </span>
+        </div>
+        <div id="market-countdown-phase" class="text-xs sm:text-sm text-slate-300 font-medium">
+          Countdown to Kalyan Open (4:35 PM IST)
+        </div>
+        <div class="text-[11px] text-slate-500 mt-1">
+          Operating Schedule: Mon–Sat · Open: 4:35 PM IST · Close: 6:35 PM IST · Sunday Recess
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 bg-[#070b14]/70 border border-white/5 px-5 py-3 rounded-xl">
+        <div class="text-right">
+          <div class="text-[10px] uppercase font-mono text-slate-400 font-semibold">Next Draw Event</div>
+          <div id="market-countdown-time" class="text-2xl sm:text-3xl font-black font-mono tracking-wider text-purple-300">
+            --:--:--
+          </div>
+        </div>
+        <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
+        <div class="text-[10px] font-mono text-slate-400 hidden sm:block">
+          <div>IST (UTC+5:30)</div>
+          <div id="ist-live-clock" class="text-slate-200 font-semibold">--:--:--</div>
+        </div>
+      </div>
     </div>
 
     <!-- Suite Options Grid -->
@@ -197,6 +240,90 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // ==========================================
+    // KALYAN MARKET TIMING ENGINE (IST: UTC+5:30)
+    // ==========================================
+    function getISTDate() {
+      const now = new Date();
+      const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+      return new Date(utcMs + (5.5 * 3600000));
+    }
+
+    function updateMarketCountdown() {
+      const ist = getISTDate();
+      const day = ist.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+      const hours = ist.getHours();
+      const minutes = ist.getMinutes();
+      const seconds = ist.getSeconds();
+      const currentTotalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+      const openSeconds = 16 * 3600 + 35 * 60;   // 16:35:00 (4:35 PM)
+      const closeSeconds = 18 * 3600 + 35 * 60;  // 18:35:00 (6:35 PM)
+
+      let phase = '';
+      let targetDiff = 0;
+      let statusBadge = '';
+      let badgeColor = '';
+
+      if (day === 0) {
+        // Sunday Market Recess
+        phase = "Sunday Market Recess · Next Draw Monday 4:35 PM IST";
+        targetDiff = (86400 - currentTotalSeconds) + openSeconds;
+        statusBadge = "WEEKEND RECESS";
+        badgeColor = "bg-slate-800 text-slate-400 border-slate-700";
+      } else if (currentTotalSeconds < openSeconds) {
+        // Phase 1: Pre-Open Countdown
+        targetDiff = openSeconds - currentTotalSeconds;
+        phase = "Countdown to Kalyan Open (4:35 PM IST)";
+        statusBadge = "PRE-OPEN WINDOW";
+        badgeColor = "bg-amber-500/15 text-amber-300 border-amber-500/30";
+      } else if (currentTotalSeconds < closeSeconds) {
+        // Phase 2: Live Draw Window (Open Declared, Waiting for Close)
+        targetDiff = closeSeconds - currentTotalSeconds;
+        phase = "Open Declared! Countdown to Kalyan Close (6:35 PM IST)";
+        statusBadge = "LIVE DRAW ACTIVE";
+        badgeColor = "bg-emerald-500/20 text-emerald-300 border-emerald-500/30 animate-pulse";
+      } else {
+        // Phase 3: Post-Close (Market Settled)
+        const isSaturday = (day === 6);
+        if (isSaturday) {
+          targetDiff = (86400 - currentTotalSeconds) + 86400 + openSeconds;
+          phase = "Draw Closed · Next Draw Monday 4:35 PM IST";
+        } else {
+          targetDiff = (86400 - currentTotalSeconds) + openSeconds;
+          phase = "Draw Settled · Next Draw Tomorrow 4:35 PM IST";
+        }
+        statusBadge = "MARKET CLOSED";
+        badgeColor = "bg-purple-500/15 text-purple-300 border-purple-500/30";
+      }
+
+      const h = Math.floor(targetDiff / 3600);
+      const m = Math.floor((targetDiff % 3600) / 60);
+      const s = targetDiff % 60;
+      const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+      const cdTimerEl = document.getElementById('market-countdown-time');
+      const cdLabelEl = document.getElementById('market-countdown-phase');
+      const cdBadgeEl = document.getElementById('market-countdown-badge');
+      const istLiveEl = document.getElementById('ist-live-clock');
+
+      if (cdTimerEl) cdTimerEl.textContent = timeStr;
+      if (cdLabelEl) cdLabelEl.textContent = phase;
+      if (cdBadgeEl) {
+        cdBadgeEl.textContent = statusBadge;
+        cdBadgeEl.className = `px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${badgeColor}`;
+      }
+      if (istLiveEl) {
+        const istTimeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        istLiveEl.textContent = istTimeStr;
+      }
+    }
+
+    updateMarketCountdown();
+    setInterval(updateMarketCountdown, 1000);
+  </script>
 
 </body>
 </html>

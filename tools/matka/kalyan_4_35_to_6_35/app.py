@@ -322,8 +322,8 @@ def compute_all_predictions(force_refresh: bool = False):
             "otc_digits": preds.get("otc_digits", []),
             "otc_pairs": preds.get("otc_pairs", []),
             "otc_pass_prob": round(float(preds.get("otc_pass_prob", 0.0)) * 100.0, 1),
-            "open_digit_probs": [float(p) for p in open_probs],
-            "close_digit_probs": [float(p) for p in close_probs],
+            "open_digit_probs": [float(p) for p in (open_probs / open_probs.sum())],
+            "close_digit_probs": [float(p) for p in (close_probs / close_probs.sum())],
             "patti_predictions": preds.get("patti_predictions", {}),
         }
 
@@ -370,6 +370,16 @@ def compute_all_predictions(force_refresh: bool = False):
         "by_day": predictions_by_day,
         "open_digit_probs": first_day_pred.get("open_digit_probs", []),
         "close_digit_probs": first_day_pred.get("close_digit_probs", []),
+        "predicted_for": {
+            "date": first_day_pred.get("date", ""),
+            "day": first_day_pred.get("day", ""),
+        },
+        "otc_recommendation": {
+            "digits": first_day_pred.get("otc_digits", []),
+            "cut_pairs": [f"{p[0]}-{p[1]}" for p in first_day_pred.get("otc_pairs", [])],
+            "pass_probability": float(first_day_pred.get("otc_pass_prob", 0.0)),
+        },
+        "top_jodis": first_day_pred.get("top_jodis", []),
     }
     # Persist updated prediction_data.json to all 3 locations
     pred_paths = [

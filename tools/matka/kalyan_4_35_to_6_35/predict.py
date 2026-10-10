@@ -134,6 +134,80 @@ def make_ascii_bar(percent: float, max_len: int = 15) -> str:
     return "#" * filled + "-" * (max_len - filled)
 
 
+def generate_by_day_predictions(
+    ensemble: EnsemblePredictor,
+    latest_date: datetime,
+    latest_jodi: str,
+    latest_open: int,
+    latest_close: int,
+) -> dict:
+    day_abbrs = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
+    predictions_by_day = {}
+    d_date = latest_date
+    draw_days = []
+    while len(draw_days) < 6:
+        d_date += timedelta(days=1)
+        if d_date.weekday() != 6:  # Skip Sunday
+            draw_days.append(d_date)
+
+    for target_d in draw_days:
+        day_name = day_abbrs[target_d.weekday()]
+        preds = ensemble.predict(
+            day_of_week=day_name,
+            prev_jodi=latest_jodi,
+            prev_open=latest_open,
+            prev_close=latest_close,
+        )
+        j_probs = preds["jodi_probs"]
+        o_probs = preds["open_probs"]
+        c_probs = preds["close_probs"]
+
+        sorted_j = np.argsort(j_probs)[::-1]
+        sorted_o = np.argsort(o_probs)[::-1]
+        sorted_c = np.argsort(c_probs)[::-1]
+
+        top_j = []
+        for rank, idx in enumerate(sorted_j[:10], start=1):
+            j_str = f"{idx:02d}"
+            p = round(float(j_probs[idx]) * 100.0, 2)
+            top_j.append({
+                "rank": rank,
+                "jodi": j_str,
+                "prob": p,
+                "confidence": p,
+                "family": get_family_jodis(j_str),
+            })
+
+        top_o = [
+            {"rank": rank, "digit": int(idx), "prob": round(float(o_probs[idx]) * 100.0, 2)}
+            for rank, idx in enumerate(sorted_o, start=1)
+        ]
+        top_c = [
+            {"rank": rank, "digit": int(idx), "prob": round(float(c_probs[idx]) * 100.0, 2)}
+            for rank, idx in enumerate(sorted_c, start=1)
+        ]
+
+        norm_o = [float(p) for p in (o_probs / o_probs.sum())]
+        norm_c = [float(p) for p in (c_probs / c_probs.sum())]
+
+        predictions_by_day[day_name] = {
+            "date": target_d.strftime("%Y-%m-%d"),
+            "day": day_name,
+            "top_jodis": top_j,
+            "open_digits": top_o,
+            "close_digits": top_c,
+            "top_pick": top_j[0]["jodi"],
+            "top_family": top_j[0]["family"],
+            "otc_digits": preds.get("otc_digits", []),
+            "otc_pairs": preds.get("otc_pairs", []),
+            "otc_pass_prob": round(float(preds.get("otc_pass_prob", 0.0)) * 100.0, 1),
+            "open_digit_probs": norm_o,
+            "close_digit_probs": norm_c,
+            "patti_predictions": preds.get("patti_predictions", {}),
+        }
+    return predictions_by_day
+
+
 def generate_upcoming_prediction(csv_path: str = None) -> dict:
     target_csv = resolve_csv_path(csv_path)
     df = pd.read_csv(target_csv, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str})
@@ -175,6 +249,9 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     jodi_probs = preds["jodi_probs"]
     open_probs = preds["open_probs"]
     close_probs = preds["close_probs"]
+
+    norm_open = [float(p) for p in (open_probs / open_probs.sum())]
+    norm_close = [float(p) for p in (close_probs / close_probs.sum())]
 
     # Top Jodis
     sorted_jodi_indices = np.argsort(jodi_probs)[::-1]
@@ -222,6 +299,11 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     top_1_jodi = f"{sorted_jodi_indices[0]:02d}"
     family_bracket = get_family_jodis(top_1_jodi)
 
+    # Generate 6-day forecasts for full schedule
+    by_day_forecasts = generate_by_day_predictions(
+        ensemble, latest_date, latest_jodi, latest_open, latest_close
+    )
+
     return {
         "latest_draw": {
             "date": latest_date_str,
@@ -237,10 +319,10 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
         "top_jodis": top_jodi_df,
         "open_digits": open_df,
         "close_digits": close_df,
-        "open_digit_probs": [float(p) for p in open_probs],
-        "close_digit_probs": [float(p) for p in close_probs],
-        "open_probs": [float(p) for p in open_probs],
-        "close_probs": [float(p) for p in close_probs],
+        "open_digit_probs": norm_open,
+        "close_digit_probs": norm_close,
+        "open_probs": norm_open,
+        "close_probs": norm_close,
         "jodi_probs": [float(p) for p in jodi_probs],
         "top_1_jodi": top_1_jodi,
         "family_bracket": family_bracket,
@@ -248,6 +330,7 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
         "otc_pairs": preds.get("otc_pairs", []),
         "otc_pass_prob": preds.get("otc_pass_prob", 0.0),
         "patti_predictions": preds.get("patti_predictions", {}),
+        "by_day": by_day_forecasts,
     }
 
 
@@ -263,27 +346,27 @@ def print_prediction_report(res: dict):
     otc_str = ", ".join(str(d) for d in res.get("otc_digits", []))
     otc_pairs_str = " & ".join(f"({p[0]}-{p[1]})" for p in res.get("otc_pairs", []))
     otc_prob = res.get("otc_pass_prob", 0.0) * 100
-    print(f"\n[🔥] HIGH-CONFIDENCE 4-ANK OTC (OPEN-TO-CLOSE):")
+    print(f"\n[OTC] HIGH-CONFIDENCE 4-ANK OTC (OPEN-TO-CLOSE):")
     print(f"  -> Recommended Anks  : [ {otc_str} ]")
     print(f"  -> Harmonic Cut Pairs : {otc_pairs_str}")
     print(f"  -> Modeled Pass Prob  : {otc_prob:.1f}%")
 
-    print("\n[🎯] TOP RECOMMENDED JODI NUMBERS (HIGH CONFIDENCE CANDIDATES):")
+    print("\n[JODI] TOP RECOMMENDED JODI NUMBERS (HIGH CONFIDENCE CANDIDATES):")
     print(tabulate(res["top_jodis"].head(5), headers="keys", tablefmt="github", showindex=False))
 
-    print("\n[📋] EXTENDED CANDIDATES (RANKS 6 - 10):")
+    print("\n[CANDIDATES] EXTENDED CANDIDATES (RANKS 6 - 10):")
     print(tabulate(res["top_jodis"].tail(5), headers="keys", tablefmt="github", showindex=False))
 
-    print(f"\n[🔄] RECOMMENDED FAMILY / CUT BRACKET FOR TOP JODI '{res['top_1_jodi']}':")
+    print(f"\n[FAMILY] RECOMMENDED FAMILY / CUT BRACKET FOR TOP JODI '{res['top_1_jodi']}':")
     print("  -> Associated Pairs: " + ", ".join(f"[{j}]" for j in res["family_bracket"]))
 
-    print("\n[🔓] PREDICTED SINGLE OPEN DIGIT (ANK) PROBABILITY DISTRIBUTION:")
+    print("\n[OPEN] PREDICTED SINGLE OPEN DIGIT (ANK) PROBABILITY DISTRIBUTION:")
     print(tabulate(res["open_digits"].head(5), headers="keys", tablefmt="github", showindex=False))
 
-    print("\n[🔒] PREDICTED SINGLE CLOSE DIGIT (ANK) PROBABILITY DISTRIBUTION:")
+    print("\n[CLOSE] PREDICTED SINGLE CLOSE DIGIT (ANK) PROBABILITY DISTRIBUTION:")
     print(tabulate(res["close_digits"].head(5), headers="keys", tablefmt="github", showindex=False))
 
-    print("\n[🎰] RECOMMENDED 3-DIGIT PATTI / PANEL FORECASTS (FOR TOP OTC ANKS):")
+    print("\n[PATTI] RECOMMENDED 3-DIGIT PATTI / PANEL FORECASTS (FOR TOP OTC ANKS):")
     patti_preds = res.get("patti_predictions", {})
     patti_rows = []
     for ank in res.get("otc_digits", []):
@@ -321,6 +404,8 @@ if __name__ == "__main__":
         df = pd.read_csv(resolved_csv, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str})
         valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
         # Build standard prediction artifact
+        open_patti = str(valid_df.iloc[-1]["Open_Patti"]) if pd.notna(valid_df.iloc[-1]["Open_Patti"]) else ""
+        close_patti = str(valid_df.iloc[-1]["Close_Patti"]) if pd.notna(valid_df.iloc[-1]["Close_Patti"]) else ""
         export_payload = {
             "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
             "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
@@ -330,8 +415,16 @@ if __name__ == "__main__":
                 "jodi": str(valid_df.iloc[-1]["Jodi"]).zfill(2),
                 "open": int(float(valid_df.iloc[-1]["Open_Digit"])),
                 "close": int(float(valid_df.iloc[-1]["Close_Digit"])),
-                "openPatti": str(valid_df.iloc[-1]["Open_Patti"]),
-                "closePatti": str(valid_df.iloc[-1]["Close_Patti"]),
+                "open_digit": int(float(valid_df.iloc[-1]["Open_Digit"])),
+                "close_digit": int(float(valid_df.iloc[-1]["Close_Digit"])),
+                "open_patti": open_patti,
+                "close_patti": close_patti,
+                "openPatti": open_patti,
+                "closePatti": close_patti,
+            },
+            "predicted_for": {
+                "date": res["target_draw"]["date"],
+                "day": res["target_draw"]["day"],
             },
             "otc_recommendation": {
                 "digits": res.get("otc_digits", []),
@@ -339,7 +432,8 @@ if __name__ == "__main__":
                 "pass_probability": float(res.get("otc_pass_prob", 0.0)),
             },
             "top_jodis": res.get("top_jodis", pd.DataFrame()).to_dict(orient="records"),
-            "open_digit_probs": [float(p) for p in res.get("open_digit_probs", [])],
-            "close_digit_probs": [float(p) for p in res.get("close_digit_probs", [])],
+            "open_digit_probs": res.get("open_digit_probs", []),
+            "close_digit_probs": res.get("close_digit_probs", []),
+            "by_day": res.get("by_day", {}),
         }
         sync_artifacts(export_payload, valid_df)

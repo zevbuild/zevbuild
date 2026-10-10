@@ -48,7 +48,7 @@ BROWSER_USER_AGENT = (
 )
 
 # Schemes that are ignored during disk file resolution
-IGNORED_SCHEMES = ("javascript:", "mailto:", "tel:", "data:", "blob:", "sms:", "callto:")
+IGNORED_SCHEMES = ("javascript:", "mailto:", "tel:", "data:", "blob:", "sms:", "callto:", "upi:")
 
 # NSFW or prohibited domains to audit against in Tier 4
 PROHIBITED_DOMAINS = ("hqporner.com", "pornhub.com", "xvideos.com")

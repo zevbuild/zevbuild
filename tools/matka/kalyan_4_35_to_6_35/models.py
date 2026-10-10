@@ -23,12 +23,15 @@ class MarkovChainModel:
     First-order Markov model computing conditional transition probabilities
     P(Draw_t | Draw_{t-1}) for both Jodi numbers and Open/Close single digits,
     including Cross-Day Close(t-1) -> Open(t) transition dynamics.
-    Uses calibrated Laplace-Dirichlet smoothing.
+    Uses calibrated Laplace-Dirichlet smoothing and exponential time decay
+    so recent transitions carry higher predictive priority.
     """
 
-    def __init__(self, alpha_digit: float = 0.5, alpha_jodi: float = 0.1):
+    def __init__(self, alpha_digit: float = 0.5, alpha_jodi: float = 0.1, half_life: float = 300.0):
         self.alpha_digit = alpha_digit
         self.alpha_jodi = alpha_jodi
+        self.half_life = half_life
+        self.decay = np.log(2.0) / half_life if half_life > 0 else 0.0
         self.jodi_trans = defaultdict(Counter)
         self.open_trans = np.zeros((10, 10), dtype=float)
         self.close_trans = np.zeros((10, 10), dtype=float)
@@ -43,27 +46,40 @@ class MarkovChainModel:
         self.close_trans.fill(0.0)
         self.cross_trans.fill(0.0)
 
+        n = len(valid_df)
+        if n == 0:
+            return
+
         jodis = valid_df["Jodi"].astype(int).values
         opens = valid_df["Open_Digit"].astype(int).values
         closes = valid_df["Close_Digit"].astype(int).values
-        n = len(valid_df)
-
-        for i in range(n - 1):
-            self.jodi_trans[f"{jodis[i]:02d}"][f"{jodis[i + 1]:02d}"] += 1
-            self.open_trans[opens[i], opens[i + 1]] += 1.0
-            self.close_trans[closes[i], closes[i + 1]] += 1.0
-            self.cross_trans[closes[i], opens[i + 1]] += 1.0
 
         if n > 0:
             self.last_jodi = f"{jodis[-1]:02d}"
             self.last_open = int(opens[-1])
             self.last_close = int(closes[-1])
 
+        if n < 2:
+            return
+
+        lags = np.arange(n - 2, -1, -1)
+        w = np.exp(-self.decay * lags) if self.decay > 0 else np.ones(n - 1)
+
+        for i in range(n - 1):
+            weight = float(w[i])
+            self.jodi_trans[f"{jodis[i]:02d}"][f"{jodis[i + 1]:02d}"] += weight
+            self.open_trans[opens[i], opens[i + 1]] += weight
+            self.close_trans[closes[i], closes[i + 1]] += weight
+            self.cross_trans[closes[i], opens[i + 1]] += weight
+
     def predict_jodi_probs(self, prev_jodi: str = None) -> np.ndarray:
         prev = prev_jodi if prev_jodi is not None else self.last_jodi
-        counts = np.array([self.jodi_trans[prev][f"{i:02d}"] for i in range(100)], dtype=float)
+        if prev is not None and prev in self.jodi_trans:
+            counts = np.array([self.jodi_trans[prev][f"{i:02d}"] for i in range(100)], dtype=float)
+        else:
+            counts = np.zeros(100, dtype=float)
         probs = (counts + self.alpha_jodi) / (counts.sum() + 100 * self.alpha_jodi)
-        return probs
+        return probs / probs.sum()
 
     def predict_open_probs(self, prev_open: int = None, prev_close: int = None) -> np.ndarray:
         p_o = int(prev_open) if prev_open is not None else self.last_open
@@ -90,37 +106,69 @@ class MarkovChainModel:
             return np.ones(10, dtype=float) / 10.0
         counts = self.close_trans[prev]
         probs = (counts + self.alpha_digit) / (counts.sum() + 10 * self.alpha_digit)
-        return probs
+        return probs / probs.sum()
 
 
 class RecencyWeightedModel:
     """
-    Dual-Horizon Exponential Moving Frequency model (Fast Momentum + Medium Trend).
-    Applies exponential decay:
-      w_fast = e^(-lambda_fast * delta_t)  (Half-life ~ 10 draws)
-      w_med  = e^(-lambda_med * delta_t)   (Half-life ~ 40 draws)
+    Tri-Horizon Exponential Moving Frequency model (Fast Momentum + Medium Trend + Macro Baseline).
+    Applies calibrated exponential decay:
+      w_fast  = e^(-lambda_fast * delta_t)   (Half-life = 8 draws)
+      w_med   = e^(-lambda_med * delta_t)    (Half-life = 35 draws)
+      w_macro = e^(-lambda_macro * delta_t)  (Half-life = 120 draws)
+    Applies adaptive tri-horizon blending to Jodis, Open digits, and Close digits:
+      P_rec = 0.50 * P_fast + 0.35 * P_med + 0.15 * P_macro
     """
 
-    def __init__(self, half_life_fast: float = 10.0, half_life_med: float = 40.0, alpha: float = 0.5):
+    def __init__(
+        self,
+        half_life_fast: float = 8.0,
+        half_life_med: float = 35.0,
+        half_life_macro: float = 120.0,
+        alpha: float = 0.5,
+        alpha_jodi: float = 0.05,
+    ):
         self.hl_fast = half_life_fast
         self.hl_med = half_life_med
+        self.hl_macro = half_life_macro
         self.decay_fast = np.log(2.0) / half_life_fast
         self.decay_med = np.log(2.0) / half_life_med
+        self.decay_macro = np.log(2.0) / half_life_macro
         self.alpha = alpha
+        self.alpha_jodi = alpha_jodi
 
-        self.jodi_weights = np.zeros(100, dtype=float)
+        self.jodi_weights_fast = np.zeros(100, dtype=float)
+        self.jodi_weights_med = np.zeros(100, dtype=float)
+        self.jodi_weights_macro = np.zeros(100, dtype=float)
+
         self.open_weights_fast = np.zeros(10, dtype=float)
         self.open_weights_med = np.zeros(10, dtype=float)
+        self.open_weights_macro = np.zeros(10, dtype=float)
+
         self.close_weights_fast = np.zeros(10, dtype=float)
         self.close_weights_med = np.zeros(10, dtype=float)
+        self.close_weights_macro = np.zeros(10, dtype=float)
+
+    @property
+    def jodi_weights(self) -> np.ndarray:
+        return 0.50 * self.jodi_weights_fast + 0.35 * self.jodi_weights_med + 0.15 * self.jodi_weights_macro
 
     def fit(self, valid_df: pd.DataFrame):
         n = len(valid_df)
-        self.jodi_weights.fill(0.0)
+        self.jodi_weights_fast.fill(0.0)
+        self.jodi_weights_med.fill(0.0)
+        self.jodi_weights_macro.fill(0.0)
+
         self.open_weights_fast.fill(0.0)
         self.open_weights_med.fill(0.0)
+        self.open_weights_macro.fill(0.0)
+
         self.close_weights_fast.fill(0.0)
         self.close_weights_med.fill(0.0)
+        self.close_weights_macro.fill(0.0)
+
+        if n == 0:
+            return
 
         jodis = valid_df["Jodi"].astype(int).values
         opens = valid_df["Open_Digit"].astype(int).values
@@ -129,29 +177,42 @@ class RecencyWeightedModel:
         lags = np.arange(n - 1, -1, -1)
         w_f = np.exp(-self.decay_fast * lags)
         w_m = np.exp(-self.decay_med * lags)
+        w_mac = np.exp(-self.decay_macro * lags)
 
         for i in range(n):
-            self.jodi_weights[jodis[i]] += w_m[i]
+            self.jodi_weights_fast[jodis[i]] += w_f[i]
+            self.jodi_weights_med[jodis[i]] += w_m[i]
+            self.jodi_weights_macro[jodis[i]] += w_mac[i]
+
             self.open_weights_fast[opens[i]] += w_f[i]
             self.open_weights_med[opens[i]] += w_m[i]
+            self.open_weights_macro[opens[i]] += w_mac[i]
+
             self.close_weights_fast[closes[i]] += w_f[i]
             self.close_weights_med[closes[i]] += w_m[i]
+            self.close_weights_macro[closes[i]] += w_mac[i]
 
     def predict_jodi_probs(self) -> np.ndarray:
-        probs = (self.jodi_weights + 0.1) / (self.jodi_weights.sum() + 100 * 0.1)
-        return probs
+        p_fast = (self.jodi_weights_fast + self.alpha_jodi) / (self.jodi_weights_fast.sum() + 100 * self.alpha_jodi)
+        p_med = (self.jodi_weights_med + self.alpha_jodi) / (self.jodi_weights_med.sum() + 100 * self.alpha_jodi)
+        p_mac = (self.jodi_weights_macro + self.alpha_jodi) / (self.jodi_weights_macro.sum() + 100 * self.alpha_jodi)
+        probs = 0.50 * p_fast + 0.35 * p_med + 0.15 * p_mac
+        return probs / probs.sum()
 
     def predict_open_probs(self) -> np.ndarray:
         p_fast = (self.open_weights_fast + self.alpha) / (self.open_weights_fast.sum() + 10 * self.alpha)
         p_med = (self.open_weights_med + self.alpha) / (self.open_weights_med.sum() + 10 * self.alpha)
-        probs = 0.60 * p_fast + 0.40 * p_med
+        p_mac = (self.open_weights_macro + self.alpha) / (self.open_weights_macro.sum() + 10 * self.alpha)
+        probs = 0.50 * p_fast + 0.35 * p_med + 0.15 * p_mac
         return probs / probs.sum()
 
     def predict_close_probs(self) -> np.ndarray:
         p_fast = (self.close_weights_fast + self.alpha) / (self.close_weights_fast.sum() + 10 * self.alpha)
         p_med = (self.close_weights_med + self.alpha) / (self.close_weights_med.sum() + 10 * self.alpha)
-        probs = 0.60 * p_fast + 0.40 * p_med
+        p_mac = (self.close_weights_macro + self.alpha) / (self.close_weights_macro.sum() + 10 * self.alpha)
+        probs = 0.50 * p_fast + 0.35 * p_med + 0.15 * p_mac
         return probs / probs.sum()
+
 
 
 class OverdueGapModel:
@@ -411,9 +472,10 @@ class EnsemblePredictor:
         w_seasonal: float = 0.15,
         w_gap: float = 0.15,
         cut_resonance: float = 0.12,
-        w_joint: float = 0.55,
-        w_total: float = 0.20,
+        w_joint: float = 0.45,
+        w_total: float = 0.15,
         w_direct: float = 0.25,
+        w_markov_jodi: float = 0.15,
     ):
         self.w_markov = w_markov
         self.w_recency = w_recency
@@ -423,6 +485,7 @@ class EnsemblePredictor:
         self.w_joint = w_joint
         self.w_total = w_total
         self.w_direct = w_direct
+        self.w_markov_jodi = w_markov_jodi
 
         self.markov = MarkovChainModel()
         self.recency = RecencyWeightedModel()
@@ -501,12 +564,6 @@ class EnsemblePredictor:
         otc_pairs = [(d1, cut1), (d2, cut2)]
         otc_digits = sorted([d1, cut1, d2, cut2])
 
-        # Estimated OTC pass probability: P(Open in OTC or Close in OTC)
-        p_open_in_otc = float(open_probs[otc_digits].sum())
-        p_close_in_otc = float(close_probs[otc_digits].sum())
-        # Upper/lower joint bound approximation with intra-correlation factor
-        otc_pass_prob = min(0.96, p_open_in_otc + p_close_in_otc - (p_open_in_otc * p_close_in_otc * 0.9))
-
         # 4. Intra-Draw Conditional Matrix
         p_c_given_o = self.intra.get_conditional_close_matrix()
 
@@ -516,6 +573,7 @@ class EnsemblePredictor:
             for c in range(10):
                 p_c_eff = 0.60 * close_probs[c] + 0.40 * p_c_given_o[o, c]
                 p_joint[o, c] = open_probs[o] * p_c_eff
+        p_joint /= p_joint.sum()
 
         # 6. Total (Sum mod 10) Prior Matrix
         p_tot_rec = self.total_model.predict_total_probs()
@@ -528,20 +586,43 @@ class EnsemblePredictor:
             for c in range(10):
                 t = (o + c) % 10
                 p_total_matrix[o, c] = p_tot[t] / 10.0
+        p_total_matrix /= p_total_matrix.sum()
 
-        # 7. Direct Jodi Recency
+        # 7. Direct Jodi Recency (Tri-Horizon)
         p_j_rec = self.recency.predict_jodi_probs().reshape((10, 10))
 
-        # 8. Coherent Marginal Synthesis
+        # 8. Markov Chain Jodi Transition Matrix (Feature 14)
+        p_jodi_markov = self.markov.predict_jodi_probs(prev_jodi).reshape((10, 10))
+
+        # 9. Coherent Marginal & Markov Synthesis
         jodi_matrix = (
             self.w_joint * p_joint
             + self.w_total * p_total_matrix
             + self.w_direct * p_j_rec
+            + self.w_markov_jodi * p_jodi_markov
         )
+        jodi_matrix /= jodi_matrix.sum()
+
+        # 10. 2D Harmonic Cut Resonance Diffusion across 3 cut states (Feature 15)
+        # For candidate Jodi (o, c): Cut states are ((o+5)%10, c), (o, (c+5)%10), ((o+5)%10, (c+5)%10)
+        cut_2d_open = np.roll(jodi_matrix, 5, axis=0)
+        cut_2d_close = np.roll(jodi_matrix, 5, axis=1)
+        cut_2d_both = np.roll(jodi_matrix, (5, 5), axis=(0, 1))
+        gamma = self.cut_resonance
+        jodi_matrix = (1.0 - gamma) * jodi_matrix + (gamma / 3.0) * (cut_2d_open + cut_2d_close + cut_2d_both)
+        jodi_matrix /= jodi_matrix.sum()
+
+        # 11. Exact OTC Joint Pass Probability Formulation (Feature 16)
+        # P(OTC Hit) = 1.0 - sum_{o not in OTC, c not in OTC} P_joint(o, c)
+        non_otc = [d for d in range(10) if d not in otc_digits]
+        p_miss = float(jodi_matrix[np.ix_(non_otc, non_otc)].sum())
+        otc_pass_prob = float(np.clip(1.0 - p_miss, 0.0, 1.0))
+
+        # Final Jodi probability vector
         jodi_probs = jodi_matrix.flatten()
         jodi_probs /= jodi_probs.sum()
 
-        # 9. Patti / Panel recommendations for OTC digits
+        # 12. Patti / Panel recommendations for OTC digits
         patti_preds = {}
         for ank in otc_digits:
             patti_preds[str(ank)] = self.patti_model.get_top_pattis_for_ank(ank, top_n=4)
