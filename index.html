@@ -7,8 +7,8 @@
 
   <!-- ═══ Primary SEO ═══ -->
   <title>Zevbuild — Privacy-First Software & Resilient Digital Products</title>
-  <meta name="description" content="Zevbuild is an independent software company building zero-knowledge cryptographic vaults, offline-first P2P mesh protocols, civic transit apps, and predictive data engines. Based in Goa, India.">
-  <meta name="keywords" content="Zevbuild, ZevSafe, ZevSync, CollegeBus, Kalyan Predictor, zero-knowledge encryption, offline-first software, AES-256-GCM, PBKDF2-SHA512, Bluetooth mesh, P2P sync, PWA, privacy software, open source, Goa India, software company">
+  <meta name="description" content="Zevbuild is an independent software studio building zero-knowledge cryptographic vaults, offline-first tools, civic transit apps, and predictive data engines. Based in Goa, India.">
+  <meta name="keywords" content="Zevbuild, ZevSafe, ZevSync, CollegeBus, Kalyan Predictor, UPI Generator, Spotify Player, v_yt, zero-knowledge encryption, offline-first software, AES-256-GCM, PBKDF2-SHA512, Bluetooth mesh, P2P sync, PWA, privacy software, open source, Goa India">
   <meta name="author" content="Zevbuild">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <link rel="canonical" href="https://zevbuild.pages.dev/">
@@ -33,20 +33,20 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zevbuild">
   <meta property="og:url" content="https://zevbuild.pages.dev/">
-  <meta property="og:title" content="Zevbuild — Privacy-First Software Company">
-  <meta property="og:description" content="Independent software studio building zero-knowledge cryptographic vaults, offline-first P2P mesh, civic transit apps, and probabilistic AI engines. Zero telemetry.">
+  <meta property="og:title" content="Zevbuild — Privacy-First Software & Tools">
+  <meta property="og:description" content="Independent software studio building zero-knowledge vaults, offline utilities, civic transit apps, and probabilistic AI engines. Zero telemetry.">
   <meta property="og:image" content="https://zevbuild.pages.dev/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Zevbuild — Privacy-First Software Company">
+  <meta property="og:image:alt" content="Zevbuild — Privacy-First Software & Tools">
   <meta property="og:locale" content="en_US">
 
   <!-- ═══ Twitter / X ═══ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@zevbuild">
   <meta name="twitter:creator" content="@zevbuild">
-  <meta name="twitter:title" content="Zevbuild — Privacy-First Software Company">
-  <meta name="twitter:description" content="Zero-knowledge encryption, offline-first P2P mesh, and real-time predictive data engines. Zero telemetry. MIT open source.">
+  <meta name="twitter:title" content="Zevbuild — Privacy-First Software & Tools">
+  <meta name="twitter:description" content="Zero-knowledge encryption, offline-first utilities, and real-time predictive data engines. Zero telemetry. MIT open source.">
   <meta name="twitter:image" content="https://zevbuild.pages.dev/og-image.svg">
 
   <!-- ═══ Structured Data ═══ -->
@@ -61,7 +61,7 @@
         "alternateName": "Zevbuild Studio",
         "url": "https://zevbuild.pages.dev/",
         "logo": "https://zevbuild.pages.dev/og-image.svg",
-        "description": "Independent software company specializing in privacy-first cryptographic systems, offline mesh protocols, civic transit applications, and predictive platforms.",
+        "description": "Independent software studio specializing in privacy-first cryptographic systems, offline mesh protocols, civic transit applications, and predictive platforms.",
         "foundingDate": "2024",
         "foundingLocation": {
           "@type": "Place",
@@ -104,7 +104,6 @@
     :root {
       --bg-base: #06080d;
       --bg-surface: #0b0f19;
-      --bg-card: rgba(13, 18, 30, 0.7);
       --border-subtle: rgba(255, 255, 255, 0.08);
       --border-glow: rgba(139, 92, 246, 0.35);
     }
@@ -123,41 +122,33 @@
 
     .bg-grid-ambient {
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.18) 0%, transparent 55%),
-        radial-gradient(circle at 90% 25%, rgba(6, 182, 212, 0.10) 0%, transparent 45%),
-        radial-gradient(circle at 10% 70%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.16) 0%, transparent 50%),
+        radial-gradient(circle at 85% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 15% 65%, rgba(16, 185, 129, 0.06) 0%, transparent 35%),
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
 
     .glass-nav {
-      background: rgba(8, 12, 22, 0.82);
+      background: rgba(7, 10, 18, 0.82);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
     .glass-card {
-      background: linear-gradient(145deg, rgba(16, 22, 38, 0.72) 0%, rgba(10, 14, 25, 0.85) 100%);
+      background: linear-gradient(145deg, rgba(14, 20, 34, 0.7) 0%, rgba(9, 13, 23, 0.85) 100%);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .glass-card:hover {
-      border-color: rgba(139, 92, 246, 0.45);
+      border-color: rgba(139, 92, 246, 0.4);
       transform: translateY(-2px);
-      box-shadow: 0 16px 36px -10px rgba(139, 92, 246, 0.16);
-    }
-
-    /* Screen Adaptive Viewport Transition */
-    .screen-adaptive-container {
-      width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-      transition: max-width 0.2s ease, padding 0.2s ease;
+      box-shadow: 0 16px 36px -10px rgba(139, 92, 246, 0.15);
     }
 
     ::-webkit-scrollbar { width: 6px; }
@@ -168,9 +159,9 @@
 </head>
 <body class="bg-grid-ambient selection:bg-purple-600 selection:text-white flex flex-col min-h-screen">
 
-  <!-- ═══ Fixed Header with Auto Screen Size Detector ═══ -->
+  <!-- ═══ Clean, Modern Fixed Header ═══ -->
   <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
       
       <!-- Brand Logo -->
       <a href="#" class="flex items-center gap-3 group flex-shrink-0">
@@ -196,17 +187,9 @@
         </div>
       </a>
 
-      <!-- Auto Screen Size Detector Chip (Real-Time Dynamic Sensing) -->
-      <div id="screen-detect-badge" class="hidden md:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-700/60 text-[11px] font-mono text-slate-300 shadow-inner" title="Real-time responsive viewport sensor">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="screen-device-name" class="font-semibold text-slate-200">Auto-Detecting...</span>
-        <span class="text-slate-600">|</span>
-        <span id="screen-resolution" class="text-slate-400 font-mono">-</span>
-      </div>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden lg:flex items-center gap-6 text-xs sm:text-sm font-medium text-slate-300">
-        <a href="#products" class="hover:text-purple-400 transition-colors">Products & Tools</a>
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-7 text-xs sm:text-sm font-medium text-slate-300">
+        <a href="#products" class="hover:text-purple-400 transition-colors">Products &amp; Tools</a>
         <a href="#philosophy" class="hover:text-cyan-400 transition-colors">Philosophy</a>
         <a href="#architecture" class="hover:text-purple-400 transition-colors">Architecture</a>
         <a href="#specs" class="hover:text-cyan-400 transition-colors">Tech Specs</a>
@@ -221,6 +204,14 @@
           <span class="hidden sm:inline">Install App</span>
         </button>
 
+        <!-- Quick Jump / Command Palette Trigger -->
+        <button id="cmdPaletteTrigger" onclick="openCmdPalette()" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all cursor-pointer" title="Quick Jump / Command Palette (Ctrl+K or ⌘K)">
+          <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <span class="hidden md:inline">Quick Jump</span>
+          <kbd class="px-1.5 py-0.5 text-[9px] font-mono bg-white/10 text-slate-400 rounded border border-white/10">⌘K</kbd>
+        </button>
+
+        <!-- GitHub Link -->
         <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" 
            class="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
           <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
@@ -229,12 +220,13 @@
           <span>GitHub</span>
         </a>
 
+        <!-- Explore Button -->
         <a href="#products" 
            class="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-md shadow-purple-600/25 transition-all">
-          Explore
+          Explore Tools
         </a>
 
-        <!-- Mobile Menu Button -->
+        <!-- Mobile Menu Hamburger -->
         <button id="mobileMenuBtn" aria-label="Toggle Navigation Menu" class="lg:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -244,18 +236,9 @@
 
     </div>
 
-    <!-- Mobile Dropdown -->
-    <div id="mobileMenu" class="hidden lg:hidden border-t border-white/10 bg-[#090d16] px-4 py-4 space-y-2.5">
-      <!-- Mobile screen size sensing indicator -->
-      <div id="screen-detect-mobile" class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-300">
-        <span class="flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span>Screen Detected:</span>
-        </span>
-        <span id="screen-detect-mobile-text" class="text-emerald-400 font-bold">-</span>
-      </div>
-
-      <a href="#products" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Products & Tools</a>
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden lg:hidden border-t border-white/10 bg-[#090d16] px-4 py-4 space-y-2">
+      <a href="#products" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Products &amp; Tools</a>
       <a href="#philosophy" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Philosophy</a>
       <a href="#architecture" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Architecture</a>
       <a href="#specs" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Tech Specs</a>
@@ -276,7 +259,7 @@
   <!-- ═══ Main Content ═══ -->
   <main class="pt-20 sm:pt-24 pb-16 flex-grow">
 
-    <!-- ═══ Hero Section (Adaptive Typography & Responsive Spacing) ═══ -->
+    <!-- ═══ Hero Section ═══ -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 pb-12 sm:pb-20 text-center sm:text-left">
       
       <!-- Top Pill -->
@@ -287,18 +270,18 @@
 
       <!-- Main Headline -->
       <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] max-w-4xl mb-4 sm:mb-6 text-white">
-        Engineering <span class="bg-gradient-to-r from-purple-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">Privacy-First</span> Systems &amp; Resilient Software.
+        Simple, <span class="bg-gradient-to-r from-purple-400 via-indigo-300 to-cyan-300 bg-clip-text text-transparent">Privacy-First</span> Software &amp; Resilient Digital Tools.
       </h1>
 
       <!-- Subtitle -->
       <p class="text-sm sm:text-lg text-slate-400 max-w-2xl leading-relaxed mb-8">
-        We build zero-knowledge cryptographic vaults, offline-first peer-to-peer mesh protocols, civic transit schedulers, and probabilistic AI engines — prioritizing user sovereignty with zero telemetry.
+        We build zero-knowledge cryptographic vaults, offline peer-to-peer protocols, civic transit utilities, and quantitative predictive engines — designed for user sovereignty with zero telemetry.
       </p>
 
       <!-- CTA Buttons -->
       <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-4 mb-12">
         <a href="#products" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white shadow-lg shadow-purple-600/25 transition-all">
-          <span>Explore Tools</span>
+          <span>Explore All Tools</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
         </a>
 
@@ -306,12 +289,16 @@
           <span>Kalyan Predictor ↗</span>
         </a>
 
+        <a href="tools/upi-link-generator/index.html" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition-all">
+          <span>UPI Generator ↗</span>
+        </a>
+
         <a href="#philosophy" class="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-slate-200 transition-colors">
           <span>Manifesto →</span>
         </a>
       </div>
 
-      <!-- Core Metrics Strip (Auto Responsive Grid: 2 cols on mobile, 4 on desktop) -->
+      <!-- Core Pillars Strip -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl glass-card border border-white/5 text-left">
         <div class="p-2 sm:p-3">
           <div class="text-xl sm:text-3xl font-extrabold text-purple-400 mb-0.5">100%</div>
@@ -321,287 +308,443 @@
         <div class="p-2 sm:p-3">
           <div class="text-xl sm:text-3xl font-extrabold text-cyan-400 mb-0.5">Offline</div>
           <div class="text-xs font-semibold text-slate-200">Local-First</div>
-          <div class="text-[11px] text-slate-400">P2P mesh &amp; standalone PWAs</div>
+          <div class="text-[11px] text-slate-400">Standalone PWAs &amp; storage</div>
         </div>
         <div class="p-2 sm:p-3">
           <div class="text-xl sm:text-3xl font-extrabold text-emerald-400 mb-0.5">Zero</div>
           <div class="text-xs font-semibold text-slate-200">Telemetry</div>
-          <div class="text-[11px] text-slate-400">No trackers or surveillance</div>
+          <div class="text-[11px] text-slate-400">No trackers or profiling</div>
         </div>
         <div class="p-2 sm:p-3">
           <div class="text-xl sm:text-3xl font-extrabold text-amber-400 mb-0.5">MIT</div>
           <div class="text-xs font-semibold text-slate-200">Open Source</div>
-          <div class="text-[11px] text-slate-400">Auditable implementations</div>
+          <div class="text-[11px] text-slate-400">Auditable codebases</div>
         </div>
       </div>
 
     </section>
 
-    <!-- ═══ Flagship Products & Ecosystem (Simple, Modern 3-Column Grid) ═══ -->
+    <!-- ═══ Products & Tools Showcase (id="products") ═══ -->
     <section id="products" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-24">
       
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-2">
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-3">
         <div>
-          <div class="text-xs font-bold tracking-widest text-purple-400 uppercase mb-1">Portfolio Ecosystem</div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Flagship Software &amp; Tools</h2>
+          <div class="text-xs font-bold tracking-widest text-purple-400 uppercase mb-1">Tools &amp; Applications</div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Interactive Web Tools &amp; Products</h2>
         </div>
         <p class="text-xs sm:text-sm text-slate-400 max-w-md">
-          Client-side cryptography, offline protocols, civic transit, and predictive quantitative analytics.
+          Client-side web utilities, predictive analytics, encrypted vaults, and offline media tools. Free, open-source, and private.
         </p>
       </div>
 
-      <!-- Auto Responsive Grid: 1 col on mobile, 2 cols on tablet, 3 cols on large screens -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-        
-        <!-- CARD 1: KALYAN PREDICTOR -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-purple-500/30 relative group">
-          <div>
-            <div class="flex items-start justify-between mb-4">
-              <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-black text-sm">
-                AI
-              </div>
-              <div class="flex items-center gap-1.5 flex-wrap justify-end">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Live Engine
-                </span>
-                <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 mono flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-                  Updated by Zevbuild: <span id="matka-dev-badge-date">10 Oct 2026</span>
-                </span>
-                <span id="matka-main-last-update" class="hidden">10 Oct 2026</span>
-                <span id="matka-highlight-last-update" class="hidden">10 Oct 2026</span>
-              </div>
-            </div>
-
-            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
-              <span>Kalyan Auto-Predictor</span>
-            </h3>
-
-            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-              In-browser machine learning engine polling live draw results every 45s. Recalibrates Markov transitions, gap hazards, and 4-Ank OTC signals with audio/vibration auto-catch.
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">4-Ank Dual OTC</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">45s Auto-Sync</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">+15.4% Edge</span>
-            </div>
-
-            <!-- Proof snippet -->
-            <a href="tools/matka/index.html#lastweek" class="block mb-4 p-2 rounded-lg bg-slate-900/60 border border-emerald-500/20 text-[11px] text-slate-300 hover:border-emerald-500/40 transition-colors">
-              <span class="text-emerald-400 font-bold" id="matka-lw-strip-hits">5 Verified Hits</span>
-              <span class="text-slate-400 ml-1">(View Last Week Proof ↗)</span>
-              <span id="matka-lw-badge" class="hidden">Last Week: 5 Ank Hits</span>
-            </a>
+      <!-- Part 1: Built-in Web Tools & Utilities -->
+      <div class="mb-12">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300">Built-in Web Utilities &amp; Analytics</h3>
+            <span class="text-[11px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20 font-mono">6 Tools</span>
           </div>
 
-          <div class="flex items-center gap-2 pt-3 border-t border-white/5">
-            <a href="tools/matka/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-md transition-all">
-              Launch Engine ↗
-            </a>
-            <a href="tools/matka/index.html#lastweek" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-              Proof
-            </a>
+          <!-- Category filter buttons -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs font-medium">
+            <button class="portal-filter-btn active px-3 py-1.5 rounded-xl bg-purple-600 text-white shadow-sm transition-all" data-pfilter="all">All (6)</button>
+            <button class="portal-filter-btn px-3 py-1.5 rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5 transition-all" data-pfilter="ai">AI &amp; Data</button>
+            <button class="portal-filter-btn px-3 py-1.5 rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5 transition-all" data-pfilter="finance">Finance</button>
+            <button class="portal-filter-btn px-3 py-1.5 rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5 transition-all" data-pfilter="media">Media &amp; Audio</button>
           </div>
         </div>
 
-        <!-- CARD 2: ZEVSAFE (ZERO-KNOWLEDGE VAULT) -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
-          <div>
-            <div class="flex items-start justify-between mb-4">
-              <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <div id="portalToolsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          
+          <!-- TOOL 1: KALYAN PREDICTOR -->
+          <div class="portal-tool-card glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-purple-500/30 relative group" data-portal-cat="ai">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-black text-sm">
+                  AI
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    Live Engine
+                  </span>
+                  <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 mono flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                    Updated: <span id="matka-dev-badge-date">10 Oct 2026</span>
+                  </span>
+                  <span id="matka-main-last-update" class="hidden">10 Oct 2026</span>
+                  <span id="matka-highlight-last-update" class="hidden">10 Oct 2026</span>
+                </div>
               </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Live Web App
-                </span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 mono">
-                  v3
-                </span>
+
+              <h4 class="text-xl font-bold text-white mb-2">Kalyan Auto-Predictor</h4>
+
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                In-browser machine learning engine polling live draw results every 45s. Recalibrates Markov transitions, gap hazards, and 4-Ank dual OTC signals.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">4-Ank Dual OTC</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">45s Auto-Sync</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">+15.4% Edge</span>
               </div>
+
+              <!-- Proof snippet -->
+              <a href="tools/matka/index.html#lastweek" class="block mb-4 p-2.5 rounded-lg bg-slate-900/60 border border-emerald-500/20 text-[11px] text-slate-300 hover:border-emerald-500/40 transition-colors">
+                <span class="text-emerald-400 font-bold" id="matka-lw-strip-hits">5 Verified Hits</span>
+                <span class="text-slate-400 ml-1">(View Last Week Proof ↗)</span>
+                <span id="matka-lw-badge" class="hidden">Last Week: 5 Ank Hits</span>
+              </a>
             </div>
 
-            <h3 class="text-xl font-bold text-white mb-2">ZevSafe</h3>
-            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-              Zero-trust browser folder vault. Encrypts and decrypts nested folder structures client-side via AES-256-GCM and PBKDF2-SHA512 (600k rounds). Files never touch a network.
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">AES-256-GCM</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">PBKDF2-SHA512</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">100% Offline</span>
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="tools/matka/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-md transition-all">
+                Launch Engine ↗
+              </a>
+              <a href="tools/matka/index.html#lastweek" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+                Proof
+              </a>
             </div>
           </div>
 
-          <div class="flex items-center gap-2 pt-3 border-t border-white/5">
-            <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-md transition-all">
-              Launch ZevSafe ↗
-            </a>
-            <a href="https://github.com/zevbuild/zevsafe" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-              Source
-            </a>
+          <!-- TOOL 2: UPI LINK GENERATOR (NEW ADDITION) -->
+          <div class="portal-tool-card glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-emerald-500/30 relative group" data-portal-cat="finance">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm">
+                  ₹
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    Browser Utility
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 mono">
+                    India
+                  </span>
+                </div>
+              </div>
+
+              <h4 class="text-xl font-bold text-white mb-2">UPI Link &amp; QR Generator</h4>
+
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Generate instant one-click UPI payment links and high-res QR codes for Indian payments. Payers open links with one tap in GPay, PhonePe, or Paytm.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">One-Tap Links</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">WhatsApp / SMS</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">Zero Server Data</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="tools/upi-link-generator/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all">
+                Open UPI Generator ↗
+              </a>
+            </div>
           </div>
+
+          <!-- TOOL 3: SPOTIFY RETROWAVE PLAYER (NEW ADDITION) -->
+          <div class="portal-tool-card glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-fuchsia-500/30 relative group" data-portal-cat="media">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/20 flex items-center justify-center text-fuchsia-400">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                    Offline Player
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-fuchsia-500/10 text-fuchsia-300 mono">
+                    Canvas FX
+                  </span>
+                </div>
+              </div>
+
+              <h4 class="text-xl font-bold text-white mb-2">Spotify RetroWave Player</h4>
+
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Offline RetroWave HTML5 audio player with animated synthwave Canvas visualizer, drag-and-drop playlist support, and Spotify batch download console extractor.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Audio Visualizer</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Drag &amp; Drop MP3</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-fuchsia-500/10 text-fuchsia-400">100% Offline</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="tools/spotify/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-fuchsia-600 hover:bg-fuchsia-500 text-white shadow-md transition-all">
+                Open RetroWave Player ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- TOOL 4: V_YT MEDIA DOWNLOADER -->
+          <div class="portal-tool-card glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-red-500/30 relative group" data-portal-cat="media">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">
+                    Web Tool
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/10 text-red-300 mono">
+                    yt-dlp
+                  </span>
+                </div>
+              </div>
+
+              <h4 class="text-xl font-bold text-white mb-2">v_yt Media Downloader</h4>
+
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Lightweight, ad-free YouTube video and audio fetcher powered by yt-dlp via Cobalt API edge workers. Download MP4 (720p/1080p) or extract MP3 audio.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">MP4 1080p</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">MP3 Audio</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-red-500/10 text-red-400">Zero Ads</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="tools/yt/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-red-600 hover:bg-red-500 text-white shadow-md transition-all">
+                Launch v_yt ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- TOOL 5: VIDEO DOWNLOADERS GUIDE (NEW ADDITION) -->
+          <div class="portal-tool-card glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-amber-500/30 relative group" data-portal-cat="media">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    Technical Guide
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 mono">
+                    Curated
+                  </span>
+                </div>
+              </div>
+
+              <h4 class="text-xl font-bold text-white mb-2">Video Downloaders Guide</h4>
+
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Curated technical comparison covering legitimate, privacy-first, and open-source video downloaders and media transcoding utilities (yt-dlp, Cobalt, NewPipe, VLC, FFmpeg).
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">yt-dlp &amp; Cobalt</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">FFmpeg Transcoding</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-400">Verified Links</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="tools/download/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-500 text-white shadow-md transition-all">
+                Read Guide ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- TOOL 6: HISTORICAL PENAL CHART -->
+          <div class="portal-tool-card glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-indigo-500/30 relative group" data-portal-cat="ai">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold text-xs">
+                  CHART
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap justify-end">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                    2012–2026
+                  </span>
+                  <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 mono flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                    Updated: <span id="matka-penal-badge-date">10 Oct 2026</span>
+                  </span>
+                  <span id="matka-penal-last-update" class="hidden">10 Oct 2026</span>
+                  <span id="matka-penal-highlight-last-update" class="hidden">10 Oct 2026</span>
+                </div>
+              </div>
+
+              <h4 class="text-xl font-bold text-white mb-2">Historical Penal Chart</h4>
+
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Complete high-density visualizer indexing 14+ years and 3,200+ historical Kalyan results with color-coded panel brackets and fast search querying.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">14-Year Matrix</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">3,203 Records</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400">Fast Query</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="tools/matka/kalyan_penal_chart.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition-all">
+                View Chart ↗
+              </a>
+              <a href="tools/matka/index.html" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+                Predictor
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Part 2: Flagship Software & Protocols -->
+      <div class="mb-8">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-300">Flagship Open-Source Software</h3>
+          <span class="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-mono">3 Products</span>
         </div>
 
-        <!-- CARD 3: COLLEGEBUS (CIVIC TRANSIT PWA) -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
-          <div>
-            <div class="flex items-start justify-between mb-4">
-              <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+          
+          <!-- PRODUCT 1: ZEVSAFE -->
+          <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    Live Web App
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 mono">
+                    v3
+                  </span>
+                </div>
               </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                  Transit PWA
-                </span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 mono">Goa</span>
+
+              <h4 class="text-xl font-bold text-white mb-2">ZevSafe</h4>
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Zero-trust browser folder vault. Encrypts nested folder hierarchies client-side via AES-256-GCM and PBKDF2-SHA512 (600,000 rounds). Files never touch a network.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">AES-256-GCM</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">PBKDF2-SHA512</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">100% Offline</span>
               </div>
             </div>
 
-            <h3 class="text-xl font-bold text-white mb-2">CollegeBus</h3>
-            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-              Real-time student transit scheduler and multi-hop route planner for ACMSR College (Borda) and South Goa arterial routes. Offline timetable caching with peer updates.
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Offline Cache</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Multi-Hop</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400">PWA Ready</span>
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-md transition-all">
+                Launch ZevSafe ↗
+              </a>
+              <a href="https://github.com/zevbuild/zevsafe" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+                Source
+              </a>
             </div>
           </div>
 
-          <div class="flex items-center gap-2 pt-3 border-t border-white/5">
-            <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white shadow-md transition-all">
-              Launch App ↗
-            </a>
-            <a href="https://github.com/zevbuild/collegebus" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-              GitHub
-            </a>
+          <!-- PRODUCT 2: COLLEGEBUS -->
+          <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                    Transit PWA
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 mono">Goa</span>
+                </div>
+              </div>
+
+              <h4 class="text-xl font-bold text-white mb-2">CollegeBus</h4>
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Real-time student transit scheduler and multi-hop route planner for ACMSR College (Borda) and South Goa routes. Instant offline timetable caching.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Offline Cache</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Multi-Hop</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400">PWA Ready</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white shadow-md transition-all">
+                Launch App ↗
+              </a>
+              <a href="https://github.com/zevbuild/collegebus" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+                GitHub
+              </a>
+            </div>
           </div>
+
+          <!-- PRODUCT 3: ZEVSYNC -->
+          <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
+            <div>
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    P2P Node
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 mono">Android</span>
+                </div>
+              </div>
+
+              <h4 class="text-xl font-bold text-white mb-2">ZevSync</h4>
+              <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                Decentralized peer-to-peer data sync protocol over BLE and Wi-Fi Direct. Content-addressable storage (CAS), vector clocks, and CRDTs without central infrastructure.
+              </p>
+
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Bluetooth Mesh</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">CRDTs</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400">CAS Storage</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-3 border-t border-white/5">
+              <a href="https://github.com/zevbuild/zevsync" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition-all">
+                Protocol Specs ↗
+              </a>
+              <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+                Repo
+              </a>
+            </div>
+          </div>
+
         </div>
+      </div>
 
-        <!-- CARD 4: ZEVSYNC (P2P BLUETOOTH MESH PROTOCOL) -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
-          <div>
-            <div class="flex items-start justify-between mb-4">
-              <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                  P2P Node
-                </span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 mono">Android</span>
-              </div>
-            </div>
-
-            <h3 class="text-xl font-bold text-white mb-2">ZevSync</h3>
-            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-              Decentralized peer-to-peer data sync protocol over BLE / Wi-Fi Direct. Content-addressable storage (CAS), vector clocks, and CRDTs without central infrastructure.
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Bluetooth Mesh</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">CRDTs</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400">CAS Storage</span>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 pt-3 border-t border-white/5">
-            <a href="https://github.com/zevbuild/zevsync" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition-all">
-              Protocol Specs ↗
-            </a>
-            <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-              Repo
-            </a>
-          </div>
+      <!-- Quick Navigation Banner to Full Tools Catalog -->
+      <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-purple-900/20 via-slate-900/40 to-cyan-900/20 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h4 class="text-base font-bold text-white mb-1">Looking for the developer directory?</h4>
+          <p class="text-xs text-slate-400">
+            Browse our full catalog index with technical docs, command line utilities, and project files.
+          </p>
         </div>
-
-        <!-- CARD 5: HISTORICAL PENAL CHART -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
-          <div>
-            <div class="flex items-start justify-between mb-4">
-              <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold text-xs">
-                CHART
-              </div>
-              <div class="flex items-center gap-1.5 flex-wrap justify-end">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                  2012–2026
-                </span>
-                <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 mono flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
-                  Updated by Zevbuild: <span id="matka-penal-badge-date">10 Oct 2026</span>
-                </span>
-                <span id="matka-penal-last-update" class="hidden">10 Oct 2026</span>
-                <span id="matka-penal-highlight-last-update" class="hidden">10 Oct 2026</span>
-              </div>
-            </div>
-
-            <h3 class="text-xl font-bold text-white mb-2">Historical Penal Chart</h3>
-            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-              Complete high-density visualizer indexing 14+ years and 3,200+ historical Kalyan results with color-coded panel brackets and rapid search indexing.
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">14-Year Matrix</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">3,203 Records</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400">Fast Query</span>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 pt-3 border-t border-white/5">
-            <a href="tools/matka/kalyan_penal_chart.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition-all">
-              View Chart ↗
-            </a>
-            <a href="tools/matka/index.html" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-              Predictor
-            </a>
-          </div>
-        </div>
-
-        <!-- CARD 6: DEVELOPER TOOLS & V_YT -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between border-white/5 relative group">
-          <div>
-            <div class="flex items-start justify-between mb-4">
-              <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">
-                  Web Tool
-                </span>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/10 text-red-300 mono">yt-dlp</span>
-              </div>
-            </div>
-
-            <h3 class="text-xl font-bold text-white mb-2">v_yt &amp; Developer Hub</h3>
-            <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-              Browser media tools and utilities. Download YouTube videos/audio directly via yt-dlp with zero sign-ups or ads, plus Spotify player &amp; UPI generators.
-            </p>
-
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">MP4 1080p</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">MP3 Audio</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-red-500/10 text-red-400">Zero Ads</span>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 pt-3 border-t border-white/5">
-            <a href="tools/yt/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-red-600 hover:bg-red-500 text-white shadow-md transition-all">
-              Launch v_yt ↗
-            </a>
-            <a href="tools/index.html" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-              All Tools (5)
-            </a>
-          </div>
-        </div>
-
+        <a href="tools/index.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/15 text-white border border-white/15 transition-all whitespace-nowrap">
+          <span>Open Tools Catalog Hub</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
       </div>
 
     </section>
 
-    <!-- ═══ Philosophy & Privacy Manifesto ═══ -->
+    <!-- ═══ Philosophy & Privacy Manifesto (id="philosophy") ═══ -->
     <section id="philosophy" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-24">
       
       <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
@@ -648,7 +791,7 @@
 
     </section>
 
-    <!-- ═══ Cryptographic & Tech Matrix ═══ -->
+    <!-- ═══ Cryptographic & Tech Matrix (id="specs") ═══ -->
     <section id="specs" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 scroll-mt-24">
       
       <div class="glass-card rounded-2xl p-5 sm:p-8 border border-white/5">
@@ -686,6 +829,12 @@
                 <td class="py-2.5 text-emerald-400">+15.4% Model Edge (Top 5)</td>
               </tr>
               <tr>
+                <td class="py-2.5 font-bold text-white">UPI Generator</td>
+                <td class="py-2.5 mono text-emerald-400">Deep-link URI + QR Matrix</td>
+                <td class="py-2.5 text-slate-400 hidden md:table-cell">Offline string encoder · zero storage</td>
+                <td class="py-2.5 text-emerald-400">100% Client-Side Privacy</td>
+              </tr>
+              <tr>
                 <td class="py-2.5 font-bold text-white">ZevSync Mesh</td>
                 <td class="py-2.5 mono text-cyan-400">Vector Clocks &amp; CRDTs</td>
                 <td class="py-2.5 text-slate-400 hidden md:table-cell">Bluetooth LE &amp; Wi-Fi Direct</td>
@@ -700,13 +849,49 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Interactive WebCrypto Live Demonstration -->
+        <div class="mt-8 pt-6 border-t border-white/10">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <div class="text-[11px] font-bold uppercase tracking-wider text-purple-400">Live Client-Side Demonstration</div>
+              <h4 class="text-base sm:text-lg font-bold text-white">Interactive WebCrypto Hash Derivation</h4>
+            </div>
+            <span class="text-[10px] mono px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 w-fit">
+              100% Zero-Telemetry · Browser Hardware
+            </span>
+          </div>
+
+          <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+            Verify our client-side cryptographic principles in real-time. Type any message below; your browser derives a 512-bit SHA-512 digest locally using the hardware-accelerated <code class="text-purple-300">window.crypto.subtle</code> API.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="md:col-span-2 space-y-2">
+              <input type="text" id="cryptoDemoInput" value="Zevbuild Zero-Knowledge Vault 2026" placeholder="Enter plaintext to hash locally..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-white/10 text-xs text-white focus:outline-none focus:border-purple-500 font-mono transition-colors">
+              <div class="p-3 rounded-xl bg-slate-950/60 border border-white/5 font-mono text-[11px] text-slate-400 break-all space-y-1">
+                <div class="text-[10px] uppercase font-bold text-slate-500">SHA-512 Digest (Computed in local RAM):</div>
+                <div id="cryptoDemoOutput" class="text-purple-300 select-all font-semibold">e404...</div>
+              </div>
+            </div>
+            <div class="flex flex-col justify-between p-3.5 rounded-xl bg-white/[0.02] border border-white/5 text-xs space-y-2">
+              <div>
+                <div class="text-xs font-bold text-white mb-1">Local Sandbox Guarantee</div>
+                <div class="text-[11px] text-slate-400 leading-relaxed">Runs strictly inside Web Worker / browser thread. No plaintext, key, or digest ever leaves your device.</div>
+              </div>
+              <button id="cryptoDemoRegenBtn" type="button" class="w-full py-2 px-3 rounded-lg text-xs font-bold bg-purple-600/25 hover:bg-purple-600/40 text-purple-200 border border-purple-500/30 transition-all cursor-pointer">
+                Recompute Hash ↻
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </section>
 
-    <!-- ═══ About & Studio Profile ═══ -->
-    <section id="about" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-24">
-      <div id="architecture" class="scroll-mt-24"></div>
+    <!-- ═══ Studio Profile & Architecture (id="architecture") ═══ -->
+    <section id="architecture" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-24">
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
         <div>
@@ -715,7 +900,7 @@
             Building Software That Works for You — Not Against You.
           </h2>
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-            <strong>Zevbuild</strong> is an independent software company founded in Goa, India. We build tools that are encrypted by default, functional without internet, free from surveillance, and auditable by anyone.
+            <strong>Zevbuild</strong> is an independent software studio founded in Goa, India. We build tools that are encrypted by default, functional without internet, free from surveillance, and auditable by anyone.
           </p>
 
           <div class="grid grid-cols-4 gap-2 sm:gap-3 mb-6">
@@ -724,7 +909,7 @@
               <div class="text-[9px] sm:text-[10px] text-slate-400 uppercase">Founded</div>
             </div>
             <div class="p-2 sm:p-3 rounded-xl bg-white/5 text-center">
-              <div class="text-lg sm:text-xl font-extrabold text-cyan-400">5+</div>
+              <div class="text-lg sm:text-xl font-extrabold text-cyan-400">6+</div>
               <div class="text-[9px] sm:text-[10px] text-slate-400 uppercase">Tools</div>
             </div>
             <div class="p-2 sm:p-3 rounded-xl bg-white/5 text-center">
@@ -753,6 +938,8 @@
             <p class="text-emerald-400">✔ [ZevSafe]       v3 Stable · AES-256-GCM Vault</p>
             <p class="text-cyan-400">✔ [CollegeBus]    Civic PWA · Transit Scheduler</p>
             <p class="text-indigo-400">✔ [Kalyan ML]     v2.4 Auto · Markov Model &amp; PWA</p>
+            <p class="text-emerald-400">✔ [UPI Gen]       Instant QR &amp; Link Generator</p>
+            <p class="text-fuchsia-400">✔ [Spotify Player] RetroWave Player &amp; Audio Visualizer</p>
             <p class="text-amber-400">✔ [ZevSync]       CAS Mesh · Peer Node</p>
             <p class="text-slate-500 pt-1">──────────────────────────────────────</p>
             <p class="text-slate-400">$ echo "Privacy by design. Sovereignty by default."</p>
@@ -762,7 +949,7 @@
 
     </section>
 
-    <!-- ═══ Contact & Inquiries ═══ -->
+    <!-- ═══ Contact & Inquiries (id="contact") ═══ -->
     <section id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 scroll-mt-24 text-center">
       
       <div class="glass-card rounded-3xl p-6 sm:p-10 border border-purple-500/25 max-w-2xl mx-auto">
@@ -786,7 +973,7 @@
 
   </main>
 
-  <!-- ═══ Minimal Footer ═══ -->
+  <!-- ═══ Clean, Modern Footer ═══ -->
   <footer class="border-t border-white/5 bg-[#05070a] py-8 text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
       
@@ -798,13 +985,13 @@
         </div>
         <div class="flex items-center gap-2">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span class="text-slate-400">Auto-Detected Viewport</span>
+          <span class="text-slate-400">Zevbuild Monorepo v2.4</span>
         </div>
       </div>
 
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-2">
-          <span class="font-bold text-slate-300">Zevbuild</span>
+          <span class="font-bold text-slate-300">Zevbuild Studio</span>
           <span>·</span>
           <span>© 2026 Goa, India 🇮🇳</span>
           <span>·</span>
@@ -813,6 +1000,9 @@
 
         <div class="flex flex-wrap items-center gap-3 text-slate-400">
           <a href="tools/matka/index.html" class="hover:text-purple-400 transition-colors">Kalyan Predictor</a>
+          <a href="tools/upi-link-generator/index.html" class="hover:text-emerald-400 transition-colors">UPI Generator</a>
+          <a href="tools/spotify/index.html" class="hover:text-fuchsia-400 transition-colors">Spotify Player</a>
+          <a href="tools/yt/index.html" class="hover:text-red-400 transition-colors">v_yt Downloader</a>
           <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">ZevSafe</a>
           <a href="tools/index.html" class="hover:text-slate-200 transition-colors">Tools Hub</a>
           <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="hover:text-slate-200 transition-colors">GitHub</a>
@@ -823,72 +1013,8 @@
     </div>
   </footer>
 
-  <!-- ═══ Mobile Quick Navigation Bottom Dock (Auto-Detects Mobile Screen) ═══ -->
-  <div id="mobile-dock" class="sm:hidden fixed bottom-3 left-3 right-3 z-50 glass-card px-4 py-2.5 rounded-2xl flex items-center justify-around border border-white/10 shadow-2xl">
-    <a href="#products" class="flex flex-col items-center gap-0.5 text-[10px] text-slate-300 hover:text-white" title="Explore tools">
-      <span>⚡</span>
-      <span>Tools</span>
-    </a>
-    <a href="tools/matka/index.html" class="flex flex-col items-center gap-0.5 text-[10px] text-purple-400 font-bold" title="Kalyan Predictor">
-      <span>🎯</span>
-      <span>Kalyan</span>
-    </a>
-    <button onclick="installRootPwa()" id="mobile-dock-install" class="flex flex-col items-center gap-0.5 text-[10px] text-emerald-400 font-semibold" title="Install PWA">
-      <span>📱</span>
-      <span>Install</span>
-    </button>
-    <a href="#contact" class="flex flex-col items-center gap-0.5 text-[10px] text-slate-300 hover:text-white" title="Contact">
-      <span>✉️</span>
-      <span>Contact</span>
-    </a>
-  </div>
-
   <!-- ═══ Interactive Scripts ═══ -->
   <script>
-    // ==========================================
-    // AUTO-DETECT SCREEN SIZE & RESPONSIVE VIEWPORT SENSOR
-    // ==========================================
-    function detectAndApplyScreenSize() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      let deviceCategory = 'Mobile Phone';
-      let icon = '📱';
-
-      if (w >= 1536) {
-        deviceCategory = 'Ultra-Wide 2K/4K';
-        icon = '🖥️';
-      } else if (w >= 1280) {
-        deviceCategory = 'Large Desktop';
-        icon = '💻';
-      } else if (w >= 1024) {
-        deviceCategory = 'Desktop Screen';
-        icon = '💻';
-      } else if (w >= 768) {
-        deviceCategory = 'Tablet Display';
-        icon = '📟';
-      } else if (w >= 480) {
-        deviceCategory = 'Compact Mobile';
-        icon = '📱';
-      } else {
-        deviceCategory = 'Mobile Phone';
-        icon = '📱';
-      }
-
-      // Update Header Sensor Badge
-      const devName = document.getElementById('screen-device-name');
-      const resVal = document.getElementById('screen-resolution');
-      if (devName) devName.innerHTML = `${icon} ${deviceCategory}`;
-      if (resVal) resVal.textContent = `${w}×${h}px`;
-
-      // Update Mobile Drawer Sensor Badge
-      const mobText = document.getElementById('screen-detect-mobile-text');
-      if (mobText) mobText.textContent = `${deviceCategory} (${w}×${h})`;
-    }
-
-    window.addEventListener('resize', detectAndApplyScreenSize);
-    window.addEventListener('orientationchange', detectAndApplyScreenSize);
-    window.addEventListener('DOMContentLoaded', detectAndApplyScreenSize);
-
     // ==========================================
     // MOBILE NAVIGATION TOGGLE
     // ==========================================
@@ -1018,7 +1144,175 @@
           .catch((err) => console.warn('[PWA] Service Worker registration failed:', err));
       });
     }
+
+    // ==========================================
+    // PORTAL TOOL CATEGORY FILTER
+    // ==========================================
+    (function () {
+      const pBtns = document.querySelectorAll('.portal-filter-btn');
+      const pCards = document.querySelectorAll('.portal-tool-card');
+      if (!pBtns.length || !pCards.length) return;
+
+      pBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-pfilter');
+          pBtns.forEach(b => {
+            b.classList.remove('active', 'bg-purple-600', 'text-white');
+            b.classList.add('bg-white/5', 'text-slate-300');
+          });
+          btn.classList.add('active', 'bg-purple-600', 'text-white');
+          btn.classList.remove('bg-white/5', 'text-slate-300');
+
+          pCards.forEach(card => {
+            const cat = card.getAttribute('data-portal-cat');
+            if (filter === 'all' || cat === filter) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        });
+      });
+    })();
+
+    // ==========================================
+    // INTERACTIVE WEBCRYPTO DEMONSTRATION
+    // ==========================================
+    (function () {
+      const inputEl = document.getElementById('cryptoDemoInput');
+      const outputEl = document.getElementById('cryptoDemoOutput');
+      const regenBtn = document.getElementById('cryptoDemoRegenBtn');
+      if (!inputEl || !outputEl) return;
+
+      async function computeHash() {
+        const text = inputEl.value || '';
+        try {
+          const enc = new TextEncoder();
+          const data = enc.encode(text);
+          const hashBuffer = await crypto.subtle.digest('SHA-512', data);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+          outputEl.textContent = hashHex;
+        } catch (err) {
+          outputEl.textContent = 'WebCrypto error: ' + err.message;
+        }
+      }
+
+      inputEl.addEventListener('input', computeHash);
+      if (regenBtn) regenBtn.addEventListener('click', computeHash);
+      computeHash();
+    })();
+
+    // ==========================================
+    // STUDIO COMMAND PALETTE (Ctrl+K / ⌘K)
+    // ==========================================
+    const cmdPaletteModal = document.getElementById('cmdPaletteModal');
+    const cmdPaletteInput = document.getElementById('cmdPaletteInput');
+    const cmdPaletteResults = document.getElementById('cmdPaletteResults');
+
+    const CMD_ITEMS = [
+      { title: 'Kalyan Auto-Predictor Engine', category: 'Tool', desc: 'Real-time Markov ML analytics & 4-Ank signals', url: 'tools/matka/index.html' },
+      { title: 'UPI Link & QR Generator', category: 'Tool', desc: 'Instant UPI deep links and QR codes for India', url: 'tools/upi-link-generator/index.html' },
+      { title: 'Spotify RetroWave Player', category: 'Tool', desc: 'Offline audio player with canvas synthwave visualizer', url: 'tools/spotify/index.html' },
+      { title: 'v_yt Media Downloader', category: 'Tool', desc: 'YouTube MP4 and MP3 extraction powered by yt-dlp', url: 'tools/yt/index.html' },
+      { title: 'Video Downloaders Guide', category: 'Directory', desc: 'Curated technical evaluation of media utilities', url: 'tools/download/index.html' },
+      { title: 'Historical Penal Chart', category: 'Data', desc: '14-year historical Kalyan matrix (2012–2026)', url: 'tools/matka/kalyan_penal_chart.html' },
+      { title: 'Browse All Tools Hub', category: 'Hub', desc: 'Central studio directory with category filters', url: 'tools/index.html' },
+      { title: 'ZevSafe Vault', category: 'External App', desc: 'Zero-knowledge browser folder vault (AES-256-GCM)', url: 'https://zevsafe.pages.dev' },
+      { title: 'CollegeBus PWA', category: 'External App', desc: 'Offline student transit tracker for Goa routes', url: 'https://collegebus.pages.dev' },
+      { title: 'Interactive Web Tools Section', category: 'Navigation', desc: 'Jump to products and tools showcase', url: '#products' },
+      { title: 'Privacy & Engineering Manifesto', category: 'Navigation', desc: 'Zero-knowledge, offline-first principles', url: '#philosophy' },
+      { title: 'Cryptographic & Tech Specs', category: 'Navigation', desc: 'NIST primitives & WebCrypto protocol matrix', url: '#specs' },
+      { title: 'Studio Architecture & Team', category: 'Navigation', desc: 'Zevbuild founding story and system specs', url: '#architecture' },
+      { title: 'Contact & Inquiries', category: 'Navigation', desc: 'Get in touch with Zevbuild Studio', url: '#contact' }
+    ];
+
+    function renderCmdItems(query) {
+      if (!cmdPaletteResults) return;
+      const q = (query || '').toLowerCase().trim();
+      const filtered = CMD_ITEMS.filter(it => 
+        !q || it.title.toLowerCase().includes(q) || it.desc.toLowerCase().includes(q) || it.category.toLowerCase().includes(q)
+      );
+
+      if (!filtered.length) {
+        cmdPaletteResults.innerHTML = '<div class="p-4 text-center text-slate-500">No matching tools or destinations found.</div>';
+        return;
+      }
+
+      cmdPaletteResults.innerHTML = filtered.map((it, idx) => `
+        <a href="${it.url}" onclick="closeCmdPalette()" class="cmd-item flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 transition-colors group">
+          <div>
+            <div class="font-bold text-slate-200 group-hover:text-purple-300 transition-colors flex items-center gap-2">
+              <span>${it.title}</span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-slate-400 font-mono">${it.category}</span>
+            </div>
+            <div class="text-[11px] text-slate-400">${it.desc}</div>
+          </div>
+          <span class="text-slate-500 text-xs">↵</span>
+        </a>
+      `).join('');
+    }
+
+    window.openCmdPalette = function() {
+      if (!cmdPaletteModal) return;
+      cmdPaletteModal.classList.remove('hidden');
+      cmdPaletteModal.classList.add('flex');
+      if (cmdPaletteInput) {
+        cmdPaletteInput.value = '';
+        renderCmdItems('');
+        setTimeout(() => cmdPaletteInput.focus(), 50);
+      }
+    };
+
+    window.closeCmdPalette = function() {
+      if (!cmdPaletteModal) return;
+      cmdPaletteModal.classList.add('hidden');
+      cmdPaletteModal.classList.remove('flex');
+    };
+
+    window.handleCmdModalClick = function(e) {
+      if (e.target === cmdPaletteModal) {
+        closeCmdPalette();
+      }
+    };
+
+    if (cmdPaletteInput) {
+      cmdPaletteInput.addEventListener('input', (e) => {
+        renderCmdItems(e.target.value);
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (cmdPaletteModal && cmdPaletteModal.classList.contains('flex')) {
+          closeCmdPalette();
+        } else {
+          openCmdPalette();
+        }
+      } else if (e.key === 'Escape' && cmdPaletteModal && !cmdPaletteModal.classList.contains('hidden')) {
+        closeCmdPalette();
+      }
+    });
   </script>
+
+  <!-- ═══ Command Palette Modal (Ctrl+K / ⌘K) ═══ -->
+  <div id="cmdPaletteModal" class="fixed inset-0 z-[100] bg-black/75 backdrop-blur-md hidden items-start justify-center p-4 sm:pt-20 transition-all duration-200" onclick="handleCmdModalClick(event)">
+    <div class="max-w-xl w-full bg-[#0b0f19] border border-white/10 rounded-2xl shadow-2xl overflow-hidden" onclick="event.stopPropagation()">
+      <div class="p-3.5 border-b border-white/10 flex items-center gap-3">
+        <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input type="text" id="cmdPaletteInput" placeholder="Jump to tool, section, or external project (e.g. UPI, Kalyan, ZevSafe, specs)..." class="w-full bg-transparent text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none">
+        <button onclick="closeCmdPalette()" class="px-2 py-0.5 text-[10px] font-mono bg-white/10 hover:bg-white/15 text-slate-400 rounded cursor-pointer">ESC</button>
+      </div>
+      <div id="cmdPaletteResults" class="max-h-80 overflow-y-auto p-2 space-y-1 text-xs">
+        <!-- Rendered items -->
+      </div>
+      <div class="px-3.5 py-2 border-t border-white/5 bg-slate-950/40 text-[10px] text-slate-500 flex items-center justify-between">
+        <span>Use <kbd class="font-mono text-slate-400">↑</kbd> <kbd class="font-mono text-slate-400">↓</kbd> to navigate, <kbd class="font-mono text-slate-400">ESC</kbd> to dismiss</span>
+        <span>Zevbuild Command Palette</span>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

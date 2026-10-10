@@ -872,7 +872,7 @@ class VerificationHarness:
                 print(f"\n{bold(red(f'--- Tier {r.tier_num} Failures: {r.name} ---'))}")
                 for f in r.failures:
                     loc = f"{f['source']}:{f['line']}" if f.get('line') else f['source']
-                    print(f"  {red('✘')} {bold(loc)} -> '{f['target']}'")
+                    print(f"  {red('[FAIL]')} {bold(loc)} -> '{f['target']}'")
                     print(f"     Reason: {f['reason']}")
                     all_failures.append(f)
 

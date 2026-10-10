@@ -245,6 +245,62 @@
       transform: translateY(-1px);
     }
 
+    /* Search & Filter Bar */
+    .filter-bar-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    @media (min-width: 640px) {
+      .filter-bar-wrap {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    .search-input-box {
+      flex: 1;
+      background: rgba(6, 8, 16, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0.65rem 1rem;
+      color: #ffffff;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input-box:focus {
+      border-color: var(--neon-cyan);
+    }
+    .cat-btn-group {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .cat-filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-dim);
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .cat-filter-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
     /* Tools Grid */
     .tools-grid {
       display: grid;
@@ -450,11 +506,23 @@
       </a>
     </div>
 
+    <!-- Interactive Search & Category Filter -->
+    <div class="filter-bar-wrap">
+      <input type="text" id="guideSearchInput" class="search-input-box" placeholder="Search utilities by name, format, or feature (e.g. CLI, 4K, transcode)...">
+      <div class="cat-btn-group">
+        <button class="cat-filter-btn active" data-gcat="all">All (10)</button>
+        <button class="cat-filter-btn" data-gcat="cli">CLI / Framework</button>
+        <button class="cat-filter-btn" data-gcat="desktop">Desktop GUI</button>
+        <button class="cat-filter-btn" data-gcat="web">Web Services</button>
+        <button class="cat-filter-btn" data-gcat="mobile">Android / Mobile</button>
+      </div>
+    </div>
+
     <!-- 10 Curated Tools Grid -->
-    <div class="tools-grid">
+    <div class="tools-grid" id="guideToolsGrid">
 
       <!-- Tool 1: yt-dlp -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="cli" data-keywords="yt-dlp command-line python youtube audio 4k 8k cli extractor">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -485,7 +553,7 @@
       </article>
 
       <!-- Tool 2: Cobalt -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="web" data-keywords="cobalt web api rest privacy zero ads yt-dlp downloader media">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -516,7 +584,7 @@
       </article>
 
       <!-- Tool 3: VLC Media Player -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="desktop" data-keywords="vlc media player desktop cross-platform stream capture save dump">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -547,7 +615,7 @@
       </article>
 
       <!-- Tool 4: HandBrake -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="desktop" data-keywords="handbrake transcoder batch video conversion av1 h265 h264 encoder">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -578,7 +646,7 @@
       </article>
 
       <!-- Tool 5: JDownloader 2 -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="desktop" data-keywords="jdownloader download manager link grabber chunk automated multi-chunk">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -609,7 +677,7 @@
       </article>
 
       <!-- Tool 6: OBS Studio -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="desktop" data-keywords="obs studio screen capture stream record lossless video audio">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -640,7 +708,7 @@
       </article>
 
       <!-- Tool 7: 4K Video Downloader+ -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="desktop" data-keywords="4k video downloader desktop playlist subtitles batch 8k hdr">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -671,7 +739,7 @@
       </article>
 
       <!-- Tool 8: ClipGrab -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="desktop" data-keywords="clipgrab desktop mp3 clipboard open source mpeg4 ogg">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -702,7 +770,7 @@
       </article>
 
       <!-- Tool 9: Video DownloadHelper -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="web" data-keywords="video downloadhelper extension browser stream hls dash chrome firefox">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -733,7 +801,7 @@
       </article>
 
       <!-- Tool 10: FFmpeg -->
-      <article class="tool-card">
+      <article class="tool-card" data-cat="cli" data-keywords="ffmpeg cli framework command line remux audio transcode hls rtmp">
         <div>
           <div class="card-top">
             <div class="card-header">
@@ -773,6 +841,43 @@
       Zevbuild Studio • Curated Video Downloader Guide • <a href="../../index.html">Main Hub</a> • <a href="../index.html">Tools Catalog</a> • MIT Open Source
     </p>
   </footer>
+
+  <script>
+    const searchInput = document.getElementById('guideSearchInput');
+    const catBtns = document.querySelectorAll('.cat-filter-btn');
+    const cards = document.querySelectorAll('.tool-card');
+
+    let activeCat = 'all';
+
+    function filterGuide() {
+      const q = (searchInput.value || '').toLowerCase().trim();
+      cards.forEach(card => {
+        const cat = card.getAttribute('data-cat') || '';
+        const keywords = card.getAttribute('data-keywords') || '';
+        const text = card.textContent.toLowerCase();
+
+        const matchCat = activeCat === 'all' || cat === activeCat;
+        const matchQuery = !q || keywords.includes(q) || text.includes(q);
+
+        if (matchCat && matchQuery) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    if (searchInput) searchInput.addEventListener('input', filterGuide);
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.getAttribute('data-gcat') || 'all';
+        filterGuide();
+      });
+    });
+  </script>
 
 </body>
 </html>

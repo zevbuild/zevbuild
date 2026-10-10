@@ -78,7 +78,7 @@
     <div class="mt-8 pt-6 border-t border-white/5 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs text-slate-400">
       <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">ZevSafe App ↗</a>
       <span>·</span>
-      <a href="https://github.com/zevbuild/zevsafe" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">ZevSafe GitHub</a>
+      <a href="tools/upi-link-generator/index.html" class="hover:text-emerald-400 transition-colors">UPI Generator</a>
       <span>·</span>
       <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors">CollegeBus</a>
       <span>·</span>
@@ -106,7 +106,10 @@
     let destination = rootPath;
     let destTitle = 'Zevbuild Main Portal';
 
-    if (currentPath.includes('satta') || currentPath.includes('matka')) {
+    if (currentPath.includes('upi') || currentPath.includes('qr') || currentPath.includes('pay')) {
+      destination = isLocal ? 'tools/upi-link-generator/index.html' : '/tools/upi-link-generator/index.html';
+      destTitle = 'UPI Link & QR Generator';
+    } else if (currentPath.includes('satta') || currentPath.includes('matka')) {
       destination = isLocal ? 'tools/matka/index.html' : '/tools/matka/index.html';
       destTitle = 'Predictive Analytics & Kalyan Engine';
     } else if (currentPath.includes('spotify') || currentPath.includes('music') || currentPath.includes('player')) {

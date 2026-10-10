@@ -1,179 +1,464 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Browse web tools and pages published in the Zevbuild repository.">
-  <meta name="theme-color" content="#0b1020">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Explore Zevbuild Studio's privacy-first web utilities, quantitative predictive engines, offline audio players, and cryptographic tools.">
+  <meta name="keywords" content="Zevbuild, web tools, Kalyan predictor, UPI link generator, Spotify audio player, video downloaders, v_yt, privacy tools, open source">
+  <meta name="author" content="Zevbuild">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#8b5cf6">
+  <link rel="canonical" href="https://zevbuild.pages.dev/tools/">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <title>Tools | Zevbuild</title>
+
+  <title>Tools &amp; Interactive Applications | Zevbuild Studio</title>
+
+  <!-- Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+
   <style>
     :root {
-      color-scheme: dark;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0b1020;
-      color: #e5e7eb;
-    }
-
-    * {
-      box-sizing: border-box;
+      --bg-base: #06080d;
+      --bg-surface: #0b0f19;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(139, 92, 246, 0.35);
     }
 
     body {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 3rem 1.25rem;
-      line-height: 1.6;
-      background: #0b1020;
-      color: #e5e7eb;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-base);
+      color: #f3f4f6;
+      overflow-x: hidden;
+      min-height: 100dvh;
     }
 
-    a {
-      color: #a5b4fc;
-      text-decoration: none;
+    code, pre, .mono {
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .bg-grid-ambient {
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.16) 0%, transparent 50%),
+        radial-gradient(circle at 85% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 15% 65%, rgba(16, 185, 129, 0.06) 0%, transparent 35%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
 
-    a:focus-visible {
-      outline: 3px solid #a5b4fc;
-      outline-offset: 4px;
-      border-radius: 2px;
+    .glass-nav {
+      background: rgba(7, 10, 18, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1.5rem;
-      color: #aeb8cc;
+    .glass-card {
+      background: linear-gradient(145deg, rgba(14, 20, 34, 0.7) 0%, rgba(9, 13, 23, 0.85) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    h1 {
-      margin-bottom: 0.25rem;
-      color: #fff;
-      font-size: clamp(2rem, 6vw, 3rem);
+    .glass-card:hover {
+      border-color: rgba(139, 92, 246, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -10px rgba(139, 92, 246, 0.18);
     }
 
-    .intro {
-      margin-top: 0;
-      color: #aeb8cc;
-    }
-
-    .tool-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .tool-card {
-      height: 100%;
-      padding: 1.25rem;
-      border: 1px solid #29334a;
-      border-radius: 0.75rem;
-      background: #111a2c;
-    }
-
-    .tool-card h2 {
-      margin: 0 0 0.5rem;
-      color: #fff;
-      font-size: 1.15rem;
-    }
-
-    .tool-card p {
-      margin: 0 0 1rem;
-      color: #c1cada;
-    }
-
-    .tool-card a {
-      font-weight: 650;
-    }
-
-    .tag {
-      display: inline-block;
-      font-size: 10px;
-      font-family: monospace;
-      padding: 2px 7px;
-      border-radius: 4px;
-      margin-left: 6px;
-      background: rgba(139, 92, 246, 0.12);
-      color: #a78bfa;
-      border: 1px solid rgba(139, 92, 246, 0.2);
-      vertical-align: middle;
-    }
-
-    .tag.red {
-      background: rgba(239, 68, 68, 0.12);
-      color: #f87171;
-      border-color: rgba(239, 68, 68, 0.2);
-    }
-
-    footer {
-      margin-top: 2rem;
-      color: #aeb8cc;
-    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #06080d; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
   </style>
 </head>
-<body>
-  <header>
-    <a class="back-link" href="../">← Zevbuild home</a>
-    <h1>Tools &amp; projects</h1>
-    <p class="intro">Open-source utilities and pages included in this repository.</p>
+<body class="bg-grid-ambient selection:bg-purple-600 selection:text-white flex flex-col min-h-screen">
+
+  <!-- ═══ Unified Studio Navigation Bar ═══ -->
+  <header class="sticky top-0 z-50 glass-nav transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Breadcrumb -->
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2.5 group flex-shrink-0" title="Return to Zevbuild Home">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-cyan-400 p-[1.5px] shadow-lg shadow-purple-500/20 group-hover:scale-105 transition-transform duration-200">
+            <div class="w-full h-full bg-[#080c16] rounded-[10px] flex items-center justify-center">
+              <svg class="w-5 h-5 text-purple-400 group-hover:text-cyan-300 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+                Zevbuild
+              </span>
+              <span class="text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                Studio
+              </span>
+            </div>
+            <span class="text-[10px] text-slate-400 font-medium hidden sm:block">Tools Catalog</span>
+          </div>
+        </a>
+
+        <div class="hidden sm:flex items-center text-slate-500 text-xs px-2">
+          <span>/</span>
+          <span class="ml-2 text-purple-300 font-medium">Tools Directory</span>
+        </div>
+      </div>
+
+      <!-- Action Items -->
+      <div class="flex items-center gap-2.5">
+        <a href="../index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span class="hidden sm:inline">Main Portal</span>
+        </a>
+
+        <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all">
+          <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+          </svg>
+          <span class="hidden sm:inline">GitHub</span>
+        </a>
+      </div>
+
+    </div>
   </header>
 
-  <main>
-    <ul class="tool-list">
-      <li>
-        <article class="tool-card">
-          <h2>Kalyan Auto-Predictor Engine</h2>
-          <p>Real-time Markov-chain predictive analytics engine for Kalyan draws.</p>
-          <a href="matka/index.html">Open dashboard</a>
-          <span aria-hidden="true"> · </span>
-          <a href="matka/index.html">Setup and docs</a>
-          <span class="tag">Python · Local</span>
-        </article>
-      </li>
-      <li>
-        <article class="tool-card">
-          <h2>Spotify Playlist Downloader</h2>
-          <p>Offline RetroWave audio player + Spotify batch download console script.</p>
-          <a href="spotify/index.html">Open player</a>
-          <span class="tag">Browser Tool</span>
-        </article>
-      </li>
-      <li>
-        <article class="tool-card">
-          <h2>Top 10 Free Video Downloaders in India</h2>
-          <p>Static guide listing the best free video downloader websites.</p>
-          <a href="download/index.html">Read article</a>
-          <span class="tag">SEO Article</span>
-        </article>
-      </li>
-      <li>
-        <article class="tool-card">
-          <h2>v_yt — YouTube Video Downloader</h2>
-          <p>Download YouTube videos as MP4 (720p/1080p) or MP3 audio — no install required.</p>
-          <a href="yt/index.html">Open tool</a>
-          <span class="tag red">yt-dlp</span>
-        </article>
-      </li>
-      <li>
-        <article class="tool-card">
-          <h2>UPI Payment Link Generator</h2>
-          <p>Generate UPI payment links, QR codes, and share via WhatsApp or SMS for Indian payments.</p>
-          <a href="upi-link-generator/index.html">Open generator</a>
-          <span class="tag">Browser Tool</span>
-        </article>
-      </li>
-    </ul>
+  <!-- ═══ Main Content ═══ -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 flex-grow">
+    
+    <!-- Hero Header -->
+    <div class="mb-10 sm:mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/25 text-purple-300 text-xs font-semibold mb-4">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>Independent Open-Source Suite</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3">
+        Tools &amp; Interactive Applications
+      </h1>
+
+      <p class="text-sm sm:text-base text-slate-400 max-w-2xl leading-relaxed">
+        Free, privacy-first web utilities, quantitative predictive engines, offline audio workstations, and verified directories published in the Zevbuild repository. Zero telemetry, MIT licensed.
+      </p>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="glass-card rounded-2xl p-4 sm:p-5 mb-8 border border-white/5 space-y-4">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <div class="relative flex-1">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input 
+            type="text" 
+            id="toolSearchInput" 
+            placeholder="Search tools by name, tag, or technology (e.g. UPI, Markov, yt-dlp)..." 
+            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+          >
+        </div>
+
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs font-medium">
+          <button class="category-btn active px-3 py-2 rounded-xl bg-purple-600 text-white shadow-sm transition-all" data-filter="all">All (5)</button>
+          <button class="category-btn px-3 py-2 rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5 transition-all" data-filter="ai">AI &amp; Data</button>
+          <button class="category-btn px-3 py-2 rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5 transition-all" data-filter="finance">Finance</button>
+          <button class="category-btn px-3 py-2 rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5 transition-all" data-filter="media">Media &amp; Audio</button>
+          <button class="category-btn px-3 py-2 rounded-xl bg-white/5 text-slate-300 hover:bg-white/10 border border-white/5 transition-all" data-filter="guides">Guides</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tools Grid -->
+    <div id="toolsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- TOOL 1: KALYAN PREDICTOR -->
+      <article class="tool-card glass-card rounded-2xl p-6 flex flex-col justify-between border-purple-500/30 group" data-category="ai" data-keywords="kalyan matka markov predictive ml analytics machine learning forecast charts">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-purple-400 font-extrabold text-sm shadow-inner">
+              AI
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap justify-end">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                Live Engine
+              </span>
+              <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 mono">
+                Python + Web
+              </span>
+            </div>
+          </div>
+
+          <h2 class="text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">
+            Kalyan Auto-Predictor Engine
+          </h2>
+
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Real-time machine learning engine polling live draw results every 45s. Combines first-order Markov chains, recency weighting, and seasonal day-of-week Bayesian probabilities.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Markov Chains</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Walk-Forward Backtest</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 mono">+15.4% Edge</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-4 border-t border-white/5">
+          <a href="matka/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-md transition-all">
+            Open Dashboard ↗
+          </a>
+          <a href="matka/index.html#lastweek" class="py-2 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+            Proof
+          </a>
+        </div>
+      </article>
+
+      <!-- TOOL 2: UPI PAYMENT LINK GENERATOR -->
+      <article class="tool-card glass-card rounded-2xl p-6 flex flex-col justify-between border-emerald-500/30 group" data-category="finance" data-keywords="upi payment link qr code generator india bharat paytm gpay phonepe instant">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 font-extrabold text-base shadow-inner">
+              ₹
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap justify-end">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                Browser Tool
+              </span>
+              <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 mono">
+                Client-Side
+              </span>
+            </div>
+          </div>
+
+          <h2 class="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">
+            UPI Payment Link Generator
+          </h2>
+
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Generate one-click UPI payment links and high-res QR codes for Indian payments. Payers can complete transactions with a single tap without manually typing UPI handles.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">NPCI Protocol</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Instant QR</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Zero Telemetry</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-4 border-t border-white/5">
+          <a href="upi-link-generator/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all">
+            Open Generator ↗
+          </a>
+        </div>
+      </article>
+
+      <!-- TOOL 3: SPOTIFY RETROWAVE AUDIO PLAYER -->
+      <article class="tool-card glass-card rounded-2xl p-6 flex flex-col justify-between border-cyan-500/30 group" data-category="media" data-keywords="spotify retrowave player audio offline mp3 synthwave canvas visualizer music music player">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center text-cyan-400 font-extrabold text-sm shadow-inner">
+              ⚡
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap justify-end">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                100% Offline
+              </span>
+              <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 mono">
+                Web Audio
+              </span>
+            </div>
+          </div>
+
+          <h2 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
+            RetroWave Audio Player
+          </h2>
+
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Privacy-first offline HTML5 audio workstation featuring real-time Web Audio API synthwave canvas visualizers. Drag-and-drop local MP3, WAV, OGG, and M4A collections.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Canvas Visualizer</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Drag &amp; Drop</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Air-Gapped</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-4 border-t border-white/5">
+          <a href="spotify/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white shadow-md transition-all">
+            Launch Player ↗
+          </a>
+        </div>
+      </article>
+
+      <!-- TOOL 4: V_YT MEDIA DOWNLOADER -->
+      <article class="tool-card glass-card rounded-2xl p-6 flex flex-col justify-between border-rose-500/30 group" data-category="media" data-keywords="v_yt youtube video downloader mp4 mp3 audio yt-dlp cobalt converter extract">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-400 font-extrabold text-sm shadow-inner">
+              ▶
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap justify-end">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                yt-dlp Engine
+              </span>
+              <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20 mono">
+                Edge Proxy
+              </span>
+            </div>
+          </div>
+
+          <h2 class="text-xl font-bold text-white mb-2 group-hover:text-rose-300 transition-colors">
+            v_yt Media Extractor
+          </h2>
+
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Extract YouTube media directly in your browser without software installation. Supports MP4 HD 720p/1080p video and MP3 audio stream extraction via Cloudflare Pages edge functions.
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">MP4 1080p</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">MP3 Audio</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Zero Software Install</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-4 border-t border-white/5">
+          <a href="yt/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-md transition-all">
+            Open Downloader ↗
+          </a>
+        </div>
+      </article>
+
+      <!-- TOOL 5: CURATED VIDEO DOWNLOADERS DIRECTORY -->
+      <article class="tool-card glass-card rounded-2xl p-6 flex flex-col justify-between border-indigo-500/30 group" data-category="guides" data-keywords="video downloader guide top 10 utilities tools ffmpeg handbrake vlc cobalt newpipe seal open source">
+        <div>
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-11 h-11 rounded-xl bg-indigo-500/10 border border-indigo-500/25 flex items-center justify-center text-indigo-400 font-extrabold text-sm shadow-inner">
+              📖
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap justify-end">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                Curated Guide
+              </span>
+              <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 mono">
+                Clean Directory
+              </span>
+            </div>
+          </div>
+
+          <h2 class="text-xl font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors">
+            Top 10 Video Downloaders Guide
+          </h2>
+
+          <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+            Curated, technical evaluation of legitimate, privacy-first, open-source video downloaders and media transcoding utilities (yt-dlp, VLC, HandBrake, FFmpeg, Cobalt).
+          </p>
+
+          <div class="flex flex-wrap gap-1.5 mb-5">
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">100% Sanitized</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">Open Source</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-white/5 text-slate-300 mono">CLI &amp; GUI</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-4 border-t border-white/5">
+          <a href="download/index.html" class="flex-1 text-center py-2 px-3 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md transition-all">
+            Read Directory ↗
+          </a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Empty State (Hidden by default) -->
+    <div id="noResults" class="hidden text-center py-16">
+      <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 mx-auto mb-3">
+        🔍
+      </div>
+      <h3 class="text-base font-bold text-white mb-1">No tools matched your search</h3>
+      <p class="text-xs text-slate-400">Try adjusting your keyword filter or select "All".</p>
+    </div>
+
   </main>
 
-  <footer>
-    <p><a href="https://github.com/zevbuild">View the repository on GitHub</a></p>
+  <!-- ═══ Unified Studio Footer ═══ -->
+  <footer class="mt-auto border-t border-white/10 bg-[#05070c] py-8 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="font-bold text-slate-200">Zevbuild Studio</span>
+        <span class="text-slate-600">·</span>
+        <span>Goa, India</span>
+        <span class="text-slate-600">·</span>
+        <span class="text-emerald-400 font-medium">100% Zero-Telemetry</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="../index.html" class="hover:text-purple-400 transition-colors">Main Hub</a>
+        <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">GitHub Org</a>
+        <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">ZevSafe</a>
+        <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">CollegeBus</a>
+      </div>
+    </div>
   </footer>
+
+  <!-- ═══ Search & Filter Script ═══ -->
+  <script>
+    const searchInput = document.getElementById('toolSearchInput');
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const cards = document.querySelectorAll('.tool-card');
+    const noResults = document.getElementById('noResults');
+
+    let currentFilter = 'all';
+
+    function filterTools() {
+      const query = (searchInput.value || '').toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const keywords = card.getAttribute('data-keywords') || '';
+        const text = card.textContent.toLowerCase();
+
+        const matchesCategory = currentFilter === 'all' || category === currentFilter;
+        const matchesQuery = !query || keywords.toLowerCase().includes(query) || text.includes(query);
+
+        if (matchesCategory && matchesQuery) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
+    }
+
+    searchInput.addEventListener('input', filterTools);
+
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        categoryBtns.forEach(b => {
+          b.classList.remove('active', 'bg-purple-600', 'text-white');
+          b.classList.add('bg-white/5', 'text-slate-300');
+        });
+        btn.classList.add('active', 'bg-purple-600', 'text-white');
+        btn.classList.remove('bg-white/5', 'text-slate-300');
+
+        currentFilter = btn.getAttribute('data-filter');
+        filterTools();
+      });
+    });
+  </script>
 </body>
 </html>
-

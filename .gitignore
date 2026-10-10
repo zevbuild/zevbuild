@@ -53,3 +53,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Crawler and Audit Reports
+audit_results.json
+audit_summary.md
