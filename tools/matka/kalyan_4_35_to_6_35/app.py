@@ -20,13 +20,40 @@ WORKSPACE_DIR = os.path.dirname(os.path.abspath(__file__))
 if WORKSPACE_DIR not in sys.path:
     sys.path.insert(0, WORKSPACE_DIR)
 
+from pathlib import Path
 from bs4 import BeautifulSoup
-from scraper import fetch_html, parse_kalyan_chart, export_to_csv
+from scraper import fetch_html, parse_kalyan_chart, export_to_csv, sync_csv_to_root, verify_csv_integrity
 from models import EnsemblePredictor
 from predict import get_family_jodis
 
+SCRIPT_DIR = Path(__file__).resolve().parent
 WEB_DIR = os.path.join(WORKSPACE_DIR, "web")
-CSV_PATH = os.path.join(WORKSPACE_DIR, "kalyan_historical_data.csv")
+ROOT_MATKA_DIR = os.path.abspath(os.path.join(WORKSPACE_DIR, ".."))
+
+
+def resolve_csv_path(custom_path: str = None) -> str:
+    """Dynamically resolve kalyan_historical_data.csv across CLI and parent directories."""
+    if custom_path is not None and str(custom_path).strip() != "":
+        if os.path.exists(custom_path):
+            return os.path.abspath(custom_path)
+        cand = SCRIPT_DIR / custom_path
+        if cand.exists():
+            return str(cand.resolve())
+        raise FileNotFoundError(f"Specified CSV dataset not found: {custom_path}")
+
+    candidates = [
+        SCRIPT_DIR / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
+    ]
+    for cand in candidates:
+        if cand.exists():
+            return str(cand.resolve())
+    return str((SCRIPT_DIR / "kalyan_historical_data.csv").resolve())
+
+
+CSV_PATH = resolve_csv_path()
 
 
 def compute_last_week_performance(valid_df, html=""):
@@ -191,15 +218,16 @@ def compute_all_predictions(force_refresh: bool = False):
     export_to_csv(df, CSV_PATH)
 
     valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
-    valid_df["Open_Digit"] = valid_df["Open_Digit"].astype(int)
-    valid_df["Close_Digit"] = valid_df["Close_Digit"].astype(int)
+    valid_df["Open_Digit"] = valid_df["Open_Digit"].apply(lambda x: int(float(x)))
+    valid_df["Close_Digit"] = valid_df["Close_Digit"].apply(lambda x: int(float(x)))
+    valid_df["Jodi"] = valid_df["Jodi"].apply(lambda x: f"{int(float(x)):02d}")
 
     latest_row = valid_df.iloc[-1]
     latest_date_str = str(latest_row["Date"])
     latest_date = datetime.strptime(latest_date_str, "%Y-%m-%d")
     latest_jodi = str(latest_row["Jodi"]).zfill(2)
-    latest_open = int(latest_row["Open_Digit"])
-    latest_close = int(latest_row["Close_Digit"])
+    latest_open = int(float(latest_row["Open_Digit"]))
+    latest_close = int(float(latest_row["Close_Digit"]))
 
     # Extract latest pattis if available
     open_patti = "---"
@@ -294,9 +322,12 @@ def compute_all_predictions(force_refresh: bool = False):
             "otc_digits": preds.get("otc_digits", []),
             "otc_pairs": preds.get("otc_pairs", []),
             "otc_pass_prob": round(float(preds.get("otc_pass_prob", 0.0)) * 100.0, 1),
+            "open_digit_probs": [float(p) for p in open_probs],
+            "close_digit_probs": [float(p) for p in close_probs],
             "patti_predictions": preds.get("patti_predictions", {}),
         }
 
+    first_day_pred = list(predictions_by_day.values())[0] if predictions_by_day else {}
     output_payload = {
         "status": "success",
         "sync_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -326,6 +357,8 @@ def compute_all_predictions(force_refresh: bool = False):
         },
         "raw_result": f"{open_patti}-{latest_jodi}-{close_patti}",
         "by_day": predictions_by_day,
+        "open_digit_probs": first_day_pred.get("open_digit_probs", []),
+        "close_digit_probs": first_day_pred.get("close_digit_probs", []),
     }
 
     # Persist updated prediction_data.json
@@ -335,15 +368,21 @@ def compute_all_predictions(force_refresh: bool = False):
         "latest_draw": output_payload["latest_draw"],
         "last_week_data": last_week_data,
         "by_day": predictions_by_day,
+        "open_digit_probs": first_day_pred.get("open_digit_probs", []),
+        "close_digit_probs": first_day_pred.get("close_digit_probs", []),
     }
-    pred_path_root = os.path.join(WORKSPACE_DIR, "prediction_data.json")
-    pred_path_web = os.path.join(WEB_DIR, "prediction_data.json")
-    with open(pred_path_root, "w", encoding="utf-8") as f:
-        json.dump(pred_data_to_save, f, indent=2)
-    with open(pred_path_web, "w", encoding="utf-8") as f:
-        json.dump(pred_data_to_save, f, indent=2)
+    # Persist updated prediction_data.json to all 3 locations
+    pred_paths = [
+        os.path.join(WORKSPACE_DIR, "prediction_data.json"),
+        os.path.join(WEB_DIR, "prediction_data.json"),
+        os.path.join(ROOT_MATKA_DIR, "prediction_data.json"),
+    ]
+    for path in pred_paths:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(pred_data_to_save, f, indent=2)
 
-    # Persist updated history.json for client
+    # Persist updated history.json to all 3 locations
     history_list = []
     for _, row in valid_df.iterrows():
         op = str(row["Open_Patti"]) if pd.notna(row.get("Open_Patti")) and str(row.get("Open_Patti")).strip() != "" else ""
@@ -351,18 +390,24 @@ def compute_all_predictions(force_refresh: bool = False):
         history_list.append([
             str(row["Date"]),
             str(row["Day_Of_Week"]),
-            int(row["Jodi"]),
-            int(row["Open_Digit"]),
-            int(row["Close_Digit"]),
+            int(float(row["Jodi"])) if pd.notna(row.get("Jodi")) else 0,
+            int(float(row["Open_Digit"])) if pd.notna(row.get("Open_Digit")) else 0,
+            int(float(row["Close_Digit"])) if pd.notna(row.get("Close_Digit")) else 0,
             op,
             cl,
         ])
-    hist_path_root = os.path.join(WORKSPACE_DIR, "history.json")
-    hist_path_web = os.path.join(WEB_DIR, "history.json")
-    with open(hist_path_root, "w", encoding="utf-8") as f:
-        json.dump(history_list, f)
-    with open(hist_path_web, "w", encoding="utf-8") as f:
-        json.dump(history_list, f)
+    hist_paths = [
+        os.path.join(WORKSPACE_DIR, "history.json"),
+        os.path.join(WEB_DIR, "history.json"),
+        os.path.join(ROOT_MATKA_DIR, "history.json"),
+    ]
+    for path in hist_paths:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(history_list, f)
+
+    # Synchronize CSV mirror
+    sync_csv_to_root(CSV_PATH)
 
     return output_payload
 

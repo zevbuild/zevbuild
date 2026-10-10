@@ -4,12 +4,92 @@ Generates ranked Jodi recommendations, Single Open/Close Digits (Ank),
 Family/Cut brackets, and provides transparent mathematical risk metrics.
 """
 
+import os
 import sys
+import json
+import argparse
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from tabulate import tabulate
 from models import EnsemblePredictor
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+WORKSPACE_DIR = str(SCRIPT_DIR)
+ROOT_MATKA_DIR = str(SCRIPT_DIR.parent)
+WEB_DIR = str(SCRIPT_DIR / "web")
+
+
+def resolve_csv_path(custom_path: str = None) -> str:
+    """Dynamically resolve kalyan_historical_data.csv across CLI and parent directories."""
+    if custom_path is not None and str(custom_path).strip() != "":
+        if os.path.exists(custom_path):
+            return os.path.abspath(custom_path)
+        cand = SCRIPT_DIR / custom_path
+        if cand.exists():
+            return str(cand.resolve())
+        raise FileNotFoundError(f"Specified CSV dataset not found: {custom_path}")
+
+    candidates = [
+        SCRIPT_DIR / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
+    ]
+    for cand in candidates:
+        if cand.exists():
+            return str(cand.resolve())
+    return str((SCRIPT_DIR / "kalyan_historical_data.csv").resolve())
+
+
+def sync_artifacts(prediction_payload: dict, valid_df: pd.DataFrame):
+    """Synchronize prediction_data.json and history.json across all 3 locations."""
+    pred_paths = [
+        os.path.join(WORKSPACE_DIR, "prediction_data.json"),
+        os.path.join(WEB_DIR, "prediction_data.json"),
+        os.path.join(ROOT_MATKA_DIR, "prediction_data.json"),
+    ]
+    base_path = pred_paths[0]
+    merged_payload = {}
+    if os.path.exists(base_path):
+        try:
+            with open(base_path, "r", encoding="utf-8") as f:
+                merged_payload = json.load(f)
+        except Exception:
+            merged_payload = {}
+    merged_payload.update(prediction_payload)
+
+    for p in pred_paths:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            json.dump(merged_payload, f, indent=2)
+
+    history_list = []
+    for _, row in valid_df.iterrows():
+        op = str(row["Open_Patti"]) if pd.notna(row.get("Open_Patti")) and str(row.get("Open_Patti")).strip() != "" else ""
+        cl = str(row["Close_Patti"]) if pd.notna(row.get("Close_Patti")) and str(row.get("Close_Patti")).strip() != "" else ""
+        history_list.append([
+            str(row["Date"]),
+            str(row["Day_Of_Week"]),
+            int(float(row["Jodi"])) if pd.notna(row.get("Jodi")) else 0,
+            int(float(row["Open_Digit"])) if pd.notna(row.get("Open_Digit")) else 0,
+            int(float(row["Close_Digit"])) if pd.notna(row.get("Close_Digit")) else 0,
+            op,
+            cl,
+        ])
+
+    hist_paths = [
+        os.path.join(WORKSPACE_DIR, "history.json"),
+        os.path.join(WEB_DIR, "history.json"),
+        os.path.join(ROOT_MATKA_DIR, "history.json"),
+    ]
+    for p in hist_paths:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            json.dump(history_list, f)
+    print(f"[SUCCESS] Prediction artifacts synchronized across 3 locations (tools/matka/, subfolder, web/).")
+
 
 if hasattr(sys.stdout, "reconfigure"):
     try:
@@ -54,11 +134,13 @@ def make_ascii_bar(percent: float, max_len: int = 15) -> str:
     return "#" * filled + "-" * (max_len - filled)
 
 
-def generate_upcoming_prediction(csv_path: str = "kalyan_historical_data.csv") -> dict:
-    df = pd.read_csv(csv_path, dtype={"Jodi": str, "Raw_Entry": str})
+def generate_upcoming_prediction(csv_path: str = None) -> dict:
+    target_csv = resolve_csv_path(csv_path)
+    df = pd.read_csv(target_csv, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str})
     valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
-    valid_df["Open_Digit"] = valid_df["Open_Digit"].astype(int)
-    valid_df["Close_Digit"] = valid_df["Close_Digit"].astype(int)
+    valid_df["Open_Digit"] = valid_df["Open_Digit"].apply(lambda x: int(float(x)))
+    valid_df["Close_Digit"] = valid_df["Close_Digit"].apply(lambda x: int(float(x)))
+    valid_df["Jodi"] = valid_df["Jodi"].apply(lambda x: f"{int(float(x)):02d}")
 
     # Identify the latest known draw
     latest_row = valid_df.iloc[-1]
@@ -66,8 +148,8 @@ def generate_upcoming_prediction(csv_path: str = "kalyan_historical_data.csv") -
     latest_date = datetime.strptime(latest_date_str, "%Y-%m-%d")
     latest_day = latest_row["Day_Of_Week"]
     latest_jodi = str(latest_row["Jodi"]).zfill(2)
-    latest_open = int(latest_row["Open_Digit"])
-    latest_close = int(latest_row["Close_Digit"])
+    latest_open = int(float(latest_row["Open_Digit"]))
+    latest_close = int(float(latest_row["Close_Digit"]))
 
     # Determine target next draw date (skip Sunday if next is Sunday)
     next_date = latest_date + timedelta(days=1)
@@ -155,6 +237,11 @@ def generate_upcoming_prediction(csv_path: str = "kalyan_historical_data.csv") -
         "top_jodis": top_jodi_df,
         "open_digits": open_df,
         "close_digits": close_df,
+        "open_digit_probs": [float(p) for p in open_probs],
+        "close_digit_probs": [float(p) for p in close_probs],
+        "open_probs": [float(p) for p in open_probs],
+        "close_probs": [float(p) for p in close_probs],
+        "jodi_probs": [float(p) for p in jodi_probs],
         "top_1_jodi": top_1_jodi,
         "family_bracket": family_bracket,
         "otc_digits": preds.get("otc_digits", []),
@@ -219,6 +306,40 @@ def print_prediction_report(res: dict):
 
 
 if __name__ == "__main__":
-    csv_file = sys.argv[1] if len(sys.argv) > 1 else "kalyan_historical_data.csv"
-    res = generate_upcoming_prediction(csv_file)
+    parser = argparse.ArgumentParser(description="Kalyan Matka Upcoming Draw Predictor")
+    parser.add_argument("csv_pos", nargs="?", default=None, help="Optional historical CSV file path")
+    parser.add_argument("--csv", default=None, help="Optional historical CSV file path")
+    parser.add_argument("--export-json", action="store_true", help="Sync prediction artifacts to disk")
+    args = parser.parse_args()
+
+    input_csv = args.csv or args.csv_pos
+    resolved_csv = resolve_csv_path(input_csv)
+    res = generate_upcoming_prediction(resolved_csv)
     print_prediction_report(res)
+
+    if args.export_json:
+        df = pd.read_csv(resolved_csv, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str})
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+        # Build standard prediction artifact
+        export_payload = {
+            "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
+            "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
+            "latest_draw": {
+                "date": str(valid_df.iloc[-1]["Date"]),
+                "day": str(valid_df.iloc[-1]["Day_Of_Week"]),
+                "jodi": str(valid_df.iloc[-1]["Jodi"]).zfill(2),
+                "open": int(float(valid_df.iloc[-1]["Open_Digit"])),
+                "close": int(float(valid_df.iloc[-1]["Close_Digit"])),
+                "openPatti": str(valid_df.iloc[-1]["Open_Patti"]),
+                "closePatti": str(valid_df.iloc[-1]["Close_Patti"]),
+            },
+            "otc_recommendation": {
+                "digits": res.get("otc_digits", []),
+                "cut_pairs": [f"{p[0]}-{p[1]}" for p in res.get("otc_pairs", [])],
+                "pass_probability": float(res.get("otc_pass_prob", 0.0)),
+            },
+            "top_jodis": res.get("top_jodis", pd.DataFrame()).to_dict(orient="records"),
+            "open_digit_probs": [float(p) for p in res.get("open_digit_probs", [])],
+            "close_digit_probs": [float(p) for p in res.get("close_digit_probs", [])],
+        }
+        sync_artifacts(export_payload, valid_df)

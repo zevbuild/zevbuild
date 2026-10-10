@@ -6,13 +6,40 @@ Open/Close digit hit rates, Top Family bracket hit rates, and tracks cumulative 
 Supports automated parameter optimization via '--optimize'.
 """
 
+import os
 import sys
 import time
 import argparse
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from tabulate import tabulate
 from collections import defaultdict, Counter
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+def resolve_csv_path(custom_path: str = None) -> str:
+    """Dynamically resolve kalyan_historical_data.csv across CLI and parent directories."""
+    if custom_path is not None and str(custom_path).strip() != "":
+        if os.path.exists(custom_path):
+            return os.path.abspath(custom_path)
+        cand = SCRIPT_DIR / custom_path
+        if cand.exists():
+            return str(cand.resolve())
+        raise FileNotFoundError(f"Specified CSV dataset not found: {custom_path}")
+
+    candidates = [
+        SCRIPT_DIR / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_historical_data.csv",
+        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
+    ]
+    for cand in candidates:
+        if cand.exists():
+            return str(cand.resolve())
+    return str((SCRIPT_DIR / "kalyan_historical_data.csv").resolve())
+
 
 if hasattr(sys.stdout, "reconfigure"):
     try:
@@ -22,7 +49,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 
 def run_walk_forward_backtest(
-    csv_path: str = "kalyan_historical_data.csv",
+    csv_path: str = None,
     warmup_draws: int = 500,
     hl_fast: float = 8.0,
     hl_med: float = 35.0,
@@ -34,8 +61,9 @@ def run_walk_forward_backtest(
     w_gp: float = 0.10,
     cut_res: float = 0.10,
 ) -> dict:
+    target_csv = resolve_csv_path(csv_path)
     df = pd.read_csv(
-        csv_path,
+        target_csv,
         dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str},
     )
     valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
@@ -44,9 +72,9 @@ def run_walk_forward_backtest(
     if n_total <= warmup_draws:
         raise ValueError(f"Not enough draws ({n_total}) for warmup window ({warmup_draws}).")
 
-    jodis = valid_df["Jodi"].astype(int).values
-    opens = valid_df["Open_Digit"].astype(int).values
-    closes = valid_df["Close_Digit"].astype(int).values
+    jodis = valid_df["Jodi"].apply(lambda x: int(float(x))).values
+    opens = valid_df["Open_Digit"].apply(lambda x: int(float(x))).values
+    closes = valid_df["Close_Digit"].apply(lambda x: int(float(x))).values
     days = valid_df["Day_Of_Week"].values
     dates = valid_df["Date"].values
 
@@ -388,13 +416,14 @@ def run_walk_forward_backtest(
     }
 
 
-def run_parameter_optimization(csv_path: str = "kalyan_historical_data.csv"):
+def run_parameter_optimization(csv_path: str = None):
     """Automated grid search calibration to discover highest-accuracy weights."""
     print("[INFO] Running Automated Parameter Calibration...")
-    df = pd.read_csv(csv_path, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str})
+    target_csv = resolve_csv_path(csv_path)
+    df = pd.read_csv(target_csv, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str})
     valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
-    opens = valid_df["Open_Digit"].astype(int).values
-    jodis = valid_df["Jodi"].astype(int).values
+    opens = valid_df["Open_Digit"].apply(lambda x: int(float(x))).values
+    jodis = valid_df["Jodi"].apply(lambda x: int(float(x))).values
     n = len(valid_df)
     warmup = 500
 
@@ -448,10 +477,15 @@ def print_backtest_report(res=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Kalyan Walk-Forward Backtester & Optimizer")
+    parser.add_argument("csv_pos", nargs="?", default=None, help="Optional historical CSV file path")
+    parser.add_argument("--csv", default=None, help="Optional historical CSV file path")
     parser.add_argument("--optimize", action="store_true", help="Run automated hyperparameter optimization")
     args = parser.parse_args()
 
+    input_csv = args.csv or args.csv_pos
+    resolved_csv = resolve_csv_path(input_csv)
+
     if args.optimize:
-        run_parameter_optimization()
+        run_parameter_optimization(csv_path=resolved_csv)
     else:
-        run_walk_forward_backtest()
+        run_walk_forward_backtest(csv_path=resolved_csv)
