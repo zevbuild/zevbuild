@@ -72,10 +72,32 @@ def parse_week_start_date(raw_cell_text: str) -> datetime:
     return None
 
 
+def classify_patti(patti_str: str) -> str:
+    """
+    Classify 3-digit Patti:
+    - SP (Single Patti): all 3 digits distinct (e.g. 123)
+    - DP (Double Patti): 2 digits identical (e.g. 112)
+    - TP (Triple Patti): all 3 digits identical (e.g. 777)
+    """
+    if not patti_str or not re.fullmatch(r"\d{3}", str(patti_str)):
+        return ""
+    digits = list(str(patti_str))
+    n_unique = len(set(digits))
+    if n_unique == 3:
+        return "SP"
+    elif n_unique == 2:
+        return "DP"
+    elif n_unique == 1:
+        return "TP"
+    return ""
+
+
 def parse_kalyan_chart(html_content: str) -> pd.DataFrame:
     """
     Parse the Kalyan Panel Record table into a normalized DataFrame.
     Each week row contains 1 Date column and up to 6 days x 3 columns = 19 columns.
+    Extracts Date, Day_Of_Week, Jodi, Open_Digit, Close_Digit, Open_Patti, Close_Patti,
+    Open_Patti_Type, Close_Patti_Type, Is_Valid, Raw_Entry.
     """
     soup = BeautifulSoup(html_content, "html.parser")
     table = soup.find("table", class_=lambda c: c and "chart-table" in c)
@@ -110,9 +132,11 @@ def parse_kalyan_chart(html_content: str) -> pd.DataFrame:
 
             day_date = start_date + timedelta(days=day_idx)
             
-            # Jodi is the center column of the 3-column day block
+            # Col 0: Open Patti, Col 1: Jodi, Col 2: Close Patti
+            open_patti_raw = tds[col_base].get_text(strip=True) if col_base < len(tds) else ""
             jodi_td = tds[col_base + 1]
             raw_jodi = jodi_td.get_text(strip=True)
+            close_patti_raw = tds[col_base + 2].get_text(strip=True) if col_base + 2 < len(tds) else ""
 
             # Sanitize raw Jodi
             # Standardize valid two-digit numeric strings (00-99)
@@ -127,12 +151,22 @@ def parse_kalyan_chart(html_content: str) -> pd.DataFrame:
                 close_digit = None
                 is_valid = False
 
+            # Sanitize Pattis
+            open_patti = open_patti_raw if re.fullmatch(r"\d{3}", open_patti_raw) else ""
+            close_patti = close_patti_raw if re.fullmatch(r"\d{3}", close_patti_raw) else ""
+            open_patti_type = classify_patti(open_patti)
+            close_patti_type = classify_patti(close_patti)
+
             records.append({
                 "Date": day_date.strftime("%Y-%m-%d"),
                 "Day_Of_Week": day_name,
                 "Jodi": jodi_val,
                 "Open_Digit": open_digit,
                 "Close_Digit": close_digit,
+                "Open_Patti": open_patti,
+                "Close_Patti": close_patti,
+                "Open_Patti_Type": open_patti_type,
+                "Close_Patti_Type": close_patti_type,
                 "Is_Valid": is_valid,
                 "Raw_Entry": raw_jodi,
             })
@@ -155,7 +189,9 @@ def get_preview_table(df: pd.DataFrame, n: int = 20) -> str:
     preview_df["Jodi"] = preview_df["Jodi"].apply(lambda v: v if v != "" else "null")
     preview_df["Open_Digit"] = preview_df["Open_Digit"].apply(lambda v: str(int(v)) if pd.notna(v) and v is not None else "null")
     preview_df["Close_Digit"] = preview_df["Close_Digit"].apply(lambda v: str(int(v)) if pd.notna(v) and v is not None else "null")
-    cols = ["#", "Date", "Day_Of_Week", "Jodi", "Open_Digit", "Close_Digit", "Is_Valid", "Raw_Entry"]
+    preview_df["Open_Patti"] = preview_df["Open_Patti"].apply(lambda v: str(v) if v else "null")
+    preview_df["Close_Patti"] = preview_df["Close_Patti"].apply(lambda v: str(v) if v else "null")
+    cols = ["#", "Date", "Day_Of_Week", "Jodi", "Open_Digit", "Close_Digit", "Open_Patti", "Close_Patti", "Is_Valid", "Raw_Entry"]
     return tabulate(preview_df[cols], headers="keys", tablefmt="github", showindex=False)
 
 
@@ -171,5 +207,6 @@ if __name__ == "__main__":
     html = fetch_html()
     df = parse_kalyan_chart(html)
     print(f"[INFO] Parsed {len(df)} total daily records ({df['Is_Valid'].sum()} valid Jodis).")
+    export_to_csv(df)
     print("\n--- PREVIEW OF FIRST 20 ROWS ---")
     print(get_preview_table(df, 20))

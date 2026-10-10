@@ -157,6 +157,10 @@ def generate_upcoming_prediction(csv_path: str = "kalyan_historical_data.csv") -
         "close_digits": close_df,
         "top_1_jodi": top_1_jodi,
         "family_bracket": family_bracket,
+        "otc_digits": preds.get("otc_digits", []),
+        "otc_pairs": preds.get("otc_pairs", []),
+        "otc_pass_prob": preds.get("otc_pass_prob", 0.0),
+        "patti_predictions": preds.get("patti_predictions", {}),
     }
 
 
@@ -166,8 +170,16 @@ def print_prediction_report(res: dict):
     print("=" * 75)
     print(f"Target Draw Date:     {res['target_draw']['date']} ({res['target_draw']['day']})")
     print(f"Latest Known Draw:    {res['latest_draw']['date']} ({res['latest_draw']['day']}) -> Jodi: {res['latest_draw']['jodi']}")
-    print(f"Model Stack:          Ensemble (Markov Transition + Recency Decay + Day-of-Week)")
+    print(f"Model Stack:          Hybrid Ensemble (Markov + Momentum + Gap Hazard + Line)")
     print("-" * 75)
+
+    otc_str = ", ".join(str(d) for d in res.get("otc_digits", []))
+    otc_pairs_str = " & ".join(f"({p[0]}-{p[1]})" for p in res.get("otc_pairs", []))
+    otc_prob = res.get("otc_pass_prob", 0.0) * 100
+    print(f"\n[🔥] HIGH-CONFIDENCE 4-ANK OTC (OPEN-TO-CLOSE):")
+    print(f"  -> Recommended Anks  : [ {otc_str} ]")
+    print(f"  -> Harmonic Cut Pairs : {otc_pairs_str}")
+    print(f"  -> Modeled Pass Prob  : {otc_prob:.1f}%")
 
     print("\n[🎯] TOP RECOMMENDED JODI NUMBERS (HIGH CONFIDENCE CANDIDATES):")
     print(tabulate(res["top_jodis"].head(5), headers="keys", tablefmt="github", showindex=False))
@@ -183,6 +195,17 @@ def print_prediction_report(res: dict):
 
     print("\n[🔒] PREDICTED SINGLE CLOSE DIGIT (ANK) PROBABILITY DISTRIBUTION:")
     print(tabulate(res["close_digits"].head(5), headers="keys", tablefmt="github", showindex=False))
+
+    print("\n[🎰] RECOMMENDED 3-DIGIT PATTI / PANEL FORECASTS (FOR TOP OTC ANKS):")
+    patti_preds = res.get("patti_predictions", {})
+    patti_rows = []
+    for ank in res.get("otc_digits", []):
+        info = patti_preds.get(str(ank), {})
+        sp_str = ", ".join(info.get("sp", [])[:3])
+        dp_str = ", ".join(info.get("dp", [])[:2])
+        patti_rows.append({"Ank": ank, "Single Patti (SP)": sp_str, "Double Patti (DP)": dp_str})
+    if patti_rows:
+        print(tabulate(patti_rows, headers="keys", tablefmt="github", showindex=False))
 
     print("\n" + "=" * 75)
     print("              CRITICAL MATHEMATICAL RISK & EXPECTANCY NOTICE")

@@ -119,6 +119,9 @@ def compute_last_week_performance(valid_df, html=""):
         fam = get_family_jodis(top_pick)
         fam_hit = actual_j in fam
 
+        otc_digits = preds.get("otc_digits", [])
+        otc_hit = (actual_o in otc_digits) or (actual_c in otc_digits)
+
         if open_hit and close_hit:
             status_label = "Double Ank Hit (Open & Close)"
             badge_type = "success"
@@ -138,6 +141,9 @@ def compute_last_week_performance(valid_df, html=""):
         elif actual_j in top_jodis:
             status_label = f"Top-10 Edge ({actual_j})"
             badge_type = "info"
+        elif otc_hit:
+            status_label = "OTC Pass"
+            badge_type = "info"
         else:
             status_label = "Standard Variance"
             badge_type = "neutral"
@@ -155,6 +161,8 @@ def compute_last_week_performance(valid_df, html=""):
             "predicted_top_open": top_open,
             "predicted_top_close": top_close,
             "family_bracket": fam,
+            "otc_digits": otc_digits,
+            "otc_hit": otc_hit,
             "open_hit": open_hit,
             "close_hit": close_hit,
             "jodi_hit": jodi_hit,
@@ -283,6 +291,10 @@ def compute_all_predictions(force_refresh: bool = False):
             "close_digits": top_close,
             "top_pick": top_jodis[0]["jodi"],
             "top_family": top_jodis[0]["family"],
+            "otc_digits": preds.get("otc_digits", []),
+            "otc_pairs": preds.get("otc_pairs", []),
+            "otc_pass_prob": round(float(preds.get("otc_pass_prob", 0.0)) * 100.0, 1),
+            "patti_predictions": preds.get("patti_predictions", {}),
         }
 
     output_payload = {
@@ -334,12 +346,16 @@ def compute_all_predictions(force_refresh: bool = False):
     # Persist updated history.json for client
     history_list = []
     for _, row in valid_df.iterrows():
+        op = str(row["Open_Patti"]) if pd.notna(row.get("Open_Patti")) and str(row.get("Open_Patti")).strip() != "" else ""
+        cl = str(row["Close_Patti"]) if pd.notna(row.get("Close_Patti")) and str(row.get("Close_Patti")).strip() != "" else ""
         history_list.append([
             str(row["Date"]),
             str(row["Day_Of_Week"]),
             int(row["Jodi"]),
             int(row["Open_Digit"]),
-            int(row["Close_Digit"])
+            int(row["Close_Digit"]),
+            op,
+            cl,
         ])
     hist_path_root = os.path.join(WORKSPACE_DIR, "history.json")
     hist_path_web = os.path.join(WEB_DIR, "history.json")

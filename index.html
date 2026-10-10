@@ -13,13 +13,15 @@
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <link rel="canonical" href="https://zevbuild.pages.dev/">
 
-  <!-- ═══ Branding / Browser ═══ -->
+  <!-- ═══ Branding / Browser / PWA ═══ -->
   <meta name="theme-color" content="#8b5cf6">
   <meta name="application-name" content="Zevbuild">
   <meta name="apple-mobile-web-app-title" content="Zevbuild">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="icon-192.png">
 
   <!-- ═══ Geo Targeting ═══ -->
   <meta name="geo.region" content="IN-GA">
@@ -270,6 +272,11 @@
 
       <!-- Action CTAs -->
       <div class="hidden sm:flex items-center gap-3">
+        <!-- PWA Install Button -->
+        <button id="btn-root-pwa-install" onclick="installRootPwa()" class="hidden items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/25 transition-all shadow-sm active:scale-95" title="Install Zevbuild App on your device">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Install App</span>
+        </button>
         <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" 
            class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 hover:border-purple-500/30 transition-all duration-200">
           <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
@@ -300,6 +307,10 @@
       <a href="#specs" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Tech Specs</a>
       <a href="#contact" class="block py-2 text-sm font-medium text-slate-300 hover:text-white">Contact</a>
       <div class="pt-3 border-t border-white/10 flex flex-col gap-2">
+        <button id="btn-root-pwa-mobile" onclick="installRootPwa()" class="hidden items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-xs font-semibold text-emerald-400">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Install Zevbuild App</span>
+        </button>
         <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200">
           GitHub Organization
         </a>
@@ -494,10 +505,11 @@
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                   <span id="matka-lw-badge">Last Week: 5 Ank Hits</span>
                 </a>
-                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 mono flex items-center gap-1.5" title="Latest developer release">
+                <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 mono flex items-center gap-1.5" title="Latest developer release">
                   <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-                  Last Update: <span id="matka-dev-badge-date">06 Oct 2026</span>
+                  Updated by Zevbuild: <span id="matka-dev-badge-date">10 Oct 2026</span>
                 </span>
+                <span id="matka-main-last-update" class="hidden">10 Oct 2026</span>
               </div>
             </div>
 
@@ -518,20 +530,6 @@
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Multi-Day Forecast</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Cut Family Brackets</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">100% Client Sync</span>
-            </div>
-
-            <!-- Developer Update Status Banner -->
-            <div class="mb-3 flex items-center justify-between text-xs bg-purple-950/40 border border-purple-500/25 rounded-xl px-3.5 py-2">
-              <div class="flex items-center gap-2 text-slate-300">
-                <span class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
-                </span>
-                <span class="text-slate-300 font-medium">Last update on main page by developer:</span>
-              </div>
-              <span id="matka-main-last-update" class="font-mono text-purple-300 font-bold text-[11px] bg-purple-500/20 px-2.5 py-0.5 rounded border border-purple-500/30">
-                06 Oct 2026
-              </span>
             </div>
 
             <!-- Last Week Prediction Accuracy Banner -->
@@ -749,10 +747,11 @@
                 <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 mono">
                   2012–2026
                 </span>
-                <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 mono flex items-center gap-1.5" title="Latest developer release">
+                <span class="text-[10px] font-medium px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 mono flex items-center gap-1.5" title="Latest developer release">
                   <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
-                  Last Update: <span id="matka-penal-badge-date">06 Oct 2026</span>
+                  Updated by Zevbuild: <span id="matka-penal-badge-date">10 Oct 2026</span>
                 </span>
+                <span id="matka-penal-last-update" class="hidden">10 Oct 2026</span>
               </div>
             </div>
 
@@ -773,19 +772,6 @@
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">Pattern Recognition</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-white/5 text-slate-300 border border-white/5">High Density UI</span>
               <span class="text-[11px] px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Fast Local Query</span>
-            </div>
-
-            <!-- Developer Update Status Banner -->
-            <div class="mb-5 flex items-center justify-between text-xs bg-indigo-950/40 border border-indigo-500/25 rounded-xl px-3.5 py-2">
-              <div class="flex items-center gap-2 text-slate-300">
-                <span class="relative flex h-2 w-2">
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                </span>
-                <span class="text-slate-300 font-medium">Last update on main page by developer:</span>
-              </div>
-              <span id="matka-penal-last-update" class="font-mono text-indigo-300 font-bold text-[11px] bg-indigo-500/20 px-2.5 py-0.5 rounded border border-indigo-500/30">
-                06 Oct 2026
-              </span>
             </div>
 
             <!-- Highlights list -->
@@ -1325,6 +1311,49 @@
         }
       } catch (_) {}
     })();
+
+    // ==========================================
+    // PWA APP INSTALL & SERVICE WORKER
+    // ==========================================
+    let rootDeferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      rootDeferredPrompt = e;
+      const b1 = document.getElementById('btn-root-pwa-install');
+      const b2 = document.getElementById('btn-root-pwa-mobile');
+      if (b1) { b1.classList.remove('hidden'); b1.classList.add('flex'); }
+      if (b2) { b2.classList.remove('hidden'); b2.classList.add('flex'); }
+    });
+
+    window.installRootPwa = async function() {
+      if (!rootDeferredPrompt) return;
+      rootDeferredPrompt.prompt();
+      const choice = await rootDeferredPrompt.userChoice;
+      if (choice && choice.outcome === 'accepted') {
+        console.log('[PWA] Root App installed');
+      }
+      rootDeferredPrompt = null;
+      const b1 = document.getElementById('btn-root-pwa-install');
+      const b2 = document.getElementById('btn-root-pwa-mobile');
+      if (b1) { b1.classList.add('hidden'); b1.classList.remove('flex'); }
+      if (b2) { b2.classList.add('hidden'); b2.classList.remove('flex'); }
+    };
+
+    window.addEventListener('appinstalled', () => {
+      console.log('[PWA] Zevbuild App successfully installed.');
+      const b1 = document.getElementById('btn-root-pwa-install');
+      const b2 = document.getElementById('btn-root-pwa-mobile');
+      if (b1) { b1.classList.add('hidden'); b1.classList.remove('flex'); }
+      if (b2) { b2.classList.add('hidden'); b2.classList.remove('flex'); }
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('[PWA] Service Worker registered:', reg.scope))
+          .catch((err) => console.warn('[PWA] Service Worker registration failed:', err));
+      });
+    }
   </script>
 
 </body>
