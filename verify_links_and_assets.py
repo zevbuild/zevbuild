@@ -779,6 +779,15 @@ class VerificationHarness:
                     if 200 <= status_code < 400:
                         tier_result.record_pass(f"Outbound URL reachable (HTTP {status_code}): {url}")
                     elif status_code in (404, 410):
+                        # If this is our own production domain (zevbuild.pages.dev) and the file exists locally,
+                        # treat as a valid local target pending deployment
+                        if url.startswith("https://zevbuild.pages.dev/"):
+                            rel_path = url[len("https://zevbuild.pages.dev/"):].split("?")[0].split("#")[0].rstrip("/")
+                            local_target_idx = self.root / rel_path / "index.html" if rel_path else self.root / "index.html"
+                            local_target_direct = self.root / rel_path if rel_path else self.root / "index.html"
+                            if local_target_idx.exists() or local_target_direct.exists():
+                                tier_result.record_pass(f"Outbound canonical URL exists in local workspace (pending deployment): {url}")
+                                continue
                         # Definite dead link
                         for doc_rel, line in locs:
                             tier_result.record_fail(
