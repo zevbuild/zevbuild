@@ -6767,12 +6767,15 @@
         if (!isNaN(parsed.getTime())) baseDate = parsed;
       }
 
-      let dDate = new Date(baseDate);
-      let count = 0;
-      while (count < 6) {
-        dDate.setDate(dDate.getDate() + 1);
-        if (dDate.getDay() === 0) continue; // Skip Sunday
-        count++;
+      // Calculate Monday of current operational week (Mon-Sat)
+      const currentDayOfWeek = baseDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+      const diffToMon = (currentDayOfWeek === 0) ? -6 : 1 - currentDayOfWeek;
+      const weekMonday = new Date(baseDate);
+      weekMonday.setDate(baseDate.getDate() + diffToMon);
+
+      for (let i = 0; i < 6; i++) {
+        const dDate = new Date(weekMonday);
+        dDate.setDate(weekMonday.getDate() + i);
 
         const dayName = dayAbbrs[dDate.getDay()];
         const dateStr = dDate.toISOString().split('T')[0];

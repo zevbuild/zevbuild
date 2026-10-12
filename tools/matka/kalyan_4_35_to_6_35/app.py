@@ -338,12 +338,10 @@ def compute_all_predictions(force_refresh: bool = False):
     day_abbrs = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
     predictions_by_day = {}
 
-    d_date = latest_date
-    draw_days = []
-    while len(draw_days) < 6:
-        d_date += timedelta(days=1)
-        if d_date.weekday() != 6:  # Skip Sunday
-            draw_days.append(d_date)
+    # Lock draw days strictly to current operational week (Mon-Sat):
+    # Anchor to Monday of the current active week cycle
+    week_monday = latest_date - timedelta(days=latest_date.weekday())
+    draw_days = [week_monday + timedelta(days=i) for i in range(6)]
 
     for target_d in draw_days:
         day_name = day_abbrs[target_d.weekday()]
@@ -405,7 +403,17 @@ def compute_all_predictions(force_refresh: bool = False):
             "patti_predictions": preds.get("patti_predictions", {}),
         }
 
-    first_day_pred = list(predictions_by_day.values())[0] if predictions_by_day else {}
+    # Target upcoming prediction for active play:
+    # If today's draw is already finished (latest_date), target the next upcoming day in cycle.
+    target_upcoming_pred = None
+    for target_d in draw_days:
+        if target_d > latest_date:
+            target_upcoming_pred = predictions_by_day.get(day_abbrs[target_d.weekday()])
+            break
+    if not target_upcoming_pred:
+        target_upcoming_pred = predictions_by_day.get("Tue", list(predictions_by_day.values())[0] if predictions_by_day else {})
+
+    first_day_pred = target_upcoming_pred
     output_payload = {
         "status": "success",
         "sync_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
