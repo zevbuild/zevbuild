@@ -2,8 +2,8 @@ name: Matka Auto Update
 
 on:
   schedule:
-    # 11:00 PM IST (5:30 PM UTC) daily
-    - cron: '30 17 * * *'
+    # 10:00 PM IST (4:30 PM UTC) daily
+    - cron: '30 16 * * *'
   workflow_dispatch: # Allow manual trigger
 
 permissions:
