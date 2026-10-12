@@ -4,9 +4,14 @@
 User-agent: *
 Allow: /
 
-# Disallow build artifacts and local-only paths
+# Disallow build artifacts, internal tools, and raw caches
 Disallow: /.git/
+Disallow: /.agents/
 Disallow: /functions/
+Disallow: /tools/matka/tests/
+Disallow: /*_raw.html
+Disallow: /audit_results.json
+Disallow: /audit_summary.md
 
-# Point crawlers to our sitemap
+# Search Engine Sitemap
 Sitemap: https://zevbuild.pages.dev/sitemap.xml
