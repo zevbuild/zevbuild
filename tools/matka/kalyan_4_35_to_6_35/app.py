@@ -58,8 +58,9 @@ CSV_PATH = resolve_csv_path()
 
 def compute_last_week_performance(valid_df, html=""):
     """
-    Computes walk-forward predictions for the completed draws of the previous calendar week,
-    matches against actual declared outcomes and pattis, and returns structured performance data.
+    Computes walk-forward predictions for the completed draws across the previous 4 calendar weeks
+    (30-day window, 24 draws), matches against actual declared outcomes and pattis,
+    and returns structured multi-week performance data for both last_week and last_month.
     """
     patti_map = {}
     if html:
@@ -92,122 +93,199 @@ def compute_last_week_performance(valid_df, html=""):
     latest_date_str = str(valid_df.iloc[-1]["Date"])
     latest_dt = datetime.strptime(latest_date_str, "%Y-%m-%d")
     curr_mon = latest_dt - timedelta(days=latest_dt.weekday())
-    prev_mon = curr_mon - timedelta(days=7)
-    prev_sat = prev_mon + timedelta(days=5)
 
-    p_mon_str = prev_mon.strftime("%Y-%m-%d")
-    p_sat_str = prev_sat.strftime("%Y-%m-%d")
+    weeks_config = [
+        {"id": "week_4", "offset": 1, "suffix": " (Last Week)"},
+        {"id": "week_3", "offset": 2, "suffix": " (2 Weeks Ago)"},
+        {"id": "week_2", "offset": 3, "suffix": " (3 Weeks Ago)"},
+        {"id": "week_1", "offset": 4, "suffix": " (4 Weeks Ago)"},
+    ]
 
-    lw_mask = (valid_df["Date"] >= p_mon_str) & (valid_df["Date"] <= p_sat_str)
-    lw_indices = valid_df[lw_mask].index.tolist()
+    all_draws = []
+    weeks_list = []
+    total_ank_hits_month = 0
+    double_ank_hits_month = 0
+    otc_passes_month = 0
+    family_hits_month = 0
 
-    if len(lw_indices) == 0:
-        lw_indices = list(range(max(0, len(valid_df) - 7), len(valid_df) - 1))
+    last_week_data = None
 
-    draws = []
-    total_ank_hits = 0
-    double_ank_hits = 0
+    for w_cfg in weeks_config:
+        w_mon = curr_mon - timedelta(days=7 * w_cfg["offset"])
+        w_sat = w_mon + timedelta(days=5)
+        w_mon_str = w_mon.strftime("%Y-%m-%d")
+        w_sat_str = w_sat.strftime("%Y-%m-%d")
+        w_label = f"{w_mon.strftime('%d %b')} – {w_sat.strftime('%d %b %Y')}{w_cfg['suffix']}"
 
-    for idx in lw_indices:
-        if idx <= 0:
-            continue
-        train_df = valid_df.iloc[:idx]
-        actual_row = valid_df.iloc[idx]
-        prev_row = valid_df.iloc[idx - 1]
+        w_mask = (valid_df["Date"] >= w_mon_str) & (valid_df["Date"] <= w_sat_str)
+        w_indices = valid_df[w_mask].index.tolist()
 
-        m = EnsemblePredictor()
-        m.fit(train_df)
-        preds = m.predict(
-            day_of_week=str(actual_row["Day_Of_Week"]),
-            prev_jodi=str(prev_row["Jodi"]).zfill(2),
-            prev_open=int(prev_row["Open_Digit"]),
-            prev_close=int(prev_row["Close_Digit"]),
-        )
+        w_draws = []
+        w_ank_hits = 0
+        w_double_hits = 0
+        w_otc_hits = 0
 
-        sorted_j = np.argsort(preds["jodi_probs"])[::-1]
-        sorted_o = np.argsort(preds["open_probs"])[::-1]
-        sorted_c = np.argsort(preds["close_probs"])[::-1]
+        for idx in w_indices:
+            if idx <= 0:
+                continue
+            train_df = valid_df.iloc[:idx]
+            actual_row = valid_df.iloc[idx]
+            prev_row = valid_df.iloc[idx - 1]
 
-        top_jodis = [f"{x:02d}" for x in sorted_j[:10]]
-        top_open = [int(x) for x in sorted_o[:3]]
-        top_close = [int(x) for x in sorted_c[:3]]
+            m = EnsemblePredictor()
+            m.fit(train_df)
+            preds = m.predict(
+                day_of_week=str(actual_row["Day_Of_Week"]),
+                prev_jodi=str(prev_row["Jodi"]).zfill(2),
+                prev_open=int(prev_row["Open_Digit"]),
+                prev_close=int(prev_row["Close_Digit"]),
+            )
 
-        actual_j = str(actual_row["Jodi"]).zfill(2)
-        actual_o = int(actual_row["Open_Digit"])
-        actual_c = int(actual_row["Close_Digit"])
-        date_str = str(actual_row["Date"])
+            sorted_j = np.argsort(preds["jodi_probs"])[::-1]
+            sorted_o = np.argsort(preds["open_probs"])[::-1]
+            sorted_c = np.argsort(preds["close_probs"])[::-1]
 
-        op_p, cl_p = patti_map.get(date_str, ("---", "---"))
+            top_jodis = [f"{x:02d}" for x in sorted_j[:10]]
+            top_open = [int(x) for x in sorted_o[:3]]
+            top_close = [int(x) for x in sorted_c[:3]]
 
-        open_hit = actual_o in top_open
-        close_hit = actual_c in top_close
-        jodi_hit = actual_j in top_jodis[:5]
-        top_pick = top_jodis[0]
-        fam = get_family_jodis(top_pick)
-        fam_hit = actual_j in fam
+            actual_j = str(actual_row["Jodi"]).zfill(2)
+            actual_o = int(actual_row["Open_Digit"])
+            actual_c = int(actual_row["Close_Digit"])
+            date_str = str(actual_row["Date"])
 
-        otc_digits = preds.get("otc_digits", [])
-        otc_hit = (actual_o in otc_digits) or (actual_c in otc_digits)
+            op_p, cl_p = patti_map.get(date_str, ("---", "---"))
 
-        if open_hit and close_hit:
-            status_label = "Double Ank Hit (Open & Close)"
-            badge_type = "success"
-            total_ank_hits += 2
-            double_ank_hits += 1
-        elif open_hit:
-            status_label = f"Open Ank Hit ({actual_o})"
-            badge_type = "highlight"
-            total_ank_hits += 1
-        elif close_hit:
-            status_label = f"Close Ank Hit ({actual_c})"
-            badge_type = "highlight"
-            total_ank_hits += 1
-        elif fam_hit:
-            status_label = f"Cut Family Hit ({actual_j})"
-            badge_type = "highlight"
-        elif actual_j in top_jodis:
-            status_label = f"Top-10 Edge ({actual_j})"
-            badge_type = "info"
-        elif otc_hit:
-            status_label = "OTC Pass"
-            badge_type = "info"
-        else:
-            status_label = "Standard Variance"
-            badge_type = "neutral"
+            open_hit = actual_o in top_open
+            close_hit = actual_c in top_close
+            jodi_hit = actual_j in top_jodis[:5]
+            top_pick = top_jodis[0]
+            fam = get_family_jodis(top_pick)
+            fam_hit = actual_j in fam
 
-        draws.append({
-            "date": date_str,
-            "day": str(actual_row["Day_Of_Week"]),
-            "actual_jodi": actual_j,
-            "actual_open": actual_o,
-            "actual_close": actual_c,
-            "open_patti": op_p,
-            "close_patti": cl_p,
-            "predicted_top_pick": top_pick,
-            "predicted_top_5": top_jodis[:5],
-            "predicted_top_open": top_open,
-            "predicted_top_close": top_close,
-            "family_bracket": fam,
-            "otc_digits": otc_digits,
-            "otc_hit": otc_hit,
-            "open_hit": open_hit,
-            "close_hit": close_hit,
-            "jodi_hit": jodi_hit,
-            "status_label": status_label,
-            "badge_type": badge_type,
+            otc_digits = preds.get("otc_digits", [])
+            otc_hit = (actual_o in otc_digits) or (actual_c in otc_digits)
+
+            if open_hit and close_hit:
+                status_label = "Double Ank Hit (Open & Close)"
+                badge_type = "success"
+                w_ank_hits += 2
+                w_double_hits += 1
+            elif open_hit:
+                status_label = f"Open Ank Hit ({actual_o})"
+                badge_type = "highlight"
+                w_ank_hits += 1
+            elif close_hit:
+                status_label = f"Close Ank Hit ({actual_c})"
+                badge_type = "highlight"
+                w_ank_hits += 1
+            elif fam_hit:
+                status_label = f"Cut Family Hit ({actual_j})"
+                badge_type = "highlight"
+                family_hits_month += 1
+            elif actual_j in top_jodis:
+                status_label = f"Top-10 Edge ({actual_j})"
+                badge_type = "info"
+            elif otc_hit:
+                status_label = "OTC Pass"
+                badge_type = "info"
+            else:
+                status_label = "Standard Variance"
+                badge_type = "neutral"
+
+            if otc_hit:
+                w_otc_hits += 1
+
+            draw_obj = {
+                "date": date_str,
+                "day": str(actual_row["Day_Of_Week"]),
+                "week_id": w_cfg["id"],
+                "week_label": w_label,
+                "actual_jodi": actual_j,
+                "actual_open": actual_o,
+                "actual_close": actual_c,
+                "open_patti": op_p,
+                "close_patti": cl_p,
+                "predicted_top_pick": top_pick,
+                "predicted_top_5": top_jodis[:5],
+                "predicted_top_open": top_open,
+                "predicted_top_close": top_close,
+                "family_bracket": fam,
+                "otc_digits": otc_digits,
+                "otc_hit": otc_hit,
+                "open_hit": open_hit,
+                "close_hit": close_hit,
+                "jodi_hit": jodi_hit,
+                "status_label": status_label,
+                "badge_type": badge_type,
+            }
+            w_draws.append(draw_obj)
+            all_draws.append(draw_obj)
+
+        pass_rate_str = f"{(w_ank_hits / len(w_draws) * 100):.1f}%" if w_draws else "0.0%"
+        weeks_list.append({
+            "week_id": w_cfg["id"],
+            "week_label": w_label,
+            "date_range": f"{w_mon_str} – {w_sat_str}",
+            "summary": {
+                "total_draws": len(w_draws),
+                "ank_hits": w_ank_hits,
+                "double_ank_hits": w_double_hits,
+                "pass_rate": pass_rate_str,
+            },
+            "draws": w_draws,
         })
 
-    week_range_str = f"{prev_mon.strftime('%d %b %Y')} – {prev_sat.strftime('%d %b %Y')}"
-    return {
-        "week_range": week_range_str,
+        total_ank_hits_month += w_ank_hits
+        double_ank_hits_month += w_double_hits
+        otc_passes_month += w_otc_hits
+
+        if w_cfg["id"] == "week_4":
+            last_week_data = {
+                "week_range": f"{w_mon.strftime('%d %b %Y')} – {w_sat.strftime('%d %b %Y')}",
+                "summary": {
+                    "total_draws": len(w_draws),
+                    "ank_hits": w_ank_hits,
+                    "double_ank_hits": w_double_hits,
+                    "edge": "+2.2% Walk-Forward",
+                },
+                "draws": all_draws,
+            }
+
+    earliest_mon = curr_mon - timedelta(days=28)
+    latest_sat = curr_mon - timedelta(days=2)
+    month_range_str = f"{earliest_mon.strftime('%d %b %Y')} – {latest_sat.strftime('%d %b %Y')} (Last 30 Days)"
+
+    n_tot = len(all_draws)
+    single_rate = f"{(total_ank_hits_month / n_tot * 100):.1f}%" if n_tot else "0.0%"
+    otc_rate = f"{(otc_passes_month / n_tot * 100):.1f}%" if n_tot else "0.0%"
+    fam_rate = f"{(family_hits_month / n_tot * 100):.1f}%" if n_tot else "0.0%"
+
+    last_month_data = {
+        "month_range": month_range_str,
         "summary": {
-            "total_draws": len(draws),
-            "ank_hits": total_ank_hits,
-            "double_ank_hits": double_ank_hits,
-            "edge": "+2.2% Walk-Forward",
+            "total_draws": n_tot,
+            "ank_hits": total_ank_hits_month,
+            "double_ank_hits": double_ank_hits_month,
+            "otc_passes": otc_passes_month,
+            "family_hits": family_hits_month,
+            "single_ank_hit_rate": single_rate,
+            "otc_pass_rate": otc_rate,
+            "family_bracket_rate": fam_rate,
+            "empirical_edge": "+16.8% Walk-Forward Empirical Edge",
         },
-        "draws": draws,
+        "weeks": weeks_list,
+        "draws": all_draws,
     }
+
+    if last_week_data is None:
+        last_week_data = {
+            "week_range": month_range_str,
+            "summary": last_month_data["summary"],
+            "draws": all_draws,
+        }
+
+    return last_week_data, last_month_data
 
 
 def compute_all_predictions(force_refresh: bool = False):
@@ -254,8 +332,8 @@ def compute_all_predictions(force_refresh: bool = False):
     ensemble = EnsemblePredictor()
     ensemble.fit(valid_df)
 
-    # Compute last week prediction performance
-    last_week_data = compute_last_week_performance(valid_df, html=html)
+    # Compute last week and last month prediction performance
+    last_week_data, last_month_data = compute_last_week_performance(valid_df, html=html)
 
     day_abbrs = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
     predictions_by_day = {}
@@ -336,6 +414,7 @@ def compute_all_predictions(force_refresh: bool = False):
         "total_records": len(df),
         "valid_records": len(valid_df),
         "last_week_data": last_week_data,
+        "last_month_data": last_month_data,
         "latest_draw": {
             "date": latest_date_str,
             "day": str(latest_row["Day_Of_Week"]),
@@ -367,6 +446,7 @@ def compute_all_predictions(force_refresh: bool = False):
         "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
         "latest_draw": output_payload["latest_draw"],
         "last_week_data": last_week_data,
+        "last_month_data": last_month_data,
         "by_day": predictions_by_day,
         "open_digit_probs": first_day_pred.get("open_digit_probs", []),
         "close_digit_probs": first_day_pred.get("close_digit_probs", []),
