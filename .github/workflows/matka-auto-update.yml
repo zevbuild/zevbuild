@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: tools/matka
+        working-directory: tools/matka/kalyan_4_35_to_6_35
 
     steps:
       - name: Checkout repository
@@ -30,23 +30,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run scraper to fetch latest results
-        run: python scraper.py
-
-      - name: Generate predictions
-        run: python predict.py
-
-      - name: Sync web directory
-        run: |
-          cp -f prediction_data.json web/prediction_data.json
-          cp -f history.json web/history.json
+      - name: Run scraper, update predictions, and sync datasets
+        run: python sync_and_push.py --no-push
 
       - name: Commit and push changes
         run: |
           cd ${{ github.workspace }}
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add tools/matka/prediction_data.json tools/matka/history.json tools/matka/kalyan_historical_data.csv tools/matka/web/prediction_data.json tools/matka/web/history.json
+          git add tools/matka/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
