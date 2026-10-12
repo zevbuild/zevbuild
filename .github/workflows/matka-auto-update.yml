@@ -2,9 +2,18 @@ name: Matka Auto Update
 
 on:
   schedule:
-    # 10:00 PM IST (4:30 PM UTC) daily
-    - cron: '30 16 * * *'
-  workflow_dispatch: # Allow manual trigger
+    # Mon-Sat Daily Draw & Prediction Sync (7:00 PM IST = 1:30 PM UTC, 10:00 PM IST = 4:30 PM UTC)
+    - cron: '30 13 * * 1-6'
+    - cron: '30 16 * * 1-6'
+    # Sunday Weekly Rollover Bot: Updates dates & baseline predictions for next week (12:00 PM IST = 6:30 AM UTC)
+    - cron: '30 6 * * 0'
+  workflow_dispatch:
+    inputs:
+      sunday_rollover:
+        description: 'Force Sunday weekly rollover to next week'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -33,7 +42,15 @@ jobs:
           pip install -r requirements.txt
 
       - name: Scrape latest results, train ML models, and sync datasets
-        run: python sync_and_push.py --no-push
+        run: |
+          DOW=$(date -u +%u)
+          if [ "$DOW" = "7" ] || [ "${{ github.event.inputs.sunday_rollover }}" = "true" ]; then
+            echo "[BOT] Running Sunday Weekly Rollover Bot (Updating dates & predictions for next week)..."
+            python sync_and_push.py --no-push --sunday-rollover
+          else
+            echo "[BOT] Running Mon-Sat Daily Sync Bot (Updating draw results & predictions; week dates locked)..."
+            python sync_and_push.py --no-push
+          fi
 
       - name: Commit and push changes
         run: |
@@ -44,7 +61,12 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Auto-update Kalyan Matka predictions & historical chart ($(date -u +%Y-%m-%d))"
+            DOW=$(date -u +%u)
+            if [ "$DOW" = "7" ] || [ "${{ github.event.inputs.sunday_rollover }}" = "true" ]; then
+              git commit -m "Sunday Rollover: Update dates & baseline predictions for next week ($(date -u +%Y-%m-%d))"
+            else
+              git commit -m "Auto-update Kalyan Matka draw results & predictions ($(date -u +%Y-%m-%d))"
+            fi
             git pull --rebase origin main
             git push origin main
           fi

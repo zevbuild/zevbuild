@@ -6767,11 +6767,20 @@
         if (!isNaN(parsed.getTime())) baseDate = parsed;
       }
 
-      // Calculate Monday of current operational week (Mon-Sat)
-      const currentDayOfWeek = baseDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
-      const diffToMon = (currentDayOfWeek === 0) ? -6 : 1 - currentDayOfWeek;
-      const weekMonday = new Date(baseDate);
-      weekMonday.setDate(baseDate.getDate() + diffToMon);
+      // Calculate Monday of current operational week (Mon-Sat):
+      // On Sunday, roll over to the upcoming week; Mon-Sat stay strictly locked to this week's Monday
+      const ist = getISTDate();
+      const isSunday = (ist.getDay() === 0);
+      let weekMonday;
+      if (isSunday) {
+        weekMonday = new Date(ist);
+        weekMonday.setDate(ist.getDate() + 1);
+      } else {
+        const currentDayOfWeek = baseDate.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+        const diffToMon = (currentDayOfWeek === 0) ? -6 : 1 - currentDayOfWeek;
+        weekMonday = new Date(baseDate);
+        weekMonday.setDate(baseDate.getDate() + diffToMon);
+      }
 
       for (let i = 0; i < 6; i++) {
         const dDate = new Date(weekMonday);

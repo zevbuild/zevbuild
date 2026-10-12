@@ -11,7 +11,7 @@ import webbrowser
 import argparse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from socketserver import ThreadingMixIn
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import pandas as pd
 import numpy as np
 
@@ -288,7 +288,7 @@ def compute_last_week_performance(valid_df, html=""):
     return last_week_data, last_month_data
 
 
-def compute_all_predictions(force_refresh: bool = False):
+def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: bool = False):
     """Execute live scraping/cache read, retrain models, and generate predictions."""
     # 1. Fetch & parse
     html = fetch_html(force_refresh=force_refresh)
@@ -338,9 +338,32 @@ def compute_all_predictions(force_refresh: bool = False):
     day_abbrs = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
     predictions_by_day = {}
 
-    # Lock draw days strictly to current operational week (Mon-Sat):
-    # Anchor to Monday of the current active week cycle
-    week_monday = latest_date - timedelta(days=latest_date.weekday())
+    # Operational Week Calendar Engine:
+    # 1. Mon-Sat: Week dates remain 100% frozen and consistent throughout Mon-Sat.
+    #    Draw results and prediction probabilities update, but the calendar dates do not shift.
+    # 2. Sunday: The Sunday Rollover Bot runs to advance the week to next week (upcoming Mon-Sat).
+    IST = timezone(timedelta(hours=5, minutes=30))
+    now_ist = datetime.now(IST)
+    today_ist = now_ist.date()
+    latest_draw_date = latest_date.date() if isinstance(latest_date, datetime) else latest_date
+
+    # Determine reference date:
+    # If latest draw is within 14 days of today, use current IST date to check day-of-week.
+    # Otherwise fallback to latest_draw_date (e.g. for historical fixture tests).
+    if abs((today_ist - latest_draw_date).days) <= 14:
+        ref_date = today_ist
+    else:
+        ref_date = latest_draw_date
+
+    is_sunday = (ref_date.weekday() == 6) or force_sunday_rollover
+    if is_sunday:
+        # Sunday Rollover Bot: Roll over to upcoming week (next Monday to Saturday)
+        days_to_next_monday = (7 - ref_date.weekday()) if ref_date.weekday() != 6 else 1
+        week_monday = ref_date + timedelta(days=days_to_next_monday)
+    else:
+        # Monday through Saturday: strictly lock to this operational week's Monday
+        week_monday = ref_date - timedelta(days=ref_date.weekday())
+
     draw_days = [week_monday + timedelta(days=i) for i in range(6)]
 
     for target_d in draw_days:
@@ -404,14 +427,15 @@ def compute_all_predictions(force_refresh: bool = False):
         }
 
     # Target upcoming prediction for active play:
-    # If today's draw is already finished (latest_date), target the next upcoming day in cycle.
+    # If today's draw is already finished (latest_draw_date), target the next upcoming day in cycle.
     target_upcoming_pred = None
     for target_d in draw_days:
-        if target_d > latest_date:
+        if target_d > latest_draw_date:
             target_upcoming_pred = predictions_by_day.get(day_abbrs[target_d.weekday()])
             break
     if not target_upcoming_pred:
-        target_upcoming_pred = predictions_by_day.get("Tue", list(predictions_by_day.values())[0] if predictions_by_day else {})
+        # Default to Monday for fresh week, or first day
+        target_upcoming_pred = predictions_by_day.get("Mon", list(predictions_by_day.values())[0] if predictions_by_day else {})
 
     first_day_pred = target_upcoming_pred
     output_payload = {

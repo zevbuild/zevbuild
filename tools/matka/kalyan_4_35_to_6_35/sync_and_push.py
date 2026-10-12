@@ -27,14 +27,14 @@ def run_git_cmd(args, cwd=REPO_ROOT):
     return res.stdout.strip()
 
 
-def sync_and_push(push: bool = True, custom_msg: str = None):
+def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bool = False):
     print("=" * 65)
     print("  KALYAN MATKA: LIVE PREDICTION SYNC & WEB DEPLOYMENT")
     print("=" * 65)
 
     print("\n[STEP 1/3] Scraping latest results & recalibrating models...")
     try:
-        payload = compute_all_predictions(force_refresh=True)
+        payload = compute_all_predictions(force_refresh=True, force_sunday_rollover=sunday_rollover)
     except Exception as e:
         print(f"[ERROR] Failed during prediction computation: {e}")
         sys.exit(1)
@@ -108,7 +108,8 @@ def sync_and_push(push: bool = True, custom_msg: str = None):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sync Kalyan predictions and automatically push to web")
     parser.add_argument("--no-push", action="store_true", help="Update local files only, do not commit or push to Git")
+    parser.add_argument("--sunday-rollover", action="store_true", help="Force Sunday weekly rollover to next week's dates and predictions")
     parser.add_argument("-m", "--message", type=str, default=None, help="Custom Git commit message")
     args = parser.parse_args()
 
-    sync_and_push(push=not args.no_push, custom_msg=args.message)
+    sync_and_push(push=not args.no_push, custom_msg=args.message, sunday_rollover=args.sunday_rollover)
