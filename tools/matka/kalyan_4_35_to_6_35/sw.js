@@ -1,5 +1,5 @@
 // Kalyan Predictor Service Worker (PWA) - Zev Glass 2.0 Offline Resilience
-const CACHE_NAME = 'kalyan-predictor-cache-v2';
+const CACHE_NAME = 'kalyan-predictor-cache-v3';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -42,8 +42,11 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Network-first for dynamic live API endpoints
-  if (url.pathname.includes('/api/')) {
+  const isHtml = event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html') || url.pathname.endsWith('.html');
+  const isData = url.pathname.endsWith('.json') || url.pathname.includes('/api/');
+
+  // Network-first for HTML pages and dynamic data (prediction_data.json, history.json, api)
+  if (isHtml || isData) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
@@ -53,10 +56,18 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(() => caches.match(event.request) || caches.match('./prediction_data.json'))
+        .catch(() => {
+          return caches.match(event.request).then((cached) => {
+            if (cached) return cached;
+            if (isHtml) return caches.match('./index.html');
+            if (url.pathname.endsWith('prediction_data.json')) return caches.match('./prediction_data.json');
+            if (url.pathname.endsWith('history.json')) return caches.match('./history.json');
+            return null;
+          });
+        })
     );
   } else {
-    // Cache-first fallback to network for static assets and HTML shells
+    // Cache-first for images, fonts, and static assets
     event.respondWith(
       caches.match(event.request).then((cached) => {
         return cached || fetch(event.request).then((response) => {
@@ -65,10 +76,6 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }
           return response;
-        }).catch(() => {
-          if (event.request.headers.get('accept')?.includes('text/html')) {
-            return caches.match('./index.html');
-          }
         });
       })
     );

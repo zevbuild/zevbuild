@@ -159,9 +159,9 @@
           <!-- Compact, subtle Updated by Zevbuild -->
           <span class="text-[10px] text-slate-400 font-medium flex items-center gap-1.5 bg-slate-950/60 px-2 py-0.5 rounded-md border border-slate-800" title="Last developer maintenance update">
             <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-            Updated by Zevbuild: <span id="dev-update-header-date" class="text-purple-300 font-mono">11 Oct 2026</span>
+            Updated by Zevbuild: <span id="dev-update-header-date" class="text-purple-300 font-mono">12 Oct 2026</span>
           </span>
-          <span id="dev-card-date" class="hidden">11 Oct 2026</span>
+          <span id="dev-card-date" class="hidden">12 Oct 2026</span>
         </div>
         <p class="text-xs text-slate-400 mt-1">
           In-browser machine learning engine: polls live draw data every 45s, detects newly declared results, and recalibrates predictions on-the-fly.
@@ -2807,8 +2807,8 @@
         // If full jodi has digits and is different from current latest
         return parsed.jodi && parsed.jodi !== CURRENT_LATEST_DRAW.jodi;
       } else if (parsed.status === 'OPEN_DECLARED') {
-        // If open digit is out and not yet recorded as open live
-        return parsed.openDigit !== null && CURRENT_LATEST_DRAW.openLive !== parsed.openDigit;
+        // If open digit is out and not yet recorded as open live or date is not today
+        return parsed.openDigit !== null && (CURRENT_LATEST_DRAW.openLive !== parsed.openDigit || CURRENT_LATEST_DRAW.status !== 'OPEN_DECLARED');
       }
       return false;
     }
@@ -2840,9 +2840,21 @@
         } catch (e) {}
 
       } else if (parsed.status === 'OPEN_DECLARED') {
-        CURRENT_LATEST_DRAW.openLive = parsed.openDigit;
-        CURRENT_LATEST_DRAW.openLivePatti = parsed.openPatti;
-        CURRENT_LATEST_DRAW.status = 'OPEN_DECLARED';
+        CURRENT_LATEST_DRAW = {
+          date: todayDateStr,
+          day: todayDay,
+          jodi: `${parsed.openDigit}*`,
+          open: parsed.openDigit,
+          close: null,
+          openPatti: parsed.openPatti || "---",
+          closePatti: "***",
+          openLive: parsed.openDigit,
+          openLivePatti: parsed.openPatti || "---",
+          status: 'OPEN_DECLARED',
+        };
+        try {
+          localStorage.setItem('kalyan_latest_draw_v2', JSON.stringify(CURRENT_LATEST_DRAW));
+        } catch (e) {}
       }
     }
 
@@ -3054,17 +3066,19 @@
 
       // Render Latest Draw banner
       if (CURRENT_LATEST_DRAW) {
-        document.getElementById('latest-jodi').textContent = CURRENT_LATEST_DRAW.jodi || "---";
         if (CURRENT_LATEST_DRAW.status === 'OPEN_DECLARED') {
-          document.getElementById('latest-patti').textContent = `Live Open: ${CURRENT_LATEST_DRAW.openLive} (Patti: ${CURRENT_LATEST_DRAW.openLivePatti || '---'})`;
-          document.getElementById('draw-status-badge').textContent = "Open Live";
+          document.getElementById('latest-jodi').textContent = CURRENT_LATEST_DRAW.jodi || `${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open}*`;
+          document.getElementById('latest-patti').textContent = `Live Open: ${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open} (Patti: ${CURRENT_LATEST_DRAW.openLivePatti || CURRENT_LATEST_DRAW.openPatti || '---'}) - Close Pending`;
+          document.getElementById('draw-status-badge').textContent = "Open Declared (4:35 PM)";
           document.getElementById('draw-status-badge').className = "inline-block px-2.5 py-1 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30 font-bold text-xs animate-pulse";
+          document.getElementById('latest-date').textContent = `${CURRENT_LATEST_DRAW.day}, ${CURRENT_LATEST_DRAW.date}`;
         } else {
+          document.getElementById('latest-jodi').textContent = CURRENT_LATEST_DRAW.jodi || "---";
           document.getElementById('latest-patti').textContent = `${CURRENT_LATEST_DRAW.openPatti || '---'} - ${CURRENT_LATEST_DRAW.jodi || '--'} - ${CURRENT_LATEST_DRAW.closePatti || '---'}`;
           document.getElementById('draw-status-badge').textContent = "Official Result";
           document.getElementById('draw-status-badge').className = "inline-block px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold text-xs";
+          document.getElementById('latest-date').textContent = `${CURRENT_LATEST_DRAW.day}, ${CURRENT_LATEST_DRAW.date}`;
         }
-        document.getElementById('latest-date').textContent = `${CURRENT_LATEST_DRAW.day}, ${CURRENT_LATEST_DRAW.date}`;
       }
 
       // Update date sub-labels on day selector tabs
@@ -3734,7 +3748,10 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-          .then((reg) => console.log('[PWA] Service Worker registered with scope:', reg.scope))
+          .then((reg) => {
+            console.log('[PWA] Service Worker registered with scope:', reg.scope);
+            reg.update();
+          })
           .catch((err) => console.warn('[PWA] Service Worker registration ignored/failed:', err));
       });
     }
