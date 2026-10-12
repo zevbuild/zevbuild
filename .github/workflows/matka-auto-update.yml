@@ -24,13 +24,15 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: tools/matka/kalyan_4_35_to_6_35/requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run scraper, update predictions, and sync datasets
+      - name: Scrape latest results, train ML models, and sync datasets
         run: python sync_and_push.py --no-push
 
       - name: Commit and push changes
@@ -43,5 +45,6 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Auto-update Kalyan Matka predictions & historical chart ($(date -u +%Y-%m-%d))"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
