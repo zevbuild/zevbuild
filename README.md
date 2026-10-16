@@ -21,7 +21,7 @@ Zevbuild is an independent software studio based in Goa, India. This repository 
 | [`verify_links_and_assets.py`](verify_links_and_assets.py) | Automated link, DOM anchor, and static asset verification crawler harness (zero external dependencies) |
 | [`404.html`](404.html), [`robots.txt`](robots.txt), [`sitemap.xml`](sitemap.xml) | Smart-routing 404 error handler, crawler rules, and SEO sitemap |
 
-The ZevSafe, ZevSync, and CollegeBus links on the main website point to their separate open-source repositories under the [Zevbuild organization](https://github.com/zevbuild); their source code is managed in dedicated repositories.
+The ZevSafe, ZevBlock, ZevSync, and CollegeBus links on the main website point to their separate open-source repositories under the [Zevbuild organization](https://github.com/zevbuild); their source code is managed in dedicated repositories.
 
 ## Run the website locally
 
