@@ -1,29 +1,331 @@
 {
-  "last_developer_update": "2026-10-18",
-  "last_update_by_developer": "18 Oct 2026",
+  "last_developer_update": "2026-10-19",
+  "last_update_by_developer": "19 Oct 2026",
   "latest_draw": {
-    "date": "2026-10-17",
-    "day": "Sat",
-    "jodi": "77",
-    "open": 7,
-    "close": 7,
-    "openPatti": "250",
-    "closePatti": "359"
+    "date": "2026-10-19",
+    "day": "Mon",
+    "jodi": "58",
+    "open": 5,
+    "close": 8,
+    "openPatti": "159",
+    "closePatti": "170"
   },
   "last_week_data": {
-    "week_range": "05 Oct 2026 \u2013 10 Oct 2026",
+    "week_range": "12 Oct 2026 \u2013 17 Oct 2026",
     "summary": {
       "total_draws": 6,
-      "ank_hits": 4,
+      "ank_hits": 3,
       "double_ank_hits": 1,
       "edge": "+2.2% Walk-Forward"
     },
     "draws": [
       {
-        "date": "2026-10-05",
+        "date": "2026-10-12",
         "day": "Mon",
         "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "55",
+        "actual_open": 5,
+        "actual_close": 5,
+        "open_patti": "159",
+        "close_patti": "690",
+        "predicted_top_pick": "17",
+        "predicted_top_5": [
+          "17",
+          "18",
+          "00",
+          "16",
+          "78"
+        ],
+        "predicted_top_open": [
+          1,
+          2,
+          5
+        ],
+        "predicted_top_close": [
+          8,
+          6,
+          7
+        ],
+        "family_bracket": [
+          "12",
+          "17",
+          "21",
+          "26",
+          "62",
+          "67",
+          "71",
+          "76"
+        ],
+        "otc_digits": [
+          1,
+          3,
+          6,
+          8
+        ],
+        "otc_hit": false,
+        "open_hit": true,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Open Ank Hit (5)",
+        "badge_type": "highlight"
+      },
+      {
+        "date": "2026-10-13",
+        "day": "Tue",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "34",
+        "actual_open": 3,
+        "actual_close": 4,
+        "open_patti": "148",
+        "close_patti": "220",
+        "predicted_top_pick": "16",
+        "predicted_top_5": [
+          "16",
+          "55",
+          "78",
+          "56",
+          "18"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          6
+        ],
+        "predicted_top_close": [
+          8,
+          6,
+          5
+        ],
+        "family_bracket": [
+          "11",
+          "16",
+          "61",
+          "66"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": false,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-14",
+        "day": "Wed",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "91",
+        "actual_open": 9,
+        "actual_close": 1,
+        "open_patti": "234",
+        "close_patti": "335",
+        "predicted_top_pick": "18",
+        "predicted_top_5": [
+          "18",
+          "34",
+          "16",
+          "55",
+          "06"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          3
+        ],
+        "predicted_top_close": [
+          6,
+          8,
+          4
+        ],
+        "family_bracket": [
+          "13",
+          "18",
+          "31",
+          "36",
+          "63",
+          "68",
+          "81",
+          "86"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": true,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "OTC Pass",
+        "badge_type": "info"
+      },
+      {
+        "date": "2026-10-15",
+        "day": "Thu",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "26",
+        "actual_open": 2,
+        "actual_close": 6,
+        "open_patti": "390",
+        "close_patti": "466",
+        "predicted_top_pick": "78",
+        "predicted_top_5": [
+          "78",
+          "34",
+          "54",
+          "55",
+          "16"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          3
+        ],
+        "predicted_top_close": [
+          4,
+          8,
+          5
+        ],
+        "family_bracket": [
+          "23",
+          "28",
+          "32",
+          "37",
+          "73",
+          "78",
+          "82",
+          "87"
+        ],
+        "otc_digits": [
+          0,
+          3,
+          5,
+          8
+        ],
+        "otc_hit": false,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-16",
+        "day": "Fri",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "18",
+        "actual_open": 1,
+        "actual_close": 8,
+        "open_patti": "227",
+        "close_patti": "468",
+        "predicted_top_pick": "26",
+        "predicted_top_5": [
+          "26",
+          "56",
+          "78",
+          "98",
+          "16"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          2
+        ],
+        "predicted_top_close": [
+          6,
+          4,
+          8
+        ],
+        "family_bracket": [
+          "12",
+          "17",
+          "21",
+          "26",
+          "62",
+          "67",
+          "71",
+          "76"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": true,
+        "open_hit": true,
+        "close_hit": true,
+        "jodi_hit": false,
+        "status_label": "Double Ank Hit (Open & Close)",
+        "badge_type": "success"
+      },
+      {
+        "date": "2026-10-17",
+        "day": "Sat",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "77",
+        "actual_open": 7,
+        "actual_close": 7,
+        "open_patti": "250",
+        "close_patti": "359",
+        "predicted_top_pick": "18",
+        "predicted_top_5": [
+          "18",
+          "65",
+          "84",
+          "26",
+          "98"
+        ],
+        "predicted_top_open": [
+          1,
+          5,
+          3
+        ],
+        "predicted_top_close": [
+          8,
+          6,
+          5
+        ],
+        "family_bracket": [
+          "13",
+          "18",
+          "31",
+          "36",
+          "63",
+          "68",
+          "81",
+          "86"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": false,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-05",
+        "day": "Mon",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "16",
         "actual_open": 1,
         "actual_close": 6,
@@ -73,8 +375,8 @@
       {
         "date": "2026-10-06",
         "day": "Tue",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "47",
         "actual_open": 4,
         "actual_close": 7,
@@ -124,8 +426,8 @@
       {
         "date": "2026-10-07",
         "day": "Wed",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "54",
         "actual_open": 5,
         "actual_close": 4,
@@ -171,8 +473,8 @@
       {
         "date": "2026-10-08",
         "day": "Thu",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "56",
         "actual_open": 5,
         "actual_close": 6,
@@ -218,8 +520,8 @@
       {
         "date": "2026-10-09",
         "day": "Fri",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "39",
         "actual_open": 3,
         "actual_close": 9,
@@ -265,8 +567,8 @@
       {
         "date": "2026-10-10",
         "day": "Sat",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "78",
         "actual_open": 7,
         "actual_close": 8,
@@ -312,8 +614,8 @@
       {
         "date": "2026-09-28",
         "day": "Mon",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "17",
         "actual_open": 1,
         "actual_close": 7,
@@ -359,8 +661,8 @@
       {
         "date": "2026-09-29",
         "day": "Tue",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "22",
         "actual_open": 2,
         "actual_close": 2,
@@ -410,8 +712,8 @@
       {
         "date": "2026-09-30",
         "day": "Wed",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "88",
         "actual_open": 8,
         "actual_close": 8,
@@ -461,8 +763,8 @@
       {
         "date": "2026-10-01",
         "day": "Thu",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "18",
         "actual_open": 1,
         "actual_close": 8,
@@ -508,8 +810,8 @@
       {
         "date": "2026-10-02",
         "day": "Fri",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "84",
         "actual_open": 8,
         "actual_close": 4,
@@ -559,8 +861,8 @@
       {
         "date": "2026-10-03",
         "day": "Sat",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "98",
         "actual_open": 9,
         "actual_close": 8,
@@ -610,8 +912,8 @@
       {
         "date": "2026-09-21",
         "day": "Mon",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "24",
         "actual_open": 2,
         "actual_close": 4,
@@ -661,8 +963,8 @@
       {
         "date": "2026-09-22",
         "day": "Tue",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "65",
         "actual_open": 6,
         "actual_close": 5,
@@ -708,8 +1010,8 @@
       {
         "date": "2026-09-23",
         "day": "Wed",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "11",
         "actual_open": 1,
         "actual_close": 1,
@@ -759,8 +1061,8 @@
       {
         "date": "2026-09-24",
         "day": "Thu",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "05",
         "actual_open": 0,
         "actual_close": 5,
@@ -806,8 +1108,8 @@
       {
         "date": "2026-09-25",
         "day": "Fri",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "27",
         "actual_open": 2,
         "actual_close": 7,
@@ -857,8 +1159,8 @@
       {
         "date": "2026-09-26",
         "day": "Sat",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "16",
         "actual_open": 1,
         "actual_close": 6,
@@ -904,324 +1206,341 @@
         "jodi_hit": false,
         "status_label": "OTC Pass",
         "badge_type": "info"
-      },
-      {
-        "date": "2026-09-14",
-        "day": "Mon",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "00",
-        "actual_open": 0,
-        "actual_close": 0,
-        "open_patti": "299",
-        "close_patti": "136",
-        "predicted_top_pick": "15",
-        "predicted_top_5": [
-          "15",
-          "59",
-          "69",
-          "65",
-          "96"
-        ],
-        "predicted_top_open": [
-          3,
-          1,
-          6
-        ],
-        "predicted_top_close": [
-          5,
-          9,
-          6
-        ],
-        "family_bracket": [
-          "01",
-          "06",
-          "10",
-          "15",
-          "51",
-          "56",
-          "60",
-          "65"
-        ],
-        "otc_digits": [
-          1,
-          3,
-          6,
-          8
-        ],
-        "otc_hit": false,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "Standard Variance",
-        "badge_type": "neutral"
-      },
-      {
-        "date": "2026-09-15",
-        "day": "Tue",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "58",
-        "actual_open": 5,
-        "actual_close": 8,
-        "open_patti": "348",
-        "close_patti": "800",
-        "predicted_top_pick": "15",
-        "predicted_top_5": [
-          "15",
-          "04",
-          "00",
-          "13",
-          "30"
-        ],
-        "predicted_top_open": [
-          1,
-          3,
-          6
-        ],
-        "predicted_top_close": [
-          5,
-          0,
-          3
-        ],
-        "family_bracket": [
-          "01",
-          "06",
-          "10",
-          "15",
-          "51",
-          "56",
-          "60",
-          "65"
-        ],
-        "otc_digits": [
-          1,
-          3,
-          6,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "OTC Pass",
-        "badge_type": "info"
-      },
-      {
-        "date": "2026-09-16",
-        "day": "Wed",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "50",
-        "actual_open": 5,
-        "actual_close": 0,
-        "open_patti": "159",
-        "close_patti": "235",
-        "predicted_top_pick": "15",
-        "predicted_top_5": [
-          "15",
-          "58",
-          "00",
-          "27",
-          "35"
-        ],
-        "predicted_top_open": [
-          3,
-          1,
-          6
-        ],
-        "predicted_top_close": [
-          5,
-          0,
-          7
-        ],
-        "family_bracket": [
-          "01",
-          "06",
-          "10",
-          "15",
-          "51",
-          "56",
-          "60",
-          "65"
-        ],
-        "otc_digits": [
-          0,
-          1,
-          5,
-          6
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": true,
-        "jodi_hit": false,
-        "status_label": "Close Ank Hit (0)",
-        "badge_type": "highlight"
-      },
-      {
-        "date": "2026-09-17",
-        "day": "Thu",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "58",
-        "actual_open": 5,
-        "actual_close": 8,
-        "open_patti": "447",
-        "close_patti": "233",
-        "predicted_top_pick": "50",
-        "predicted_top_5": [
-          "50",
-          "15",
-          "69",
-          "92",
-          "58"
-        ],
-        "predicted_top_open": [
-          5,
-          3,
-          6
-        ],
-        "predicted_top_close": [
-          0,
-          8,
-          5
-        ],
-        "family_bracket": [
-          "00",
-          "05",
-          "50",
-          "55"
-        ],
-        "otc_digits": [
-          0,
-          3,
-          5,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": true,
-        "close_hit": true,
-        "jodi_hit": true,
-        "status_label": "Double Ank Hit (Open & Close)",
-        "badge_type": "success"
-      },
-      {
-        "date": "2026-09-18",
-        "day": "Fri",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "73",
-        "actual_open": 7,
-        "actual_close": 3,
-        "open_patti": "700",
-        "close_patti": "238",
-        "predicted_top_pick": "50",
-        "predicted_top_5": [
-          "50",
-          "58",
-          "15",
-          "52",
-          "00"
-        ],
-        "predicted_top_open": [
-          5,
-          3,
-          1
-        ],
-        "predicted_top_close": [
-          0,
-          5,
-          8
-        ],
-        "family_bracket": [
-          "00",
-          "05",
-          "50",
-          "55"
-        ],
-        "otc_digits": [
-          0,
-          3,
-          5,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "OTC Pass",
-        "badge_type": "info"
-      },
-      {
-        "date": "2026-09-19",
-        "day": "Sat",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "43",
-        "actual_open": 4,
-        "actual_close": 3,
-        "open_patti": "266",
-        "close_patti": "247",
-        "predicted_top_pick": "58",
-        "predicted_top_5": [
-          "58",
-          "50",
-          "15",
-          "73",
-          "88"
-        ],
-        "predicted_top_open": [
-          5,
-          3,
-          7
-        ],
-        "predicted_top_close": [
-          8,
-          0,
-          2
-        ],
-        "family_bracket": [
-          "03",
-          "08",
-          "30",
-          "35",
-          "53",
-          "58",
-          "80",
-          "85"
-        ],
-        "otc_digits": [
-          0,
-          3,
-          5,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "OTC Pass",
-        "badge_type": "info"
       }
     ]
   },
   "last_month_data": {
-    "month_range": "14 Sep 2026 \u2013 10 Oct 2026 (Last 30 Days)",
+    "month_range": "21 Sep 2026 \u2013 17 Oct 2026 (Last 30 Days)",
     "summary": {
       "total_draws": 24,
       "ank_hits": 13,
       "double_ank_hits": 3,
-      "otc_passes": 12,
+      "otc_passes": 9,
       "family_hits": 0,
       "single_ank_hit_rate": "54.2%",
-      "otc_pass_rate": "50.0%",
+      "otc_pass_rate": "37.5%",
       "family_bracket_rate": "0.0%",
       "empirical_edge": "+16.8% Walk-Forward Empirical Edge"
     },
     "weeks": [
       {
         "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "date_range": "2026-10-12 \u2013 2026-10-17",
+        "summary": {
+          "total_draws": 6,
+          "ank_hits": 3,
+          "double_ank_hits": 1,
+          "pass_rate": "50.0%"
+        },
+        "draws": [
+          {
+            "date": "2026-10-12",
+            "day": "Mon",
+            "week_id": "week_4",
+            "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+            "actual_jodi": "55",
+            "actual_open": 5,
+            "actual_close": 5,
+            "open_patti": "159",
+            "close_patti": "690",
+            "predicted_top_pick": "17",
+            "predicted_top_5": [
+              "17",
+              "18",
+              "00",
+              "16",
+              "78"
+            ],
+            "predicted_top_open": [
+              1,
+              2,
+              5
+            ],
+            "predicted_top_close": [
+              8,
+              6,
+              7
+            ],
+            "family_bracket": [
+              "12",
+              "17",
+              "21",
+              "26",
+              "62",
+              "67",
+              "71",
+              "76"
+            ],
+            "otc_digits": [
+              1,
+              3,
+              6,
+              8
+            ],
+            "otc_hit": false,
+            "open_hit": true,
+            "close_hit": false,
+            "jodi_hit": false,
+            "status_label": "Open Ank Hit (5)",
+            "badge_type": "highlight"
+          },
+          {
+            "date": "2026-10-13",
+            "day": "Tue",
+            "week_id": "week_4",
+            "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+            "actual_jodi": "34",
+            "actual_open": 3,
+            "actual_close": 4,
+            "open_patti": "148",
+            "close_patti": "220",
+            "predicted_top_pick": "16",
+            "predicted_top_5": [
+              "16",
+              "55",
+              "78",
+              "56",
+              "18"
+            ],
+            "predicted_top_open": [
+              5,
+              1,
+              6
+            ],
+            "predicted_top_close": [
+              8,
+              6,
+              5
+            ],
+            "family_bracket": [
+              "11",
+              "16",
+              "61",
+              "66"
+            ],
+            "otc_digits": [
+              0,
+              1,
+              5,
+              6
+            ],
+            "otc_hit": false,
+            "open_hit": false,
+            "close_hit": false,
+            "jodi_hit": false,
+            "status_label": "Standard Variance",
+            "badge_type": "neutral"
+          },
+          {
+            "date": "2026-10-14",
+            "day": "Wed",
+            "week_id": "week_4",
+            "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+            "actual_jodi": "91",
+            "actual_open": 9,
+            "actual_close": 1,
+            "open_patti": "234",
+            "close_patti": "335",
+            "predicted_top_pick": "18",
+            "predicted_top_5": [
+              "18",
+              "34",
+              "16",
+              "55",
+              "06"
+            ],
+            "predicted_top_open": [
+              5,
+              1,
+              3
+            ],
+            "predicted_top_close": [
+              6,
+              8,
+              4
+            ],
+            "family_bracket": [
+              "13",
+              "18",
+              "31",
+              "36",
+              "63",
+              "68",
+              "81",
+              "86"
+            ],
+            "otc_digits": [
+              0,
+              1,
+              5,
+              6
+            ],
+            "otc_hit": true,
+            "open_hit": false,
+            "close_hit": false,
+            "jodi_hit": false,
+            "status_label": "OTC Pass",
+            "badge_type": "info"
+          },
+          {
+            "date": "2026-10-15",
+            "day": "Thu",
+            "week_id": "week_4",
+            "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+            "actual_jodi": "26",
+            "actual_open": 2,
+            "actual_close": 6,
+            "open_patti": "390",
+            "close_patti": "466",
+            "predicted_top_pick": "78",
+            "predicted_top_5": [
+              "78",
+              "34",
+              "54",
+              "55",
+              "16"
+            ],
+            "predicted_top_open": [
+              5,
+              1,
+              3
+            ],
+            "predicted_top_close": [
+              4,
+              8,
+              5
+            ],
+            "family_bracket": [
+              "23",
+              "28",
+              "32",
+              "37",
+              "73",
+              "78",
+              "82",
+              "87"
+            ],
+            "otc_digits": [
+              0,
+              3,
+              5,
+              8
+            ],
+            "otc_hit": false,
+            "open_hit": false,
+            "close_hit": false,
+            "jodi_hit": false,
+            "status_label": "Standard Variance",
+            "badge_type": "neutral"
+          },
+          {
+            "date": "2026-10-16",
+            "day": "Fri",
+            "week_id": "week_4",
+            "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+            "actual_jodi": "18",
+            "actual_open": 1,
+            "actual_close": 8,
+            "open_patti": "227",
+            "close_patti": "468",
+            "predicted_top_pick": "26",
+            "predicted_top_5": [
+              "26",
+              "56",
+              "78",
+              "98",
+              "16"
+            ],
+            "predicted_top_open": [
+              5,
+              1,
+              2
+            ],
+            "predicted_top_close": [
+              6,
+              4,
+              8
+            ],
+            "family_bracket": [
+              "12",
+              "17",
+              "21",
+              "26",
+              "62",
+              "67",
+              "71",
+              "76"
+            ],
+            "otc_digits": [
+              0,
+              1,
+              5,
+              6
+            ],
+            "otc_hit": true,
+            "open_hit": true,
+            "close_hit": true,
+            "jodi_hit": false,
+            "status_label": "Double Ank Hit (Open & Close)",
+            "badge_type": "success"
+          },
+          {
+            "date": "2026-10-17",
+            "day": "Sat",
+            "week_id": "week_4",
+            "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+            "actual_jodi": "77",
+            "actual_open": 7,
+            "actual_close": 7,
+            "open_patti": "250",
+            "close_patti": "359",
+            "predicted_top_pick": "18",
+            "predicted_top_5": [
+              "18",
+              "65",
+              "84",
+              "26",
+              "98"
+            ],
+            "predicted_top_open": [
+              1,
+              5,
+              3
+            ],
+            "predicted_top_close": [
+              8,
+              6,
+              5
+            ],
+            "family_bracket": [
+              "13",
+              "18",
+              "31",
+              "36",
+              "63",
+              "68",
+              "81",
+              "86"
+            ],
+            "otc_digits": [
+              0,
+              1,
+              5,
+              6
+            ],
+            "otc_hit": false,
+            "open_hit": false,
+            "close_hit": false,
+            "jodi_hit": false,
+            "status_label": "Standard Variance",
+            "badge_type": "neutral"
+          }
+        ]
+      },
+      {
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "date_range": "2026-10-05 \u2013 2026-10-10",
         "summary": {
           "total_draws": 6,
@@ -1233,8 +1552,8 @@
           {
             "date": "2026-10-05",
             "day": "Mon",
-            "week_id": "week_4",
-            "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+            "week_id": "week_3",
+            "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
             "actual_jodi": "16",
             "actual_open": 1,
             "actual_close": 6,
@@ -1284,8 +1603,8 @@
           {
             "date": "2026-10-06",
             "day": "Tue",
-            "week_id": "week_4",
-            "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+            "week_id": "week_3",
+            "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
             "actual_jodi": "47",
             "actual_open": 4,
             "actual_close": 7,
@@ -1335,8 +1654,8 @@
           {
             "date": "2026-10-07",
             "day": "Wed",
-            "week_id": "week_4",
-            "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+            "week_id": "week_3",
+            "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
             "actual_jodi": "54",
             "actual_open": 5,
             "actual_close": 4,
@@ -1382,8 +1701,8 @@
           {
             "date": "2026-10-08",
             "day": "Thu",
-            "week_id": "week_4",
-            "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+            "week_id": "week_3",
+            "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
             "actual_jodi": "56",
             "actual_open": 5,
             "actual_close": 6,
@@ -1429,8 +1748,8 @@
           {
             "date": "2026-10-09",
             "day": "Fri",
-            "week_id": "week_4",
-            "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+            "week_id": "week_3",
+            "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
             "actual_jodi": "39",
             "actual_open": 3,
             "actual_close": 9,
@@ -1476,8 +1795,8 @@
           {
             "date": "2026-10-10",
             "day": "Sat",
-            "week_id": "week_4",
-            "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+            "week_id": "week_3",
+            "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
             "actual_jodi": "78",
             "actual_open": 7,
             "actual_close": 8,
@@ -1523,8 +1842,8 @@
         ]
       },
       {
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "date_range": "2026-09-28 \u2013 2026-10-03",
         "summary": {
           "total_draws": 6,
@@ -1536,8 +1855,8 @@
           {
             "date": "2026-09-28",
             "day": "Mon",
-            "week_id": "week_3",
-            "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+            "week_id": "week_2",
+            "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
             "actual_jodi": "17",
             "actual_open": 1,
             "actual_close": 7,
@@ -1583,8 +1902,8 @@
           {
             "date": "2026-09-29",
             "day": "Tue",
-            "week_id": "week_3",
-            "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+            "week_id": "week_2",
+            "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
             "actual_jodi": "22",
             "actual_open": 2,
             "actual_close": 2,
@@ -1634,8 +1953,8 @@
           {
             "date": "2026-09-30",
             "day": "Wed",
-            "week_id": "week_3",
-            "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+            "week_id": "week_2",
+            "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
             "actual_jodi": "88",
             "actual_open": 8,
             "actual_close": 8,
@@ -1685,8 +2004,8 @@
           {
             "date": "2026-10-01",
             "day": "Thu",
-            "week_id": "week_3",
-            "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+            "week_id": "week_2",
+            "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
             "actual_jodi": "18",
             "actual_open": 1,
             "actual_close": 8,
@@ -1732,8 +2051,8 @@
           {
             "date": "2026-10-02",
             "day": "Fri",
-            "week_id": "week_3",
-            "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+            "week_id": "week_2",
+            "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
             "actual_jodi": "84",
             "actual_open": 8,
             "actual_close": 4,
@@ -1783,8 +2102,8 @@
           {
             "date": "2026-10-03",
             "day": "Sat",
-            "week_id": "week_3",
-            "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+            "week_id": "week_2",
+            "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
             "actual_jodi": "98",
             "actual_open": 9,
             "actual_close": 8,
@@ -1834,8 +2153,8 @@
         ]
       },
       {
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "date_range": "2026-09-21 \u2013 2026-09-26",
         "summary": {
           "total_draws": 6,
@@ -1847,8 +2166,8 @@
           {
             "date": "2026-09-21",
             "day": "Mon",
-            "week_id": "week_2",
-            "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+            "week_id": "week_1",
+            "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
             "actual_jodi": "24",
             "actual_open": 2,
             "actual_close": 4,
@@ -1898,8 +2217,8 @@
           {
             "date": "2026-09-22",
             "day": "Tue",
-            "week_id": "week_2",
-            "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+            "week_id": "week_1",
+            "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
             "actual_jodi": "65",
             "actual_open": 6,
             "actual_close": 5,
@@ -1945,8 +2264,8 @@
           {
             "date": "2026-09-23",
             "day": "Wed",
-            "week_id": "week_2",
-            "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+            "week_id": "week_1",
+            "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
             "actual_jodi": "11",
             "actual_open": 1,
             "actual_close": 1,
@@ -1996,8 +2315,8 @@
           {
             "date": "2026-09-24",
             "day": "Thu",
-            "week_id": "week_2",
-            "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+            "week_id": "week_1",
+            "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
             "actual_jodi": "05",
             "actual_open": 0,
             "actual_close": 5,
@@ -2043,8 +2362,8 @@
           {
             "date": "2026-09-25",
             "day": "Fri",
-            "week_id": "week_2",
-            "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+            "week_id": "week_1",
+            "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
             "actual_jodi": "27",
             "actual_open": 2,
             "actual_close": 7,
@@ -2094,8 +2413,8 @@
           {
             "date": "2026-09-26",
             "day": "Sat",
-            "week_id": "week_2",
-            "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+            "week_id": "week_1",
+            "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
             "actual_jodi": "16",
             "actual_open": 1,
             "actual_close": 6,
@@ -2143,325 +2462,316 @@
             "badge_type": "info"
           }
         ]
-      },
-      {
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "date_range": "2026-09-14 \u2013 2026-09-19",
-        "summary": {
-          "total_draws": 6,
-          "ank_hits": 3,
-          "double_ank_hits": 1,
-          "pass_rate": "50.0%"
-        },
-        "draws": [
-          {
-            "date": "2026-09-14",
-            "day": "Mon",
-            "week_id": "week_1",
-            "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-            "actual_jodi": "00",
-            "actual_open": 0,
-            "actual_close": 0,
-            "open_patti": "299",
-            "close_patti": "136",
-            "predicted_top_pick": "15",
-            "predicted_top_5": [
-              "15",
-              "59",
-              "69",
-              "65",
-              "96"
-            ],
-            "predicted_top_open": [
-              3,
-              1,
-              6
-            ],
-            "predicted_top_close": [
-              5,
-              9,
-              6
-            ],
-            "family_bracket": [
-              "01",
-              "06",
-              "10",
-              "15",
-              "51",
-              "56",
-              "60",
-              "65"
-            ],
-            "otc_digits": [
-              1,
-              3,
-              6,
-              8
-            ],
-            "otc_hit": false,
-            "open_hit": false,
-            "close_hit": false,
-            "jodi_hit": false,
-            "status_label": "Standard Variance",
-            "badge_type": "neutral"
-          },
-          {
-            "date": "2026-09-15",
-            "day": "Tue",
-            "week_id": "week_1",
-            "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-            "actual_jodi": "58",
-            "actual_open": 5,
-            "actual_close": 8,
-            "open_patti": "348",
-            "close_patti": "800",
-            "predicted_top_pick": "15",
-            "predicted_top_5": [
-              "15",
-              "04",
-              "00",
-              "13",
-              "30"
-            ],
-            "predicted_top_open": [
-              1,
-              3,
-              6
-            ],
-            "predicted_top_close": [
-              5,
-              0,
-              3
-            ],
-            "family_bracket": [
-              "01",
-              "06",
-              "10",
-              "15",
-              "51",
-              "56",
-              "60",
-              "65"
-            ],
-            "otc_digits": [
-              1,
-              3,
-              6,
-              8
-            ],
-            "otc_hit": true,
-            "open_hit": false,
-            "close_hit": false,
-            "jodi_hit": false,
-            "status_label": "OTC Pass",
-            "badge_type": "info"
-          },
-          {
-            "date": "2026-09-16",
-            "day": "Wed",
-            "week_id": "week_1",
-            "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-            "actual_jodi": "50",
-            "actual_open": 5,
-            "actual_close": 0,
-            "open_patti": "159",
-            "close_patti": "235",
-            "predicted_top_pick": "15",
-            "predicted_top_5": [
-              "15",
-              "58",
-              "00",
-              "27",
-              "35"
-            ],
-            "predicted_top_open": [
-              3,
-              1,
-              6
-            ],
-            "predicted_top_close": [
-              5,
-              0,
-              7
-            ],
-            "family_bracket": [
-              "01",
-              "06",
-              "10",
-              "15",
-              "51",
-              "56",
-              "60",
-              "65"
-            ],
-            "otc_digits": [
-              0,
-              1,
-              5,
-              6
-            ],
-            "otc_hit": true,
-            "open_hit": false,
-            "close_hit": true,
-            "jodi_hit": false,
-            "status_label": "Close Ank Hit (0)",
-            "badge_type": "highlight"
-          },
-          {
-            "date": "2026-09-17",
-            "day": "Thu",
-            "week_id": "week_1",
-            "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-            "actual_jodi": "58",
-            "actual_open": 5,
-            "actual_close": 8,
-            "open_patti": "447",
-            "close_patti": "233",
-            "predicted_top_pick": "50",
-            "predicted_top_5": [
-              "50",
-              "15",
-              "69",
-              "92",
-              "58"
-            ],
-            "predicted_top_open": [
-              5,
-              3,
-              6
-            ],
-            "predicted_top_close": [
-              0,
-              8,
-              5
-            ],
-            "family_bracket": [
-              "00",
-              "05",
-              "50",
-              "55"
-            ],
-            "otc_digits": [
-              0,
-              3,
-              5,
-              8
-            ],
-            "otc_hit": true,
-            "open_hit": true,
-            "close_hit": true,
-            "jodi_hit": true,
-            "status_label": "Double Ank Hit (Open & Close)",
-            "badge_type": "success"
-          },
-          {
-            "date": "2026-09-18",
-            "day": "Fri",
-            "week_id": "week_1",
-            "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-            "actual_jodi": "73",
-            "actual_open": 7,
-            "actual_close": 3,
-            "open_patti": "700",
-            "close_patti": "238",
-            "predicted_top_pick": "50",
-            "predicted_top_5": [
-              "50",
-              "58",
-              "15",
-              "52",
-              "00"
-            ],
-            "predicted_top_open": [
-              5,
-              3,
-              1
-            ],
-            "predicted_top_close": [
-              0,
-              5,
-              8
-            ],
-            "family_bracket": [
-              "00",
-              "05",
-              "50",
-              "55"
-            ],
-            "otc_digits": [
-              0,
-              3,
-              5,
-              8
-            ],
-            "otc_hit": true,
-            "open_hit": false,
-            "close_hit": false,
-            "jodi_hit": false,
-            "status_label": "OTC Pass",
-            "badge_type": "info"
-          },
-          {
-            "date": "2026-09-19",
-            "day": "Sat",
-            "week_id": "week_1",
-            "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-            "actual_jodi": "43",
-            "actual_open": 4,
-            "actual_close": 3,
-            "open_patti": "266",
-            "close_patti": "247",
-            "predicted_top_pick": "58",
-            "predicted_top_5": [
-              "58",
-              "50",
-              "15",
-              "73",
-              "88"
-            ],
-            "predicted_top_open": [
-              5,
-              3,
-              7
-            ],
-            "predicted_top_close": [
-              8,
-              0,
-              2
-            ],
-            "family_bracket": [
-              "03",
-              "08",
-              "30",
-              "35",
-              "53",
-              "58",
-              "80",
-              "85"
-            ],
-            "otc_digits": [
-              0,
-              3,
-              5,
-              8
-            ],
-            "otc_hit": true,
-            "open_hit": false,
-            "close_hit": false,
-            "jodi_hit": false,
-            "status_label": "OTC Pass",
-            "badge_type": "info"
-          }
-        ]
       }
     ],
     "draws": [
       {
-        "date": "2026-10-05",
+        "date": "2026-10-12",
         "day": "Mon",
         "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "55",
+        "actual_open": 5,
+        "actual_close": 5,
+        "open_patti": "159",
+        "close_patti": "690",
+        "predicted_top_pick": "17",
+        "predicted_top_5": [
+          "17",
+          "18",
+          "00",
+          "16",
+          "78"
+        ],
+        "predicted_top_open": [
+          1,
+          2,
+          5
+        ],
+        "predicted_top_close": [
+          8,
+          6,
+          7
+        ],
+        "family_bracket": [
+          "12",
+          "17",
+          "21",
+          "26",
+          "62",
+          "67",
+          "71",
+          "76"
+        ],
+        "otc_digits": [
+          1,
+          3,
+          6,
+          8
+        ],
+        "otc_hit": false,
+        "open_hit": true,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Open Ank Hit (5)",
+        "badge_type": "highlight"
+      },
+      {
+        "date": "2026-10-13",
+        "day": "Tue",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "34",
+        "actual_open": 3,
+        "actual_close": 4,
+        "open_patti": "148",
+        "close_patti": "220",
+        "predicted_top_pick": "16",
+        "predicted_top_5": [
+          "16",
+          "55",
+          "78",
+          "56",
+          "18"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          6
+        ],
+        "predicted_top_close": [
+          8,
+          6,
+          5
+        ],
+        "family_bracket": [
+          "11",
+          "16",
+          "61",
+          "66"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": false,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-14",
+        "day": "Wed",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "91",
+        "actual_open": 9,
+        "actual_close": 1,
+        "open_patti": "234",
+        "close_patti": "335",
+        "predicted_top_pick": "18",
+        "predicted_top_5": [
+          "18",
+          "34",
+          "16",
+          "55",
+          "06"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          3
+        ],
+        "predicted_top_close": [
+          6,
+          8,
+          4
+        ],
+        "family_bracket": [
+          "13",
+          "18",
+          "31",
+          "36",
+          "63",
+          "68",
+          "81",
+          "86"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": true,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "OTC Pass",
+        "badge_type": "info"
+      },
+      {
+        "date": "2026-10-15",
+        "day": "Thu",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "26",
+        "actual_open": 2,
+        "actual_close": 6,
+        "open_patti": "390",
+        "close_patti": "466",
+        "predicted_top_pick": "78",
+        "predicted_top_5": [
+          "78",
+          "34",
+          "54",
+          "55",
+          "16"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          3
+        ],
+        "predicted_top_close": [
+          4,
+          8,
+          5
+        ],
+        "family_bracket": [
+          "23",
+          "28",
+          "32",
+          "37",
+          "73",
+          "78",
+          "82",
+          "87"
+        ],
+        "otc_digits": [
+          0,
+          3,
+          5,
+          8
+        ],
+        "otc_hit": false,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-16",
+        "day": "Fri",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "18",
+        "actual_open": 1,
+        "actual_close": 8,
+        "open_patti": "227",
+        "close_patti": "468",
+        "predicted_top_pick": "26",
+        "predicted_top_5": [
+          "26",
+          "56",
+          "78",
+          "98",
+          "16"
+        ],
+        "predicted_top_open": [
+          5,
+          1,
+          2
+        ],
+        "predicted_top_close": [
+          6,
+          4,
+          8
+        ],
+        "family_bracket": [
+          "12",
+          "17",
+          "21",
+          "26",
+          "62",
+          "67",
+          "71",
+          "76"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": true,
+        "open_hit": true,
+        "close_hit": true,
+        "jodi_hit": false,
+        "status_label": "Double Ank Hit (Open & Close)",
+        "badge_type": "success"
+      },
+      {
+        "date": "2026-10-17",
+        "day": "Sat",
+        "week_id": "week_4",
+        "week_label": "12 Oct \u2013 17 Oct 2026 (Last Week)",
+        "actual_jodi": "77",
+        "actual_open": 7,
+        "actual_close": 7,
+        "open_patti": "250",
+        "close_patti": "359",
+        "predicted_top_pick": "18",
+        "predicted_top_5": [
+          "18",
+          "65",
+          "84",
+          "26",
+          "98"
+        ],
+        "predicted_top_open": [
+          1,
+          5,
+          3
+        ],
+        "predicted_top_close": [
+          8,
+          6,
+          5
+        ],
+        "family_bracket": [
+          "13",
+          "18",
+          "31",
+          "36",
+          "63",
+          "68",
+          "81",
+          "86"
+        ],
+        "otc_digits": [
+          0,
+          1,
+          5,
+          6
+        ],
+        "otc_hit": false,
+        "open_hit": false,
+        "close_hit": false,
+        "jodi_hit": false,
+        "status_label": "Standard Variance",
+        "badge_type": "neutral"
+      },
+      {
+        "date": "2026-10-05",
+        "day": "Mon",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "16",
         "actual_open": 1,
         "actual_close": 6,
@@ -2511,8 +2821,8 @@
       {
         "date": "2026-10-06",
         "day": "Tue",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "47",
         "actual_open": 4,
         "actual_close": 7,
@@ -2562,8 +2872,8 @@
       {
         "date": "2026-10-07",
         "day": "Wed",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "54",
         "actual_open": 5,
         "actual_close": 4,
@@ -2609,8 +2919,8 @@
       {
         "date": "2026-10-08",
         "day": "Thu",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "56",
         "actual_open": 5,
         "actual_close": 6,
@@ -2656,8 +2966,8 @@
       {
         "date": "2026-10-09",
         "day": "Fri",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "39",
         "actual_open": 3,
         "actual_close": 9,
@@ -2703,8 +3013,8 @@
       {
         "date": "2026-10-10",
         "day": "Sat",
-        "week_id": "week_4",
-        "week_label": "05 Oct \u2013 10 Oct 2026 (Last Week)",
+        "week_id": "week_3",
+        "week_label": "05 Oct \u2013 10 Oct 2026 (2 Weeks Ago)",
         "actual_jodi": "78",
         "actual_open": 7,
         "actual_close": 8,
@@ -2750,8 +3060,8 @@
       {
         "date": "2026-09-28",
         "day": "Mon",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "17",
         "actual_open": 1,
         "actual_close": 7,
@@ -2797,8 +3107,8 @@
       {
         "date": "2026-09-29",
         "day": "Tue",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "22",
         "actual_open": 2,
         "actual_close": 2,
@@ -2848,8 +3158,8 @@
       {
         "date": "2026-09-30",
         "day": "Wed",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "88",
         "actual_open": 8,
         "actual_close": 8,
@@ -2899,8 +3209,8 @@
       {
         "date": "2026-10-01",
         "day": "Thu",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "18",
         "actual_open": 1,
         "actual_close": 8,
@@ -2946,8 +3256,8 @@
       {
         "date": "2026-10-02",
         "day": "Fri",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "84",
         "actual_open": 8,
         "actual_close": 4,
@@ -2997,8 +3307,8 @@
       {
         "date": "2026-10-03",
         "day": "Sat",
-        "week_id": "week_3",
-        "week_label": "28 Sep \u2013 03 Oct 2026 (2 Weeks Ago)",
+        "week_id": "week_2",
+        "week_label": "28 Sep \u2013 03 Oct 2026 (3 Weeks Ago)",
         "actual_jodi": "98",
         "actual_open": 9,
         "actual_close": 8,
@@ -3048,8 +3358,8 @@
       {
         "date": "2026-09-21",
         "day": "Mon",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "24",
         "actual_open": 2,
         "actual_close": 4,
@@ -3099,8 +3409,8 @@
       {
         "date": "2026-09-22",
         "day": "Tue",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "65",
         "actual_open": 6,
         "actual_close": 5,
@@ -3146,8 +3456,8 @@
       {
         "date": "2026-09-23",
         "day": "Wed",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "11",
         "actual_open": 1,
         "actual_close": 1,
@@ -3197,8 +3507,8 @@
       {
         "date": "2026-09-24",
         "day": "Thu",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "05",
         "actual_open": 0,
         "actual_close": 5,
@@ -3244,8 +3554,8 @@
       {
         "date": "2026-09-25",
         "day": "Fri",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "27",
         "actual_open": 2,
         "actual_close": 7,
@@ -3295,8 +3605,8 @@
       {
         "date": "2026-09-26",
         "day": "Sat",
-        "week_id": "week_2",
-        "week_label": "21 Sep \u2013 26 Sep 2026 (3 Weeks Ago)",
+        "week_id": "week_1",
+        "week_label": "21 Sep \u2013 26 Sep 2026 (4 Weeks Ago)",
         "actual_jodi": "16",
         "actual_open": 1,
         "actual_close": 6,
@@ -3342,304 +3652,6 @@
         "jodi_hit": false,
         "status_label": "OTC Pass",
         "badge_type": "info"
-      },
-      {
-        "date": "2026-09-14",
-        "day": "Mon",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "00",
-        "actual_open": 0,
-        "actual_close": 0,
-        "open_patti": "299",
-        "close_patti": "136",
-        "predicted_top_pick": "15",
-        "predicted_top_5": [
-          "15",
-          "59",
-          "69",
-          "65",
-          "96"
-        ],
-        "predicted_top_open": [
-          3,
-          1,
-          6
-        ],
-        "predicted_top_close": [
-          5,
-          9,
-          6
-        ],
-        "family_bracket": [
-          "01",
-          "06",
-          "10",
-          "15",
-          "51",
-          "56",
-          "60",
-          "65"
-        ],
-        "otc_digits": [
-          1,
-          3,
-          6,
-          8
-        ],
-        "otc_hit": false,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "Standard Variance",
-        "badge_type": "neutral"
-      },
-      {
-        "date": "2026-09-15",
-        "day": "Tue",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "58",
-        "actual_open": 5,
-        "actual_close": 8,
-        "open_patti": "348",
-        "close_patti": "800",
-        "predicted_top_pick": "15",
-        "predicted_top_5": [
-          "15",
-          "04",
-          "00",
-          "13",
-          "30"
-        ],
-        "predicted_top_open": [
-          1,
-          3,
-          6
-        ],
-        "predicted_top_close": [
-          5,
-          0,
-          3
-        ],
-        "family_bracket": [
-          "01",
-          "06",
-          "10",
-          "15",
-          "51",
-          "56",
-          "60",
-          "65"
-        ],
-        "otc_digits": [
-          1,
-          3,
-          6,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "OTC Pass",
-        "badge_type": "info"
-      },
-      {
-        "date": "2026-09-16",
-        "day": "Wed",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "50",
-        "actual_open": 5,
-        "actual_close": 0,
-        "open_patti": "159",
-        "close_patti": "235",
-        "predicted_top_pick": "15",
-        "predicted_top_5": [
-          "15",
-          "58",
-          "00",
-          "27",
-          "35"
-        ],
-        "predicted_top_open": [
-          3,
-          1,
-          6
-        ],
-        "predicted_top_close": [
-          5,
-          0,
-          7
-        ],
-        "family_bracket": [
-          "01",
-          "06",
-          "10",
-          "15",
-          "51",
-          "56",
-          "60",
-          "65"
-        ],
-        "otc_digits": [
-          0,
-          1,
-          5,
-          6
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": true,
-        "jodi_hit": false,
-        "status_label": "Close Ank Hit (0)",
-        "badge_type": "highlight"
-      },
-      {
-        "date": "2026-09-17",
-        "day": "Thu",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "58",
-        "actual_open": 5,
-        "actual_close": 8,
-        "open_patti": "447",
-        "close_patti": "233",
-        "predicted_top_pick": "50",
-        "predicted_top_5": [
-          "50",
-          "15",
-          "69",
-          "92",
-          "58"
-        ],
-        "predicted_top_open": [
-          5,
-          3,
-          6
-        ],
-        "predicted_top_close": [
-          0,
-          8,
-          5
-        ],
-        "family_bracket": [
-          "00",
-          "05",
-          "50",
-          "55"
-        ],
-        "otc_digits": [
-          0,
-          3,
-          5,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": true,
-        "close_hit": true,
-        "jodi_hit": true,
-        "status_label": "Double Ank Hit (Open & Close)",
-        "badge_type": "success"
-      },
-      {
-        "date": "2026-09-18",
-        "day": "Fri",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "73",
-        "actual_open": 7,
-        "actual_close": 3,
-        "open_patti": "700",
-        "close_patti": "238",
-        "predicted_top_pick": "50",
-        "predicted_top_5": [
-          "50",
-          "58",
-          "15",
-          "52",
-          "00"
-        ],
-        "predicted_top_open": [
-          5,
-          3,
-          1
-        ],
-        "predicted_top_close": [
-          0,
-          5,
-          8
-        ],
-        "family_bracket": [
-          "00",
-          "05",
-          "50",
-          "55"
-        ],
-        "otc_digits": [
-          0,
-          3,
-          5,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "OTC Pass",
-        "badge_type": "info"
-      },
-      {
-        "date": "2026-09-19",
-        "day": "Sat",
-        "week_id": "week_1",
-        "week_label": "14 Sep \u2013 19 Sep 2026 (4 Weeks Ago)",
-        "actual_jodi": "43",
-        "actual_open": 4,
-        "actual_close": 3,
-        "open_patti": "266",
-        "close_patti": "247",
-        "predicted_top_pick": "58",
-        "predicted_top_5": [
-          "58",
-          "50",
-          "15",
-          "73",
-          "88"
-        ],
-        "predicted_top_open": [
-          5,
-          3,
-          7
-        ],
-        "predicted_top_close": [
-          8,
-          0,
-          2
-        ],
-        "family_bracket": [
-          "03",
-          "08",
-          "30",
-          "35",
-          "53",
-          "58",
-          "80",
-          "85"
-        ],
-        "otc_digits": [
-          0,
-          3,
-          5,
-          8
-        ],
-        "otc_hit": true,
-        "open_hit": false,
-        "close_hit": false,
-        "jodi_hit": false,
-        "status_label": "OTC Pass",
-        "badge_type": "info"
       }
     ]
   },
@@ -3651,7 +3663,7 @@
         {
           "rank": 1,
           "jodi": "18",
-          "prob": 2.2,
+          "prob": 2.24,
           "family": [
             "13",
             "18",
@@ -3665,60 +3677,34 @@
         },
         {
           "rank": 2,
-          "jodi": "26",
-          "prob": 1.82,
+          "jodi": "58",
+          "prob": 2.13,
           "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
           ]
         },
         {
           "rank": 3,
-          "jodi": "77",
-          "prob": 1.63,
+          "jodi": "50",
+          "prob": 1.85,
           "family": [
-            "22",
-            "27",
-            "72",
-            "77"
+            "00",
+            "05",
+            "50",
+            "55"
           ]
         },
         {
           "rank": 4,
-          "jodi": "16",
-          "prob": 1.57,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "34",
-          "prob": 1.54,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 6,
-          "jodi": "78",
-          "prob": 1.51,
+          "jodi": "73",
+          "prob": 1.76,
           "family": [
             "23",
             "28",
@@ -3731,50 +3717,9 @@
           ]
         },
         {
-          "rank": 7,
-          "jodi": "55",
-          "prob": 1.41,
-          "family": [
-            "00",
-            "05",
-            "50",
-            "55"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "91",
-          "prob": 1.41,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
-          "rank": 9,
-          "jodi": "56",
-          "prob": 1.33,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 10,
-          "jodi": "17",
-          "prob": 1.31,
+          "rank": 5,
+          "jodi": "26",
+          "prob": 1.64,
           "family": [
             "12",
             "17",
@@ -3785,110 +3730,177 @@
             "71",
             "76"
           ]
+        },
+        {
+          "rank": 6,
+          "jodi": "52",
+          "prob": 1.53,
+          "family": [
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "77",
+          "prob": 1.53,
+          "family": [
+            "22",
+            "27",
+            "72",
+            "77"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "78",
+          "prob": 1.5,
+          "family": [
+            "23",
+            "28",
+            "32",
+            "37",
+            "73",
+            "78",
+            "82",
+            "87"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "34",
+          "prob": 1.47,
+          "family": [
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "16",
+          "prob": 1.46,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
         }
       ],
       "open_digits": [
         {
           "rank": 1,
-          "digit": 1,
-          "prob": 11.85
+          "digit": 5,
+          "prob": 12.68
         },
         {
           "rank": 2,
-          "digit": 2,
-          "prob": 11.07
+          "digit": 1,
+          "prob": 11.56
         },
         {
           "rank": 3,
-          "digit": 5,
-          "prob": 11.0
+          "digit": 3,
+          "prob": 10.81
         },
         {
           "rank": 4,
-          "digit": 3,
-          "prob": 10.03
+          "digit": 7,
+          "prob": 10.04
         },
         {
           "rank": 5,
-          "digit": 0,
-          "prob": 9.97
+          "digit": 2,
+          "prob": 9.96
         },
         {
           "rank": 6,
-          "digit": 7,
-          "prob": 9.94
+          "digit": 9,
+          "prob": 9.76
         },
         {
           "rank": 7,
-          "digit": 9,
-          "prob": 9.66
+          "digit": 6,
+          "prob": 9.57
         },
         {
           "rank": 8,
-          "digit": 6,
-          "prob": 9.56
+          "digit": 0,
+          "prob": 9.28
         },
         {
           "rank": 9,
           "digit": 8,
-          "prob": 9.09
+          "prob": 8.87
         },
         {
           "rank": 10,
           "digit": 4,
-          "prob": 7.83
+          "prob": 7.48
         }
       ],
       "close_digits": [
         {
           "rank": 1,
           "digit": 8,
-          "prob": 12.86
+          "prob": 13.9
         },
         {
           "rank": 2,
-          "digit": 6,
-          "prob": 11.51
+          "digit": 7,
+          "prob": 10.87
         },
         {
           "rank": 3,
-          "digit": 7,
-          "prob": 11.26
+          "digit": 6,
+          "prob": 10.46
         },
         {
           "rank": 4,
           "digit": 4,
-          "prob": 10.45
+          "prob": 9.96
         },
         {
           "rank": 5,
           "digit": 5,
-          "prob": 9.74
+          "prob": 9.87
         },
         {
           "rank": 6,
           "digit": 1,
-          "prob": 9.53
+          "prob": 9.29
         },
         {
           "rank": 7,
           "digit": 3,
-          "prob": 9.15
+          "prob": 9.24
         },
         {
           "rank": 8,
-          "digit": 2,
-          "prob": 8.78
+          "digit": 0,
+          "prob": 8.95
         },
         {
           "rank": 9,
-          "digit": 0,
-          "prob": 8.69
+          "digit": 2,
+          "prob": 8.93
         },
         {
           "rank": 10,
           "digit": 9,
-          "prob": 8.03
+          "prob": 8.52
         }
       ],
       "top_pick": "18",
@@ -3903,65 +3915,65 @@
         "86"
       ],
       "otc_digits": [
-        1,
+        0,
         3,
-        6,
+        5,
         8
       ],
       "otc_pairs": [
         [
-          1,
-          6
+          5,
+          0
         ],
         [
           8,
           3
         ]
       ],
-      "otc_pass_prob": 65.6,
+      "otc_pass_prob": 65.1,
       "open_digit_probs": [
-        0.09973583753833618,
-        0.1184684848121479,
-        0.11067837100424983,
-        0.10027371512061796,
-        0.07834038628802552,
-        0.11002031107998932,
-        0.09558788657583765,
-        0.09935479306745722,
-        0.09092272693065716,
-        0.09661748758268122
+        0.09277784692013764,
+        0.11559010863179123,
+        0.09964160317824265,
+        0.10809977079335259,
+        0.07481097940329616,
+        0.1267857727689844,
+        0.09569634072807937,
+        0.10039369163776239,
+        0.08865055915083596,
+        0.09755332678751755
       ],
       "close_digit_probs": [
-        0.08693602407781416,
-        0.09534855964647602,
-        0.087787698731685,
-        0.09145187492735043,
-        0.10446614606219197,
-        0.09743766683709526,
-        0.11508727996199829,
-        0.11257057595669659,
-        0.12860343724022558,
-        0.0803107365584668
+        0.08946306585307712,
+        0.09291603366523142,
+        0.08930551246470785,
+        0.0924498671264247,
+        0.09959412726113995,
+        0.09867589002968613,
+        0.1045953341080511,
+        0.10872206931418901,
+        0.13904680589252558,
+        0.08523129428496726
       ],
       "patti_predictions": {
-        "1": {
+        "0": {
           "sp": [
-            "579",
-            "137",
-            "236",
-            "678"
+            "569",
+            "479",
+            "127",
+            "578"
           ],
           "dp": [
-            "669",
-            "335",
-            "227",
-            "399"
+            "226",
+            "244",
+            "488",
+            "118"
           ],
           "all": [
-            "579",
-            "137",
-            "669",
-            "335"
+            "569",
+            "479",
+            "226",
+            "244"
           ]
         },
         "3": {
@@ -3984,24 +3996,24 @@
             "300"
           ]
         },
-        "6": {
+        "5": {
           "sp": [
-            "349",
-            "790",
-            "178",
-            "259"
+            "357",
+            "168",
+            "780",
+            "249"
           ],
           "dp": [
-            "600",
-            "448",
-            "466",
-            "330"
+            "799",
+            "889",
+            "366",
+            "113"
           ],
           "all": [
-            "349",
-            "790",
-            "600",
-            "448"
+            "357",
+            "168",
+            "799",
+            "889"
           ]
         },
         "8": {
@@ -4033,7 +4045,7 @@
         {
           "rank": 1,
           "jodi": "18",
-          "prob": 2.22,
+          "prob": 2.25,
           "family": [
             "13",
             "18",
@@ -4047,8 +4059,49 @@
         },
         {
           "rank": 2,
+          "jodi": "58",
+          "prob": 2.12,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "50",
+          "prob": 1.85,
+          "family": [
+            "00",
+            "05",
+            "50",
+            "55"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "73",
+          "prob": 1.76,
+          "family": [
+            "23",
+            "28",
+            "32",
+            "37",
+            "73",
+            "78",
+            "82",
+            "87"
+          ]
+        },
+        {
+          "rank": 5,
           "jodi": "26",
-          "prob": 1.83,
+          "prob": 1.65,
           "family": [
             "12",
             "17",
@@ -4061,9 +4114,24 @@
           ]
         },
         {
-          "rank": 3,
+          "rank": 6,
+          "jodi": "52",
+          "prob": 1.54,
+          "family": [
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
+          ]
+        },
+        {
+          "rank": 7,
           "jodi": "77",
-          "prob": 1.64,
+          "prob": 1.53,
           "family": [
             "22",
             "27",
@@ -4072,33 +4140,7 @@
           ]
         },
         {
-          "rank": 4,
-          "jodi": "16",
-          "prob": 1.59,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "34",
-          "prob": 1.53,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 6,
+          "rank": 8,
           "jodi": "78",
           "prob": 1.5,
           "family": [
@@ -4113,164 +4155,134 @@
           ]
         },
         {
-          "rank": 7,
-          "jodi": "91",
-          "prob": 1.42,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "55",
-          "prob": 1.42,
-          "family": [
-            "00",
-            "05",
-            "50",
-            "55"
-          ]
-        },
-        {
           "rank": 9,
-          "jodi": "17",
-          "prob": 1.33,
+          "jodi": "16",
+          "prob": 1.48,
           "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
+            "11",
+            "16",
+            "61",
+            "66"
           ]
         },
         {
           "rank": 10,
-          "jodi": "56",
-          "prob": 1.33,
+          "jodi": "34",
+          "prob": 1.46,
           "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
           ]
         }
       ],
       "open_digits": [
         {
           "rank": 1,
-          "digit": 1,
-          "prob": 12.3
+          "digit": 5,
+          "prob": 12.74
         },
         {
           "rank": 2,
-          "digit": 2,
-          "prob": 11.3
+          "digit": 1,
+          "prob": 12.02
         },
         {
           "rank": 3,
-          "digit": 5,
-          "prob": 11.08
+          "digit": 3,
+          "prob": 10.63
         },
         {
           "rank": 4,
-          "digit": 7,
-          "prob": 9.96
+          "digit": 2,
+          "prob": 10.2
         },
         {
           "rank": 5,
-          "digit": 3,
-          "prob": 9.85
+          "digit": 7,
+          "prob": 10.06
         },
         {
           "rank": 6,
           "digit": 9,
-          "prob": 9.77
+          "prob": 9.86
         },
         {
           "rank": 7,
           "digit": 6,
-          "prob": 9.58
+          "prob": 9.6
         },
         {
           "rank": 8,
           "digit": 0,
-          "prob": 9.58
+          "prob": 8.89
         },
         {
           "rank": 9,
           "digit": 8,
-          "prob": 8.93
+          "prob": 8.71
         },
         {
           "rank": 10,
           "digit": 4,
-          "prob": 7.64
+          "prob": 7.29
         }
       ],
       "close_digits": [
         {
           "rank": 1,
           "digit": 8,
-          "prob": 12.68
+          "prob": 13.7
         },
         {
           "rank": 2,
           "digit": 7,
-          "prob": 11.34
+          "prob": 10.96
         },
         {
           "rank": 3,
           "digit": 6,
-          "prob": 11.28
+          "prob": 10.23
         },
         {
           "rank": 4,
-          "digit": 4,
-          "prob": 10.41
+          "digit": 5,
+          "prob": 9.93
         },
         {
           "rank": 5,
-          "digit": 1,
-          "prob": 9.88
+          "digit": 4,
+          "prob": 9.93
         },
         {
           "rank": 6,
-          "digit": 5,
-          "prob": 9.8
+          "digit": 1,
+          "prob": 9.64
         },
         {
           "rank": 7,
           "digit": 2,
-          "prob": 9.14
+          "prob": 9.3
         },
         {
           "rank": 8,
           "digit": 3,
-          "prob": 9.13
+          "prob": 9.23
         },
         {
           "rank": 9,
           "digit": 0,
-          "prob": 8.67
+          "prob": 8.92
         },
         {
           "rank": 10,
           "digit": 9,
-          "prob": 7.67
+          "prob": 8.17
         }
       ],
       "top_pick": "18",
@@ -4285,65 +4297,65 @@
         "86"
       ],
       "otc_digits": [
-        1,
+        0,
         3,
-        6,
+        5,
         8
       ],
       "otc_pairs": [
         [
-          1,
-          6
+          5,
+          0
         ],
         [
           8,
           3
         ]
       ],
-      "otc_pass_prob": 65.6,
+      "otc_pass_prob": 64.9,
       "open_digit_probs": [
-        0.09581658167517275,
-        0.12301715347728633,
-        0.11302266654295552,
-        0.09847535504303023,
-        0.07642627942856511,
-        0.11082106932368531,
-        0.09583466844852324,
-        0.09956824748466761,
-        0.08933544073774585,
-        0.09768253783836804
+        0.08885964638156646,
+        0.12016004368644037,
+        0.10201068285509993,
+        0.10633158873516578,
+        0.07292551554564791,
+        0.12736641588636125,
+        0.09597249047199405,
+        0.10063193019312434,
+        0.08709385605141148,
+        0.09864783019318839
       ],
       "close_digit_probs": [
-        0.08665665535977501,
-        0.09876832688329493,
-        0.09143631449610043,
-        0.09133596944330881,
-        0.10409409527749791,
-        0.09801063456765426,
-        0.11276784776309158,
-        0.11343703689832946,
-        0.12675672590183729,
-        0.07673639340911044
+        0.08921061324206282,
+        0.09636759921779489,
+        0.09297823013723544,
+        0.09232567894331051,
+        0.0992518494217609,
+        0.09927577386726996,
+        0.10230486470628757,
+        0.10961506260844954,
+        0.13698238855264488,
+        0.08168793930318363
       ],
       "patti_predictions": {
-        "1": {
+        "0": {
           "sp": [
-            "579",
-            "137",
-            "236",
-            "678"
+            "569",
+            "479",
+            "127",
+            "578"
           ],
           "dp": [
-            "669",
-            "335",
-            "227",
-            "399"
+            "226",
+            "244",
+            "488",
+            "118"
           ],
           "all": [
-            "579",
-            "137",
-            "669",
-            "335"
+            "569",
+            "479",
+            "226",
+            "244"
           ]
         },
         "3": {
@@ -4366,24 +4378,24 @@
             "300"
           ]
         },
-        "6": {
+        "5": {
           "sp": [
-            "349",
-            "790",
-            "178",
-            "259"
+            "357",
+            "168",
+            "780",
+            "249"
           ],
           "dp": [
-            "600",
-            "448",
-            "466",
-            "330"
+            "799",
+            "889",
+            "366",
+            "113"
           ],
           "all": [
-            "349",
-            "790",
-            "600",
-            "448"
+            "357",
+            "168",
+            "799",
+            "889"
           ]
         },
         "8": {
@@ -4415,7 +4427,7 @@
         {
           "rank": 1,
           "jodi": "18",
-          "prob": 2.21,
+          "prob": 2.24,
           "family": [
             "13",
             "18",
@@ -4429,60 +4441,34 @@
         },
         {
           "rank": 2,
-          "jodi": "26",
-          "prob": 1.84,
+          "jodi": "58",
+          "prob": 2.11,
           "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
           ]
         },
         {
           "rank": 3,
-          "jodi": "77",
-          "prob": 1.65,
+          "jodi": "50",
+          "prob": 1.85,
           "family": [
-            "22",
-            "27",
-            "72",
-            "77"
+            "00",
+            "05",
+            "50",
+            "55"
           ]
         },
         {
           "rank": 4,
-          "jodi": "16",
-          "prob": 1.58,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "34",
-          "prob": 1.52,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 6,
-          "jodi": "78",
-          "prob": 1.52,
+          "jodi": "73",
+          "prob": 1.77,
           "family": [
             "23",
             "28",
@@ -4495,50 +4481,9 @@
           ]
         },
         {
-          "rank": 7,
-          "jodi": "91",
-          "prob": 1.42,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "55",
-          "prob": 1.41,
-          "family": [
-            "00",
-            "05",
-            "50",
-            "55"
-          ]
-        },
-        {
-          "rank": 9,
-          "jodi": "56",
-          "prob": 1.33,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 10,
-          "jodi": "17",
-          "prob": 1.33,
+          "rank": 5,
+          "jodi": "26",
+          "prob": 1.66,
           "family": [
             "12",
             "17",
@@ -4549,492 +4494,177 @@
             "71",
             "76"
           ]
+        },
+        {
+          "rank": 6,
+          "jodi": "77",
+          "prob": 1.55,
+          "family": [
+            "22",
+            "27",
+            "72",
+            "77"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "52",
+          "prob": 1.53,
+          "family": [
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "78",
+          "prob": 1.51,
+          "family": [
+            "23",
+            "28",
+            "32",
+            "37",
+            "73",
+            "78",
+            "82",
+            "87"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "16",
+          "prob": 1.47,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "34",
+          "prob": 1.45,
+          "family": [
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
+          ]
         }
       ],
       "open_digits": [
         {
           "rank": 1,
-          "digit": 1,
-          "prob": 12.06
+          "digit": 5,
+          "prob": 12.57
         },
         {
           "rank": 2,
-          "digit": 2,
-          "prob": 11.35
+          "digit": 1,
+          "prob": 11.78
         },
         {
           "rank": 3,
-          "digit": 5,
-          "prob": 10.92
+          "digit": 3,
+          "prob": 10.59
         },
         {
           "rank": 4,
           "digit": 7,
-          "prob": 10.2
+          "prob": 10.31
         },
         {
           "rank": 5,
-          "digit": 9,
-          "prob": 9.97
+          "digit": 2,
+          "prob": 10.25
         },
         {
           "rank": 6,
-          "digit": 3,
-          "prob": 9.81
+          "digit": 9,
+          "prob": 10.07
         },
         {
           "rank": 7,
-          "digit": 0,
+          "digit": 6,
           "prob": 9.46
         },
         {
           "rank": 8,
-          "digit": 6,
-          "prob": 9.45
-        },
-        {
-          "rank": 9,
           "digit": 8,
-          "prob": 9.02
-        },
-        {
-          "rank": 10,
-          "digit": 4,
-          "prob": 7.76
-        }
-      ],
-      "close_digits": [
-        {
-          "rank": 1,
-          "digit": 8,
-          "prob": 12.7
-        },
-        {
-          "rank": 2,
-          "digit": 6,
-          "prob": 11.55
-        },
-        {
-          "rank": 3,
-          "digit": 7,
-          "prob": 11.55
-        },
-        {
-          "rank": 4,
-          "digit": 4,
-          "prob": 9.93
-        },
-        {
-          "rank": 5,
-          "digit": 5,
-          "prob": 9.91
-        },
-        {
-          "rank": 6,
-          "digit": 1,
-          "prob": 9.62
-        },
-        {
-          "rank": 7,
-          "digit": 3,
-          "prob": 9.16
-        },
-        {
-          "rank": 8,
-          "digit": 2,
-          "prob": 9.07
-        },
-        {
-          "rank": 9,
-          "digit": 0,
           "prob": 8.8
         },
         {
-          "rank": 10,
-          "digit": 9,
-          "prob": 7.72
-        }
-      ],
-      "top_pick": "18",
-      "top_family": [
-        "13",
-        "18",
-        "31",
-        "36",
-        "63",
-        "68",
-        "81",
-        "86"
-      ],
-      "otc_digits": [
-        1,
-        2,
-        6,
-        7
-      ],
-      "otc_pairs": [
-        [
-          1,
-          6
-        ],
-        [
-          7,
-          2
-        ]
-      ],
-      "otc_pass_prob": 65.4,
-      "open_digit_probs": [
-        0.09457769481671716,
-        0.12061178617190337,
-        0.11354592660665315,
-        0.09806482927683174,
-        0.07762815902967199,
-        0.10915283980350571,
-        0.09449075365710677,
-        0.10201005816706724,
-        0.09019707076959464,
-        0.09972088170094834
-      ],
-      "close_digit_probs": [
-        0.0879675935939942,
-        0.09617873778498134,
-        0.09069349613866295,
-        0.09156507193378027,
-        0.09928799701612893,
-        0.09910610786165518,
-        0.11551250395272246,
-        0.11545955034269849,
-        0.12698186034552755,
-        0.07724708102984869
-      ],
-      "patti_predictions": {
-        "1": {
-          "sp": [
-            "579",
-            "137",
-            "236",
-            "678"
-          ],
-          "dp": [
-            "669",
-            "335",
-            "227",
-            "399"
-          ],
-          "all": [
-            "579",
-            "137",
-            "669",
-            "335"
-          ]
-        },
-        "2": {
-          "sp": [
-            "679",
-            "589",
-            "345",
-            "570"
-          ],
-          "dp": [
-            "499",
-            "228",
-            "255",
-            "336"
-          ],
-          "all": [
-            "679",
-            "589",
-            "499",
-            "228"
-          ]
-        },
-        "6": {
-          "sp": [
-            "349",
-            "790",
-            "178",
-            "259"
-          ],
-          "dp": [
-            "600",
-            "448",
-            "466",
-            "330"
-          ],
-          "all": [
-            "349",
-            "790",
-            "600",
-            "448"
-          ]
-        },
-        "7": {
-          "sp": [
-            "368",
-            "359",
-            "890",
-            "179"
-          ],
-          "dp": [
-            "557",
-            "115",
-            "700",
-            "449"
-          ],
-          "all": [
-            "368",
-            "359",
-            "557",
-            "115"
-          ]
-        }
-      }
-    },
-    "Thu": {
-      "date": "2026-10-22",
-      "day": "Thu",
-      "top_jodis": [
-        {
-          "rank": 1,
-          "jodi": "18",
-          "prob": 2.21,
-          "family": [
-            "13",
-            "18",
-            "31",
-            "36",
-            "63",
-            "68",
-            "81",
-            "86"
-          ]
-        },
-        {
-          "rank": 2,
-          "jodi": "26",
-          "prob": 1.83,
-          "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
-          ]
-        },
-        {
-          "rank": 3,
-          "jodi": "77",
-          "prob": 1.64,
-          "family": [
-            "22",
-            "27",
-            "72",
-            "77"
-          ]
-        },
-        {
-          "rank": 4,
-          "jodi": "16",
-          "prob": 1.57,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "34",
-          "prob": 1.54,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 6,
-          "jodi": "78",
-          "prob": 1.52,
-          "family": [
-            "23",
-            "28",
-            "32",
-            "37",
-            "73",
-            "78",
-            "82",
-            "87"
-          ]
-        },
-        {
-          "rank": 7,
-          "jodi": "55",
-          "prob": 1.41,
-          "family": [
-            "00",
-            "05",
-            "50",
-            "55"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "91",
-          "prob": 1.41,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
           "rank": 9,
-          "jodi": "56",
-          "prob": 1.33,
-          "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
-          ]
-        },
-        {
-          "rank": 10,
-          "jodi": "17",
-          "prob": 1.32,
-          "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
-          ]
-        }
-      ],
-      "open_digits": [
-        {
-          "rank": 1,
-          "digit": 1,
-          "prob": 12.04
-        },
-        {
-          "rank": 2,
-          "digit": 2,
-          "prob": 11.42
-        },
-        {
-          "rank": 3,
-          "digit": 5,
-          "prob": 11.03
-        },
-        {
-          "rank": 4,
-          "digit": 7,
-          "prob": 10.14
-        },
-        {
-          "rank": 5,
-          "digit": 3,
-          "prob": 10.04
-        },
-        {
-          "rank": 6,
-          "digit": 9,
-          "prob": 9.72
-        },
-        {
-          "rank": 7,
           "digit": 0,
-          "prob": 9.72
-        },
-        {
-          "rank": 8,
-          "digit": 6,
-          "prob": 9.42
-        },
-        {
-          "rank": 9,
-          "digit": 8,
-          "prob": 8.79
+          "prob": 8.76
         },
         {
           "rank": 10,
           "digit": 4,
-          "prob": 7.68
+          "prob": 7.41
         }
       ],
       "close_digits": [
         {
           "rank": 1,
           "digit": 8,
-          "prob": 12.96
+          "prob": 13.72
         },
         {
           "rank": 2,
-          "digit": 6,
-          "prob": 11.37
+          "digit": 7,
+          "prob": 11.16
         },
         {
           "rank": 3,
-          "digit": 7,
-          "prob": 11.26
+          "digit": 6,
+          "prob": 10.5
         },
         {
           "rank": 4,
-          "digit": 4,
-          "prob": 10.63
+          "digit": 5,
+          "prob": 10.04
         },
         {
           "rank": 5,
-          "digit": 5,
-          "prob": 9.54
+          "digit": 4,
+          "prob": 9.44
         },
         {
           "rank": 6,
           "digit": 1,
-          "prob": 9.5
+          "prob": 9.38
         },
         {
           "rank": 7,
-          "digit": 2,
-          "prob": 9.11
+          "digit": 3,
+          "prob": 9.26
         },
         {
           "rank": 8,
-          "digit": 3,
-          "prob": 9.07
+          "digit": 2,
+          "prob": 9.22
         },
         {
           "rank": 9,
           "digit": 0,
-          "prob": 8.53
+          "prob": 9.05
         },
         {
           "rank": 10,
           "digit": 9,
-          "prob": 8.04
+          "prob": 8.22
         }
       ],
       "top_pick": "18",
@@ -5049,65 +4679,65 @@
         "86"
       ],
       "otc_digits": [
-        1,
+        0,
         3,
-        6,
+        5,
         8
       ],
       "otc_pairs": [
         [
-          1,
-          6
+          5,
+          0
         ],
         [
           8,
           3
         ]
       ],
-      "otc_pass_prob": 65.5,
+      "otc_pass_prob": 64.9,
       "open_digit_probs": [
-        0.09716613182163669,
-        0.12035700213121296,
-        0.11421388916814734,
-        0.10043015696798491,
-        0.07682684784814943,
-        0.11025405509575953,
-        0.09423794993827078,
-        0.10140150526120548,
-        0.08788646249810295,
-        0.09722599926953002
+        0.08762075952311085,
+        0.11775467638105738,
+        0.10253394291879751,
+        0.10592106296896725,
+        0.0741273951467548,
+        0.12569818636618163,
+        0.09462857568057753,
+        0.10307374087552396,
+        0.08795548608326029,
+        0.10068617405576864
       ],
       "close_digit_probs": [
-        0.08530961602374489,
-        0.09499163906072552,
-        0.09105861537488408,
-        0.0907287194781812,
-        0.10625932404022632,
-        0.09538588564869764,
-        0.11368378094763613,
-        0.11263674745768222,
-        0.12955047328640973,
-        0.08039519868181234
+        0.09052155147628198,
+        0.09377801011948131,
+        0.09223541177979795,
+        0.09255478143378194,
+        0.09444575116039189,
+        0.10037124716127088,
+        0.10504952089591839,
+        0.11163757605281854,
+        0.13720752299633515,
+        0.08219862692392188
       ],
       "patti_predictions": {
-        "1": {
+        "0": {
           "sp": [
-            "579",
-            "137",
-            "236",
-            "678"
+            "569",
+            "479",
+            "127",
+            "578"
           ],
           "dp": [
-            "669",
-            "335",
-            "227",
-            "399"
+            "226",
+            "244",
+            "488",
+            "118"
           ],
           "all": [
-            "579",
-            "137",
-            "669",
-            "335"
+            "569",
+            "479",
+            "226",
+            "244"
           ]
         },
         "3": {
@@ -5130,24 +4760,406 @@
             "300"
           ]
         },
-        "6": {
+        "5": {
           "sp": [
-            "349",
-            "790",
-            "178",
-            "259"
+            "357",
+            "168",
+            "780",
+            "249"
           ],
           "dp": [
-            "600",
-            "448",
-            "466",
-            "330"
+            "799",
+            "889",
+            "366",
+            "113"
           ],
           "all": [
-            "349",
-            "790",
-            "600",
-            "448"
+            "357",
+            "168",
+            "799",
+            "889"
+          ]
+        },
+        "8": {
+          "sp": [
+            "567",
+            "260",
+            "468",
+            "134"
+          ],
+          "dp": [
+            "224",
+            "116",
+            "558",
+            "477"
+          ],
+          "all": [
+            "567",
+            "260",
+            "224",
+            "116"
+          ]
+        }
+      }
+    },
+    "Thu": {
+      "date": "2026-10-22",
+      "day": "Thu",
+      "top_jodis": [
+        {
+          "rank": 1,
+          "jodi": "18",
+          "prob": 2.25,
+          "family": [
+            "13",
+            "18",
+            "31",
+            "36",
+            "63",
+            "68",
+            "81",
+            "86"
+          ]
+        },
+        {
+          "rank": 2,
+          "jodi": "58",
+          "prob": 2.13,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "50",
+          "prob": 1.84,
+          "family": [
+            "00",
+            "05",
+            "50",
+            "55"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "73",
+          "prob": 1.77,
+          "family": [
+            "23",
+            "28",
+            "32",
+            "37",
+            "73",
+            "78",
+            "82",
+            "87"
+          ]
+        },
+        {
+          "rank": 5,
+          "jodi": "26",
+          "prob": 1.66,
+          "family": [
+            "12",
+            "17",
+            "21",
+            "26",
+            "62",
+            "67",
+            "71",
+            "76"
+          ]
+        },
+        {
+          "rank": 6,
+          "jodi": "52",
+          "prob": 1.54,
+          "family": [
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
+          ]
+        },
+        {
+          "rank": 7,
+          "jodi": "77",
+          "prob": 1.54,
+          "family": [
+            "22",
+            "27",
+            "72",
+            "77"
+          ]
+        },
+        {
+          "rank": 8,
+          "jodi": "78",
+          "prob": 1.52,
+          "family": [
+            "23",
+            "28",
+            "32",
+            "37",
+            "73",
+            "78",
+            "82",
+            "87"
+          ]
+        },
+        {
+          "rank": 9,
+          "jodi": "34",
+          "prob": 1.48,
+          "family": [
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
+          ]
+        },
+        {
+          "rank": 10,
+          "jodi": "16",
+          "prob": 1.47,
+          "family": [
+            "11",
+            "16",
+            "61",
+            "66"
+          ]
+        }
+      ],
+      "open_digits": [
+        {
+          "rank": 1,
+          "digit": 5,
+          "prob": 12.68
+        },
+        {
+          "rank": 2,
+          "digit": 1,
+          "prob": 11.75
+        },
+        {
+          "rank": 3,
+          "digit": 3,
+          "prob": 10.83
+        },
+        {
+          "rank": 4,
+          "digit": 2,
+          "prob": 10.32
+        },
+        {
+          "rank": 5,
+          "digit": 7,
+          "prob": 10.25
+        },
+        {
+          "rank": 6,
+          "digit": 9,
+          "prob": 9.82
+        },
+        {
+          "rank": 7,
+          "digit": 6,
+          "prob": 9.44
+        },
+        {
+          "rank": 8,
+          "digit": 0,
+          "prob": 9.02
+        },
+        {
+          "rank": 9,
+          "digit": 8,
+          "prob": 8.56
+        },
+        {
+          "rank": 10,
+          "digit": 4,
+          "prob": 7.33
+        }
+      ],
+      "close_digits": [
+        {
+          "rank": 1,
+          "digit": 8,
+          "prob": 13.98
+        },
+        {
+          "rank": 2,
+          "digit": 7,
+          "prob": 10.88
+        },
+        {
+          "rank": 3,
+          "digit": 6,
+          "prob": 10.32
+        },
+        {
+          "rank": 4,
+          "digit": 4,
+          "prob": 10.14
+        },
+        {
+          "rank": 5,
+          "digit": 5,
+          "prob": 9.67
+        },
+        {
+          "rank": 6,
+          "digit": 2,
+          "prob": 9.26
+        },
+        {
+          "rank": 7,
+          "digit": 1,
+          "prob": 9.26
+        },
+        {
+          "rank": 8,
+          "digit": 3,
+          "prob": 9.17
+        },
+        {
+          "rank": 9,
+          "digit": 0,
+          "prob": 8.79
+        },
+        {
+          "rank": 10,
+          "digit": 9,
+          "prob": 8.53
+        }
+      ],
+      "top_pick": "18",
+      "top_family": [
+        "13",
+        "18",
+        "31",
+        "36",
+        "63",
+        "68",
+        "81",
+        "86"
+      ],
+      "otc_digits": [
+        0,
+        3,
+        5,
+        8
+      ],
+      "otc_pairs": [
+        [
+          5,
+          0
+        ],
+        [
+          8,
+          3
+        ]
+      ],
+      "otc_pass_prob": 65.0,
+      "open_digit_probs": [
+        0.0902091965280304,
+        0.11749989234036701,
+        0.10320190548029175,
+        0.10828639066012047,
+        0.07332608396523226,
+        0.12679940165843548,
+        0.09437577196174157,
+        0.10246518796966222,
+        0.08564487781176859,
+        0.09819129162435035
+      ],
+      "close_digit_probs": [
+        0.08786357390603268,
+        0.09259091139522549,
+        0.09260053101601907,
+        0.09171842897818284,
+        0.10141707818448926,
+        0.09665102494831332,
+        0.10322079789083209,
+        0.10881477316780228,
+        0.13977613593721733,
+        0.08534674457588554
+      ],
+      "patti_predictions": {
+        "0": {
+          "sp": [
+            "569",
+            "479",
+            "127",
+            "578"
+          ],
+          "dp": [
+            "226",
+            "244",
+            "488",
+            "118"
+          ],
+          "all": [
+            "569",
+            "479",
+            "226",
+            "244"
+          ]
+        },
+        "3": {
+          "sp": [
+            "689",
+            "157",
+            "148",
+            "256"
+          ],
+          "dp": [
+            "788",
+            "300",
+            "229",
+            "355"
+          ],
+          "all": [
+            "689",
+            "157",
+            "788",
+            "300"
+          ]
+        },
+        "5": {
+          "sp": [
+            "357",
+            "168",
+            "780",
+            "249"
+          ],
+          "dp": [
+            "799",
+            "889",
+            "366",
+            "113"
+          ],
+          "all": [
+            "357",
+            "168",
+            "799",
+            "889"
           ]
         },
         "8": {
@@ -5179,7 +5191,7 @@
         {
           "rank": 1,
           "jodi": "18",
-          "prob": 2.21,
+          "prob": 2.25,
           "family": [
             "13",
             "18",
@@ -5193,8 +5205,49 @@
         },
         {
           "rank": 2,
+          "jodi": "58",
+          "prob": 2.14,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "50",
+          "prob": 1.86,
+          "family": [
+            "00",
+            "05",
+            "50",
+            "55"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "73",
+          "prob": 1.77,
+          "family": [
+            "23",
+            "28",
+            "32",
+            "37",
+            "73",
+            "78",
+            "82",
+            "87"
+          ]
+        },
+        {
+          "rank": 5,
           "jodi": "26",
-          "prob": 1.82,
+          "prob": 1.64,
           "family": [
             "12",
             "17",
@@ -5207,9 +5260,24 @@
           ]
         },
         {
-          "rank": 3,
+          "rank": 6,
+          "jodi": "52",
+          "prob": 1.55,
+          "family": [
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
+          ]
+        },
+        {
+          "rank": 7,
           "jodi": "77",
-          "prob": 1.63,
+          "prob": 1.53,
           "family": [
             "22",
             "27",
@@ -5218,33 +5286,7 @@
           ]
         },
         {
-          "rank": 4,
-          "jodi": "16",
-          "prob": 1.58,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "34",
-          "prob": 1.54,
-          "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
-          ]
-        },
-        {
-          "rank": 6,
+          "rank": 8,
           "jodi": "78",
           "prob": 1.5,
           "family": [
@@ -5259,164 +5301,134 @@
           ]
         },
         {
-          "rank": 7,
-          "jodi": "55",
-          "prob": 1.43,
-          "family": [
-            "00",
-            "05",
-            "50",
-            "55"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "91",
-          "prob": 1.41,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
           "rank": 9,
-          "jodi": "56",
-          "prob": 1.34,
+          "jodi": "16",
+          "prob": 1.47,
           "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
+            "11",
+            "16",
+            "61",
+            "66"
           ]
         },
         {
           "rank": 10,
-          "jodi": "17",
-          "prob": 1.32,
+          "jodi": "34",
+          "prob": 1.47,
           "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
           ]
         }
       ],
       "open_digits": [
         {
           "rank": 1,
-          "digit": 1,
-          "prob": 12.11
+          "digit": 5,
+          "prob": 12.94
         },
         {
           "rank": 2,
-          "digit": 5,
-          "prob": 11.28
+          "digit": 1,
+          "prob": 11.82
         },
         {
           "rank": 3,
-          "digit": 2,
-          "prob": 11.13
+          "digit": 3,
+          "prob": 10.74
         },
         {
           "rank": 4,
           "digit": 7,
-          "prob": 9.96
+          "prob": 10.06
         },
         {
           "rank": 5,
-          "digit": 3,
-          "prob": 9.95
+          "digit": 2,
+          "prob": 10.03
         },
         {
           "rank": 6,
           "digit": 9,
-          "prob": 9.72
+          "prob": 9.82
         },
         {
           "rank": 7,
-          "digit": 0,
-          "prob": 9.63
+          "digit": 6,
+          "prob": 9.43
         },
         {
           "rank": 8,
-          "digit": 6,
-          "prob": 9.41
+          "digit": 0,
+          "prob": 8.94
         },
         {
           "rank": 9,
           "digit": 8,
-          "prob": 8.97
+          "prob": 8.75
         },
         {
           "rank": 10,
           "digit": 4,
-          "prob": 7.83
+          "prob": 7.48
         }
       ],
       "close_digits": [
         {
           "rank": 1,
           "digit": 8,
-          "prob": 12.72
+          "prob": 13.75
         },
         {
           "rank": 2,
-          "digit": 6,
-          "prob": 11.4
+          "digit": 7,
+          "prob": 10.73
         },
         {
           "rank": 3,
-          "digit": 7,
-          "prob": 11.11
+          "digit": 6,
+          "prob": 10.35
         },
         {
           "rank": 4,
           "digit": 4,
-          "prob": 10.58
+          "prob": 10.09
         },
         {
           "rank": 5,
           "digit": 5,
-          "prob": 9.78
+          "prob": 9.91
         },
         {
           "rank": 6,
           "digit": 3,
-          "prob": 9.48
+          "prob": 9.58
         },
         {
           "rank": 7,
-          "digit": 1,
+          "digit": 2,
           "prob": 9.36
         },
         {
           "rank": 8,
-          "digit": 2,
-          "prob": 9.21
+          "digit": 1,
+          "prob": 9.12
         },
         {
           "rank": 9,
           "digit": 0,
-          "prob": 8.69
+          "prob": 8.94
         },
         {
           "rank": 10,
           "digit": 9,
-          "prob": 7.67
+          "prob": 8.17
         }
       ],
       "top_pick": "18",
@@ -5431,65 +5443,65 @@
         "86"
       ],
       "otc_digits": [
-        1,
+        0,
         3,
-        6,
+        5,
         8
       ],
       "otc_pairs": [
         [
-          1,
-          6
+          5,
+          0
         ],
         [
           8,
           3
         ]
       ],
-      "otc_pass_prob": 65.5,
+      "otc_pass_prob": 65.1,
       "open_digit_probs": [
-        0.09633246952564002,
-        0.12108818151466953,
-        0.11132920859903031,
-        0.0994959157906938,
-        0.07829917662482679,
-        0.11282854595919933,
-        0.09411878059805598,
-        0.09957946243793864,
-        0.0897167491489608,
-        0.09721150980098489
+        0.08937553423203375,
+        0.11823107172382354,
+        0.1003172249111747,
+        0.10735214948282934,
+        0.0747984127419096,
+        0.12937389252187528,
+        0.09425660262152676,
+        0.10064314514639536,
+        0.08747516446262643,
+        0.09817680215580521
       ],
       "close_digit_probs": [
-        0.08686973947192454,
-        0.09360944837862203,
-        0.09208678178582004,
-        0.09479017505078545,
-        0.10578755322142314,
-        0.09779755045550471,
-        0.11400149262290467,
-        0.11110432661795563,
-        0.12722775393922045,
-        0.0767251784558394
+        0.08942369735421235,
+        0.09120872071312201,
+        0.09362869742695505,
+        0.0957798845507871,
+        0.10094530736568612,
+        0.0990626897551204,
+        0.10353850956610063,
+        0.10728235232807569,
+        0.13745341659002808,
+        0.0816767243499126
       ],
       "patti_predictions": {
-        "1": {
+        "0": {
           "sp": [
-            "579",
-            "137",
-            "236",
-            "678"
+            "569",
+            "479",
+            "127",
+            "578"
           ],
           "dp": [
-            "669",
-            "335",
-            "227",
-            "399"
+            "226",
+            "244",
+            "488",
+            "118"
           ],
           "all": [
-            "579",
-            "137",
-            "669",
-            "335"
+            "569",
+            "479",
+            "226",
+            "244"
           ]
         },
         "3": {
@@ -5512,24 +5524,24 @@
             "300"
           ]
         },
-        "6": {
+        "5": {
           "sp": [
-            "349",
-            "790",
-            "178",
-            "259"
+            "357",
+            "168",
+            "780",
+            "249"
           ],
           "dp": [
-            "600",
-            "448",
-            "466",
-            "330"
+            "799",
+            "889",
+            "366",
+            "113"
           ],
           "all": [
-            "349",
-            "790",
-            "600",
-            "448"
+            "357",
+            "168",
+            "799",
+            "889"
           ]
         },
         "8": {
@@ -5561,7 +5573,7 @@
         {
           "rank": 1,
           "jodi": "18",
-          "prob": 2.21,
+          "prob": 2.25,
           "family": [
             "13",
             "18",
@@ -5575,8 +5587,49 @@
         },
         {
           "rank": 2,
+          "jodi": "58",
+          "prob": 2.11,
+          "family": [
+            "03",
+            "08",
+            "30",
+            "35",
+            "53",
+            "58",
+            "80",
+            "85"
+          ]
+        },
+        {
+          "rank": 3,
+          "jodi": "50",
+          "prob": 1.84,
+          "family": [
+            "00",
+            "05",
+            "50",
+            "55"
+          ]
+        },
+        {
+          "rank": 4,
+          "jodi": "73",
+          "prob": 1.77,
+          "family": [
+            "23",
+            "28",
+            "32",
+            "37",
+            "73",
+            "78",
+            "82",
+            "87"
+          ]
+        },
+        {
+          "rank": 5,
           "jodi": "26",
-          "prob": 1.82,
+          "prob": 1.65,
           "family": [
             "12",
             "17",
@@ -5589,9 +5642,9 @@
           ]
         },
         {
-          "rank": 3,
+          "rank": 6,
           "jodi": "77",
-          "prob": 1.65,
+          "prob": 1.54,
           "family": [
             "22",
             "27",
@@ -5600,33 +5653,22 @@
           ]
         },
         {
-          "rank": 4,
-          "jodi": "16",
-          "prob": 1.58,
-          "family": [
-            "11",
-            "16",
-            "61",
-            "66"
-          ]
-        },
-        {
-          "rank": 5,
-          "jodi": "34",
+          "rank": 7,
+          "jodi": "52",
           "prob": 1.54,
           "family": [
-            "34",
-            "39",
-            "43",
-            "48",
-            "84",
-            "89",
-            "93",
-            "98"
+            "02",
+            "07",
+            "20",
+            "25",
+            "52",
+            "57",
+            "70",
+            "75"
           ]
         },
         {
-          "rank": 6,
+          "rank": 8,
           "jodi": "78",
           "prob": 1.51,
           "family": [
@@ -5641,164 +5683,134 @@
           ]
         },
         {
-          "rank": 7,
-          "jodi": "55",
-          "prob": 1.41,
-          "family": [
-            "00",
-            "05",
-            "50",
-            "55"
-          ]
-        },
-        {
-          "rank": 8,
-          "jodi": "91",
-          "prob": 1.4,
-          "family": [
-            "14",
-            "19",
-            "41",
-            "46",
-            "64",
-            "69",
-            "91",
-            "96"
-          ]
-        },
-        {
           "rank": 9,
-          "jodi": "17",
-          "prob": 1.33,
+          "jodi": "16",
+          "prob": 1.48,
           "family": [
-            "12",
-            "17",
-            "21",
-            "26",
-            "62",
-            "67",
-            "71",
-            "76"
+            "11",
+            "16",
+            "61",
+            "66"
           ]
         },
         {
           "rank": 10,
-          "jodi": "56",
-          "prob": 1.33,
+          "jodi": "34",
+          "prob": 1.47,
           "family": [
-            "01",
-            "06",
-            "10",
-            "15",
-            "51",
-            "56",
-            "60",
-            "65"
+            "34",
+            "39",
+            "43",
+            "48",
+            "84",
+            "89",
+            "93",
+            "98"
           ]
         }
       ],
       "open_digits": [
         {
           "rank": 1,
-          "digit": 1,
-          "prob": 12.11
+          "digit": 5,
+          "prob": 12.56
         },
         {
           "rank": 2,
-          "digit": 2,
-          "prob": 11.05
+          "digit": 1,
+          "prob": 11.83
         },
         {
           "rank": 3,
-          "digit": 5,
-          "prob": 10.91
+          "digit": 3,
+          "prob": 10.87
         },
         {
           "rank": 4,
           "digit": 7,
-          "prob": 10.19
+          "prob": 10.3
         },
         {
           "rank": 5,
-          "digit": 3,
-          "prob": 10.08
+          "digit": 2,
+          "prob": 9.94
         },
         {
           "rank": 6,
           "digit": 6,
-          "prob": 9.78
+          "prob": 9.79
         },
         {
           "rank": 7,
           "digit": 9,
-          "prob": 9.54
+          "prob": 9.64
         },
         {
           "rank": 8,
-          "digit": 0,
-          "prob": 9.37
+          "digit": 8,
+          "prob": 8.82
         },
         {
           "rank": 9,
-          "digit": 8,
-          "prob": 9.04
+          "digit": 0,
+          "prob": 8.67
         },
         {
           "rank": 10,
           "digit": 4,
-          "prob": 7.93
+          "prob": 7.58
         }
       ],
       "close_digits": [
         {
           "rank": 1,
           "digit": 8,
-          "prob": 12.67
+          "prob": 13.69
         },
         {
           "rank": 2,
-          "digit": 6,
-          "prob": 11.54
+          "digit": 7,
+          "prob": 11.09
         },
         {
           "rank": 3,
-          "digit": 7,
-          "prob": 11.48
+          "digit": 6,
+          "prob": 10.5
         },
         {
           "rank": 4,
-          "digit": 4,
-          "prob": 10.3
+          "digit": 5,
+          "prob": 9.97
         },
         {
           "rank": 5,
-          "digit": 5,
-          "prob": 9.85
+          "digit": 4,
+          "prob": 9.81
         },
         {
           "rank": 6,
-          "digit": 1,
-          "prob": 9.33
+          "digit": 2,
+          "prob": 9.37
         },
         {
           "rank": 7,
           "digit": 3,
-          "prob": 9.26
+          "prob": 9.36
         },
         {
           "rank": 8,
-          "digit": 2,
-          "prob": 9.21
+          "digit": 1,
+          "prob": 9.09
         },
         {
           "rank": 9,
           "digit": 0,
-          "prob": 8.46
+          "prob": 8.71
         },
         {
           "rank": 10,
           "digit": 9,
-          "prob": 7.9
+          "prob": 8.4
         }
       ],
       "top_pick": "18",
@@ -5813,176 +5825,176 @@
         "86"
       ],
       "otc_digits": [
-        1,
-        2,
-        6,
-        7
+        0,
+        3,
+        5,
+        8
       ],
       "otc_pairs": [
         [
-          1,
-          6
+          5,
+          0
         ],
         [
-          7,
-          2
+          8,
+          3
         ]
       ],
-      "otc_pass_prob": 65.3,
+      "otc_pass_prob": 64.9,
       "open_digit_probs": [
-        0.09366422422478946,
-        0.12112547018420643,
-        0.11045619589295029,
-        0.10082783850412444,
-        0.07929387367407598,
-        0.10909807236894417,
-        0.09778568178465682,
-        0.1019078988550341,
-        0.09040782339027131,
-        0.09543292112094709
+        0.08670728893118318,
+        0.11826836039336049,
+        0.0994442122050947,
+        0.10868407219626,
+        0.07579310979115879,
+        0.1256434189316201,
+        0.09792350380812763,
+        0.10297158156349086,
+        0.08816623870393696,
+        0.09639821347576744
       ],
       "close_digit_probs": [
-        0.08455930158470412,
-        0.09334567645800879,
-        0.09213003496234007,
-        0.09256347128096502,
-        0.10297693681902892,
-        0.09847667468106389,
-        0.11544398973515917,
-        0.11476841356534613,
-        0.1267053240326784,
-        0.07903017688070552
+        0.08711325946699193,
+        0.09094494879250874,
+        0.09367195060347505,
+        0.09355318078096667,
+        0.09813469096329189,
+        0.09974181398067956,
+        0.10498100667835515,
+        0.1109464392754662,
+        0.136930986683486,
+        0.08398172277477872
       ],
       "patti_predictions": {
-        "1": {
+        "0": {
           "sp": [
-            "579",
-            "137",
-            "236",
-            "678"
+            "569",
+            "479",
+            "127",
+            "578"
           ],
           "dp": [
-            "669",
-            "335",
-            "227",
-            "399"
+            "226",
+            "244",
+            "488",
+            "118"
           ],
           "all": [
-            "579",
-            "137",
-            "669",
-            "335"
+            "569",
+            "479",
+            "226",
+            "244"
           ]
         },
-        "2": {
+        "3": {
           "sp": [
-            "679",
-            "589",
-            "345",
-            "570"
+            "689",
+            "157",
+            "148",
+            "256"
           ],
           "dp": [
-            "499",
-            "228",
-            "255",
-            "336"
+            "788",
+            "300",
+            "229",
+            "355"
           ],
           "all": [
-            "679",
-            "589",
-            "499",
-            "228"
+            "689",
+            "157",
+            "788",
+            "300"
           ]
         },
-        "6": {
+        "5": {
           "sp": [
-            "349",
-            "790",
-            "178",
-            "259"
+            "357",
+            "168",
+            "780",
+            "249"
           ],
           "dp": [
-            "600",
-            "448",
-            "466",
-            "330"
+            "799",
+            "889",
+            "366",
+            "113"
           ],
           "all": [
-            "349",
-            "790",
-            "600",
-            "448"
+            "357",
+            "168",
+            "799",
+            "889"
           ]
         },
-        "7": {
+        "8": {
           "sp": [
-            "368",
-            "359",
-            "890",
-            "179"
+            "567",
+            "260",
+            "468",
+            "134"
           ],
           "dp": [
-            "557",
-            "115",
-            "700",
-            "449"
+            "224",
+            "116",
+            "558",
+            "477"
           ],
           "all": [
-            "368",
-            "359",
-            "557",
-            "115"
+            "567",
+            "260",
+            "224",
+            "116"
           ]
         }
       }
     }
   },
   "open_digit_probs": [
-    0.09973583753833618,
-    0.1184684848121479,
-    0.11067837100424983,
-    0.10027371512061796,
-    0.07834038628802552,
-    0.11002031107998932,
-    0.09558788657583765,
-    0.09935479306745722,
-    0.09092272693065716,
-    0.09661748758268122
+    0.08885964638156646,
+    0.12016004368644037,
+    0.10201068285509993,
+    0.10633158873516578,
+    0.07292551554564791,
+    0.12736641588636125,
+    0.09597249047199405,
+    0.10063193019312434,
+    0.08709385605141148,
+    0.09864783019318839
   ],
   "close_digit_probs": [
-    0.08693602407781416,
-    0.09534855964647602,
-    0.087787698731685,
-    0.09145187492735043,
-    0.10446614606219197,
-    0.09743766683709526,
-    0.11508727996199829,
-    0.11257057595669659,
-    0.12860343724022558,
-    0.0803107365584668
+    0.08921061324206282,
+    0.09636759921779489,
+    0.09297823013723544,
+    0.09232567894331051,
+    0.0992518494217609,
+    0.09927577386726996,
+    0.10230486470628757,
+    0.10961506260844954,
+    0.13698238855264488,
+    0.08168793930318363
   ],
   "predicted_for": {
-    "date": "2026-10-19",
-    "day": "Mon"
+    "date": "2026-10-20",
+    "day": "Tue"
   },
   "otc_recommendation": {
     "digits": [
-      1,
+      0,
       3,
-      6,
+      5,
       8
     ],
     "cut_pairs": [
-      "1-6",
+      "5-0",
       "8-3"
     ],
-    "pass_probability": 65.6
+    "pass_probability": 64.9
   },
   "top_jodis": [
     {
       "rank": 1,
       "jodi": "18",
-      "prob": 2.2,
+      "prob": 2.25,
       "family": [
         "13",
         "18",
@@ -5996,60 +6008,34 @@
     },
     {
       "rank": 2,
-      "jodi": "26",
-      "prob": 1.82,
+      "jodi": "58",
+      "prob": 2.12,
       "family": [
-        "12",
-        "17",
-        "21",
-        "26",
-        "62",
-        "67",
-        "71",
-        "76"
+        "03",
+        "08",
+        "30",
+        "35",
+        "53",
+        "58",
+        "80",
+        "85"
       ]
     },
     {
       "rank": 3,
-      "jodi": "77",
-      "prob": 1.63,
+      "jodi": "50",
+      "prob": 1.85,
       "family": [
-        "22",
-        "27",
-        "72",
-        "77"
+        "00",
+        "05",
+        "50",
+        "55"
       ]
     },
     {
       "rank": 4,
-      "jodi": "16",
-      "prob": 1.57,
-      "family": [
-        "11",
-        "16",
-        "61",
-        "66"
-      ]
-    },
-    {
-      "rank": 5,
-      "jodi": "34",
-      "prob": 1.54,
-      "family": [
-        "34",
-        "39",
-        "43",
-        "48",
-        "84",
-        "89",
-        "93",
-        "98"
-      ]
-    },
-    {
-      "rank": 6,
-      "jodi": "78",
-      "prob": 1.51,
+      "jodi": "73",
+      "prob": 1.76,
       "family": [
         "23",
         "28",
@@ -6062,50 +6048,9 @@
       ]
     },
     {
-      "rank": 7,
-      "jodi": "55",
-      "prob": 1.41,
-      "family": [
-        "00",
-        "05",
-        "50",
-        "55"
-      ]
-    },
-    {
-      "rank": 8,
-      "jodi": "91",
-      "prob": 1.41,
-      "family": [
-        "14",
-        "19",
-        "41",
-        "46",
-        "64",
-        "69",
-        "91",
-        "96"
-      ]
-    },
-    {
-      "rank": 9,
-      "jodi": "56",
-      "prob": 1.33,
-      "family": [
-        "01",
-        "06",
-        "10",
-        "15",
-        "51",
-        "56",
-        "60",
-        "65"
-      ]
-    },
-    {
-      "rank": 10,
-      "jodi": "17",
-      "prob": 1.31,
+      "rank": 5,
+      "jodi": "26",
+      "prob": 1.65,
       "family": [
         "12",
         "17",
@@ -6115,6 +6060,73 @@
         "67",
         "71",
         "76"
+      ]
+    },
+    {
+      "rank": 6,
+      "jodi": "52",
+      "prob": 1.54,
+      "family": [
+        "02",
+        "07",
+        "20",
+        "25",
+        "52",
+        "57",
+        "70",
+        "75"
+      ]
+    },
+    {
+      "rank": 7,
+      "jodi": "77",
+      "prob": 1.53,
+      "family": [
+        "22",
+        "27",
+        "72",
+        "77"
+      ]
+    },
+    {
+      "rank": 8,
+      "jodi": "78",
+      "prob": 1.5,
+      "family": [
+        "23",
+        "28",
+        "32",
+        "37",
+        "73",
+        "78",
+        "82",
+        "87"
+      ]
+    },
+    {
+      "rank": 9,
+      "jodi": "16",
+      "prob": 1.48,
+      "family": [
+        "11",
+        "16",
+        "61",
+        "66"
+      ]
+    },
+    {
+      "rank": 10,
+      "jodi": "34",
+      "prob": 1.46,
+      "family": [
+        "34",
+        "39",
+        "43",
+        "48",
+        "84",
+        "89",
+        "93",
+        "98"
       ]
     }
   ]
