@@ -18,7 +18,7 @@ if MATKA_DIR not in sys.path:
     sys.path.insert(0, MATKA_DIR)
 
 from app import compute_all_predictions
-from scraper import verify_csv_integrity, resolve_csv_path, sync_csv_to_root, clean_and_deduplicate_file
+from scraper import verify_csv_integrity, resolve_csv_path, sync_csv_to_root, clean_and_deduplicate_file, sync_penal_chart_html
 
 
 def run_git_cmd(args, cwd=REPO_ROOT):
@@ -42,6 +42,7 @@ def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bo
     # Step 1b: Verify CSV data integrity and clean formatting
     csv_target = resolve_csv_path()
     clean_and_deduplicate_file(csv_target)
+    sync_penal_chart_html()
     audit = verify_csv_integrity(csv_target)
     if not audit.get("valid", False):
         print(f"[ERROR] CSV integrity verification failed: {audit.get('errors')}")
@@ -60,6 +61,7 @@ def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bo
     print(f"    - tools/matka/kalyan_historical_data.csv & subfolder mirror")
     print(f"    - tools/matka/prediction_data.json, subfolder & web mirrors")
     print(f"    - tools/matka/history.json, subfolder & web mirrors")
+    print(f"    - tools/matka/kalyan_penal_chart.html, subfolder & web mirrors (auto-updated to #bottom)")
 
     if not push:
         print("\n[INFO] --no-push requested. Local files updated successfully without Git push.")

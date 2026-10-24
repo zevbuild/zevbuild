@@ -79,6 +79,75 @@ def sync_csv_to_root(csv_path: str = DEFAULT_OUTPUT_CSV):
         print(f"[WARN] Failed to mirror CSV to root: {e}")
 
 
+
+
+def sync_penal_chart_html(raw_cache_path: str = LOCAL_CACHE_HTML) -> bool:
+    """
+    Auto-updates kalyan_penal_chart.html with the latest scraped weeks and draws at #bottom,
+    preserving the glassmorphic layout, header badges, navigation, and jumpToYear scripts.
+    Synchronizes across:
+    1. tools/matka/kalyan_4_35_to_6_35/kalyan_penal_chart.html (served at .../kalyan_4_35_to_6_35/kalyan_penal_chart#bottom)
+    2. tools/matka/kalyan_penal_chart.html (served at .../kalyan_penal_chart#bottom)
+    3. tools/matka/kalyan_4_35_to_6_35/web/kalyan_penal_chart.html
+    """
+    if not os.path.exists(raw_cache_path):
+        return False
+
+    try:
+        with open(raw_cache_path, "r", encoding="utf-8") as f:
+            raw_html = f.read()
+
+        raw_soup = BeautifulSoup(raw_html, "html.parser")
+        raw_table = raw_soup.find("table")
+        if not raw_table:
+            return False
+
+        raw_tbody = raw_table.find("tbody") or raw_table
+        raw_rows = raw_tbody.find_all("tr")
+        data_rows = raw_rows[1:] if raw_rows and raw_rows[0].find("th") else raw_rows
+        if not data_rows:
+            return False
+
+        # Tag the very latest week row for #bottom anchor styling
+        last_r = data_rows[-1]
+        last_r["id"] = "latest-week-row"
+        curr_cls = last_r.get("class", [])
+        if isinstance(curr_cls, str):
+            curr_cls = [curr_cls]
+        if "latest-week-row" not in curr_cls:
+            curr_cls.append("latest-week-row")
+        last_r["class"] = curr_cls
+
+        new_tbody_html = "<tbody>\n" + "\n".join(str(r) for r in data_rows) + "\n      </tbody>"
+
+        target_html_files = [
+            SCRIPT_DIR / "kalyan_penal_chart.html",
+            SCRIPT_DIR.parent / "kalyan_penal_chart.html",
+            SCRIPT_DIR / "web" / "kalyan_penal_chart.html",
+        ]
+
+        pattern = re.compile(r"<tbody>.*?</tbody>", re.DOTALL)
+        for target_path in target_html_files:
+            if target_path.exists():
+                with open(target_path, "r", encoding="utf-8") as f:
+                    ui_html = f.read()
+
+                if pattern.search(ui_html):
+                    updated_html = pattern.sub(new_tbody_html, ui_html)
+                    if ".latest-week-row" not in updated_html:
+                        css_insert = "\n    .latest-week-row { background: rgba(139, 92, 246, 0.12) !important; border-left: 3px solid #a855f7 !important; }\n"
+                        updated_html = updated_html.replace("</style>", css_insert + "  </style>")
+
+                    with open(target_path, "w", encoding="utf-8") as f:
+                        f.write(updated_html)
+
+        print(f"[INFO] Auto-updated penal chart ({len(data_rows)} weeks) to #bottom across 3 mirrors.")
+        return True
+    except Exception as e:
+        print(f"[WARN] Failed to auto-update penal chart HTML: {e}")
+        return False
+
+
 def fetch_html(url: str = URL, cache_file: str = LOCAL_CACHE_HTML, force_refresh: bool = False) -> str:
     """
     Fetch HTML content with exponential backoff retry (3 attempts) and table structure validation.
@@ -119,11 +188,14 @@ def fetch_html(url: str = URL, cache_file: str = LOCAL_CACHE_HTML, force_refresh
             clean_cache = clean_cache.replace("href='kalyan-penal-chart.php'", "href='https://dpbossx.net/kalyan-penal-chart.php'")
             clean_cache = clean_cache.replace('src="laxmii33.jpeg"', 'src="https://dpbossx.net/laxmii33.jpeg"')
             clean_cache = clean_cache.replace("src='laxmii33.jpeg'", "src='https://dpbossx.net/laxmii33.jpeg'")
+            clean_cache = clean_cache.replace('src="logo.webp"', 'src="https://dpbossx.net/logo.webp"')
+            clean_cache = clean_cache.replace("src='logo.webp'", "src='https://dpbossx.net/logo.webp'")
             clean_cache = re.sub(r'<link[^>]*apple-icon[^>]*>', '', clean_cache, flags=re.IGNORECASE)
             clean_cache = re.sub(r'<link[^>]*rel=["\'](?:shortcut )?icon["\'][^>]*>', '<link rel="icon" href="/favicon.svg">', clean_cache, flags=re.IGNORECASE)
             with open(cache_file, "w", encoding="utf-8") as f:
                 f.write(clean_cache)
             print(f"[INFO] Cached validated response to raw cache: '{cache_file}'.")
+            sync_penal_chart_html(cache_file)
             return clean_cache
 
         except (requests.exceptions.RequestException, ValueError) as e:
