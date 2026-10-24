@@ -10,6 +10,14 @@
     "openPatti": "289",
     "closePatti": "146"
   },
+  "maintenance_mode": false,
+  "maintenance_details": {
+    "is_active": false,
+    "window": "Sunday 12:00 AM to 12:00 PM IST",
+    "status": "Operational",
+    "resume_time_ist": "Sunday 12:00 PM IST",
+    "rollover_scheduled": false
+  },
   "all_time_performance": {
     "total_historical_draws": 3183,
     "test_draws": 2683,
@@ -26,7 +34,7 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "24 Oct 2026, 11:08 PM IST",
+    "last_sync_ist": "24 Oct 2026, 11:36 PM IST",
     "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
     "daily_cadence": [
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
@@ -40,7 +48,15 @@
     "all_time_touch_rate": "77.3%",
     "all_time_touches": 2074,
     "total_historical_draws": 3183,
-    "total_verified_draws": 2683
+    "total_verified_draws": 2683,
+    "maintenance_mode": false,
+    "maintenance_details": {
+      "is_active": false,
+      "window": "Sunday 12:00 AM to 12:00 PM IST",
+      "status": "Operational",
+      "resume_time_ist": "Sunday 12:00 PM IST",
+      "rollover_scheduled": false
+    }
   },
   "last_week_data": {
     "week_range": "19 Oct 2026 \u2013 24 Oct 2026",
@@ -4088,7 +4104,7 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "24 Oct 2026, 11:08 PM IST",
+      "last_sync_ist": "24 Oct 2026, 11:36 PM IST",
       "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
       "daily_cadence": [
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
@@ -4102,7 +4118,15 @@
       "all_time_touch_rate": "77.3%",
       "all_time_touches": 2074,
       "total_historical_draws": 3183,
-      "total_verified_draws": 2683
+      "total_verified_draws": 2683,
+      "maintenance_mode": false,
+      "maintenance_details": {
+        "is_active": false,
+        "window": "Sunday 12:00 AM to 12:00 PM IST",
+        "status": "Operational",
+        "resume_time_ist": "Sunday 12:00 PM IST",
+        "rollover_scheduled": false
+      }
     }
   },
   "by_day": {
