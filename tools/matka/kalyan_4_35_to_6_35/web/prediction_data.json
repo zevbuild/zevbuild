@@ -10,13 +10,13 @@
     "openPatti": "289",
     "closePatti": "146"
   },
-  "maintenance_mode": false,
+  "maintenance_mode": true,
   "maintenance_details": {
-    "is_active": false,
+    "is_active": true,
     "window": "Sunday 12:00 AM to 12:00 PM IST",
-    "status": "Operational",
+    "status": "Weekly System Maintenance, Recalibration & Database Integrity Audit",
     "resume_time_ist": "Sunday 12:00 PM IST",
-    "rollover_scheduled": false
+    "rollover_scheduled": true
   },
   "all_time_performance": {
     "total_historical_draws": 3183,
@@ -34,8 +34,8 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "24 Oct 2026, 11:36 PM IST",
-    "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
+    "last_sync_ist": "25 Oct 2026, 12:26 AM IST",
+    "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
     "daily_cadence": [
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
       "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
@@ -49,13 +49,13 @@
     "all_time_touches": 2074,
     "total_historical_draws": 3183,
     "total_verified_draws": 2683,
-    "maintenance_mode": false,
+    "maintenance_mode": true,
     "maintenance_details": {
-      "is_active": false,
+      "is_active": true,
       "window": "Sunday 12:00 AM to 12:00 PM IST",
-      "status": "Operational",
+      "status": "Weekly System Maintenance, Recalibration & Database Integrity Audit",
       "resume_time_ist": "Sunday 12:00 PM IST",
-      "rollover_scheduled": false
+      "rollover_scheduled": true
     }
   },
   "last_week_data": {
@@ -4104,8 +4104,8 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "24 Oct 2026, 11:36 PM IST",
-      "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
+      "last_sync_ist": "25 Oct 2026, 12:26 AM IST",
+      "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
       "daily_cadence": [
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
         "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
@@ -4119,19 +4119,19 @@
       "all_time_touches": 2074,
       "total_historical_draws": 3183,
       "total_verified_draws": 2683,
-      "maintenance_mode": false,
+      "maintenance_mode": true,
       "maintenance_details": {
-        "is_active": false,
+        "is_active": true,
         "window": "Sunday 12:00 AM to 12:00 PM IST",
-        "status": "Operational",
+        "status": "Weekly System Maintenance, Recalibration & Database Integrity Audit",
         "resume_time_ist": "Sunday 12:00 PM IST",
-        "rollover_scheduled": false
+        "rollover_scheduled": true
       }
     }
   },
   "by_day": {
     "Mon": {
-      "date": "2026-10-19",
+      "date": "2026-10-26",
       "day": "Mon",
       "top_jodis": [
         {
@@ -4588,7 +4588,7 @@
       }
     },
     "Tue": {
-      "date": "2026-10-20",
+      "date": "2026-10-27",
       "day": "Tue",
       "top_jodis": [
         {
@@ -5045,7 +5045,7 @@
       }
     },
     "Wed": {
-      "date": "2026-10-21",
+      "date": "2026-10-28",
       "day": "Wed",
       "top_jodis": [
         {
@@ -5502,7 +5502,7 @@
       }
     },
     "Thu": {
-      "date": "2026-10-22",
+      "date": "2026-10-29",
       "day": "Thu",
       "top_jodis": [
         {
@@ -5959,7 +5959,7 @@
       }
     },
     "Fri": {
-      "date": "2026-10-23",
+      "date": "2026-10-30",
       "day": "Fri",
       "top_jodis": [
         {
@@ -6416,7 +6416,7 @@
       }
     },
     "Sat": {
-      "date": "2026-10-24",
+      "date": "2026-10-31",
       "day": "Sat",
       "top_jodis": [
         {
@@ -6898,7 +6898,7 @@
     0.08752629665360104
   ],
   "predicted_for": {
-    "date": "2026-10-19",
+    "date": "2026-10-26",
     "day": "Mon"
   },
   "otc_recommendation": {
