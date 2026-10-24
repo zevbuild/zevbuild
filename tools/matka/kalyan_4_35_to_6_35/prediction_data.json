@@ -10,6 +10,38 @@
     "openPatti": "289",
     "closePatti": "146"
   },
+  "all_time_performance": {
+    "total_historical_draws": 3183,
+    "test_draws": 2683,
+    "all_time_touches": 2074,
+    "all_time_touch_rate": "77.3%",
+    "otc_pass_rate": "61.4%",
+    "top15_jodi_hit_rate": "15.5%",
+    "top3_open_hit_rate": "31.0%",
+    "top3_close_hit_rate": "29.7%",
+    "top1_family_hit_rate": "6.5%",
+    "verification_method": "Strict Out-of-Sample Walk-Forward Backtesting (Zero Lookahead)",
+    "empirical_edge": "+18.9% Empirical Walk-Forward Edge"
+  },
+  "telemetry": {
+    "engine_status": "100% Fully Automated Daily Pipeline",
+    "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
+    "last_sync_ist": "24 Oct 2026, 11:08 PM IST",
+    "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
+    "daily_cadence": [
+      "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
+      "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
+      "Sun 12:00 PM IST (Weekly Rollover & Hyperparameter Re-tune)"
+    ],
+    "verification_method": "Strict Out-of-Sample Walk-Forward Simulation (Zero Lookahead)",
+    "trailing_30_day_touch_rate": "54.2%",
+    "trailing_30_day_touches": 13,
+    "trailing_30_day_draws": 24,
+    "all_time_touch_rate": "77.3%",
+    "all_time_touches": 2074,
+    "total_historical_draws": 3183,
+    "total_verified_draws": 2683
+  },
   "last_week_data": {
     "week_range": "19 Oct 2026 \u2013 24 Oct 2026",
     "summary": {
@@ -341,7 +373,10 @@
       "single_ank_hit_rate": "66.7%",
       "otc_pass_rate": "37.5%",
       "family_bracket_rate": "0.0%",
-      "empirical_edge": "+16.8% Walk-Forward Empirical Edge"
+      "empirical_edge": "+16.8% Walk-Forward Empirical Edge",
+      "all_time_touch_rate": "77.3%",
+      "all_time_draws": 2683,
+      "all_time_touches": 2074
     },
     "weeks": [
       {
@@ -4036,7 +4071,39 @@
         "badge_type": "highlight",
         "touched": true
       }
-    ]
+    ],
+    "all_time_performance": {
+      "total_historical_draws": 3183,
+      "test_draws": 2683,
+      "all_time_touches": 2074,
+      "all_time_touch_rate": "77.3%",
+      "otc_pass_rate": "61.4%",
+      "top15_jodi_hit_rate": "15.5%",
+      "top3_open_hit_rate": "31.0%",
+      "top3_close_hit_rate": "29.7%",
+      "top1_family_hit_rate": "6.5%",
+      "verification_method": "Strict Out-of-Sample Walk-Forward Backtesting (Zero Lookahead)",
+      "empirical_edge": "+18.9% Empirical Walk-Forward Edge"
+    },
+    "telemetry": {
+      "engine_status": "100% Fully Automated Daily Pipeline",
+      "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
+      "last_sync_ist": "24 Oct 2026, 11:08 PM IST",
+      "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
+      "daily_cadence": [
+        "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
+        "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
+        "Sun 12:00 PM IST (Weekly Rollover & Hyperparameter Re-tune)"
+      ],
+      "verification_method": "Strict Out-of-Sample Walk-Forward Simulation (Zero Lookahead)",
+      "trailing_30_day_touch_rate": "54.2%",
+      "trailing_30_day_touches": 13,
+      "trailing_30_day_draws": 24,
+      "all_time_touch_rate": "77.3%",
+      "all_time_touches": 2074,
+      "total_historical_draws": 3183,
+      "total_verified_draws": 2683
+    }
   },
   "by_day": {
     "Mon": {

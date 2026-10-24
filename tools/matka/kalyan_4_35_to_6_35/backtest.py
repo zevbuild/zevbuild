@@ -84,13 +84,18 @@ def run_walk_forward_backtest(
     w_direct: float = 0.25,
     w_markov_jodi: float = 0.15,
     cut_res: float = 0.12,
+    df_override: pd.DataFrame = None,
+    verbose: bool = True,
 ) -> dict:
-    target_csv = resolve_csv_path(csv_path)
-    df = pd.read_csv(
-        target_csv,
-        dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str},
-    )
-    valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+    if df_override is not None:
+        valid_df = df_override[df_override["Is_Valid"] == True].copy().reset_index(drop=True)
+    else:
+        target_csv = resolve_csv_path(csv_path)
+        df = pd.read_csv(
+            target_csv,
+            dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str},
+        )
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
     n_total = len(valid_df)
 
     if n_total <= warmup_draws:
@@ -179,14 +184,18 @@ def run_walk_forward_backtest(
 
     # Backtesting statistics
     test_draws = n_total - warmup_draws
-    print(f"[INFO] Running walk-forward out-of-sample backtest across {test_draws} draws...")
+    if verbose:
+        print(f"[INFO] Running walk-forward out-of-sample backtest across {test_draws} draws...")
     start_time = time.time()
 
     otc_hits = 0
+    touch_hits = 0
     top1_open_hits = 0
     top2_open_hits = 0
+    top3_open_hits = 0
     top1_close_hits = 0
     top2_close_hits = 0
+    top3_close_hits = 0
 
     top1_jodi_hits = 0
     top3_jodi_hits = 0
@@ -312,13 +321,17 @@ def run_walk_forward_backtest(
 
         is_top1_open = (act_o == rk_open[0])
         is_top2_open = (act_o in rk_open[:2])
+        is_top3_open = (act_o in rk_open[:3])
         is_top1_close = (act_c == rk_close[0])
         is_top2_close = (act_c in rk_close[:2])
+        is_top3_close = (act_c in rk_close[:3])
 
         if is_top1_open: top1_open_hits += 1
         if is_top2_open: top2_open_hits += 1
+        if is_top3_open: top3_open_hits += 1
         if is_top1_close: top1_close_hits += 1
         if is_top2_close: top2_close_hits += 1
+        if is_top3_close: top3_close_hits += 1
 
         # Brier score on Top-1 Open Ank prediction
         pred_top1_open = int(rk_open[0])
@@ -404,8 +417,13 @@ def run_walk_forward_backtest(
             top_c * 10 + top_o, cut_tc * 10 + top_o,
             top_c * 10 + cut_to, cut_tc * 10 + cut_to,
         }
-        if act_j in fam_pairs:
+        is_fam_hit = (act_j in fam_pairs)
+        if is_fam_hit:
             top1_family_hits += 1
+
+        is_touched = is_otc_hit or is_top3_open or is_top3_close or is_top15_jodi or is_fam_hit
+        if is_touched:
+            touch_hits += 1
 
         # Financial P&L, Drawdown, Underwater Duration & Streaks
         # 1. Top-1 Jodi
@@ -501,10 +519,12 @@ def run_walk_forward_backtest(
         total_gaps += 1.0; total_gaps[(act_o + act_c) % 10] = 0.0
 
     elapsed = time.time() - start_time
-    print(f"[INFO] Backtest completed in {elapsed:.2f} seconds.")
+    if verbose:
+        print(f"[INFO] Backtest completed in {elapsed:.2f} seconds.")
 
     # 1. Predictive Accuracy Table with Binomial Z-score and p-value
     accuracy_specs = [
+        ("Touch / Win Coverage (OTC/Top-3/Top-15)", touch_hits, 0.65),
         ("4-Ank OTC (Dual Cut Pair)", otc_hits, 0.64),
         ("Top-1 Jodi", top1_jodi_hits, 0.01),
         ("Top-3 Jodis", top3_jodi_hits, 0.03),
@@ -514,8 +534,10 @@ def run_walk_forward_backtest(
         ("Top-1 Jodi Cut-Family (8)", top1_family_hits, 0.08),
         ("Top-1 Open Ank", top1_open_hits, 0.10),
         ("Top-2 Open Anks", top2_open_hits, 0.20),
+        ("Top-3 Open Anks", top3_open_hits, 0.30),
         ("Top-1 Close Ank", top1_close_hits, 0.10),
         ("Top-2 Close Anks", top2_close_hits, 0.20),
+        ("Top-3 Close Anks", top3_close_hits, 0.30),
     ]
 
     metrics = []
@@ -651,58 +673,75 @@ def run_walk_forward_backtest(
                 "Top-5 Jodi Hit Rate": f"{w_info['top5_hits'] / n_w * 100:.2f}%",
             })
 
-    # Print comprehensive backtest report
-    print("\n" + "=" * 80)
-    print("      KALYAN MATKA OUT-OF-SAMPLE WALK-FORWARD BACKTEST & STATISTICAL AUDIT")
-    print("=" * 80)
-    print(f"Warmup Training Window:     {warmup_draws} draws")
-    print(f"Out-of-Sample Test Window:  {test_draws} draws ({dates[warmup_draws]} to {dates[-1]})")
-    print("Evaluation Methodology:     Strict walk-forward (Predict draw t using 0 to t-1)")
-    print("-" * 80)
+    if verbose:
+        # Print comprehensive backtest report
+        print("\n" + "=" * 80)
+        print("      KALYAN MATKA OUT-OF-SAMPLE WALK-FORWARD BACKTEST & STATISTICAL AUDIT")
+        print("=" * 80)
+        print(f"Warmup Training Window:     {warmup_draws} draws")
+        print(f"Out-of-Sample Test Window:  {test_draws} draws ({dates[warmup_draws]} to {dates[-1]})")
+        print("Evaluation Methodology:     Strict walk-forward (Predict draw t using 0 to t-1)")
+        print("-" * 80)
 
-    print("\n[ACCURACY] PREDICTIVE ACCURACY VS THEORETICAL RANDOM BASELINE (WITH BINOMIAL SIGNIFICANCE):")
-    print(tabulate(metrics, headers="keys", tablefmt="github"))
+        print("\n[ACCURACY] PREDICTIVE ACCURACY VS THEORETICAL RANDOM BASELINE (WITH BINOMIAL SIGNIFICANCE):")
+        print(tabulate(metrics, headers="keys", tablefmt="github"))
 
-    print("\n[RANKING] JODI RANKING PRECISION & MEAN RECIPROCAL RANK (MRR):")
-    print(tabulate(precision_table, headers="keys", tablefmt="github"))
+        print("\n[RANKING] JODI RANKING PRECISION & MEAN RECIPROCAL RANK (MRR):")
+        print(tabulate(precision_table, headers="keys", tablefmt="github"))
 
-    print("\n[CALIBRATION] PROBABILITY CALIBRATION (BRIER SCORE):")
-    print(tabulate(calibration_table, headers="keys", tablefmt="github"))
+        print("\n[CALIBRATION] PROBABILITY CALIBRATION (BRIER SCORE):")
+        print(tabulate(calibration_table, headers="keys", tablefmt="github"))
 
-    print("\n[FINANCIALS] FINANCIAL EXPECTED VALUE & DRAWDOWN RISK METRICS:")
-    print(tabulate(financials, headers="keys", tablefmt="github"))
+        print("\n[FINANCIALS] FINANCIAL EXPECTED VALUE & DRAWDOWN RISK METRICS:")
+        print(tabulate(financials, headers="keys", tablefmt="github"))
 
-    if regime_rows:
-        print("\n[REGIMES] TEMPORAL REGIME BREAKDOWN (MULTI-YEAR EPOCHS):")
-        print(tabulate(regime_rows, headers="keys", tablefmt="github"))
+        if regime_rows:
+            print("\n[REGIMES] TEMPORAL REGIME BREAKDOWN (MULTI-YEAR EPOCHS):")
+            print(tabulate(regime_rows, headers="keys", tablefmt="github"))
 
-    if weekday_rows:
-        print("\n[SEASONALITY] WEEKDAY SEASONALITY PERFORMANCE BREAKDOWN (MON-SAT):")
-        print(tabulate(weekday_rows, headers="keys", tablefmt="github"))
+        if weekday_rows:
+            print("\n[SEASONALITY] WEEKDAY SEASONALITY PERFORMANCE BREAKDOWN (MON-SAT):")
+            print(tabulate(weekday_rows, headers="keys", tablefmt="github"))
 
-    print("\n" + "=" * 80)
-    print("               DATA ENGINEERING CONCLUSION & INSIGHTS")
-    print("=" * 80)
-    print("1. Hit-Rate Analysis: Model heuristics improve hit rates relative to random")
-    print("   chance by identifying persistent empirical patterns.")
-    print("2. The House Edge Reality: Because bookmakers retain a -10% house margin,")
-    print("   no betting strategy on arbitrary lottery draws can deliver guaranteed profits.")
-    print("3. Responsible Gaming: Treat predictions as mathematical probability estimates,")
-    print("   never as guaranteed outcomes.")
-    print("=" * 80 + "\n")
+        print("\n" + "=" * 80)
+        print("               DATA ENGINEERING CONCLUSION & INSIGHTS")
+        print("=" * 80)
+        print("1. Hit-Rate Analysis: Model heuristics improve hit rates relative to random")
+        print("   chance by identifying persistent empirical patterns.")
+        print("2. The House Edge Reality: Because bookmakers retain a -10% house margin,")
+        print("   no betting strategy on arbitrary lottery draws can deliver guaranteed profits.")
+        print("3. Responsible Gaming: Treat predictions as mathematical probability estimates,")
+        print("   never as guaranteed outcomes.")
+        print("=" * 80 + "\n")
 
     return {
+        "total_draws": n_total,
         "test_draws": test_draws,
+        "touch_hits": touch_hits,
+        "touch_rate": touch_hits / test_draws,
+        "touch_rate_pct": f"{touch_hits / test_draws * 100:.1f}%",
+        "otc_hits": otc_hits,
         "otc_pass_rate": otc_hits / test_draws,
+        "otc_pass_rate_pct": f"{otc_hits / test_draws * 100:.1f}%",
         "top1_jodi_hit_rate": top1_jodi_hits / test_draws,
         "top3_jodi_hit_rate": top3_jodi_hits / test_draws,
         "top5_jodi_hit_rate": top5_jodi_hits / test_draws,
         "top10_jodi_hit_rate": top10_jodi_hits / test_draws,
+        "top15_jodi_hits": top15_jodi_hits,
         "top15_jodi_hit_rate": top15_jodi_hits / test_draws,
+        "top15_jodi_rate_pct": f"{top15_jodi_hits / test_draws * 100:.1f}%",
         "top1_open_hit_rate": top1_open_hits / test_draws,
         "top2_open_hit_rate": top2_open_hits / test_draws,
+        "top3_open_hits": top3_open_hits,
+        "top3_open_hit_rate": top3_open_hits / test_draws,
+        "top3_open_rate_pct": f"{top3_open_hits / test_draws * 100:.1f}%",
         "top1_close_hit_rate": top1_close_hits / test_draws,
         "top2_close_hit_rate": top2_close_hits / test_draws,
+        "top3_close_hits": top3_close_hits,
+        "top3_close_hit_rate": top3_close_hits / test_draws,
+        "top3_close_rate_pct": f"{top3_close_hits / test_draws * 100:.1f}%",
+        "top1_family_hits": top1_family_hits,
+        "top1_family_rate_pct": f"{top1_family_hits / test_draws * 100:.1f}%",
         "pnl_top1": pnl_top1,
         "pnl_top5": pnl_top5,
         "pnl_open": pnl_open,
