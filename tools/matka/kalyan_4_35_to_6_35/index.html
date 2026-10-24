@@ -588,7 +588,7 @@
           </button>
           <button onclick="setTab('lastweek')" id="tab-btn-lastweek" class="text-xs font-medium px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            30-Day Prediction History (79.2% Hit Rate)
+            <span id="tab-lastweek-label">30-Day Prediction History</span>
           </button>
         </div>
         <span class="text-xs text-slate-400">Payout Benchmark: 90:1</span>
@@ -7140,14 +7140,13 @@
       const mData = APP_STATE.last_month_data;
       let drawsToRender = [];
 
-      if (mData && mData.all_draws && mData.all_draws.length > 0) {
+      const allDrawsList = (mData && (mData.all_draws || mData.draws)) || (APP_STATE.last_week_data && APP_STATE.last_week_data.draws) || [];
+      if (allDrawsList.length > 0) {
         if (currentHistoryFilter === 'all') {
-          drawsToRender = mData.all_draws;
+          drawsToRender = allDrawsList;
         } else {
-          drawsToRender = mData.all_draws.filter(d => d.week_id === currentHistoryFilter);
+          drawsToRender = allDrawsList.filter(d => d.week_id === currentHistoryFilter);
         }
-      } else if (APP_STATE.last_week_data && APP_STATE.last_week_data.draws) {
-        drawsToRender = APP_STATE.last_week_data.draws;
       }
 
       if (drawsToRender.length === 0) {
@@ -7247,6 +7246,27 @@
 
         const kpiEdge = document.getElementById('kpi-edge-rate');
         if (kpiEdge) kpiEdge.textContent = mData.summary.empirical_edge ? mData.summary.empirical_edge.split(' ')[0] : '+16.8%';
+        const tabLabel = document.getElementById('tab-lastweek-label');
+        if (tabLabel) {
+          const hitRate = mData.summary.touch_rate || mData.summary.win_rate || mData.summary.single_ank_hit_rate || '54.2%';
+          tabLabel.textContent = `30-Day Prediction History (${hitRate} Hit Rate)`;
+        }
+
+        if (mData.weeks && mData.weeks.length > 0) {
+          const allBtn = document.getElementById('hist-filter-all');
+          if (allBtn) {
+            const allRate = mData.summary.touch_rate || mData.summary.win_rate || mData.summary.single_ank_hit_rate || '54.2%';
+            allBtn.textContent = `All 30 Days (${mData.summary.total_draws} Draws • ${allRate} Hit)`;
+          }
+          mData.weeks.forEach(w => {
+            const btn = document.getElementById('hist-filter-' + (w.week_id || w.id));
+            if (btn) {
+              const pRate = (w.summary && w.summary.pass_rate) || w.pass_rate || '';
+              const cleanLabel = (w.week_label || w.label || '').replace(' (Last Week)', '').replace(' (Latest Week)', '');
+              btn.textContent = `${cleanLabel} (${pRate})`;
+            }
+          });
+        }
       } else if (lw && lw.summary) {
         if (rangeEl && lw.week_range) rangeEl.textContent = lw.week_range;
         if (summaryBadge) summaryBadge.textContent = `${lw.summary.ank_hits} Verified Ank Hits`;

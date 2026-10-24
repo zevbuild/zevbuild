@@ -94,12 +94,23 @@ def compute_last_week_performance(valid_df, html=""):
     latest_dt = datetime.strptime(latest_date_str, "%Y-%m-%d")
     curr_mon = latest_dt - timedelta(days=latest_dt.weekday())
 
-    weeks_config = [
-        {"id": "week_4", "offset": 1, "suffix": " (Last Week)"},
-        {"id": "week_3", "offset": 2, "suffix": " (2 Weeks Ago)"},
-        {"id": "week_2", "offset": 3, "suffix": " (3 Weeks Ago)"},
-        {"id": "week_1", "offset": 4, "suffix": " (4 Weeks Ago)"},
-    ]
+    curr_mask = (valid_df["Date"] >= curr_mon.strftime("%Y-%m-%d")) & (valid_df["Date"] <= latest_dt.strftime("%Y-%m-%d"))
+    has_curr_draws = curr_mask.sum() > 0
+
+    if has_curr_draws:
+        weeks_config = [
+            {"id": "week_4", "offset": 0, "suffix": " (Latest Week)"},
+            {"id": "week_3", "offset": 1, "suffix": " (1 Week Ago)"},
+            {"id": "week_2", "offset": 2, "suffix": " (2 Weeks Ago)"},
+            {"id": "week_1", "offset": 3, "suffix": " (3 Weeks Ago)"},
+        ]
+    else:
+        weeks_config = [
+            {"id": "week_4", "offset": 1, "suffix": " (Last Week)"},
+            {"id": "week_3", "offset": 2, "suffix": " (2 Weeks Ago)"},
+            {"id": "week_2", "offset": 3, "suffix": " (3 Weeks Ago)"},
+            {"id": "week_1", "offset": 4, "suffix": " (4 Weeks Ago)"},
+        ]
 
     all_draws = []
     weeks_list = []
@@ -107,6 +118,7 @@ def compute_last_week_performance(valid_df, html=""):
     double_ank_hits_month = 0
     otc_passes_month = 0
     family_hits_month = 0
+    total_touches_month = 0
 
     last_week_data = None
 
@@ -124,6 +136,7 @@ def compute_last_week_performance(valid_df, html=""):
         w_ank_hits = 0
         w_double_hits = 0
         w_otc_hits = 0
+        w_touches = 0
 
         for idx in w_indices:
             if idx <= 0:
@@ -219,10 +232,15 @@ def compute_last_week_performance(valid_df, html=""):
                 "status_label": status_label,
                 "badge_type": badge_type,
             }
+            touched = open_hit or close_hit or fam_hit or (actual_j in top_jodis) or otc_hit
+            if touched:
+                w_touches += 1
+                total_touches_month += 1
+            draw_obj["touched"] = touched
             w_draws.append(draw_obj)
             all_draws.append(draw_obj)
 
-        pass_rate_str = f"{(w_ank_hits / len(w_draws) * 100):.1f}%" if w_draws else "0.0%"
+        pass_rate_str = f"{(w_touches / len(w_draws) * 100):.1f}%" if w_draws else "0.0%"
         weeks_list.append({
             "week_id": w_cfg["id"],
             "week_label": w_label,
@@ -247,24 +265,30 @@ def compute_last_week_performance(valid_df, html=""):
                     "total_draws": len(w_draws),
                     "ank_hits": w_ank_hits,
                     "double_ank_hits": w_double_hits,
+                    "touches": w_touches,
+                    "pass_rate": pass_rate_str,
                     "edge": "+2.2% Walk-Forward",
                 },
-                "draws": all_draws,
+                "draws": w_draws,
             }
 
-    earliest_mon = curr_mon - timedelta(days=28)
-    latest_sat = curr_mon - timedelta(days=2)
-    month_range_str = f"{earliest_mon.strftime('%d %b %Y')} – {latest_sat.strftime('%d %b %Y')} (Last 30 Days)"
+    min_mon = curr_mon - timedelta(days=7 * weeks_config[-1]["offset"])
+    max_sat = curr_mon - timedelta(days=7 * weeks_config[0]["offset"]) + timedelta(days=5)
+    month_range_str = f"{min_mon.strftime('%d %b %Y')} – {max_sat.strftime('%d %b %Y')} (Last 30 Days)"
 
     n_tot = len(all_draws)
     single_rate = f"{(total_ank_hits_month / n_tot * 100):.1f}%" if n_tot else "0.0%"
     otc_rate = f"{(otc_passes_month / n_tot * 100):.1f}%" if n_tot else "0.0%"
     fam_rate = f"{(family_hits_month / n_tot * 100):.1f}%" if n_tot else "0.0%"
+    touch_rate = f"{(total_touches_month / n_tot * 100):.1f}%" if n_tot else "0.0%"
 
     last_month_data = {
         "month_range": month_range_str,
         "summary": {
             "total_draws": n_tot,
+            "total_touches": total_touches_month,
+            "touch_rate": touch_rate,
+            "win_rate": touch_rate,
             "ank_hits": total_ank_hits_month,
             "double_ank_hits": double_ank_hits_month,
             "otc_passes": otc_passes_month,
@@ -275,6 +299,7 @@ def compute_last_week_performance(valid_df, html=""):
             "empirical_edge": "+16.8% Walk-Forward Empirical Edge",
         },
         "weeks": weeks_list,
+        "all_draws": all_draws,
         "draws": all_draws,
     }
 
