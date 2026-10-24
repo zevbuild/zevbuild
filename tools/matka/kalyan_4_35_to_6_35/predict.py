@@ -178,7 +178,7 @@ def generate_by_day_predictions(
         sorted_c = np.argsort(c_probs)[::-1]
 
         top_j = []
-        for rank, idx in enumerate(sorted_j[:10], start=1):
+        for rank, idx in enumerate(sorted_j[:15], start=1):
             j_str = f"{idx:02d}"
             p = round(float(j_probs[idx]) * 100.0, 2)
             top_j.append({
@@ -267,7 +267,7 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     # Top Jodis
     sorted_jodi_indices = np.argsort(jodi_probs)[::-1]
     top_jodis_list = []
-    for rank, idx in enumerate(sorted_jodi_indices[:10], start=1):
+    for rank, idx in enumerate(sorted_jodi_indices[:15], start=1):
         j_str = f"{idx:02d}"
         p = jodi_probs[idx] * 100.0
         edge = (p / 1.0) - 1.0  # relative edge over random 1%

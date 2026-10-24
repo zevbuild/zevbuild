@@ -192,6 +192,7 @@ def run_walk_forward_backtest(
     top3_jodi_hits = 0
     top5_jodi_hits = 0
     top10_jodi_hits = 0
+    top15_jodi_hits = 0
     top1_family_hits = 0
 
     # Precision & Ranking accumulators
@@ -385,11 +386,13 @@ def run_walk_forward_backtest(
         is_top3_jodi = (rank_act_j <= 3)
         is_top5_jodi = (rank_act_j <= 5)
         is_top10_jodi = (rank_act_j <= 10)
+        is_top15_jodi = (rank_act_j <= 15)
 
         if is_top1_jodi: top1_jodi_hits += 1
         if is_top3_jodi: top3_jodi_hits += 1
         if is_top5_jodi: top5_jodi_hits += 1
         if is_top10_jodi: top10_jodi_hits += 1
+        if is_top15_jodi: top15_jodi_hits += 1
 
         # Top 1 family
         top_pick = ranked_jodis[0]
@@ -507,6 +510,7 @@ def run_walk_forward_backtest(
         ("Top-3 Jodis", top3_jodi_hits, 0.03),
         ("Top-5 Jodis", top5_jodi_hits, 0.05),
         ("Top-10 Jodis", top10_jodi_hits, 0.10),
+        ("Top-15 Jodis", top15_jodi_hits, 0.15),
         ("Top-1 Jodi Cut-Family (8)", top1_family_hits, 0.08),
         ("Top-1 Open Ank", top1_open_hits, 0.10),
         ("Top-2 Open Anks", top2_open_hits, 0.20),
@@ -694,6 +698,7 @@ def run_walk_forward_backtest(
         "top3_jodi_hit_rate": top3_jodi_hits / test_draws,
         "top5_jodi_hit_rate": top5_jodi_hits / test_draws,
         "top10_jodi_hit_rate": top10_jodi_hits / test_draws,
+        "top15_jodi_hit_rate": top15_jodi_hits / test_draws,
         "top1_open_hit_rate": top1_open_hits / test_draws,
         "top2_open_hit_rate": top2_open_hits / test_draws,
         "top1_close_hit_rate": top1_close_hits / test_draws,

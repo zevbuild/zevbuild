@@ -145,7 +145,7 @@ def compute_last_week_performance(valid_df, html=""):
             sorted_o = np.argsort(preds["open_probs"])[::-1]
             sorted_c = np.argsort(preds["close_probs"])[::-1]
 
-            top_jodis = [f"{x:02d}" for x in sorted_j[:10]]
+            top_jodis = [f"{x:02d}" for x in sorted_j[:15]]
             top_open = [int(x) for x in sorted_o[:3]]
             top_close = [int(x) for x in sorted_c[:3]]
 
@@ -184,7 +184,7 @@ def compute_last_week_performance(valid_df, html=""):
                 badge_type = "highlight"
                 family_hits_month += 1
             elif actual_j in top_jodis:
-                status_label = f"Top-10 Edge ({actual_j})"
+                status_label = f"Top-15 Edge ({actual_j})"
                 badge_type = "info"
             elif otc_hit:
                 status_label = "OTC Pass"
@@ -384,7 +384,7 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         sorted_c = np.argsort(close_probs)[::-1]
 
         top_jodis = []
-        for rank, idx in enumerate(sorted_j[:10], start=1):
+        for rank, idx in enumerate(sorted_j[:15], start=1):
             j_str = f"{idx:02d}"
             p = round(float(jodi_probs[idx]) * 100.0, 2)
             top_jodis.append({

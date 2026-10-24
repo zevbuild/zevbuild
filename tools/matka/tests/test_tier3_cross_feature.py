@@ -147,7 +147,7 @@ class TestCrossFeatureInteractions(unittest.TestCase):
 
         self.assertIn("latest_draw", parsed)
         self.assertIn("top_jodis", parsed)
-        self.assertEqual(len(parsed["top_jodis"]), 10)
+        self.assertEqual(len(parsed["top_jodis"]), 15)
         self.assertEqual(len(parsed["otc_digits"]), 4)
 
     def test_csv_history_to_history_json_conformity(self):
