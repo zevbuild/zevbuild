@@ -11,6 +11,7 @@ Exhaustively challenges and stress-tests:
 
 import os
 import sys
+import json
 import tempfile
 import unittest
 import subprocess
@@ -233,32 +234,42 @@ class TestSyncAndPushPipelineSafety(unittest.TestCase):
 
     def test_no_push_flag_prevents_git_commands(self):
         """Verifies --no-push executes local pipeline without triggering git commit or push."""
-        with patch("subprocess.run") as mock_subproc:
-            # Call sync_and_push with push=False
-            sync_and_push.sync_and_push(push=False)
-            # Ensure git commit and git push were NEVER called
-            for call in mock_subproc.call_args_list:
-                args = call[0][0]
-                self.assertNotIn("commit", args)
-                self.assertNotIn("push", args)
+        mock_payload = {
+            "valid_records": 100,
+            "latest_draw": {"date": "2026-10-24", "day": "Sat", "jodi": "91"},
+            "last_update_by_developer": "24 Oct 2026",
+        }
+        with patch("sync_and_push.compute_all_predictions", return_value=mock_payload):
+            with patch("sync_and_push.clean_and_deduplicate_file"):
+                with patch("sync_and_push.verify_csv_integrity", return_value={"valid": True, "total_records": 100, "valid_records": 100}):
+                    with patch("subprocess.run") as mock_subproc:
+                        # Call sync_and_push with push=False
+                        sync_and_push.sync_and_push(push=False)
+                        # Ensure git commit and git push were NEVER called
+                        for call in mock_subproc.call_args_list:
+                            args = call[0][0]
+                            self.assertNotIn("commit", args)
+                            self.assertNotIn("push", args)
 
     def test_sync_aborts_immediately_if_csv_integrity_fails(self):
         """
         Safety guard: If CSV integrity check fails, sync_and_push must exit(1)
         before reaching any Git commands.
         """
-        with patch("sync_and_push.verify_csv_integrity", return_value={"valid": False, "errors": ["Corrupted panel"]}) as mock_verify:
-            with patch("sync_and_push.clean_and_deduplicate_file"):
-                with patch("sys.exit") as mock_exit:
-                    sync_and_push.sync_and_push(push=True)
-                    mock_exit.assert_called_with(1)
+        mock_payload = {"valid_records": 100}
+        with patch("sync_and_push.compute_all_predictions", return_value=mock_payload):
+            with patch("sync_and_push.verify_csv_integrity", return_value={"valid": False, "errors": ["Corrupted panel"]}) as mock_verify:
+                with patch("sync_and_push.clean_and_deduplicate_file"):
+                    with patch("sys.exit") as mock_exit:
+                        sync_and_push.sync_and_push(push=True)
+                        mock_exit.assert_called_with(1)
 
 
 class TestCSVIntegrityValidatorAdversarial(unittest.TestCase):
     """Adversarial stress-testing of verify_csv_integrity against corrupt data."""
 
     def setUp(self):
-        self.clean_df = pd.read_csv(scraper.DEFAULT_OUTPUT_CSV)
+        self.clean_df = pd.read_csv(scraper.DEFAULT_OUTPUT_CSV, dtype=object)
 
     def test_catches_duplicate_dates(self):
         """Verifies duplicate calendar dates are caught."""

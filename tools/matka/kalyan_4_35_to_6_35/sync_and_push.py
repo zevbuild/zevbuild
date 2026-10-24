@@ -46,6 +46,7 @@ def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bo
     if not audit.get("valid", False):
         print(f"[ERROR] CSV integrity verification failed: {audit.get('errors')}")
         sys.exit(1)
+        return
     print(f" -> CSV Integrity: 100% HEALTHY ({audit.get('total_records')} records, {audit.get('valid_records')} valid draws)")
 
     latest_draw = payload.get("latest_draw", {})

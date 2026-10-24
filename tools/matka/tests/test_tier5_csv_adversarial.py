@@ -468,13 +468,12 @@ class TestValidatorBlindSpots(unittest.TestCase):
 
     def test_blind_spot_nonexistent_custom_path_fallback(self):
         """
-        VULNERABILITY: resolve_csv_path() silently falls back to the default production dataset
-        when an invalid custom path is provided, masking file lookup failures.
+        VULNERABILITY VERIFICATION: resolve_csv_path() must NOT silently fall back to the default production dataset
+        when an invalid custom path is provided.
         """
         bogus_path = "non_existent_fake_path_xyz.csv"
         resolved = resolve_csv_path(bogus_path)
-        self.assertTrue(os.path.exists(resolved), "resolve_csv_path fell back to existing default dataset")
-        self.assertNotEqual(resolved, os.path.abspath(bogus_path), "Resolved path differs from requested bogus path")
+        self.assertEqual(resolved, os.path.abspath(bogus_path), "resolve_csv_path preserved custom path and did not fall back")
 
 
 if __name__ == "__main__":

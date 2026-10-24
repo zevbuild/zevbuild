@@ -40,7 +40,7 @@ REQUIRED_COLUMNS = [
 def resolve_csv_path(custom_path: str = None) -> str:
     """
     Dynamically resolve kalyan_historical_data.csv:
-    1. custom_path if provided and exists (raises FileNotFoundError if missing)
+    1. custom_path if provided (returns its absolute path, preventing fallback to production data)
     2. SCRIPT_DIR / "kalyan_historical_data.csv"
     3. SCRIPT_DIR.parent / "kalyan_historical_data.csv"
     4. Repo root / tools/matka/...
@@ -51,7 +51,7 @@ def resolve_csv_path(custom_path: str = None) -> str:
         cand = SCRIPT_DIR / custom_path
         if cand.exists():
             return str(cand.resolve())
-        raise FileNotFoundError(f"Specified CSV dataset not found: {custom_path}")
+        return os.path.abspath(custom_path)
 
     candidates = [
         SCRIPT_DIR / "kalyan_historical_data.csv",
@@ -117,7 +117,10 @@ def fetch_html(url: str = URL, cache_file: str = LOCAL_CACHE_HTML, force_refresh
             # Decoupled cache write (kalyan_penal_chart_raw.html)
             clean_cache = content.replace('href="kalyan-penal-chart.php"', 'href="https://dpbossx.net/kalyan-penal-chart.php"')
             clean_cache = clean_cache.replace("href='kalyan-penal-chart.php'", "href='https://dpbossx.net/kalyan-penal-chart.php'")
+            clean_cache = clean_cache.replace('src="laxmii33.jpeg"', 'src="https://dpbossx.net/laxmii33.jpeg"')
+            clean_cache = clean_cache.replace("src='laxmii33.jpeg'", "src='https://dpbossx.net/laxmii33.jpeg'")
             clean_cache = re.sub(r'<link[^>]*apple-icon[^>]*>', '', clean_cache, flags=re.IGNORECASE)
+            clean_cache = re.sub(r'<link[^>]*rel=["\'](?:shortcut )?icon["\'][^>]*>', '<link rel="icon" href="/favicon.svg">', clean_cache, flags=re.IGNORECASE)
             with open(cache_file, "w", encoding="utf-8") as f:
                 f.write(clean_cache)
             print(f"[INFO] Cached validated response to raw cache: '{cache_file}'.")

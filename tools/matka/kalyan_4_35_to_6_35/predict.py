@@ -100,16 +100,27 @@ if hasattr(sys.stdout, "reconfigure"):
 
 def get_cut_digit(digit: int) -> int:
     """Standard Matka Cut digit (adding 5 mod 10)."""
-    return (digit + 5) % 10
+    return (int(digit) + 5) % 10
 
 
-def get_family_jodis(jodi_str: str) -> list:
+def get_family_jodis(jodi_val) -> list:
     """
-    Generate the 8 Matka Family / Cut Jodis for a given 2-digit number.
+    Generate the Matka Family / Cut Jodis for a given 2-digit number (4 or 8 Jodis).
     Uses open digit, close digit, cut open, cut close.
+    Handles string, integer, float, and edge case inputs cleanly.
     """
-    o = int(jodi_str[0])
-    c = int(jodi_str[1])
+    if jodi_val is None:
+        return []
+    try:
+        s = f"{int(float(jodi_val)):02d}"
+    except (ValueError, TypeError):
+        s = str(jodi_val).strip()
+        if len(s) < 2 or not s[:2].isdigit():
+            return []
+        s = s[:2]
+
+    o = int(s[0])
+    c = int(s[1])
     cut_o = get_cut_digit(o)
     cut_c = get_cut_digit(c)
 
