@@ -1,6 +1,6 @@
 {
-  "last_developer_update": "2026-10-24",
-  "last_update_by_developer": "24 Oct 2026",
+  "last_developer_update": "2026-10-25",
+  "last_update_by_developer": "25 Oct 2026",
   "latest_draw": {
     "date": "2026-10-24",
     "day": "Sat",
@@ -10,13 +10,13 @@
     "openPatti": "289",
     "closePatti": "146"
   },
-  "maintenance_mode": true,
+  "maintenance_mode": false,
   "maintenance_details": {
-    "is_active": true,
+    "is_active": false,
     "window": "Sunday 12:00 AM to 12:00 PM IST",
-    "status": "Weekly System Maintenance, Recalibration & Database Integrity Audit",
+    "status": "Operational",
     "resume_time_ist": "Sunday 12:00 PM IST",
-    "rollover_scheduled": true
+    "rollover_scheduled": false
   },
   "all_time_performance": {
     "total_historical_draws": 3183,
@@ -34,8 +34,8 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "25 Oct 2026, 02:32 AM IST",
-    "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
+    "last_sync_ist": "25 Oct 2026, 05:19 PM IST",
+    "next_sync_ist": "Monday at 07:00 PM IST",
     "daily_cadence": [
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
       "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
@@ -49,13 +49,13 @@
     "all_time_touches": 2074,
     "total_historical_draws": 3183,
     "total_verified_draws": 2683,
-    "maintenance_mode": true,
+    "maintenance_mode": false,
     "maintenance_details": {
-      "is_active": true,
+      "is_active": false,
       "window": "Sunday 12:00 AM to 12:00 PM IST",
-      "status": "Weekly System Maintenance, Recalibration & Database Integrity Audit",
+      "status": "Operational",
       "resume_time_ist": "Sunday 12:00 PM IST",
-      "rollover_scheduled": true
+      "rollover_scheduled": false
     }
   },
   "last_week_data": {
@@ -4104,8 +4104,8 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "25 Oct 2026, 02:32 AM IST",
-      "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
+      "last_sync_ist": "25 Oct 2026, 05:19 PM IST",
+      "next_sync_ist": "Monday at 07:00 PM IST",
       "daily_cadence": [
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
         "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
@@ -4119,13 +4119,13 @@
       "all_time_touches": 2074,
       "total_historical_draws": 3183,
       "total_verified_draws": 2683,
-      "maintenance_mode": true,
+      "maintenance_mode": false,
       "maintenance_details": {
-        "is_active": true,
+        "is_active": false,
         "window": "Sunday 12:00 AM to 12:00 PM IST",
-        "status": "Weekly System Maintenance, Recalibration & Database Integrity Audit",
+        "status": "Operational",
         "resume_time_ist": "Sunday 12:00 PM IST",
-        "rollover_scheduled": true
+        "rollover_scheduled": false
       }
     }
   },
