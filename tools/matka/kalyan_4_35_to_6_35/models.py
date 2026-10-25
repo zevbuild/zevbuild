@@ -286,8 +286,9 @@ class DayOfWeekSeasonalModel:
         self.day_open_counts.clear()
         self.day_close_counts.clear()
 
+        day_col = "Day_Of_Week" if "Day_Of_Week" in valid_df.columns else "Day"
         for _, row in valid_df.iterrows():
-            day = row["Day_Of_Week"]
+            day = row[day_col]
             j = int(row["Jodi"])
             o = int(row["Open_Digit"])
             c = int(row["Close_Digit"])
@@ -542,32 +543,10 @@ class EnsemblePredictor:
         close_probs = (1.0 - self.cut_resonance) * close_blend + self.cut_resonance * np.roll(close_blend, 5)
         close_probs /= close_probs.sum()
 
-        # 3. Harmonic Cut-Pair Dual OTC (4 Anks)
-        # Combined marginal strength across Open and Close
-        comb_ank_probs = 0.55 * open_probs + 0.45 * close_probs
-        ranked_digits = np.argsort(comb_ank_probs)[::-1]
-
-        d1 = int(ranked_digits[0])
-        cut1 = (d1 + 5) % 10
-
-        # Find second primary digit not identical to d1 or cut1
-        d2 = None
-        for d in ranked_digits[1:]:
-            d_int = int(d)
-            if d_int != d1 and d_int != cut1:
-                d2 = d_int
-                break
-        if d2 is None:
-            d2 = (d1 + 1) % 10
-        cut2 = (d2 + 5) % 10
-
-        otc_pairs = [(d1, cut1), (d2, cut2)]
-        otc_digits = sorted([d1, cut1, d2, cut2])
-
-        # 4. Intra-Draw Conditional Matrix
+        # 3. Intra-Draw Conditional Matrix
         p_c_given_o = self.intra.get_conditional_close_matrix()
 
-        # 5. Joint Open-Close Matrix with Conditional Close
+        # 4. Joint Open-Close Matrix with Conditional Close
         p_joint = np.zeros((10, 10), dtype=float)
         for o in range(10):
             for c in range(10):
@@ -575,7 +554,7 @@ class EnsemblePredictor:
                 p_joint[o, c] = open_probs[o] * p_c_eff
         p_joint /= p_joint.sum()
 
-        # 6. Total (Sum mod 10) Prior Matrix
+        # 5. Total (Sum mod 10) Prior Matrix
         p_tot_rec = self.total_model.predict_total_probs()
         p_tot_gp = self.gap_model.predict_total_probs()
         p_tot = 0.70 * p_tot_rec + 0.30 * p_tot_gp
@@ -588,13 +567,13 @@ class EnsemblePredictor:
                 p_total_matrix[o, c] = p_tot[t] / 10.0
         p_total_matrix /= p_total_matrix.sum()
 
-        # 7. Direct Jodi Recency (Tri-Horizon)
+        # 6. Direct Jodi Recency (Tri-Horizon)
         p_j_rec = self.recency.predict_jodi_probs().reshape((10, 10))
 
-        # 8. Markov Chain Jodi Transition Matrix (Feature 14)
+        # 7. Markov Chain Jodi Transition Matrix (Feature 14)
         p_jodi_markov = self.markov.predict_jodi_probs(prev_jodi).reshape((10, 10))
 
-        # 9. Coherent Marginal & Markov Synthesis
+        # 8. Coherent Marginal & Markov Synthesis
         jodi_matrix = (
             self.w_joint * p_joint
             + self.w_total * p_total_matrix
@@ -603,7 +582,7 @@ class EnsemblePredictor:
         )
         jodi_matrix /= jodi_matrix.sum()
 
-        # 10. 2D Harmonic Cut Resonance Diffusion across 3 cut states (Feature 15)
+        # 9. 2D Harmonic Cut Resonance Diffusion across 3 cut states (Feature 15)
         # For candidate Jodi (o, c): Cut states are ((o+5)%10, c), (o, (c+5)%10), ((o+5)%10, (c+5)%10)
         cut_2d_open = np.roll(jodi_matrix, 5, axis=0)
         cut_2d_close = np.roll(jodi_matrix, 5, axis=1)
@@ -612,11 +591,31 @@ class EnsemblePredictor:
         jodi_matrix = (1.0 - gamma) * jodi_matrix + (gamma / 3.0) * (cut_2d_open + cut_2d_close + cut_2d_both)
         jodi_matrix /= jodi_matrix.sum()
 
-        # 11. Exact OTC Joint Pass Probability Formulation (Feature 16)
-        # P(OTC Hit) = 1.0 - sum_{o not in OTC, c not in OTC} P_joint(o, c)
-        non_otc = [d for d in range(10) if d not in otc_digits]
-        p_miss = float(jodi_matrix[np.ix_(non_otc, non_otc)].sum())
-        otc_pass_prob = float(np.clip(1.0 - p_miss, 0.0, 1.0))
+        # 10. Optimal Harmonic Cut-Pair Dual OTC (4 Anks) (Feature 16)
+        # Evaluates all 10 candidate pairs of cut-pairs to find the exact combination
+        # that maximizes joint probability of touching either Open or Close:
+        # P(Hit) = 1.0 - sum_{o not in OTC, c not in OTC} P_joint(o, c)
+        cut_pairs = [(k, (k + 5) % 10) for k in range(5)]
+        best_pairs = None
+        best_prob = -1.0
+        best_otc = None
+
+        for idx1 in range(5):
+            for idx2 in range(idx1 + 1, 5):
+                p1 = cut_pairs[idx1]
+                p2 = cut_pairs[idx2]
+                cand_otc = set([p1[0], p1[1], p2[0], p2[1]])
+                miss_digits = [d for d in range(10) if d not in cand_otc]
+                p_miss = float(jodi_matrix[np.ix_(miss_digits, miss_digits)].sum())
+                p_hit = 1.0 - p_miss
+                if p_hit > best_prob:
+                    best_prob = p_hit
+                    best_pairs = [p1, p2]
+                    best_otc = sorted(list(cand_otc))
+
+        otc_pairs = best_pairs
+        otc_digits = best_otc
+        otc_pass_prob = float(np.clip(best_prob, 0.0, 1.0))
 
         # Final Jodi probability vector
         jodi_probs = jodi_matrix.flatten()
