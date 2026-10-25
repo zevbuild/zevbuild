@@ -281,18 +281,35 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div id="mobile-streamlined-view" class="block md:hidden space-y-2.5">
 
-      <!-- Compact 1-Row Day Selector Strip (5 Past Verified Draws + 1 Single Live Target) -->
+      <!-- Compact 1-Row Day Selector Strip -->
       <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 shadow-sm">
         <div class="flex items-center justify-between px-1 mb-1.5">
-          <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Date View:</span>
-          <span id="mobile-target-day-banner" class="text-[9px] font-mono font-bold text-indigo-400">Mon (26 Oct) · LIVE</span>
+          <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Target Forecast Day:</span>
+          <span id="mobile-target-day-banner" class="text-[9px] font-mono font-bold text-indigo-400">Mon (10-26)</span>
         </div>
         <div class="grid grid-cols-6 gap-1" id="mobile-day-strip">
-          <!-- Populated dynamically via JS: 5 Past Verified Draws + 1 Single Live Target Draw -->
+          <button onclick="changeDay('Mon', true)" id="btn-m-Mon" class="mobile-day-tab py-1 px-0.5 text-[11px] font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow-sm border border-indigo-500">
+            Mon<span class="block text-[8px] font-normal opacity-80" id="date-m-Mon">26 Oct</span>
+          </button>
+          <button onclick="changeDay('Tue', true)" id="btn-m-Tue" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Tue<span class="block text-[8px] font-normal opacity-80" id="date-m-Tue">20 Oct</span>
+          </button>
+          <button onclick="changeDay('Wed', true)" id="btn-m-Wed" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Wed<span class="block text-[8px] font-normal opacity-80" id="date-m-Wed">21 Oct</span>
+          </button>
+          <button onclick="changeDay('Thu', true)" id="btn-m-Thu" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Thu<span class="block text-[8px] font-normal opacity-80" id="date-m-Thu">22 Oct</span>
+          </button>
+          <button onclick="changeDay('Fri', true)" id="btn-m-Fri" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Fri<span class="block text-[8px] font-normal opacity-80" id="date-m-Fri">23 Oct</span>
+          </button>
+          <button onclick="changeDay('Sat', true)" id="btn-m-Sat" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Sat<span class="block text-[8px] font-normal opacity-80" id="date-m-Sat">24 Oct</span>
+          </button>
         </div>
       </div>
 
-      <!-- Compact Prediction Card: 4-Ank OTC + Golden Picks (Active in Live Mode) -->
+      <!-- Compact Prediction Card: 4-Ank OTC + Golden Picks -->
       <div id="mobile-prediction-card" class="bg-gradient-to-b from-slate-900 to-indigo-950/40 border border-indigo-500/40 rounded-xl p-3 shadow-lg space-y-2.5">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -342,11 +359,6 @@
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
           <span id="btn-copy-text-mobile">Copy 4-Ank OTC</span>
         </button>
-      </div>
-
-      <!-- Past Audit Card (Displayed when a past verified draw is clicked) -->
-      <div id="mobile-past-audit-card" class="hidden bg-slate-900/90 border border-purple-500/30 rounded-xl p-3 shadow-lg space-y-2.5">
-        <!-- Populated dynamically via JS when past draw clicked -->
       </div>
 
       <!-- Direct Top 15 Jodis Grid (Visible immediately - NO accordion clicking required!) -->
@@ -501,14 +513,31 @@
       </div>
     </div>
 
-    <!-- Day Selector Navigation (5 Past Verified Draws + 1 Single Live Target) -->
+    <!-- Day Selector Navigation -->
     <div class="hidden md:block bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Select Date View:</span>
-        <span id="target-day-banner" class="text-xs font-mono font-bold text-indigo-400">TARGET: Mon 26 Oct (Live Prediction)</span>
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Select Forecast Day:</span>
+        <span id="target-day-banner" class="text-xs font-mono font-bold text-indigo-400">TARGET: 2026-10-26 (Monday)</span>
       </div>
       <div class="grid grid-cols-6 gap-1.5 sm:gap-2" id="desktop-day-strip">
-        <!-- Populated dynamically via JS: 5 Past Verified Draws + 1 Single Live Target Draw -->
+        <button onclick="changeDay('Mon', true)" id="btn-Mon" class="day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow">
+          Mon<span class="block text-[10px] font-normal opacity-80" id="date-Mon">26 Oct</span>
+        </button>
+        <button onclick="changeDay('Tue', true)" id="btn-Tue" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Tue<span class="block text-[10px] font-normal opacity-80" id="date-Tue">20 Oct</span>
+        </button>
+        <button onclick="changeDay('Wed', true)" id="btn-Wed" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Wed<span class="block text-[10px] font-normal opacity-80" id="date-Wed">21 Oct</span>
+        </button>
+        <button onclick="changeDay('Thu', true)" id="btn-Thu" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Thu<span class="block text-[10px] font-normal opacity-80" id="date-Thu">22 Oct</span>
+        </button>
+        <button onclick="changeDay('Fri', true)" id="btn-Fri" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Fri<span class="block text-[10px] font-normal opacity-80" id="date-Fri">23 Oct</span>
+        </button>
+        <button onclick="changeDay('Sat', true)" id="btn-Sat" class="day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800">
+          Sat<span class="block text-[10px] font-normal opacity-80" id="date-Sat">24 Oct</span>
+        </button>
       </div>
     </div>
 
@@ -7120,168 +7149,23 @@
       });
     }
 
-    let selectedTimelineId = null;
-
-    function getTimelineSlots() {
-      if (!APP_STATE) return [];
-      const activeDay = determineActiveForecastDay();
-      const activeForecast = APP_STATE.by_day && APP_STATE.by_day[activeDay] ? APP_STATE.by_day[activeDay] : null;
-      const targetDateStr = activeForecast ? activeForecast.date : '2026-10-26';
-
-      let pastDraws = [];
-      if (APP_STATE.last_week_data && Array.isArray(APP_STATE.last_week_data.draws)) {
-        pastDraws = pastDraws.concat(APP_STATE.last_week_data.draws);
-      }
-      if (APP_STATE.last_month_data && Array.isArray(APP_STATE.last_month_data.draws)) {
-        pastDraws = pastDraws.concat(APP_STATE.last_month_data.draws);
-      }
-
-      const drawMap = new Map();
-      pastDraws.forEach(d => {
-        if (d && d.date && d.date < targetDateStr && !drawMap.has(d.date)) {
-          drawMap.set(d.date, d);
+        function updateDayTabDates() {
+      if (!APP_STATE || !APP_STATE.by_day) return;
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      days.forEach(day => {
+        const el = document.getElementById('date-' + day);
+        if (el && APP_STATE.by_day[day] && APP_STATE.by_day[day].date) {
+          const parts = APP_STATE.by_day[day].date.split('-');
+          if (parts.length === 3) {
+            const d = String(parseInt(parts[2], 10)).padStart(2, '0');
+            const m = parseInt(parts[1], 10) - 1;
+            el.textContent = `${d} ${monthNames[m] || ''}`;
+            const mel = document.getElementById('date-m-' + day);
+            if (mel) mel.textContent = `${d} ${monthNames[m] || ''}`;
+          }
         }
       });
-
-      const sortedPast = Array.from(drawMap.values()).sort((a, b) => a.date.localeCompare(b.date));
-      const recent5 = sortedPast.slice(-5);
-
-      const slots = [];
-      recent5.forEach(d => {
-        slots.push({
-          id: d.date,
-          type: 'past',
-          date: d.date,
-          day: d.day,
-          actualJodi: d.actual_jodi,
-          openPatti: d.open_patti || '---',
-          closePatti: d.close_patti || '---',
-          predictedPick: d.predicted_top_pick,
-          predictedTop5: d.predicted_top_5 || [],
-          otcDigits: d.otc_digits || [],
-          hit: d.otc_hit || d.touched,
-          statusLabel: d.status_label || (d.otc_hit ? 'OTC Hit' : 'Declared')
-        });
-      });
-
-      if (activeForecast) {
-        slots.push({
-          id: activeDay,
-          type: 'upcoming',
-          date: activeForecast.date,
-          day: activeForecast.day,
-          forecast: activeForecast
-        });
-      }
-
-      return slots;
-    }
-
-    function renderTimelineStrips() {
-      const slots = getTimelineSlots();
-      if (!slots || slots.length === 0) return;
-
-      if (!selectedTimelineId) {
-        const upcomingSlot = slots.find(s => s.type === 'upcoming');
-        selectedTimelineId = upcomingSlot ? upcomingSlot.id : slots[slots.length - 1].id;
-      }
-
-      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-      // 1. Mobile strip
-      const mStrip = document.getElementById('mobile-day-strip');
-      if (mStrip) {
-        mStrip.innerHTML = '';
-        slots.forEach(slot => {
-          const isSelected = (slot.id === selectedTimelineId);
-          const parts = slot.date.split('-');
-          const dStr = parts.length === 3 ? `${parseInt(parts[2], 10)} ${monthNames[parseInt(parts[1], 10) - 1] || ''}` : slot.date;
-          const btn = document.createElement('button');
-          btn.onclick = () => changeTimelineDay(slot.id, true);
-          btn.id = 'btn-m-' + (slot.type === 'upcoming' ? slot.day : slot.id);
-
-          if (slot.type === 'upcoming') {
-            btn.className = `mobile-day-tab py-1 px-0.5 text-[11px] font-bold rounded-lg transition-all text-center border ${
-              isSelected
-                ? 'bg-indigo-600 text-white shadow-sm border-indigo-400 ring-2 ring-indigo-400/50'
-                : 'bg-indigo-950/70 text-indigo-200 border-indigo-500/40 hover:bg-indigo-900/60'
-            }`;
-            btn.innerHTML = `
-              <span class="text-[9px] uppercase tracking-wider font-extrabold flex items-center justify-center gap-0.5 text-amber-300">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                ${slot.day}
-              </span>
-              <span class="block text-xs font-black my-0.5">${dStr}</span>
-              <span class="block text-[8px] font-bold px-1 rounded bg-indigo-500/30 text-indigo-200 uppercase">LIVE</span>
-            `;
-          } else {
-            const hitDot = slot.hit
-              ? '<span class="w-1 h-1 rounded-full bg-emerald-400 inline-block"></span>'
-              : '<span class="w-1 h-1 rounded-full bg-slate-600 inline-block"></span>';
-            btn.className = `mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center border ${
-              isSelected
-                ? 'bg-slate-800 text-white border-purple-500 ring-2 ring-purple-500/40 font-bold shadow-sm'
-                : 'text-slate-400 bg-slate-950/80 border-slate-800 hover:text-slate-200'
-            }`;
-            btn.innerHTML = `
-              <span class="text-[10px] font-bold flex items-center justify-center gap-1">${slot.day} ${hitDot}</span>
-              <span class="block text-xs font-mono font-black text-slate-200 my-0.5">${slot.actualJodi}</span>
-              <span class="block text-[8px] text-slate-500">${dStr}</span>
-            `;
-          }
-          mStrip.appendChild(btn);
-        });
-      }
-
-      // 2. Desktop strip
-      const dStrip = document.getElementById('desktop-day-strip');
-      if (dStrip) {
-        dStrip.innerHTML = '';
-        slots.forEach(slot => {
-          const isSelected = (slot.id === selectedTimelineId);
-          const parts = slot.date.split('-');
-          const dStr = parts.length === 3 ? `${parseInt(parts[2], 10)} ${monthNames[parseInt(parts[1], 10) - 1] || ''}` : slot.date;
-          const btn = document.createElement('button');
-          btn.onclick = () => changeTimelineDay(slot.id, true);
-          btn.id = 'btn-' + (slot.type === 'upcoming' ? slot.day : slot.id);
-
-          if (slot.type === 'upcoming') {
-            btn.className = `day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center border ${
-              isSelected
-                ? 'bg-indigo-600 text-white shadow ring-2 ring-indigo-400/50 border-indigo-400'
-                : 'bg-indigo-950/60 text-indigo-200 border-indigo-500/40 hover:bg-indigo-900/60'
-            }`;
-            btn.innerHTML = `
-              <div class="flex items-center justify-center gap-1 text-amber-300">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                <span class="font-bold">${slot.day}</span>
-                <span class="text-[9px] px-1 rounded bg-indigo-500/30 font-bold uppercase">LIVE</span>
-              </div>
-              <span class="block text-xs font-black my-0.5">${dStr}</span>
-              <span class="block text-[10px] text-indigo-300 font-normal">Next Draw</span>
-            `;
-          } else {
-            const hitDot = slot.hit
-              ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>'
-              : '<span class="w-1.5 h-1.5 rounded-full bg-slate-600 inline-block"></span>';
-            btn.className = `day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center border ${
-              isSelected
-                ? 'bg-slate-800 text-white border-purple-500 shadow ring-2 ring-purple-500/40 font-bold'
-                : 'text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800 border-slate-800'
-            }`;
-            btn.innerHTML = `
-              <span class="text-xs font-bold flex items-center justify-center gap-1">${slot.day} ${hitDot}</span>
-              <span class="block text-sm font-mono font-black text-slate-200 my-0.5">${slot.actualJodi}</span>
-              <span class="block text-[10px] font-normal text-slate-400">${dStr} (Result)</span>
-            `;
-          }
-          dStrip.appendChild(btn);
-        });
-      }
-    }
-
-    function updateDayTabDates() {
-      renderTimelineStrips();
     }
 
     function renderAll() {
@@ -7749,140 +7633,27 @@
       }
     }
 
-    function changeTimelineDay(id, isUserClick = false) {
+        function changeDay(day, isUserClick = false) {
       if (isUserClick) {
         userExplicitDaySelection = true;
       }
-      selectedTimelineId = id;
-      const slots = getTimelineSlots();
-      const slot = slots.find(s => s.id === id) || slots[slots.length - 1];
-
-      renderTimelineStrips();
-
-      if (!slot || slot.type === 'upcoming') {
-        selectedDay = slot ? slot.day : determineActiveForecastDay();
-        // Restore mobile active prediction cards
-        const mPred = document.getElementById('mobile-prediction-card');
-        const mTop15 = document.getElementById('mobile-top15-card');
-        const mAudit = document.getElementById('mobile-past-audit-card');
-        if (mPred) mPred.classList.remove('hidden');
-        if (mTop15) mTop15.classList.remove('hidden');
-        if (mAudit) mAudit.classList.add('hidden');
-
-        renderDayForecast();
-      } else {
-        renderPastAudit(slot);
+      selectedDay = day;
+      document.querySelectorAll('.mobile-day-tab').forEach(b => {
+        b.className = "mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800";
+      });
+      const activeMBtn = document.getElementById('btn-m-' + day);
+      if (activeMBtn) {
+        activeMBtn.className = "mobile-day-tab py-1 px-0.5 text-[11px] font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow-sm border border-indigo-500";
       }
+      document.querySelectorAll('.day-tab').forEach(b => {
+        b.className = "day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800";
+      });
+      const activeBtn = document.getElementById('btn-' + day);
+      if (activeBtn) {
+        activeBtn.className = "day-tab py-2 px-1 text-xs font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow";
+      }
+      renderDayForecast();
       renderCurrentWeekTracker();
-    }
-
-    function changeDay(day, isUserClick = false) {
-      const slots = getTimelineSlots();
-      const matchSlot = slots.find(s => s.day === day || s.id === day);
-      if (matchSlot) {
-        changeTimelineDay(matchSlot.id, isUserClick);
-      } else {
-        selectedDay = day;
-        renderDayForecast();
-      }
-    }
-
-    function renderPastAudit(slot) {
-      const banner = document.getElementById('target-day-banner');
-      if (banner) banner.textContent = `PAST DRAW AUDIT: ${slot.date} (${slot.day}) · Official Result: ${slot.actualJodi}`;
-      const mBanner = document.getElementById('mobile-target-day-banner');
-      if (mBanner) mBanner.textContent = `${slot.day} (${slot.date.slice(5)}) · Result: ${slot.actualJodi}`;
-
-      // 📱 Mobile Past Audit Card
-      const mPred = document.getElementById('mobile-prediction-card');
-      const mTop15 = document.getElementById('mobile-top15-card');
-      const mAudit = document.getElementById('mobile-past-audit-card');
-      if (mPred) mPred.classList.add('hidden');
-      if (mTop15) mTop15.classList.add('hidden');
-      if (mAudit) {
-        mAudit.classList.remove('hidden');
-        mAudit.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-                Past Draw Audit · Verified Result
-              </span>
-              <h4 class="text-sm font-extrabold text-white mt-0.5">${slot.day}, ${slot.date}</h4>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${slot.hit ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-slate-800 text-slate-400 border border-slate-700'}">
-              ${slot.statusLabel}
-            </span>
-          </div>
-
-          <!-- Official Result Banner -->
-          <div class="bg-gradient-to-r from-purple-950/40 to-slate-950 border border-purple-500/30 rounded-xl p-2.5 flex items-center justify-between">
-            <div>
-              <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Official Result</span>
-              <div class="flex items-baseline gap-2 mt-0.5">
-                <span class="text-2xl font-black font-mono text-purple-200">${slot.actualJodi}</span>
-                <span class="text-[11px] font-mono text-slate-400">${slot.openPatti} - ${slot.actualJodi} - ${slot.closePatti}</span>
-              </div>
-            </div>
-            <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[9px] font-bold">
-              Declared
-            </span>
-          </div>
-
-          <!-- What AI Predicted -->
-          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 space-y-1.5 text-xs">
-            <span class="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">
-              What AI Predicted For This Day:
-            </span>
-            <div class="grid grid-cols-2 gap-2">
-              <div class="bg-slate-900 border border-slate-800 rounded-lg p-2">
-                <span class="text-[8px] text-slate-400 uppercase block font-semibold">4-Ank OTC Predicted</span>
-                <div class="font-mono text-xs font-bold text-indigo-300 mt-0.5">
-                  [${slot.otcDigits.join(', ')}]
-                </div>
-              </div>
-              <div class="bg-slate-900 border border-slate-800 rounded-lg p-2">
-                <span class="text-[8px] text-slate-400 uppercase block font-semibold">Top Pick Predicted</span>
-                <div class="font-mono text-xs font-bold text-indigo-300 mt-0.5 truncate">
-                  Jodi ${slot.predictedPick}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Verification Outcome -->
-          <div class="bg-slate-950/60 border border-slate-800 rounded-xl px-2.5 py-1.5 flex items-center justify-between text-[11px]">
-            <span class="text-slate-400">Model Accountability:</span>
-            <span class="font-mono font-bold ${slot.hit ? 'text-emerald-400' : 'text-slate-400'}">
-              ${slot.hit ? '✅ VERIFIED HIT' : '⚠️ UNTOUCHED'}
-            </span>
-          </div>
-        `;
-      }
-
-      // 🖥️ Desktop Spotlight Cards
-      const sJodi = document.getElementById('spotlight-jodi');
-      if (sJodi) sJodi.textContent = slot.actualJodi;
-      const sJodiProb = document.getElementById('spotlight-jodi-prob');
-      if (sJodiProb) sJodiProb.textContent = `Official Result (${slot.openPatti}-${slot.actualJodi}-${slot.closePatti})`;
-      const famCont = document.getElementById('spotlight-family');
-      if (famCont) {
-        famCont.innerHTML = `<span class="text-slate-300 text-xs">AI Predicted Pick: <b class="text-indigo-300">${slot.predictedPick}</b> (Top 5: ${slot.predictedTop5.slice(0, 4).join(', ')})</span>`;
-      }
-
-      const sOpen = document.getElementById('spotlight-open');
-      if (sOpen) sOpen.textContent = slot.actualJodi ? slot.actualJodi[0] : '-';
-      const sOpenProb = document.getElementById('spotlight-open-prob');
-      if (sOpenProb) sOpenProb.textContent = `Patti: ${slot.openPatti}`;
-      const sAltOpen = document.getElementById('spotlight-alt-open');
-      if (sAltOpen) sAltOpen.textContent = `Declared Open Digit`;
-
-      const sClose = document.getElementById('spotlight-close');
-      if (sClose) sClose.textContent = slot.actualJodi ? slot.actualJodi[1] : '-';
-      const sCloseProb = document.getElementById('spotlight-close-prob');
-      if (sCloseProb) sCloseProb.textContent = `Patti: ${slot.closePatti}`;
-      const sAltClose = document.getElementById('spotlight-alt-close');
-      if (sAltClose) sAltClose.textContent = slot.hit ? `✅ OTC Hit` : `Declared Close Digit`;
     }
 
     function setTab(tab) {
