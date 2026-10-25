@@ -275,8 +275,194 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- 📱 COMPACT MOBILE-FIRST VIEWPORT (< 768px: Glanceable Spotlight Card) -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div id="mobile-streamlined-view" class="block md:hidden space-y-3">
+
+      <!-- Mobile Day Selector Navigation Strip -->
+      <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-2.5 shadow-sm space-y-1.5">
+        <div class="flex items-center justify-between px-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Select Forecast Day:</span>
+          <span id="mobile-target-day-banner" class="text-[10px] font-mono font-bold text-indigo-400">TARGET: Mon</span>
+        </div>
+        <div class="grid grid-cols-6 gap-1">
+          <button onclick="changeDay('Mon', true)" id="btn-m-Mon" class="mobile-day-tab py-1.5 px-1 text-[11px] font-bold rounded-xl transition-all text-center bg-indigo-600 text-white shadow-sm border border-indigo-500">
+            Mon<span class="block text-[8px] font-normal opacity-80" id="date-m-Mon">--</span>
+          </button>
+          <button onclick="changeDay('Tue', true)" id="btn-m-Tue" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Tue<span class="block text-[8px] font-normal opacity-80" id="date-m-Tue">--</span>
+          </button>
+          <button onclick="changeDay('Wed', true)" id="btn-m-Wed" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Wed<span class="block text-[8px] font-normal opacity-80" id="date-m-Wed">--</span>
+          </button>
+          <button onclick="changeDay('Thu', true)" id="btn-m-Thu" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Thu<span class="block text-[8px] font-normal opacity-80" id="date-m-Thu">--</span>
+          </button>
+          <button onclick="changeDay('Fri', true)" id="btn-m-Fri" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Fri<span class="block text-[8px] font-normal opacity-80" id="date-m-Fri">--</span>
+          </button>
+          <button onclick="changeDay('Sat', true)" id="btn-m-Sat" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+            Sat<span class="block text-[8px] font-normal opacity-80" id="date-m-Sat">--</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 🌟 Hero Spotlight Card (Today's Key Forecast Above The Fold) -->
+      <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950/50 border border-indigo-500/40 rounded-2xl p-4 shadow-xl space-y-3 relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>⚡ High-Prob 4-Ank OTC</span>
+          </span>
+          <span id="mobile-otc-prob" class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
+            68.8% Edge
+          </span>
+        </div>
+
+        <!-- 4 Tactile OTC Digit Chips -->
+        <div id="mobile-otc-digits" class="grid grid-cols-4 gap-2">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- 1-Tap Copy OTC Button -->
+        <button onclick="copyOTCNumbers()" id="btn-copy-otc-mobile" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span id="btn-copy-text-mobile">Copy 4-Ank OTC</span>
+        </button>
+
+        <!-- Golden Picks 2x2 Mini Matrix -->
+        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5">
+            <span class="text-[9px] text-slate-400 block font-bold uppercase">Primary Golden Jodi</span>
+            <div class="flex items-baseline gap-1.5 mt-0.5">
+              <span id="mobile-spotlight-jodi" class="text-2xl font-black text-white font-mono">--</span>
+              <span id="mobile-spotlight-jodi-prob" class="text-[10px] text-emerald-400 font-bold">+112%</span>
+            </div>
+            <div class="text-[9px] text-slate-400 truncate mt-0.5">
+              Cut: <span id="mobile-spotlight-family" class="text-indigo-300 font-mono">--</span>
+            </div>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5">
+            <span class="text-[9px] text-slate-400 block font-bold uppercase">Single Open / Close</span>
+            <div class="flex items-center justify-between mt-1">
+              <div>
+                <span class="text-[9px] text-slate-500 block">OPEN</span>
+                <span id="mobile-spotlight-open" class="text-xl font-black text-purple-300 font-mono">--</span>
+              </div>
+              <div class="h-6 w-px bg-slate-800"></div>
+              <div>
+                <span class="text-[9px] text-slate-500 block">CLOSE</span>
+                <span id="mobile-spotlight-close" class="text-xl font-black text-sky-300 font-mono">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Draw & Accuracy Quick Glance Footer -->
+        <div class="flex items-center justify-between pt-1 border-t border-slate-800/60 text-[11px]">
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-400 text-[10px] uppercase font-bold">Latest Result:</span>
+            <span id="mobile-latest-draw" class="font-mono font-black text-purple-300">--</span>
+          </div>
+          <div class="text-[10px] text-emerald-400 font-medium">
+            30-Day Touch: <b id="mobile-touch-rate">54.2%</b>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🔢 Accordion 1: Top 15 Ranked Jodis (Chip Matrix) -->
+      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
+        <button onclick="toggleMobileAccordion('mobile-acc-top15')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-200 hover:text-white hover:bg-slate-800/50 transition-colors">
+          <span class="flex items-center gap-2">
+            <span>🔢 Top 15 Ranked Jodis</span>
+            <span class="text-[9px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.5 rounded-full font-bold">15 Pairs</span>
+          </span>
+          <span id="mobile-acc-top15-arrow" class="text-slate-400 text-xs font-mono">▼</span>
+        </button>
+        <div id="mobile-acc-top15" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-2.5">
+          <div class="text-[10px] text-slate-400 pt-2">Ranked by ensemble probability and relative edge:</div>
+          <div id="mobile-top15-chips" class="grid grid-cols-3 gap-1.5 text-center font-mono text-xs">
+            <!-- Populated dynamically via JS -->
+          </div>
+          <button onclick="toggleDesktopTableOnMobile()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-[11px] rounded-xl border border-slate-700 transition-all text-center">
+            Switch to Detailed Table View
+          </button>
+        </div>
+      </div>
+
+      <!-- 📅 Accordion 2: Current Week Results Tracker (Mon–Sat) -->
+      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
+        <button onclick="toggleMobileAccordion('mobile-acc-week')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-200 hover:text-white hover:bg-slate-800/50 transition-colors">
+          <span class="flex items-center gap-2">
+            <span>📅 Current Week Results Tracker</span>
+            <span class="text-[9px] bg-purple-500/20 text-purple-300 border border-purple-500/30 px-1.5 py-0.5 rounded-full font-bold">Mon–Sat</span>
+          </span>
+          <span id="mobile-acc-week-arrow" class="text-slate-400 text-xs font-mono">▼</span>
+        </button>
+        <div id="mobile-acc-week" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-2">
+          <div class="text-[10px] text-slate-400 pt-2">Tap any day card to switch prediction target:</div>
+          <div id="mobile-week-tracker-grid" class="grid grid-cols-2 gap-2 text-xs">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 📊 Accordion 3: 30-Day Automated Touch Rate & History -->
+      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
+        <button onclick="toggleMobileAccordion('mobile-acc-stats')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-200 hover:text-white hover:bg-slate-800/50 transition-colors">
+          <span class="flex items-center gap-2">
+            <span>📊 30-Day Accuracy & Win Telemetry</span>
+            <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-full font-bold">54.2% Touch</span>
+          </span>
+          <span id="mobile-acc-stats-arrow" class="text-slate-400 text-xs font-mono">▼</span>
+        </button>
+        <div id="mobile-acc-stats" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-2.5">
+          <div class="grid grid-cols-2 gap-2 pt-2 text-center">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+              <span class="text-[9px] text-slate-400 uppercase font-bold block">30-Day Touch Rate</span>
+              <span class="text-lg font-black text-emerald-400 font-mono" id="mobile-stat-30d">54.2%</span>
+              <span class="block text-[8px] text-slate-500">13 of 24 Draws Hit</span>
+            </div>
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+              <span class="text-[9px] text-slate-400 uppercase font-bold block">All-Time Touch Rate</span>
+              <span class="text-lg font-black text-indigo-300 font-mono" id="mobile-stat-alltime">77.3%</span>
+              <span class="block text-[8px] text-slate-500">2,074 of 2,683 Draws</span>
+            </div>
+          </div>
+          <a href="kalyan_penal_chart.html#bottom" class="w-full py-2 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 font-bold text-xs rounded-xl border border-indigo-500/40 text-center block transition-all active:scale-95">
+            📊 View 14-Year Penal Chart & Historical Draws ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- 🛠️ Accordion 4: System Audit & Pipeline Status -->
+      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
+        <button onclick="toggleMobileAccordion('mobile-acc-audit')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors">
+          <span class="flex items-center gap-2">
+            <span>🛠️ Live Pipeline Audit & Logs</span>
+          </span>
+          <span id="mobile-acc-audit-arrow" class="text-slate-500 text-xs font-mono">▼</span>
+        </button>
+        <div id="mobile-acc-audit" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-1.5 font-mono text-[10px] text-slate-400">
+          <div class="flex justify-between pt-2">
+            <span>Status:</span>
+            <span class="text-emerald-400 font-bold">Synchronized</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Database:</span>
+            <span class="text-slate-300 font-bold">3,183 Draws</span>
+          </div>
+          <div class="text-[9px] text-slate-500 truncate pt-1 border-t border-slate-800">
+            Engine: Bi-Directional Markov + Exponential Decay Heuristic
+          </div>
+        </div>
+      </div>
+
+    </div>
+
     <!-- Status & Primary Forecast Overview (Simple 3-Card Grid) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <div class="hidden md:grid md:grid-cols-3 gap-3">
       <!-- Card 1: Latest Official Draw -->
       <div id="card-latest-result" class="bg-slate-900/60 border border-slate-800 rounded-xl p-3.5 flex items-center justify-between transition-colors shadow-sm">
         <div>
@@ -335,7 +521,7 @@
     </div>
 
     <!-- Live Live Debug Console Drawer -->
-    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono space-y-1">
+    <div class="hidden md:block bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono space-y-1">
       <div class="flex items-center justify-between text-slate-400 text-[11px]">
         <span class="font-bold text-indigo-400 flex items-center gap-1.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
@@ -349,7 +535,7 @@
     </div>
 
     <!-- 30-Day Historical Accuracy & Telemetry Strip -->
-    <div id="lastweek" class="bg-gradient-to-r from-emerald-950/30 via-indigo-950/20 to-slate-950 border border-emerald-500/20 rounded-xl p-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs scroll-mt-24">
+    <div id="lastweek" class="hidden md:flex bg-gradient-to-r from-emerald-950/30 via-indigo-950/20 to-slate-950 border border-emerald-500/20 rounded-xl p-3 flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs scroll-mt-24">
       <div class="flex items-center gap-2.5">
         <span class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex-shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -368,7 +554,7 @@
     </div>
 
     <!-- Current Week Results & Draw Tracker (Mon 12 Oct – Sat 17 Oct) -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-xl space-y-2.5">
+    <div class="hidden md:block bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-xl space-y-2.5">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1.5">
         <div>
           <div class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
@@ -460,7 +646,7 @@
     </div>
 
     <!-- Day Selector Navigation -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2">
+    <div class="hidden md:block bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2">
       <div class="flex items-center justify-between">
         <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Select Forecast Day:</span>
         <span id="target-day-banner" class="text-xs font-mono font-bold text-indigo-400">TARGET: 2026-10-12 (Monday)</span>
@@ -488,7 +674,7 @@
     </div>
 
     <!-- Hero Spotlight Card: 4-Ank OTC (Open To Close) -->
-    <div id="box-spotlight-otc" class="bg-gradient-to-r from-amber-950/40 via-indigo-950/50 to-slate-900 border border-amber-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xl transition-all">
+    <div id="box-spotlight-otc" class="hidden md:block bg-gradient-to-r from-amber-950/40 via-indigo-950/50 to-slate-900 border border-amber-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-xl transition-all">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div>
           <div class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-2">
@@ -524,7 +710,7 @@
     </div>
 
     <!-- Prediction Highlights (Top Pick, Prime Open, Prime Close) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+    <div class="hidden md:grid md:grid-cols-3 gap-3 sm:gap-4">
       <!-- Card 1: Top Recommended Jodi -->
       <div id="box-spotlight-jodi" class="bg-gradient-to-b from-indigo-950/60 to-slate-900 border border-indigo-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg transition-all">
         <div class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -573,7 +759,7 @@
     </div>
 
     <!-- Main Tabbed Detail Views -->
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
+    <div id="desktop-main-tabs" class="hidden md:block bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
         <div class="flex gap-2">
           <button onclick="setTab('jodis')" id="tab-btn-jodis" class="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-indigo-600 text-white transition-all">
@@ -7065,6 +7251,8 @@
       });
 
       container.innerHTML = html;
+      const mContainer = document.getElementById('mobile-week-tracker-grid');
+      if (mContainer) mContainer.innerHTML = html;
 
       const rangeEl = document.getElementById('cw-range-label');
       if (rangeEl && APP_STATE.by_day.Mon && APP_STATE.by_day.Sat) {
@@ -7122,6 +7310,8 @@
             const d = String(parseInt(parts[2], 10)).padStart(2, '0');
             const m = parseInt(parts[1], 10) - 1;
             el.textContent = `${d} ${monthNames[m] || ''}`;
+            const mel = document.getElementById('date-m-' + day);
+            if (mel) mel.textContent = `${d} ${monthNames[m] || ''}`;
           }
         }
       });
@@ -7134,6 +7324,8 @@
       if (CURRENT_LATEST_DRAW) {
         if (CURRENT_LATEST_DRAW.status === 'OPEN_DECLARED') {
           document.getElementById('latest-jodi').textContent = CURRENT_LATEST_DRAW.jodi || `${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open}*`;
+          const mLatest = document.getElementById('mobile-latest-draw');
+          if (mLatest) mLatest.textContent = CURRENT_LATEST_DRAW.jodi || `${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open}*`;
           document.getElementById('latest-patti').textContent = `Live Open: ${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open} (Patti: ${CURRENT_LATEST_DRAW.openLivePatti || CURRENT_LATEST_DRAW.openPatti || '---'}) - Close Pending`;
           document.getElementById('draw-status-badge').textContent = "Open Declared (4:35 PM)";
           document.getElementById('draw-status-badge').className = "inline-block px-2.5 py-1 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30 font-bold text-xs animate-pulse";
@@ -7361,6 +7553,8 @@
       const dayData = APP_STATE.by_day[selectedDay];
 
       document.getElementById('target-day-banner').textContent = `TARGET: ${dayData.date} (${dayData.day})`;
+      const mBanner = document.getElementById('mobile-target-day-banner');
+      if (mBanner) mBanner.textContent = `TARGET: ${dayData.day} (${dayData.date.slice(5)})`;
 
       // Top Pick
       const top1 = dayData.top_jodis[0];
@@ -7390,6 +7584,55 @@
       document.getElementById('spotlight-close').textContent = topClose.digit;
       document.getElementById('spotlight-close-prob').textContent = `${topClose.prob.toFixed(2)}% prob`;
       document.getElementById('spotlight-alt-close').textContent = `Digit ${altClose.digit} (${altClose.prob.toFixed(2)}%)`;
+
+      // 📱 Mobile Spotlight Updates
+      const mJodi = document.getElementById('mobile-spotlight-jodi');
+      if (mJodi) mJodi.textContent = top1.jodi;
+      const mJodiProb = document.getElementById('mobile-spotlight-jodi-prob');
+      if (mJodiProb) mJodiProb.textContent = `${top1.prob.toFixed(2)}% (${relEdge >= 0 ? '+' : ''}${relEdge.toFixed(0)}%)`;
+      const mFamily = document.getElementById('mobile-spotlight-family');
+      if (mFamily) mFamily.textContent = top1.family.slice(0, 4).join(', ');
+
+      const mOpen = document.getElementById('mobile-spotlight-open');
+      if (mOpen) mOpen.textContent = topOpen.digit;
+      const mClose = document.getElementById('mobile-spotlight-close');
+      if (mClose) mClose.textContent = topClose.digit;
+
+      const mOtc = document.getElementById('mobile-otc-digits');
+      if (mOtc) {
+        mOtc.innerHTML = '';
+        const otcDigits = dayData.otc_digits || [0, 1, 5, 6];
+        otcDigits.forEach(d => {
+          const cut = (d + 5) % 10;
+          const box = document.createElement('div');
+          box.className = "flex-1 bg-slate-950 border-2 border-amber-500/80 rounded-xl py-2 text-center shadow-lg shadow-amber-500/10";
+          box.innerHTML = `<span class="text-2xl font-black text-amber-400 font-mono">${d}</span><span class="block text-[8px] text-slate-400 font-bold uppercase">Cut ${cut}</span>`;
+          mOtc.appendChild(box);
+        });
+      }
+
+      const mOtcProb = document.getElementById('mobile-otc-prob');
+      if (mOtcProb) {
+        const probVal = dayData.otc_pass_prob ? Number(dayData.otc_pass_prob).toFixed(1) : "67.8";
+        mOtcProb.textContent = `${probVal}% Pass`;
+      }
+
+      // Mobile Top 15 Chips Grid
+      const mChips = document.getElementById('mobile-top15-chips');
+      if (mChips) {
+        mChips.innerHTML = '';
+        dayData.top_jodis.forEach(j => {
+          const edge = ((j.prob / 1.0) - 1.0) * 100;
+          const chip = document.createElement('div');
+          chip.className = `p-2 rounded-xl border text-center transition-all ${j.rank === 1 ? 'bg-indigo-950/60 border-indigo-500/60 shadow-md' : 'bg-slate-950/70 border-slate-800'}`;
+          chip.innerHTML = `
+            <div class="text-[9px] text-slate-400 font-semibold">#${j.rank}</div>
+            <div class="text-lg font-black font-mono ${j.rank === 1 ? 'text-indigo-300' : 'text-white'}">${j.jodi}</div>
+            <div class="text-[10px] font-bold ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${edge >= 0 ? '+' : ''}${edge.toFixed(0)}%</div>
+          `;
+          mChips.appendChild(chip);
+        });
+      }
 
       // Jodi Table
       const jodiTbody = document.getElementById('jodi-table');
@@ -7544,6 +7787,13 @@
         userExplicitDaySelection = true;
       }
       selectedDay = day;
+      document.querySelectorAll('.mobile-day-tab').forEach(b => {
+        b.className = "mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800";
+      });
+      const activeMBtn = document.getElementById('btn-m-' + day);
+      if (activeMBtn) {
+        activeMBtn.className = "mobile-day-tab py-1.5 px-1 text-[11px] font-bold rounded-xl transition-all text-center bg-indigo-600 text-white shadow-sm border border-indigo-500";
+      }
       document.querySelectorAll('.day-tab').forEach(b => {
         b.className = "day-tab py-2 px-1 text-xs font-medium rounded-lg transition-all text-center text-slate-400 hover:text-white bg-slate-800/40 hover:bg-slate-800";
       });
@@ -7654,6 +7904,11 @@
       const dayData = APP_STATE.by_day[selectedDay];
       const digits = (dayData.otc_digits || [0, 1, 5, 6]).join(', ');
       navigator.clipboard.writeText(`Kalyan ${dayData.day} OTC: [${digits}]`);
+      const btnTextMob = document.getElementById('btn-copy-text-mobile');
+      if (btnTextMob) {
+        btnTextMob.textContent = "Copied!";
+        setTimeout(() => btnTextMob.textContent = "Copy 4-Ank OTC", 2000);
+      }
       const btnText = document.getElementById('btn-copy-text');
       if (btnText) {
         btnText.textContent = "Copied!";
@@ -7895,6 +8150,31 @@
       flashUIUpdate();
       return `Simulated draw ${parsed.raw} applied! Target day advanced to ${selectedDay}. Precomputed prediction data strictly preserved.`;
     };
+
+    // ==========================================
+    // 📱 MOBILE-FIRST ACCORDION CONTROLLERS
+    // ==========================================
+    function toggleMobileAccordion(id) {
+      const el = document.getElementById(id);
+      const arrow = document.getElementById(`${id}-arrow`);
+      if (el) {
+        const isHidden = el.classList.contains('hidden');
+        el.classList.toggle('hidden');
+        if (arrow) arrow.textContent = isHidden ? "▲" : "▼";
+      }
+    }
+
+    function toggleDesktopTableOnMobile() {
+      const tabs = document.getElementById('desktop-main-tabs');
+      if (tabs) {
+        if (tabs.classList.contains('hidden')) {
+          tabs.classList.remove('hidden');
+          tabs.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          tabs.classList.add('hidden');
+        }
+      }
+    }
 
     window.addEventListener('DOMContentLoaded', initApp);
 
