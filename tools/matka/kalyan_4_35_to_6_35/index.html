@@ -176,9 +176,9 @@
     </nav>
 
     <!-- Top Header & Live Sync Bar -->
-    <header class="bg-slate-900/90 backdrop-blur border border-slate-800 rounded-xl px-3.5 py-2.5 shadow-sm flex flex-row justify-between items-center gap-2">
+    <header class="bg-slate-900/90 backdrop-blur border border-slate-800 rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3">
       <div>
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2 flex-wrap">
           <span class="relative flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
@@ -189,37 +189,50 @@
           <span id="system-badge" class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
             Auto-Polling Active
           </span>
-          <!-- Compact, subtle Updated by Zevbuild -->
           <span class="text-[10px] text-slate-400 font-medium flex items-center gap-1.5 bg-slate-950/60 px-2 py-0.5 rounded-md border border-slate-800" title="Last developer maintenance update">
             <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-            Updated by Zevbuild: <span id="dev-update-header-date" class="text-purple-300 font-mono">12 Oct 2026</span>
+            Updated: <span id="dev-update-header-date" class="text-purple-300 font-mono">12 Oct 2026</span>
           </span>
           <span id="dev-card-date" class="hidden">12 Oct 2026</span>
         </div>
-
       </div>
 
-      <!-- Clean, Compact Controls: Silent Auto-Sync + Sync Button (Useless buttons hidden) -->
-      <div class="flex items-center gap-2 shrink-0">
-        <!-- Hidden background elements for JS compatibility -->
+      <!-- ═══ Aligned Precision Toolbar (Good UX/UI: 2x2 Grid on Mobile, 1-Row Flex on Desktop) ═══ -->
+      <div class="grid grid-cols-2 sm:flex sm:items-center gap-1.5 sm:gap-2 w-full lg:w-auto">
+        <!-- Hidden background element for PWA install -->
         <button onclick="installPwaApp()" id="btn-pwa-install" class="hidden"></button>
-        <button onclick="toggleAudioAlert()" id="btn-audio-alert" class="hidden"><span id="audio-icon"></span><span id="audio-status-text"></span></button>
-        <button onclick="toggleWakeLock()" id="btn-wake-lock" class="hidden"><span id="wakelock-status-text"></span></button>
-        <span id="btn-toggle-auto" class="hidden"></span>
 
-        <!-- Subtle Auto-Live Indicator -->
-        <div class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 text-[11px]">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="auto-sync-status" class="text-emerald-400 font-medium">Live Auto</span>
-          <span class="text-slate-600">·</span>
-          <span id="countdown-timer" class="font-mono text-slate-400 text-[10px]">45s</span>
+        <!-- Control 1: Audio Chime Toggle Button -->
+        <button onclick="toggleAudioAlert()" id="btn-audio-alert" class="h-9 px-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-amber-500/40 text-xs text-amber-300 transition-all flex items-center justify-center gap-1.5 active:scale-95 shadow-inner" title="Toggle audio chime alert on live draw catch">
+          <span id="audio-icon" class="text-sm">🔔</span>
+          <span id="audio-status-text" class="font-bold text-[11px] whitespace-nowrap">Chime: ON</span>
+        </button>
+
+        <!-- Control 2: Screen Wake-Lock Toggle Button -->
+        <button onclick="toggleWakeLock()" id="btn-wake-lock" class="h-9 px-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-sky-500/40 text-xs text-slate-300 hover:text-white transition-all flex items-center justify-center gap-1.5 active:scale-95 shadow-inner" title="Keep screen awake during live draw hours">
+          <span class="text-sm">📱</span>
+          <span id="wakelock-status-text" class="font-bold text-[11px] whitespace-nowrap">Wake-Lock</span>
+        </button>
+
+        <!-- Control 3: Auto-Sync Polling Dock (Countdown + Pause) -->
+        <div class="h-9 px-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs flex items-center justify-between sm:justify-center gap-2 shadow-inner">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+            <span id="auto-sync-status" class="text-emerald-400 font-bold text-[11px] truncate">Auto: ON</span>
+          </div>
+          <span class="text-slate-700">|</span>
+          <span id="countdown-timer" class="font-mono text-slate-300 font-bold text-xs shrink-0">45s</span>
+          <button onclick="toggleAutoSync()" id="btn-toggle-auto" class="text-[11px] text-indigo-400 hover:text-indigo-300 underline font-semibold ml-0.5 shrink-0">
+            Pause
+          </button>
         </div>
 
-        <!-- Single Essential Action: Manual Sync Button -->
-        <button onclick="manualSyncClick()" id="btn-fetch-now" class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-sm transition-all active:scale-95 disabled:opacity-50" title="Refresh Live Results">
-          <svg id="sync-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-          <span id="btn-text">Sync</span>
+        <!-- Control 4: Primary Sync Now CTA Button -->
+        <button onclick="manualSyncClick()" id="btn-fetch-now" class="h-9 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/30 transition-all active:scale-95 disabled:opacity-50 shrink-0" title="Immediately fetch live draw results">
+          <svg id="sync-icon" class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span id="btn-text" class="whitespace-nowrap">Sync Now</span>
         </button>
+      </div>
     </header>
 
     <!-- ═══ Slim Compact Live IST Market Timing Bar (Automatic Small Size) ═══ -->
