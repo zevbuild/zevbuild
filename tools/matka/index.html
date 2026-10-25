@@ -378,20 +378,11 @@
       let badgeColor = '';
 
       if (day === 0) {
-        if (hours < 12) {
-          // Sunday 12:00 AM to 12:00 PM IST: Scheduled Maintenance Window
-          const noonSeconds = 12 * 3600;
-          targetDiff = Math.max(0, noonSeconds - currentTotalSeconds);
-          phase = "Scheduled Sunday System Maintenance & Recalibration · Resumes 12:00 PM IST";
-          statusBadge = "SUNDAY MAINTENANCE";
-          badgeColor = "bg-amber-500/20 text-amber-300 border-amber-500/40 animate-pulse";
-        } else {
-          // Sunday Afternoon / Evening: Predictions for next week live
-          phase = "Sunday Market Recess · Monday Predictions Ready · Next Draw Monday 4:35 PM IST";
-          targetDiff = (86400 - currentTotalSeconds) + openSeconds;
-          statusBadge = "WEEKEND RECESS";
-          badgeColor = "bg-indigo-500/15 text-indigo-300 border-indigo-500/30";
-        }
+        // Sunday Market Recess
+        phase = "Sunday Market Recess · Next Draw Monday 4:35 PM IST";
+        targetDiff = (86400 - currentTotalSeconds) + openSeconds;
+        statusBadge = "WEEKEND RECESS";
+        badgeColor = "bg-slate-800 text-slate-400 border-slate-700";
       } else if (currentTotalSeconds < openSeconds) {
         // Phase 1: Pre-Open Countdown
         targetDiff = openSeconds - currentTotalSeconds;

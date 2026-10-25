@@ -27,14 +27,14 @@ def run_git_cmd(args, cwd=REPO_ROOT):
     return res.stdout.strip()
 
 
-def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bool = False, maintenance_on: bool = False):
+def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bool = False):
     print("=" * 65)
     print("  KALYAN MATKA: LIVE PREDICTION SYNC & WEB DEPLOYMENT")
     print("=" * 65)
 
     print("\n[STEP 1/3] Scraping latest results & recalibrating models...")
     try:
-        payload = compute_all_predictions(force_refresh=True, force_sunday_rollover=sunday_rollover, force_maintenance=maintenance_on)
+        payload = compute_all_predictions(force_refresh=True, force_sunday_rollover=sunday_rollover)
     except Exception as e:
         print(f"[ERROR] Failed during prediction computation: {e}")
         sys.exit(1)
@@ -85,12 +85,7 @@ def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bo
             print(f"    * {f}")
 
         # Create commit
-        if maintenance_on:
-            commit_msg = custom_msg or f"chore(maintenance): enable Sunday scheduled maintenance mode (12 AM - 12 PM IST)"
-        elif sunday_rollover:
-            commit_msg = custom_msg or f"Sunday Rollover: Update dates & baseline predictions for next week (Maintenance Complete)"
-        else:
-            commit_msg = custom_msg or f"Update Kalyan Matka predictions & historical chart ({latest_date})"
+        commit_msg = custom_msg or f"Update Kalyan Matka predictions & historical chart ({latest_date})"
         print(f"\n[STEP 3/3] Committing and pushing to origin main...")
         subprocess.run(["git", "commit", "-m", commit_msg], cwd=REPO_ROOT, check=True)
         print(f" -> Committed: {commit_msg}")
@@ -117,8 +112,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sync Kalyan predictions and automatically push to web")
     parser.add_argument("--no-push", action="store_true", help="Update local files only, do not commit or push to Git")
     parser.add_argument("--sunday-rollover", action="store_true", help="Force Sunday weekly rollover to next week's dates and predictions")
-    parser.add_argument("--maintenance-on", action="store_true", help="Force enable Sunday scheduled maintenance mode (12 AM to 12 PM IST)")
     parser.add_argument("-m", "--message", type=str, default=None, help="Custom Git commit message")
     args = parser.parse_args()
 
-    sync_and_push(push=not args.no_push, custom_msg=args.message, sunday_rollover=args.sunday_rollover, maintenance_on=args.maintenance_on)
+    sync_and_push(push=not args.no_push, custom_msg=args.message, sunday_rollover=args.sunday_rollover)

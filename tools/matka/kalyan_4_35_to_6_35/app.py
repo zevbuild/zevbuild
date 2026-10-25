@@ -339,7 +339,7 @@ def compute_last_week_performance(valid_df, html=""):
     return last_week_data, last_month_data
 
 
-def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: bool = False, force_maintenance: bool = False):
+def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: bool = False):
     """Execute live scraping/cache read, retrain models, and generate predictions."""
     # 1. Fetch & parse
     html = fetch_html(force_refresh=force_refresh)
@@ -466,24 +466,6 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         ref_date = latest_draw_date
 
     is_sunday = (ref_date.weekday() == 6) or force_sunday_rollover
-    # Sunday Maintenance Window Engine:
-    # Sunday 12:00 AM IST (00:00) to 12:00 PM IST (12:00 noon):
-    # Scheduled weekly system maintenance, database verification, and recalibration.
-    is_sunday_maintenance = (
-        (ref_date.weekday() == 6 and now_ist.hour < 12 and not force_sunday_rollover)
-        or force_maintenance
-    )
-
-    maintenance_details = {
-        "is_active": bool(is_sunday_maintenance),
-        "window": "Sunday 12:00 AM to 12:00 PM IST",
-        "status": "Weekly System Maintenance, Recalibration & Database Integrity Audit" if is_sunday_maintenance else "Operational",
-        "resume_time_ist": "Sunday 12:00 PM IST",
-        "rollover_scheduled": True if is_sunday_maintenance else False,
-    }
-    telemetry["maintenance_mode"] = bool(is_sunday_maintenance)
-    telemetry["maintenance_details"] = maintenance_details
-
     if is_sunday:
         # Sunday Rollover Bot: Roll over to upcoming week (next Monday to Saturday)
         days_to_next_monday = (7 - ref_date.weekday()) if ref_date.weekday() != 6 else 1
@@ -573,8 +555,6 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
         "total_records": len(df),
         "valid_records": len(valid_df),
-        "maintenance_mode": bool(is_sunday_maintenance),
-        "maintenance_details": maintenance_details,
         "all_time_performance": all_time_performance,
         "telemetry": telemetry,
         "last_week_data": last_week_data,
@@ -609,8 +589,6 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
         "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
         "latest_draw": output_payload["latest_draw"],
-        "maintenance_mode": bool(is_sunday_maintenance),
-        "maintenance_details": maintenance_details,
         "all_time_performance": all_time_performance,
         "telemetry": telemetry,
         "last_week_data": last_week_data,
