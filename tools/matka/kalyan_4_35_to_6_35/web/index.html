@@ -176,7 +176,7 @@
     </nav>
 
     <!-- Top Header & Live Sync Bar -->
-    <header class="bg-slate-900/80 backdrop-blur border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <header class="bg-slate-900/90 backdrop-blur border border-slate-800 rounded-xl px-3.5 py-2.5 shadow-sm flex flex-row justify-between items-center gap-2">
       <div>
         <div class="flex items-center gap-2.5">
           <span class="relative flex h-3 w-3">
@@ -196,267 +196,159 @@
           </span>
           <span id="dev-card-date" class="hidden">12 Oct 2026</span>
         </div>
-        <p class="text-xs text-slate-400 mt-1">
-          In-browser machine learning engine: polls live draw data every 45s, detects newly declared results, and recalibrates predictions on-the-fly.
-        </p>
+
       </div>
 
-      <!-- Controls: PWA Install, Audio Chime, Wake-Lock, Auto-Sync & Manual Refresh -->
-      <div class="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end flex-wrap">
-        <!-- PWA Install Button -->
-        <button onclick="installPwaApp()" id="btn-pwa-install" class="hidden items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs px-2.5 py-1.5 rounded-xl shadow-md transition-all active:scale-95" title="Install Kalyan Predictor as an app on your device">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          <span class="text-[11px]">Install App</span>
-        </button>
+      <!-- Clean, Compact Controls: Silent Auto-Sync + Sync Button (Useless buttons hidden) -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Hidden background elements for JS compatibility -->
+        <button onclick="installPwaApp()" id="btn-pwa-install" class="hidden"></button>
+        <button onclick="toggleAudioAlert()" id="btn-audio-alert" class="hidden"><span id="audio-icon"></span><span id="audio-status-text"></span></button>
+        <button onclick="toggleWakeLock()" id="btn-wake-lock" class="hidden"><span id="wakelock-status-text"></span></button>
+        <span id="btn-toggle-auto" class="hidden"></span>
 
-        <!-- Audio Chime Toggle -->
-        <button onclick="toggleAudioAlert()" id="btn-audio-alert" class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1.5 rounded-xl border border-slate-800 text-xs text-amber-300 hover:text-amber-200 transition-colors shadow-inner" title="Toggle audio chime alert on live draw catch">
-          <span id="audio-icon">🔔</span>
-          <span id="audio-status-text" class="font-semibold text-[11px]">Chime: ON</span>
-        </button>
-
-        <!-- Screen Wake-Lock (Mobile) -->
-        <button onclick="toggleWakeLock()" id="btn-wake-lock" class="hidden sm:flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1.5 rounded-xl border border-slate-800 text-xs text-slate-300 hover:text-white transition-colors shadow-inner" title="Keep screen awake during live draw hours">
-          <span>📱</span>
-          <span id="wakelock-status-text" class="font-semibold text-[11px]">Wake-Lock</span>
-        </button>
-
-        <!-- Auto-fetch Toggle & Countdown -->
-        <div class="flex items-center gap-2 bg-slate-950/80 px-3 py-1.5 rounded-xl border border-slate-800 text-xs shadow-inner">
-          <span id="auto-sync-status" class="text-emerald-400 font-semibold flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            Auto: ON
-          </span>
-          <span class="text-slate-600">|</span>
-          <span id="countdown-timer" class="font-mono text-slate-300 font-bold">45s</span>
-          <button onclick="toggleAutoSync()" id="btn-toggle-auto" class="ml-1 text-[11px] text-indigo-400 hover:text-indigo-300 underline font-medium">
-            Pause
-          </button>
+        <!-- Subtle Auto-Live Indicator -->
+        <div class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 text-[11px]">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="auto-sync-status" class="text-emerald-400 font-medium">Live Auto</span>
+          <span class="text-slate-600">·</span>
+          <span id="countdown-timer" class="font-mono text-slate-400 text-[10px]">45s</span>
         </div>
 
-        <!-- Manual Fetch Button -->
-        <button onclick="manualSyncClick()" id="btn-fetch-now" class="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-lg shadow-indigo-600/25 transition-all active:scale-95 disabled:opacity-50">
+        <!-- Single Essential Action: Manual Sync Button -->
+        <button onclick="manualSyncClick()" id="btn-fetch-now" class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-sm transition-all active:scale-95 disabled:opacity-50" title="Refresh Live Results">
           <svg id="sync-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-          <span id="btn-text">Sync Now</span>
+          <span id="btn-text">Sync</span>
         </button>
     </header>
 
-    <!-- ═══ Live IST Market Timing Countdown Bar ═══ -->
-    <div class="glass-card rounded-2xl p-4 sm:p-5 border-purple-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-purple-400 font-bold text-sm shadow-inner shrink-0">
-          IST
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-purple-300">Live IST Market Draw Clock</span>
-            <span id="market-countdown-badge" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border bg-amber-500/15 text-amber-300 border-amber-500/30">
-              PRE-OPEN WINDOW
-            </span>
-          </div>
-          <div id="market-countdown-phase" class="text-xs text-slate-300 font-medium mt-0.5">
-            Countdown to Kalyan Open (4:35 PM IST)
-          </div>
-        </div>
+    <!-- ═══ Slim Compact Live IST Market Timing Bar (Automatic Small Size) ═══ -->
+    <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl px-3 py-2 flex items-center justify-between gap-2 shadow-sm text-xs">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse shrink-0"></span>
+        <span id="market-countdown-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-slate-800 text-slate-400 border-slate-700 shrink-0">
+          WEEKEND RECESS
+        </span>
+        <span id="market-countdown-phase" class="text-[11px] text-slate-300 font-medium truncate">
+          Sunday Market Recess · Next Draw Monday 4:35 PM IST
+        </span>
       </div>
 
-      <div class="flex items-center gap-4 bg-[#070b14]/70 border border-white/5 px-4 py-2 rounded-xl self-end sm:self-auto">
-        <div class="text-right">
-          <div class="text-[9px] uppercase font-mono text-slate-400 font-semibold">Draw Countdown</div>
-          <div id="market-countdown-time" class="text-xl sm:text-2xl font-black font-mono tracking-wider text-purple-300">
-            --:--:--
-          </div>
-        </div>
-        <div class="h-6 w-px bg-white/10"></div>
-        <div class="text-[9px] font-mono text-slate-400">
-          <div>IST Current</div>
-          <div id="ist-live-clock" class="text-slate-200 font-semibold">--:--:--</div>
-        </div>
+      <div class="flex items-center gap-2 font-mono shrink-0">
+        <span class="text-[10px] text-slate-400 hidden sm:inline">Countdown:</span>
+        <span id="market-countdown-time" class="text-xs sm:text-sm font-black text-purple-300 tracking-wider bg-slate-950 px-2.5 py-1 rounded-lg border border-purple-500/30 shadow-inner">
+          --:--:--
+        </span>
+        <span id="ist-live-clock" class="text-[10px] text-slate-400 hidden md:inline">--:--:-- IST</span>
       </div>
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- 📱 COMPACT MOBILE-FIRST VIEWPORT (< 768px: Glanceable Spotlight Card) -->
+    <!-- 📱 AUTOMATIC COMPACT VIEW (< 768px: Clean, Small, Direct - No Clutter) -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <div id="mobile-streamlined-view" class="block md:hidden space-y-3">
+    <div id="mobile-streamlined-view" class="block md:hidden space-y-2.5">
 
-      <!-- Mobile Day Selector Navigation Strip -->
-      <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-2.5 shadow-sm space-y-1.5">
-        <div class="flex items-center justify-between px-1">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Select Forecast Day:</span>
-          <span id="mobile-target-day-banner" class="text-[10px] font-mono font-bold text-indigo-400">TARGET: Mon</span>
+      <!-- Compact 1-Row Day Selector Strip -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-2 shadow-sm">
+        <div class="flex items-center justify-between px-1 mb-1.5">
+          <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Target Forecast Day:</span>
+          <span id="mobile-target-day-banner" class="text-[9px] font-mono font-bold text-indigo-400">Mon</span>
         </div>
         <div class="grid grid-cols-6 gap-1">
-          <button onclick="changeDay('Mon', true)" id="btn-m-Mon" class="mobile-day-tab py-1.5 px-1 text-[11px] font-bold rounded-xl transition-all text-center bg-indigo-600 text-white shadow-sm border border-indigo-500">
+          <button onclick="changeDay('Mon', true)" id="btn-m-Mon" class="mobile-day-tab py-1 px-0.5 text-[11px] font-bold rounded-lg transition-all text-center bg-indigo-600 text-white shadow-sm border border-indigo-500">
             Mon<span class="block text-[8px] font-normal opacity-80" id="date-m-Mon">--</span>
           </button>
-          <button onclick="changeDay('Tue', true)" id="btn-m-Tue" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+          <button onclick="changeDay('Tue', true)" id="btn-m-Tue" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
             Tue<span class="block text-[8px] font-normal opacity-80" id="date-m-Tue">--</span>
           </button>
-          <button onclick="changeDay('Wed', true)" id="btn-m-Wed" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+          <button onclick="changeDay('Wed', true)" id="btn-m-Wed" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
             Wed<span class="block text-[8px] font-normal opacity-80" id="date-m-Wed">--</span>
           </button>
-          <button onclick="changeDay('Thu', true)" id="btn-m-Thu" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+          <button onclick="changeDay('Thu', true)" id="btn-m-Thu" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
             Thu<span class="block text-[8px] font-normal opacity-80" id="date-m-Thu">--</span>
           </button>
-          <button onclick="changeDay('Fri', true)" id="btn-m-Fri" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+          <button onclick="changeDay('Fri', true)" id="btn-m-Fri" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
             Fri<span class="block text-[8px] font-normal opacity-80" id="date-m-Fri">--</span>
           </button>
-          <button onclick="changeDay('Sat', true)" id="btn-m-Sat" class="mobile-day-tab py-1.5 px-1 text-[11px] font-medium rounded-xl transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
+          <button onclick="changeDay('Sat', true)" id="btn-m-Sat" class="mobile-day-tab py-1 px-0.5 text-[11px] font-medium rounded-lg transition-all text-center text-slate-400 bg-slate-950/80 border border-slate-800">
             Sat<span class="block text-[8px] font-normal opacity-80" id="date-m-Sat">--</span>
           </button>
         </div>
       </div>
 
-      <!-- 🌟 Hero Spotlight Card (Today's Key Forecast Above The Fold) -->
-      <div class="bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950/50 border border-indigo-500/40 rounded-2xl p-4 shadow-xl space-y-3 relative overflow-hidden">
+      <!-- Compact Prediction Card: 4-Ank OTC + Golden Picks -->
+      <div class="bg-gradient-to-b from-slate-900 to-indigo-950/40 border border-indigo-500/40 rounded-xl p-3 shadow-lg space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-[11px] font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            <span>⚡ High-Prob 4-Ank OTC</span>
+          <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>4-Ank High-Prob OTC</span>
           </span>
-          <span id="mobile-otc-prob" class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
+          <span id="mobile-otc-prob" class="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/30">
             68.8% Edge
           </span>
         </div>
 
         <!-- 4 Tactile OTC Digit Chips -->
-        <div id="mobile-otc-digits" class="grid grid-cols-4 gap-2">
+        <div id="mobile-otc-digits" class="grid grid-cols-4 gap-1.5">
           <!-- Populated dynamically via JS -->
         </div>
 
-        <!-- 1-Tap Copy OTC Button -->
-        <button onclick="copyOTCNumbers()" id="btn-copy-otc-mobile" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-          <span id="btn-copy-text-mobile">Copy 4-Ank OTC</span>
-        </button>
-
-        <!-- Golden Picks 2x2 Mini Matrix -->
-        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80">
-          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5">
+        <!-- Golden Picks Row -->
+        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800/80 text-xs">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-lg p-2">
             <span class="text-[9px] text-slate-400 block font-bold uppercase">Primary Golden Jodi</span>
-            <div class="flex items-baseline gap-1.5 mt-0.5">
-              <span id="mobile-spotlight-jodi" class="text-2xl font-black text-white font-mono">--</span>
-              <span id="mobile-spotlight-jodi-prob" class="text-[10px] text-emerald-400 font-bold">+112%</span>
+            <div class="flex items-baseline gap-1 mt-0.5">
+              <span id="mobile-spotlight-jodi" class="text-xl font-black text-white font-mono">--</span>
+              <span id="mobile-spotlight-jodi-prob" class="text-[9px] text-emerald-400 font-bold">+112%</span>
             </div>
             <div class="text-[9px] text-slate-400 truncate mt-0.5">
               Cut: <span id="mobile-spotlight-family" class="text-indigo-300 font-mono">--</span>
             </div>
           </div>
-          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-2.5">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-lg p-2">
             <span class="text-[9px] text-slate-400 block font-bold uppercase">Single Open / Close</span>
             <div class="flex items-center justify-between mt-1">
               <div>
-                <span class="text-[9px] text-slate-500 block">OPEN</span>
-                <span id="mobile-spotlight-open" class="text-xl font-black text-purple-300 font-mono">--</span>
+                <span class="text-[8px] text-slate-500 block">OPEN</span>
+                <span id="mobile-spotlight-open" class="text-lg font-black text-purple-300 font-mono">--</span>
               </div>
-              <div class="h-6 w-px bg-slate-800"></div>
+              <div class="h-5 w-px bg-slate-800"></div>
               <div>
-                <span class="text-[9px] text-slate-500 block">CLOSE</span>
-                <span id="mobile-spotlight-close" class="text-xl font-black text-sky-300 font-mono">--</span>
+                <span class="text-[8px] text-slate-500 block">CLOSE</span>
+                <span id="mobile-spotlight-close" class="text-lg font-black text-sky-300 font-mono">--</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Latest Draw & Accuracy Quick Glance Footer -->
-        <div class="flex items-center justify-between pt-1 border-t border-slate-800/60 text-[11px]">
-          <div class="flex items-center gap-1.5">
-            <span class="text-slate-400 text-[10px] uppercase font-bold">Latest Result:</span>
-            <span id="mobile-latest-draw" class="font-mono font-black text-purple-300">--</span>
-          </div>
-          <div class="text-[10px] text-emerald-400 font-medium">
-            30-Day Touch: <b id="mobile-touch-rate">54.2%</b>
-          </div>
+        <!-- 1-Tap Copy Button -->
+        <button onclick="copyOTCNumbers()" id="btn-copy-otc-mobile" class="w-full py-1.5 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold text-xs rounded-lg transition-all shadow flex items-center justify-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span id="btn-copy-text-mobile">Copy 4-Ank OTC</span>
+        </button>
+      </div>
+
+      <!-- Direct Top 15 Jodis Grid (Visible immediately - NO accordion clicking required!) -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 shadow-sm space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-bold uppercase text-slate-300">Top 15 Recommended Jodis:</span>
+          <span class="text-[9px] text-indigo-400 font-mono font-bold">15 Pairs</span>
+        </div>
+        <div id="mobile-top15-chips" class="grid grid-cols-5 gap-1.5 text-center font-mono text-xs">
+          <!-- Populated dynamically via JS: compact 5-column number chips -->
         </div>
       </div>
 
-      <!-- 🔢 Accordion 1: Top 15 Ranked Jodis (Chip Matrix) -->
-      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
-        <button onclick="toggleMobileAccordion('mobile-acc-top15')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-200 hover:text-white hover:bg-slate-800/50 transition-colors">
-          <span class="flex items-center gap-2">
-            <span>🔢 Top 15 Ranked Jodis</span>
-            <span class="text-[9px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.5 rounded-full font-bold">15 Pairs</span>
-          </span>
-          <span id="mobile-acc-top15-arrow" class="text-slate-400 text-xs font-mono">▼</span>
-        </button>
-        <div id="mobile-acc-top15" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-2.5">
-          <div class="text-[10px] text-slate-400 pt-2">Ranked by ensemble probability and relative edge:</div>
-          <div id="mobile-top15-chips" class="grid grid-cols-3 gap-1.5 text-center font-mono text-xs">
-            <!-- Populated dynamically via JS -->
-          </div>
-          <button onclick="toggleDesktopTableOnMobile()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-[11px] rounded-xl border border-slate-700 transition-all text-center">
-            Switch to Detailed Table View
-          </button>
+      <!-- Quick Telemetry & Penal Chart Link (Zero Clutter) -->
+      <div class="flex items-center justify-between bg-slate-900/60 border border-slate-800 rounded-xl px-3 py-2 text-[11px]">
+        <div>
+          <span class="text-slate-400">Latest Draw:</span> <b class="text-purple-300 font-mono" id="mobile-latest-draw">--</b>
+          <span class="text-slate-600 mx-1">·</span>
+          <span class="text-slate-400">30-Day:</span> <b class="text-emerald-400 font-mono">54.2%</b>
         </div>
-      </div>
-
-      <!-- 📅 Accordion 2: Current Week Results Tracker (Mon–Sat) -->
-      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
-        <button onclick="toggleMobileAccordion('mobile-acc-week')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-200 hover:text-white hover:bg-slate-800/50 transition-colors">
-          <span class="flex items-center gap-2">
-            <span>📅 Current Week Results Tracker</span>
-            <span class="text-[9px] bg-purple-500/20 text-purple-300 border border-purple-500/30 px-1.5 py-0.5 rounded-full font-bold">Mon–Sat</span>
-          </span>
-          <span id="mobile-acc-week-arrow" class="text-slate-400 text-xs font-mono">▼</span>
-        </button>
-        <div id="mobile-acc-week" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-2">
-          <div class="text-[10px] text-slate-400 pt-2">Tap any day card to switch prediction target:</div>
-          <div id="mobile-week-tracker-grid" class="grid grid-cols-2 gap-2 text-xs">
-            <!-- Populated dynamically via JS -->
-          </div>
-        </div>
-      </div>
-
-      <!-- 📊 Accordion 3: 30-Day Automated Touch Rate & History -->
-      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
-        <button onclick="toggleMobileAccordion('mobile-acc-stats')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-200 hover:text-white hover:bg-slate-800/50 transition-colors">
-          <span class="flex items-center gap-2">
-            <span>📊 30-Day Accuracy & Win Telemetry</span>
-            <span class="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-full font-bold">54.2% Touch</span>
-          </span>
-          <span id="mobile-acc-stats-arrow" class="text-slate-400 text-xs font-mono">▼</span>
-        </button>
-        <div id="mobile-acc-stats" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-2.5">
-          <div class="grid grid-cols-2 gap-2 pt-2 text-center">
-            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-              <span class="text-[9px] text-slate-400 uppercase font-bold block">30-Day Touch Rate</span>
-              <span class="text-lg font-black text-emerald-400 font-mono" id="mobile-stat-30d">54.2%</span>
-              <span class="block text-[8px] text-slate-500">13 of 24 Draws Hit</span>
-            </div>
-            <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
-              <span class="text-[9px] text-slate-400 uppercase font-bold block">All-Time Touch Rate</span>
-              <span class="text-lg font-black text-indigo-300 font-mono" id="mobile-stat-alltime">77.3%</span>
-              <span class="block text-[8px] text-slate-500">2,074 of 2,683 Draws</span>
-            </div>
-          </div>
-          <a href="kalyan_penal_chart.html#bottom" class="w-full py-2 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 font-bold text-xs rounded-xl border border-indigo-500/40 text-center block transition-all active:scale-95">
-            📊 View 14-Year Penal Chart & Historical Draws ↗
-          </a>
-        </div>
-      </div>
-
-      <!-- 🛠️ Accordion 4: System Audit & Pipeline Status -->
-      <div class="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/60 shadow-md">
-        <button onclick="toggleMobileAccordion('mobile-acc-audit')" class="w-full px-3.5 py-3 flex items-center justify-between text-left text-xs font-bold text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors">
-          <span class="flex items-center gap-2">
-            <span>🛠️ Live Pipeline Audit & Logs</span>
-          </span>
-          <span id="mobile-acc-audit-arrow" class="text-slate-500 text-xs font-mono">▼</span>
-        </button>
-        <div id="mobile-acc-audit" class="p-3 pt-0 border-t border-slate-800/60 hidden space-y-1.5 font-mono text-[10px] text-slate-400">
-          <div class="flex justify-between pt-2">
-            <span>Status:</span>
-            <span class="text-emerald-400 font-bold">Synchronized</span>
-          </div>
-          <div class="flex justify-between">
-            <span>Database:</span>
-            <span class="text-slate-300 font-bold">3,183 Draws</span>
-          </div>
-          <div class="text-[9px] text-slate-500 truncate pt-1 border-t border-slate-800">
-            Engine: Bi-Directional Markov + Exponential Decay Heuristic
-          </div>
-        </div>
+        <a href="kalyan_penal_chart.html#bottom" class="text-indigo-400 hover:text-indigo-300 font-bold text-[10px]">
+          Penal Chart ↗
+        </a>
       </div>
 
     </div>
@@ -7624,11 +7516,11 @@
         dayData.top_jodis.forEach(j => {
           const edge = ((j.prob / 1.0) - 1.0) * 100;
           const chip = document.createElement('div');
-          chip.className = `p-2 rounded-xl border text-center transition-all ${j.rank === 1 ? 'bg-indigo-950/60 border-indigo-500/60 shadow-md' : 'bg-slate-950/70 border-slate-800'}`;
+          chip.className = `p-1 sm:p-1.5 rounded-lg border text-center transition-all ${j.rank === 1 ? 'bg-indigo-950/80 border-indigo-500/80 shadow-sm' : 'bg-slate-950/80 border-slate-800'}`;
           chip.innerHTML = `
-            <div class="text-[9px] text-slate-400 font-semibold">#${j.rank}</div>
-            <div class="text-lg font-black font-mono ${j.rank === 1 ? 'text-indigo-300' : 'text-white'}">${j.jodi}</div>
-            <div class="text-[10px] font-bold ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${edge >= 0 ? '+' : ''}${edge.toFixed(0)}%</div>
+            <div class="text-[8px] text-slate-400 font-semibold leading-tight">#${j.rank}</div>
+            <div class="text-base font-black font-mono ${j.rank === 1 ? 'text-indigo-300' : 'text-white'} leading-tight">${j.jodi}</div>
+            <div class="text-[8px] font-bold ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'} leading-tight">${edge >= 0 ? '+' : ''}${edge.toFixed(0)}%</div>
           `;
           mChips.appendChild(chip);
         });
