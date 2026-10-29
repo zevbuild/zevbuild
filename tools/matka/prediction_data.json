@@ -26,7 +26,7 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "30 Oct 2026, 12:33 AM IST",
+    "last_sync_ist": "30 Oct 2026, 02:51 AM IST",
     "next_sync_ist": "Today at 07:00 PM IST",
     "daily_cadence": [
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
@@ -3704,7 +3704,7 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "30 Oct 2026, 12:33 AM IST",
+      "last_sync_ist": "30 Oct 2026, 02:51 AM IST",
       "next_sync_ist": "Today at 07:00 PM IST",
       "daily_cadence": [
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
