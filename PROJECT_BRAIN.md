@@ -345,6 +345,7 @@ Stub file (46 bytes) — delegates to live-kalyan.
 | Kalyan predictor (local) | **Python stdlib HTTP server** | `http://127.0.0.1:8080` |
 | ZevSafe (separate repo) | Cloudflare Pages | `https://zevsafe.pages.dev` |
 | CollegeBus (separate repo) | Cloudflare Pages | `https://collegebus.pages.dev` |
+| Sant Mistri Carpenter (built by Zevbuild) | Cloudflare Pages | `https://santmistricarpenter.pages.dev` |
 
 ---
 
@@ -353,8 +354,10 @@ Stub file (46 bytes) — delegates to live-kalyan.
 | Product | Description | Stack |
 |---|---|---|
 | **ZevSafe** | In-browser zero-knowledge vault encryption | WebCrypto API · AES-256-GCM · PBKDF2-SHA512 (600k iter) · PWA |
+| **ZevBlock** | Android accountability & anti-bypass OS | Kotlin 2.0+ · Device Admin API · VpnService · System Lockdown |
 | **ZevSync** | Offline Bluetooth P2P mesh sync for Android | Kotlin 2.0+ · Jetpack Compose M3 · Vector Clocks · CAS |
 | **CollegeBus** | Real-time transit & multi-hop schedule tracker PWA | Vanilla JS · Service Worker · Edge CDN |
+| **Sant Mistri Carpenter** | Woodworking, carpentry, & SQFT estimator platform | Vanilla HTML/CSS/JS · Responsive Estimator · Cloudflare Pages |
 
 ---
 
