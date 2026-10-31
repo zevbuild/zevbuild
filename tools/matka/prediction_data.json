@@ -26,8 +26,8 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "31 Oct 2026, 11:20 PM IST",
-    "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
+    "last_sync_ist": "01 Nov 2026, 01:42 AM IST",
+    "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
     "daily_cadence": [
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
       "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
@@ -4120,8 +4120,8 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "31 Oct 2026, 11:20 PM IST",
-      "next_sync_ist": "Sunday at 12:00 PM IST (Weekly Rollover)",
+      "last_sync_ist": "01 Nov 2026, 01:42 AM IST",
+      "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
       "daily_cadence": [
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
         "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
@@ -4139,7 +4139,7 @@
   },
   "by_day": {
     "Mon": {
-      "date": "2026-10-26",
+      "date": "2026-11-02",
       "day": "Mon",
       "top_jodis": [
         {
@@ -4604,7 +4604,7 @@
       }
     },
     "Tue": {
-      "date": "2026-10-27",
+      "date": "2026-11-03",
       "day": "Tue",
       "top_jodis": [
         {
@@ -5069,7 +5069,7 @@
       }
     },
     "Wed": {
-      "date": "2026-10-28",
+      "date": "2026-11-04",
       "day": "Wed",
       "top_jodis": [
         {
@@ -5534,7 +5534,7 @@
       }
     },
     "Thu": {
-      "date": "2026-10-29",
+      "date": "2026-11-05",
       "day": "Thu",
       "top_jodis": [
         {
@@ -5999,7 +5999,7 @@
       }
     },
     "Fri": {
-      "date": "2026-10-30",
+      "date": "2026-11-06",
       "day": "Fri",
       "top_jodis": [
         {
@@ -6464,7 +6464,7 @@
       }
     },
     "Sat": {
-      "date": "2026-10-31",
+      "date": "2026-11-07",
       "day": "Sat",
       "top_jodis": [
         {
@@ -6954,7 +6954,7 @@
     0.08700409056521988
   ],
   "predicted_for": {
-    "date": "2026-10-26",
+    "date": "2026-11-02",
     "day": "Mon"
   },
   "otc_recommendation": {
