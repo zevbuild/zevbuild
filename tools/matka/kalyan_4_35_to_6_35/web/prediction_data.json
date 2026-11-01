@@ -1,6 +1,6 @@
 {
-  "last_developer_update": "2026-10-31",
-  "last_update_by_developer": "31 Oct 2026",
+  "last_developer_update": "2026-11-01",
+  "last_update_by_developer": "01 Nov 2026",
   "latest_draw": {
     "date": "2026-10-31",
     "day": "Sat",
@@ -26,8 +26,8 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "01 Nov 2026, 01:42 AM IST",
-    "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
+    "last_sync_ist": "01 Nov 2026, 07:09 PM IST",
+    "next_sync_ist": "Monday at 07:00 PM IST",
     "daily_cadence": [
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
       "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
@@ -4120,8 +4120,8 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "01 Nov 2026, 01:42 AM IST",
-      "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
+      "last_sync_ist": "01 Nov 2026, 07:09 PM IST",
+      "next_sync_ist": "Monday at 07:00 PM IST",
       "daily_cadence": [
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
         "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
