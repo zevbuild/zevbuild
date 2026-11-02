@@ -184,7 +184,7 @@ def compute_last_week_performance(valid_df, html=""):
             sorted_o = np.argsort(preds["open_probs"])[::-1]
             sorted_c = np.argsort(preds["close_probs"])[::-1]
 
-            top_jodis = [f"{x:02d}" for x in sorted_j[:15]]
+            top_jodis = [f"{x:02d}" for x in sorted_j[:10]]
             top_open = [int(x) for x in sorted_o[:3]]
             top_close = [int(x) for x in sorted_c[:3]]
 
@@ -223,7 +223,7 @@ def compute_last_week_performance(valid_df, html=""):
                 badge_type = "highlight"
                 family_hits_month += 1
             elif actual_j in top_jodis:
-                status_label = f"Top-15 Edge ({actual_j})"
+                status_label = f"Top-10 Edge ({actual_j})"
                 badge_type = "info"
             elif otc_hit:
                 status_label = "OTC Pass"
@@ -396,7 +396,7 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
             "all_time_touches": bt_res.get("touch_hits", 2074),
             "all_time_touch_rate": bt_res.get("touch_rate_pct", "77.3%"),
             "otc_pass_rate": bt_res.get("otc_pass_rate_pct", "61.4%"),
-            "top15_jodi_hit_rate": bt_res.get("top15_jodi_rate_pct", "15.5%"),
+            "top10_jodi_hit_rate": bt_res.get("top10_jodi_rate_pct", "11.2%"),
             "top3_open_hit_rate": bt_res.get("top3_open_rate_pct", "31.0%"),
             "top3_close_hit_rate": bt_res.get("top3_close_rate_pct", "29.7%"),
             "top1_family_hit_rate": bt_res.get("top1_family_rate_pct", "6.5%"),
@@ -410,7 +410,7 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
             "all_time_touches": 2074,
             "all_time_touch_rate": "77.3%",
             "otc_pass_rate": "61.4%",
-            "top15_jodi_hit_rate": "15.5%",
+            "top10_jodi_hit_rate": "11.2%",
             "top3_open_hit_rate": "31.0%",
             "top3_close_hit_rate": "29.7%",
             "top1_family_hit_rate": "6.5%",
@@ -494,7 +494,7 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         sorted_c = np.argsort(close_probs)[::-1]
 
         top_jodis = []
-        for rank, idx in enumerate(sorted_j[:15], start=1):
+        for rank, idx in enumerate(sorted_j[:10], start=1):
             j_str = f"{idx:02d}"
             p = round(float(jodi_probs[idx]) * 100.0, 2)
             top_jodis.append({
