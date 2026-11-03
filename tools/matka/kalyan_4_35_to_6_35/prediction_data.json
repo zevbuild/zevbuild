@@ -26,7 +26,7 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "04 Nov 2026, 01:41 AM IST",
+    "last_sync_ist": "04 Nov 2026, 03:24 AM IST",
     "next_sync_ist": "Today at 07:00 PM IST",
     "daily_cadence": [
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
@@ -3336,7 +3336,7 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "04 Nov 2026, 01:41 AM IST",
+      "last_sync_ist": "04 Nov 2026, 03:24 AM IST",
       "next_sync_ist": "Today at 07:00 PM IST",
       "daily_cadence": [
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
@@ -4012,7 +4012,7 @@
         0.10248226546332302,
         0.11304798323684719,
         0.08889593557347379,
-        0.07830668662908474,
+        0.07830668662908473,
         0.10576752462912992
       ],
       "close_digit_probs": [
@@ -4390,7 +4390,7 @@
         0.10084992621467997,
         0.11167123916307706,
         0.09135363639628347,
-        0.07919245540093954,
+        0.07919245540093953,
         0.10807436781249989
       ],
       "close_digit_probs": [
@@ -5524,7 +5524,7 @@
         0.10079506716115355,
         0.11470867374342208,
         0.09125152981416623,
-        0.0794020994349439,
+        0.07940209943494389,
         0.10383697061481485
       ],
       "close_digit_probs": [
@@ -5632,7 +5632,7 @@
     0.10084992621467997,
     0.11167123916307706,
     0.09135363639628347,
-    0.07919245540093954,
+    0.07919245540093953,
     0.10807436781249989
   ],
   "close_digit_probs": [
