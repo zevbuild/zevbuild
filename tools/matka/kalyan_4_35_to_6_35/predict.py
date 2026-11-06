@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 from tabulate import tabulate
-from models import EnsemblePredictor
+from models import EnsemblePredictor, get_family_jodis, evaluate_outcome, recalibrate_hyperparameters
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 WORKSPACE_DIR = str(SCRIPT_DIR)
@@ -43,8 +43,216 @@ def resolve_csv_path(custom_path: str = None) -> str:
     return str((SCRIPT_DIR / "kalyan_historical_data.csv").resolve())
 
 
-def sync_artifacts(prediction_payload: dict, valid_df: pd.DataFrame):
-    """Synchronize prediction_data.json and history.json across all 3 locations."""
+def sync_performance_log(log_payload: dict):
+    """Synchronize performance_log.json across all 3 mirror locations with identical binary encoding."""
+    perf_paths = [
+        os.path.join(WORKSPACE_DIR, "performance_log.json"),
+        os.path.join(WEB_DIR, "performance_log.json"),
+        os.path.join(ROOT_MATKA_DIR, "performance_log.json"),
+    ]
+    json_bytes = (json.dumps(log_payload, indent=2) + "\n").encode("utf-8")
+    for p in perf_paths:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "wb") as f:
+            f.write(json_bytes)
+    print(f"[SUCCESS] performance_log.json synchronized across 3 mirror locations.")
+
+
+def load_performance_log(custom_path: str = None) -> dict:
+    """Load performance_log.json from candidate mirror locations or initialize default."""
+    candidates = []
+    if custom_path:
+        candidates.append(Path(custom_path))
+    candidates.extend([
+        Path(WORKSPACE_DIR) / "performance_log.json",
+        Path(ROOT_MATKA_DIR) / "performance_log.json",
+        Path(WEB_DIR) / "performance_log.json",
+    ])
+    for p in candidates:
+        if p.exists() and p.stat().st_size > 0:
+            try:
+                with open(p, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                if isinstance(data, dict) and "summary" in data and "current_hyperparameters" in data and "draw_logs" in data:
+                    return data
+            except Exception:
+                continue
+
+    # Default template conforming strictly to PROJECT.md schema
+    return {
+        "summary": {
+            "total_draws_logged": 0,
+            "top10_hit_rate": 0.0,
+            "family_cut_hit_rate": 0.0,
+            "otc_hit_rate": 0.0,
+            "last_updated": datetime.now().strftime("%Y-%m-%d"),
+        },
+        "current_hyperparameters": {
+            "lambda_cut_cluster": 0.35,
+            "w_recency": 0.52,
+            "w_markov": 0.18,
+            "w_seasonal": 0.15,
+            "w_gap": 0.15,
+        },
+        "draw_logs": [],
+    }
+
+
+def audit_and_update_performance_log(csv_path: str = None, lookback_draws: int = 60) -> dict:
+    """
+    Audits prior predictions against actual draw outcomes (Features 7, 8, 9, 10).
+    Backfills or incrementally updates performance_log.json without lookahead data leakage.
+    Recalibrates hyperparameters and synchronizes 3-way mirrors.
+    """
+    resolved_csv = resolve_csv_path(csv_path)
+    df = pd.read_csv(resolved_csv, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str})
+    valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+    valid_df["Open_Digit"] = valid_df["Open_Digit"].apply(lambda x: int(float(x)))
+    valid_df["Close_Digit"] = valid_df["Close_Digit"].apply(lambda x: int(float(x)))
+    valid_df["Jodi"] = valid_df["Jodi"].apply(lambda x: f"{int(float(x)):02d}")
+
+    total_valid = len(valid_df)
+    if total_valid < 15:
+        log = load_performance_log()
+        sync_performance_log(log)
+        return log
+
+    log = load_performance_log()
+    existing_logs = log.get("draw_logs", [])
+    logged_dates = {entry["date"] for entry in existing_logs if isinstance(entry, dict) and "date" in entry}
+
+    if not existing_logs:
+        start_idx = max(10, total_valid - lookback_draws)
+    else:
+        last_logged_date = existing_logs[-1]["date"]
+        matches = valid_df.index[valid_df["Date"] == last_logged_date].tolist()
+        if matches:
+            last_idx = matches[-1]
+            if last_idx >= total_valid - 1:
+                sync_performance_log(log)
+                return log
+            start_idx = last_idx + 1
+        else:
+            start_idx = max(10, total_valid - lookback_draws)
+
+    current_params = dict(log.get("current_hyperparameters", {
+        "lambda_cut_cluster": 0.35,
+        "w_recency": 0.52,
+        "w_markov": 0.18,
+        "w_seasonal": 0.15,
+        "w_gap": 0.15,
+    }))
+
+    for idx in range(start_idx, total_valid):
+        actual_row = valid_df.iloc[idx]
+        d_str = str(actual_row["Date"])
+        if d_str in logged_dates:
+            continue
+
+        train_slice = valid_df.iloc[:idx]
+        prev_row = valid_df.iloc[idx - 1]
+
+        prev_jodi = str(prev_row["Jodi"]).zfill(2)
+        prev_open = int(prev_row["Open_Digit"])
+        prev_close = int(prev_row["Close_Digit"])
+        day_of_week = str(actual_row["Day_Of_Week"])
+
+        predictor = EnsemblePredictor(hyperparameters=current_params)
+        predictor.fit(train_slice)
+
+        preds = predictor.predict(
+            day_of_week=day_of_week,
+            prev_jodi=prev_jodi,
+            prev_open=prev_open,
+            prev_close=prev_close,
+            hyperparameters=current_params,
+        )
+
+        top_10_items = preds.get("top_10_jodis", [])
+        top_10_jodis = [item["jodi"] for item in top_10_items]
+        top_pick = top_10_jodis[0] if top_10_jodis else "00"
+        otc_digits = [int(d) for d in preds.get("otc_digits", [])]
+
+        act_j = str(actual_row["Jodi"]).zfill(2)
+        act_o = int(actual_row["Open_Digit"])
+        act_c = int(actual_row["Close_Digit"])
+
+        density_scores = preds.get("cut_cluster_density_scores", preds.get("jodi_probs"))
+        outcome = evaluate_outcome(
+            predicted_jodi_probs_or_ranking=density_scores,
+            top_pick=top_pick,
+            top_10=top_10_jodis,
+            otc_digits=otc_digits,
+            actual_jodi=act_j,
+            actual_open=act_o,
+            actual_close=act_c,
+        )
+
+        entry = {
+            "date": d_str,
+            "day": day_of_week,
+            "actual_draw": {
+                "jodi": act_j,
+                "open": act_o,
+                "close": act_c,
+            },
+            "predictions": {
+                "top_pick": top_pick,
+                "top_10": top_10_jodis,
+                "top_family_bracket": get_family_jodis(top_pick),
+                "otc_digits": otc_digits,
+            },
+            "outcome": {
+                "actual_rank": outcome["actual_rank"],
+                "top10_hit": outcome["top10_hit"],
+                "family_cut_hit": outcome["family_cut_hit"],
+                "otc_hit": outcome["otc_hit"],
+                "open_hit": outcome["open_hit"],
+                "close_hit": outcome["close_hit"],
+            },
+        }
+        existing_logs.append(entry)
+        logged_dates.add(d_str)
+
+        if len(existing_logs) % 10 == 0 or idx == total_valid - 1:
+            n_logged = len(existing_logs)
+            t10_rate = sum(1 for e in existing_logs if e["outcome"]["top10_hit"]) / n_logged
+            fam_rate = sum(1 for e in existing_logs if e["outcome"]["family_cut_hit"]) / n_logged
+            otc_rate = sum(1 for e in existing_logs if e["outcome"]["otc_hit"]) / n_logged
+            interim_summary = {
+                "total_draws_logged": n_logged,
+                "top10_hit_rate": round(t10_rate, 4),
+                "family_cut_hit_rate": round(fam_rate, 4),
+                "otc_hit_rate": round(otc_rate, 4),
+                "last_updated": datetime.now().strftime("%Y-%m-%d"),
+            }
+            current_params = recalibrate_hyperparameters(current_params, {"summary": interim_summary})
+
+    n_logged = len(existing_logs)
+    t10_rate = sum(1 for e in existing_logs if e["outcome"]["top10_hit"]) / n_logged if n_logged > 0 else 0.0
+    fam_rate = sum(1 for e in existing_logs if e["outcome"]["family_cut_hit"]) / n_logged if n_logged > 0 else 0.0
+    otc_rate = sum(1 for e in existing_logs if e["outcome"]["otc_hit"]) / n_logged if n_logged > 0 else 0.0
+
+    final_summary = {
+        "total_draws_logged": n_logged,
+        "top10_hit_rate": round(t10_rate, 4),
+        "family_cut_hit_rate": round(fam_rate, 4),
+        "otc_hit_rate": round(otc_rate, 4),
+        "last_updated": datetime.now().strftime("%Y-%m-%d"),
+    }
+    tuned_params = recalibrate_hyperparameters(current_params, {"summary": final_summary})
+
+    updated_log = {
+        "summary": final_summary,
+        "current_hyperparameters": tuned_params,
+        "draw_logs": existing_logs,
+    }
+    sync_performance_log(updated_log)
+    return updated_log
+
+
+def sync_artifacts(prediction_payload: dict, valid_df: pd.DataFrame, sync_perf: bool = True):
+    """Synchronize prediction_data.json, history.json, and performance_log.json across all 3 locations."""
     pred_paths = [
         os.path.join(WORKSPACE_DIR, "prediction_data.json"),
         os.path.join(WEB_DIR, "prediction_data.json"),
@@ -88,6 +296,11 @@ def sync_artifacts(prediction_payload: dict, valid_df: pd.DataFrame):
         os.makedirs(os.path.dirname(p), exist_ok=True)
         with open(p, "w", encoding="utf-8") as f:
             json.dump(history_list, f)
+
+    if sync_perf:
+        perf = load_performance_log()
+        sync_performance_log(perf)
+
     print(f"[SUCCESS] Prediction artifacts synchronized across 3 locations (tools/matka/, subfolder, web/).")
 
 
@@ -177,17 +390,33 @@ def generate_by_day_predictions(
         sorted_o = np.argsort(o_probs)[::-1]
         sorted_c = np.argsort(c_probs)[::-1]
 
+        top_10 = preds.get("top_10_jodis", [])
         top_j = []
-        for rank, idx in enumerate(sorted_j[:10], start=1):
-            j_str = f"{idx:02d}"
-            p = round(float(j_probs[idx]) * 100.0, 2)
-            top_j.append({
-                "rank": rank,
-                "jodi": j_str,
-                "prob": p,
-                "confidence": p,
-                "family": get_family_jodis(j_str),
-            })
+        if top_10:
+            for item in top_10:
+                j_str = item["jodi"]
+                p = round(float(item["score"]) * 100.0, 2)
+                top_j.append({
+                    "rank": item["rank"],
+                    "jodi": j_str,
+                    "prob": p,
+                    "confidence": p,
+                    "family": get_family_jodis(j_str),
+                    "score": item["score"],
+                    "raw_prob": item.get("raw_prob", float(j_probs[int(j_str)])),
+                    "is_family_affinity": item.get("is_family_affinity", False),
+                })
+        else:
+            for rank, idx in enumerate(sorted_j[:10], start=1):
+                j_str = f"{idx:02d}"
+                p = round(float(j_probs[idx]) * 100.0, 2)
+                top_j.append({
+                    "rank": rank,
+                    "jodi": j_str,
+                    "prob": p,
+                    "confidence": p,
+                    "family": get_family_jodis(j_str),
+                })
 
         top_o = [
             {"rank": rank, "digit": int(idx), "prob": round(float(o_probs[idx]) * 100.0, 2)}
@@ -245,8 +474,12 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     target_day = day_map[next_date.weekday()]
     target_date_str = next_date.strftime("%Y-%m-%d")
 
+    # Load calibrated hyperparameters from performance_log.json if available
+    perf_log = load_performance_log()
+    current_params = perf_log.get("current_hyperparameters", None)
+
     # Fit Optimized Hybrid Ensemble Predictor on full historical data
-    ensemble = EnsemblePredictor()
+    ensemble = EnsemblePredictor(hyperparameters=current_params)
     ensemble.fit(valid_df)
 
     # Generate probabilities for target draw
@@ -254,7 +487,8 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
         day_of_week=target_day,
         prev_jodi=latest_jodi,
         prev_open=latest_open,
-        prev_close=latest_close
+        prev_close=latest_close,
+        hyperparameters=current_params,
     )
 
     jodi_probs = preds["jodi_probs"]
@@ -264,20 +498,46 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     norm_open = [float(p) for p in (open_probs / open_probs.sum())]
     norm_close = [float(p) for p in (close_probs / close_probs.sum())]
 
-    # Top Jodis
-    sorted_jodi_indices = np.argsort(jodi_probs)[::-1]
+    # Top Jodis (Cut-Cluster Density Weighting & Family-Enriched Top 10)
+    top_10 = preds.get("top_10_jodis")
+    cut_cluster_density_scores = preds.get("cut_cluster_density_scores", jodi_probs)
     top_jodis_list = []
-    for rank, idx in enumerate(sorted_jodi_indices[:10], start=1):
-        j_str = f"{idx:02d}"
-        p = jodi_probs[idx] * 100.0
-        edge = (p / 1.0) - 1.0  # relative edge over random 1%
-        top_jodis_list.append({
-            "Rank": rank,
-            "Jodi": j_str,
-            "Probability": f"{p:.2f}%",
-            "Rel_Edge": f"{'+' if edge >= 0 else ''}{edge * 100:.1f}%",
-            "Bar": make_ascii_bar(p, 12),
-        })
+    if top_10:
+        for item in top_10:
+            rank = item["rank"]
+            j_str = item["jodi"]
+            score = item["score"]
+            raw_p = item.get("raw_prob", jodi_probs[int(j_str)])
+            p = score * 100.0
+            edge = (p / 1.0) - 1.0  # relative edge over random 1%
+            top_jodis_list.append({
+                "Rank": rank,
+                "Jodi": j_str,
+                "Probability": f"{p:.2f}%",
+                "Rel_Edge": f"{'+' if edge >= 0 else ''}{edge * 100:.1f}%",
+                "Bar": make_ascii_bar(p, 12),
+                "Score": score,
+                "Raw_Prob": raw_p,
+                "Is_Family_Affinity": item.get("is_family_affinity", False),
+                "Family": item.get("family", get_family_jodis(j_str)),
+            })
+    else:
+        sorted_jodi_indices = np.argsort(cut_cluster_density_scores)[::-1]
+        for rank, idx in enumerate(sorted_jodi_indices[:10], start=1):
+            j_str = f"{idx:02d}"
+            p = cut_cluster_density_scores[idx] * 100.0
+            edge = (p / 1.0) - 1.0  # relative edge over random 1%
+            top_jodis_list.append({
+                "Rank": rank,
+                "Jodi": j_str,
+                "Probability": f"{p:.2f}%",
+                "Rel_Edge": f"{'+' if edge >= 0 else ''}{edge * 100:.1f}%",
+                "Bar": make_ascii_bar(p, 12),
+                "Score": float(cut_cluster_density_scores[idx]),
+                "Raw_Prob": float(jodi_probs[idx]),
+                "Is_Family_Affinity": False,
+                "Family": get_family_jodis(j_str),
+            })
     top_jodi_df = pd.DataFrame(top_jodis_list)
 
     # Open Digits Ranking
@@ -307,7 +567,7 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     close_df = pd.DataFrame(close_digits_list)
 
     # Recommended Top-1 Jodi and its Family / Cut bracket
-    top_1_jodi = f"{sorted_jodi_indices[0]:02d}"
+    top_1_jodi = str(top_jodis_list[0]["Jodi"]).zfill(2)
     family_bracket = get_family_jodis(top_1_jodi)
 
     # Generate 6-day forecasts for full schedule
@@ -335,6 +595,8 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
         "open_probs": norm_open,
         "close_probs": norm_close,
         "jodi_probs": [float(p) for p in jodi_probs],
+        "cut_cluster_density_scores": [float(s) for s in cut_cluster_density_scores],
+        "top_10_jodis": top_jodis_list,
         "top_1_jodi": top_1_jodi,
         "family_bracket": family_bracket,
         "otc_digits": preds.get("otc_digits", []),
@@ -404,14 +666,40 @@ if __name__ == "__main__":
     parser.add_argument("csv_pos", nargs="?", default=None, help="Optional historical CSV file path")
     parser.add_argument("--csv", default=None, help="Optional historical CSV file path")
     parser.add_argument("--export-json", action="store_true", help="Sync prediction artifacts to disk")
+    parser.add_argument("--audit", action="store_true", help="Audit previous predictions against actual outcomes and update performance_log.json")
+    parser.add_argument("--update-all", action="store_true", help="Automated pipeline: audit, recalibrate, predict, and 3-way sync all artifacts")
     args = parser.parse_args()
 
     input_csv = args.csv or args.csv_pos
     resolved_csv = resolve_csv_path(input_csv)
+
+    if args.audit or args.update_all:
+        audit_log = audit_and_update_performance_log(resolved_csv)
+        summary = audit_log.get("summary", {})
+        params = audit_log.get("current_hyperparameters", {})
+        print("\n" + "=" * 75)
+        print("      KALYAN MATKA PERFORMANCE AUDIT & CLOSED-LOOP CALIBRATION")
+        print("=" * 75)
+        print(f"Total Historical Draws Logged : {summary.get('total_draws_logged', 0)}")
+        print(f"Top 10 Jodi Hit Rate          : {summary.get('top10_hit_rate', 0.0) * 100:.2f}%")
+        print(f"Family Cut Hit Rate           : {summary.get('family_cut_hit_rate', 0.0) * 100:.2f}%")
+        print(f"4-Ank OTC Hit Rate            : {summary.get('otc_hit_rate', 0.0) * 100:.2f}%")
+        print(f"Last Calibration Timestamp    : {summary.get('last_updated', '')}")
+        print("-" * 75)
+        print("Active Calibrated Hyperparameters:")
+        print(f"  lambda_cut_cluster : {params.get('lambda_cut_cluster', 0.35)}")
+        print(f"  w_recency          : {params.get('w_recency', 0.52)}")
+        print(f"  w_markov           : {params.get('w_markov', 0.18)}")
+        print(f"  w_seasonal         : {params.get('w_seasonal', 0.15)}")
+        print(f"  w_gap              : {params.get('w_gap', 0.15)}")
+        print("=" * 75 + "\n")
+        if args.audit and not args.update_all and not args.export_json:
+            sys.exit(0)
+
     res = generate_upcoming_prediction(resolved_csv)
     print_prediction_report(res)
 
-    if args.export_json:
+    if args.export_json or args.update_all:
         df = pd.read_csv(resolved_csv, dtype={"Jodi": str, "Open_Patti": str, "Close_Patti": str, "Raw_Entry": str})
         valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
         # Build standard prediction artifact
@@ -447,4 +735,4 @@ if __name__ == "__main__":
             "close_digit_probs": res.get("close_digit_probs", []),
             "by_day": res.get("by_day", {}),
         }
-        sync_artifacts(export_payload, valid_df)
+        sync_artifacts(export_payload, valid_df, sync_perf=True)

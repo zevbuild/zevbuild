@@ -18,6 +18,68 @@ import pandas as pd
 from collections import defaultdict, Counter
 
 
+def get_cut_digit(digit: int) -> int:
+    """Standard Matka Cut digit (adding 5 mod 10)."""
+    return (int(digit) + 5) % 10
+
+
+def get_family_jodis(jodi_val) -> list:
+    """
+    Generate the Matka Family / Cut Jodis for a given 2-digit number (4 or 8 Jodis).
+    Uses open digit, close digit, cut open, cut close.
+    Handles string, integer, float, and edge case inputs cleanly.
+    """
+    if jodi_val is None:
+        return []
+    try:
+        s = f"{int(float(jodi_val)):02d}"
+    except (ValueError, TypeError):
+        s = str(jodi_val).strip()
+        if len(s) < 2 or not s[:2].isdigit():
+            return []
+        s = s[:2]
+
+    o = int(s[0])
+    c = int(s[1])
+    cut_o = get_cut_digit(o)
+    cut_c = get_cut_digit(c)
+
+    # 4 digit pairs + their reversals
+    base_pairs = [
+        (o, c), (o, cut_c), (cut_o, c), (cut_o, cut_c),
+        (c, o), (cut_c, o), (c, cut_o), (cut_c, cut_o),
+    ]
+    seen = set()
+    result = []
+    for d1, d2 in base_pairs:
+        val = f"{d1}{d2}"
+        if val not in seen:
+            seen.add(val)
+            result.append(val)
+    return sorted(result)
+
+
+def sanitize_draw_data(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Sanitizes historical Matka draw DataFrames for training and inference.
+    - Filters out invalid rows (e.g. market holidays where Is_Valid is False)
+    - Drops rows where Jodi, Open_Digit, or Close_Digit is NaN or empty
+    - Validates numeric convertibility
+    - Resets DataFrame index to maintain contiguous sequence order
+    """
+    if df is None or not isinstance(df, pd.DataFrame) or len(df) == 0:
+        return pd.DataFrame()
+    clean = df.copy()
+    if "Is_Valid" in clean.columns:
+        clean = clean[clean["Is_Valid"].isin([True, 1, "True", "true", "TRUE", "1"])]
+    subset_cols = [c for c in ["Jodi", "Open_Digit", "Close_Digit"] if c in clean.columns]
+    if subset_cols:
+        clean = clean.dropna(subset=subset_cols)
+        for col in subset_cols:
+            clean = clean[pd.to_numeric(clean[col], errors="coerce").notna()]
+    return clean.reset_index(drop=True)
+
+
 class MarkovChainModel:
     """
     First-order Markov model computing conditional transition probabilities
@@ -41,6 +103,7 @@ class MarkovChainModel:
         self.last_close = None
 
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
         self.jodi_trans.clear()
         self.open_trans.fill(0.0)
         self.close_trans.fill(0.0)
@@ -50,9 +113,9 @@ class MarkovChainModel:
         if n == 0:
             return
 
-        jodis = valid_df["Jodi"].astype(int).values
-        opens = valid_df["Open_Digit"].astype(int).values
-        closes = valid_df["Close_Digit"].astype(int).values
+        jodis = valid_df["Jodi"].apply(lambda x: int(float(x))).values
+        opens = valid_df["Open_Digit"].apply(lambda x: int(float(x))).values
+        closes = valid_df["Close_Digit"].apply(lambda x: int(float(x))).values
 
         if n > 0:
             self.last_jodi = f"{jodis[-1]:02d}"
@@ -154,6 +217,7 @@ class RecencyWeightedModel:
         return 0.50 * self.jodi_weights_fast + 0.35 * self.jodi_weights_med + 0.15 * self.jodi_weights_macro
 
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
         n = len(valid_df)
         self.jodi_weights_fast.fill(0.0)
         self.jodi_weights_med.fill(0.0)
@@ -170,9 +234,9 @@ class RecencyWeightedModel:
         if n == 0:
             return
 
-        jodis = valid_df["Jodi"].astype(int).values
-        opens = valid_df["Open_Digit"].astype(int).values
-        closes = valid_df["Close_Digit"].astype(int).values
+        jodis = valid_df["Jodi"].apply(lambda x: int(float(x))).values
+        opens = valid_df["Open_Digit"].apply(lambda x: int(float(x))).values
+        closes = valid_df["Close_Digit"].apply(lambda x: int(float(x))).values
 
         lags = np.arange(n - 1, -1, -1)
         w_f = np.exp(-self.decay_fast * lags)
@@ -230,13 +294,17 @@ class OverdueGapModel:
         self.total_gaps = np.zeros(10, dtype=float)
 
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
         self.open_gaps.fill(0.0)
         self.close_gaps.fill(0.0)
         self.total_gaps.fill(0.0)
 
-        opens = valid_df["Open_Digit"].astype(int).values
-        closes = valid_df["Close_Digit"].astype(int).values
         n = len(valid_df)
+        if n == 0:
+            return
+
+        opens = valid_df["Open_Digit"].apply(lambda x: int(float(x))).values
+        closes = valid_df["Close_Digit"].apply(lambda x: int(float(x))).values
 
         last_open_seen = {d: -1 for d in range(10)}
         last_close_seen = {d: -1 for d in range(10)}
@@ -282,16 +350,20 @@ class DayOfWeekSeasonalModel:
         self.day_close_counts = defaultdict(lambda: np.zeros(10, dtype=float))
 
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
         self.day_jodi_counts.clear()
         self.day_open_counts.clear()
         self.day_close_counts.clear()
 
+        if len(valid_df) == 0:
+            return
+
         day_col = "Day_Of_Week" if "Day_Of_Week" in valid_df.columns else "Day"
         for _, row in valid_df.iterrows():
             day = row[day_col]
-            j = int(row["Jodi"])
-            o = int(row["Open_Digit"])
-            c = int(row["Close_Digit"])
+            j = int(float(row["Jodi"]))
+            o = int(float(row["Open_Digit"]))
+            c = int(float(row["Close_Digit"]))
             self.day_jodi_counts[day][j] += 1.0
             self.day_open_counts[day][o] += 1.0
             self.day_close_counts[day][c] += 1.0
@@ -329,9 +401,12 @@ class IntraDrawConditionalModel:
         self.matrix = np.zeros((10, 10), dtype=float)
 
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
         self.matrix.fill(0.0)
-        opens = valid_df["Open_Digit"].astype(int).values
-        closes = valid_df["Close_Digit"].astype(int).values
+        if len(valid_df) == 0:
+            return
+        opens = valid_df["Open_Digit"].apply(lambda x: int(float(x))).values
+        closes = valid_df["Close_Digit"].apply(lambda x: int(float(x))).values
         for o, c in zip(opens, closes):
             self.matrix[o, c] += 1.0
 
@@ -352,10 +427,13 @@ class JodiTotalModel:
         self.total_weights = np.zeros(10, dtype=float)
 
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
         self.total_weights.fill(0.0)
         n = len(valid_df)
-        opens = valid_df["Open_Digit"].astype(int).values
-        closes = valid_df["Close_Digit"].astype(int).values
+        if n == 0:
+            return
+        opens = valid_df["Open_Digit"].apply(lambda x: int(float(x))).values
+        closes = valid_df["Close_Digit"].apply(lambda x: int(float(x))).values
         totals = (opens + closes) % 10
 
         lags = np.arange(n - 1, -1, -1)
@@ -383,9 +461,13 @@ class PattiPanelModel:
         self.ank_patti_counts = defaultdict(Counter)
 
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
         self.patti_counts.clear()
         self.ank_to_pattis.clear()
         self.ank_patti_counts.clear()
+
+        if len(valid_df) == 0:
+            return
 
         # Learn all valid pattis from dataset
         for col, ank_col in [("Open_Patti", "Open_Digit"), ("Close_Patti", "Close_Digit")]:
@@ -477,7 +559,23 @@ class EnsemblePredictor:
         w_total: float = 0.15,
         w_direct: float = 0.25,
         w_markov_jodi: float = 0.15,
+        open_rep_boost: float = 1.15,
+        cross_transition_weight: float = 0.2070,
+        lambda_cut_cluster: float = 0.35,
+        hyperparameters: dict = None,
     ):
+        if hyperparameters and isinstance(hyperparameters, dict):
+            if "lambda_cut_cluster" in hyperparameters:
+                lambda_cut_cluster = float(hyperparameters["lambda_cut_cluster"])
+            if "w_markov" in hyperparameters:
+                w_markov = float(hyperparameters["w_markov"])
+            if "w_recency" in hyperparameters:
+                w_recency = float(hyperparameters["w_recency"])
+            if "w_seasonal" in hyperparameters:
+                w_seasonal = float(hyperparameters["w_seasonal"])
+            if "w_gap" in hyperparameters:
+                w_gap = float(hyperparameters["w_gap"])
+
         self.w_markov = w_markov
         self.w_recency = w_recency
         self.w_seasonal = w_seasonal
@@ -487,6 +585,15 @@ class EnsemblePredictor:
         self.w_total = w_total
         self.w_direct = w_direct
         self.w_markov_jodi = w_markov_jodi
+        self.open_rep_boost = open_rep_boost
+        self.cross_transition_weight = cross_transition_weight
+        self.lambda_cut_cluster = lambda_cut_cluster
+
+        self.last_jodi = None
+        self.last_open_digit = None
+        self.last_open = None
+        self.last_close_digit = None
+        self.last_close = None
 
         self.markov = MarkovChainModel()
         self.recency = RecencyWeightedModel()
@@ -496,7 +603,33 @@ class EnsemblePredictor:
         self.total_model = JodiTotalModel()
         self.patti_model = PattiPanelModel()
 
+    def apply_hyperparameters(self, hyperparameters: dict):
+        """Apply recalibrated hyperparameters to active model configuration."""
+        if hyperparameters and isinstance(hyperparameters, dict):
+            if "lambda_cut_cluster" in hyperparameters:
+                self.lambda_cut_cluster = float(hyperparameters["lambda_cut_cluster"])
+            if "w_markov" in hyperparameters:
+                self.w_markov = float(hyperparameters["w_markov"])
+            if "w_recency" in hyperparameters:
+                self.w_recency = float(hyperparameters["w_recency"])
+            if "w_seasonal" in hyperparameters:
+                self.w_seasonal = float(hyperparameters["w_seasonal"])
+            if "w_gap" in hyperparameters:
+                self.w_gap = float(hyperparameters["w_gap"])
+
     def fit(self, valid_df: pd.DataFrame):
+        valid_df = sanitize_draw_data(valid_df)
+        if len(valid_df) > 0:
+            last_row = valid_df.iloc[-1]
+            if "Jodi" in last_row and pd.notna(last_row["Jodi"]):
+                self.last_jodi = f"{int(float(last_row['Jodi'])):02d}"
+            if "Open_Digit" in last_row and pd.notna(last_row["Open_Digit"]):
+                self.last_open_digit = int(float(last_row["Open_Digit"]))
+                self.last_open = self.last_open_digit
+            if "Close_Digit" in last_row and pd.notna(last_row["Close_Digit"]):
+                self.last_close_digit = int(float(last_row["Close_Digit"]))
+                self.last_close = self.last_close_digit
+
         self.markov.fit(valid_df)
         self.recency.fit(valid_df)
         self.gap_model.fit(valid_df)
@@ -507,11 +640,53 @@ class EnsemblePredictor:
 
     def predict(
         self,
-        day_of_week: str,
+        day_of_week: str = "Mon",
         prev_jodi: str = None,
         prev_open: int = None,
         prev_close: int = None,
+        lambda_cut_cluster: float = None,
+        history_df: pd.DataFrame = None,
+        hyperparameters: dict = None,
+        **kwargs,
     ) -> dict:
+        if isinstance(day_of_week, pd.DataFrame):
+            history_df = day_of_week
+            day_of_week = "Mon"
+
+        if hyperparameters and isinstance(hyperparameters, dict):
+            if "lambda_cut_cluster" in hyperparameters:
+                lambda_cut_cluster = float(hyperparameters["lambda_cut_cluster"])
+            if "w_markov" in hyperparameters:
+                self.w_markov = float(hyperparameters["w_markov"])
+            if "w_recency" in hyperparameters:
+                self.w_recency = float(hyperparameters["w_recency"])
+            if "w_seasonal" in hyperparameters:
+                self.w_seasonal = float(hyperparameters["w_seasonal"])
+            if "w_gap" in hyperparameters:
+                self.w_gap = float(hyperparameters["w_gap"])
+
+        if history_df is not None and isinstance(history_df, pd.DataFrame) and len(history_df) > 0:
+            valid_hist = sanitize_draw_data(history_df)
+            if len(valid_hist) > 0:
+                last_row = valid_hist.iloc[-1]
+                if prev_jodi is None and "Jodi" in last_row and pd.notna(last_row["Jodi"]):
+                    prev_jodi = f"{int(float(last_row['Jodi'])):02d}"
+                if prev_open is None and "Open_Digit" in last_row and pd.notna(last_row["Open_Digit"]):
+                    prev_open = int(float(last_row["Open_Digit"]))
+                if prev_close is None and "Close_Digit" in last_row and pd.notna(last_row["Close_Digit"]):
+                    prev_close = int(float(last_row["Close_Digit"]))
+                if "Day_Of_Week" in last_row and pd.notna(last_row["Day_Of_Week"]) and (day_of_week == "Mon" or day_of_week is None):
+                    day_of_week = str(last_row["Day_Of_Week"])
+
+        if prev_jodi is None and self.last_jodi is not None:
+            prev_jodi = self.last_jodi
+        if prev_open is None and self.last_open_digit is not None:
+            prev_open = self.last_open_digit
+        if prev_close is None and self.last_close_digit is not None:
+            prev_close = self.last_close_digit
+
+        if day_of_week is None:
+            day_of_week = "Mon"
         # 1. Single Open Digit Distribution
         p_o_mk = self.markov.predict_open_probs(prev_open, prev_close)
         p_o_rc = self.recency.predict_open_probs()
@@ -526,6 +701,31 @@ class EnsemblePredictor:
         )
         # Apply Cut-pair harmonic resonance: Cut(d) = (d + 5) mod 10
         open_probs = (1.0 - self.cut_resonance) * open_blend + self.cut_resonance * np.roll(open_blend, 5)
+        open_probs /= open_probs.sum()
+
+        # Apply Commercial Portal Rules (Requirement 2):
+        # 1. Open repetition momentum boost (+15% historical frequency ~11.26%)
+        if prev_open is not None and 0 <= int(prev_open) <= 9:
+            open_probs[int(prev_open)] *= self.open_rep_boost
+            open_probs /= open_probs.sum()
+
+        # 2. Cross-transition bias: Close(t-1) -> Open(t) direct & cut (~20.70%)
+        if prev_close is not None and 0 <= int(prev_close) <= 9:
+            c_dir = int(prev_close)
+            c_cut = (c_dir + 5) % 10
+            target_mass = self.cross_transition_weight
+            curr_cross = open_probs[c_dir] + open_probs[c_cut]
+            if curr_cross < target_mass and curr_cross > 0:
+                rem_target = 1.0 - target_mass
+                rem_curr = float(np.sum([open_probs[d] for d in range(10) if d not in (c_dir, c_cut)]))
+                scale_cross = target_mass / curr_cross
+                scale_rem = (rem_target / rem_curr) if rem_curr > 0 else 1.0
+                open_probs[c_dir] *= scale_cross
+                open_probs[c_cut] *= scale_cross
+                for d in range(10):
+                    if d not in (c_dir, c_cut):
+                        open_probs[d] *= scale_rem
+
         open_probs /= open_probs.sum()
 
         # 2. Single Close Digit Distribution
@@ -591,7 +791,7 @@ class EnsemblePredictor:
         jodi_matrix = (1.0 - gamma) * jodi_matrix + (gamma / 3.0) * (cut_2d_open + cut_2d_close + cut_2d_both)
         jodi_matrix /= jodi_matrix.sum()
 
-        # 10. Optimal Harmonic Cut-Pair Dual OTC (4 Anks) (Feature 16)
+        # 10. Optimal Harmonic Cut-Pair Dual OTC (4 Anks) (Feature 16 / Requirement 2)
         # Evaluates all 10 candidate pairs of cut-pairs to find the exact combination
         # that maximizes joint probability of touching either Open or Close:
         # P(Hit) = 1.0 - sum_{o not in OTC, c not in OTC} P_joint(o, c)
@@ -615,19 +815,66 @@ class EnsemblePredictor:
 
         otc_pairs = best_pairs
         otc_digits = best_otc
+        # Commercial Portal Rule: Genuine computed mathematical pass probability
         otc_pass_prob = float(np.clip(best_prob, 0.0, 1.0))
 
         # Final Jodi probability vector
         jodi_probs = jodi_matrix.flatten()
         jodi_probs /= jodi_probs.sum()
 
-        # 12. Patti / Panel recommendations for OTC digits
+        # 11. Cut-Cluster Density Weighting (Feature 1, Requirement 1)
+        # S(j) = (1 - \lambda) * P(j) + \lambda * Mean_{k in Family(j)}(P(k)) with \lambda ~ 0.35
+        lam = lambda_cut_cluster if lambda_cut_cluster is not None else self.lambda_cut_cluster
+        cut_cluster_density_scores = np.zeros(100, dtype=float)
+        for j in range(100):
+            fam = get_family_jodis(f"{j:02d}")
+            fam_indices = [int(x) for x in fam]
+            cut_cluster_density_scores[j] = (1.0 - lam) * jodi_probs[j] + lam * float(jodi_probs[fam_indices].mean())
+        cut_cluster_density_scores /= cut_cluster_density_scores.sum()
+
+        # 12. Family-Enriched Top 10 Allocation (Feature 2, Requirement 1)
+        # Identify dominant Top Pick by density score, include its high-affinity family members
+        ranked_by_density = np.argsort(cut_cluster_density_scores)[::-1]
+        top_pick_int = int(ranked_by_density[0])
+        top_pick_str = f"{top_pick_int:02d}"
+        top_family = get_family_jodis(top_pick_str)
+        top_fam_sorted = sorted(top_family, key=lambda x: cut_cluster_density_scores[int(x)], reverse=True)
+
+        top_10_jodi_strs = [top_pick_str]
+        for fam_j in top_fam_sorted:
+            if fam_j not in top_10_jodi_strs:
+                top_10_jodi_strs.append(fam_j)
+            if len(top_10_jodi_strs) >= 8:
+                break
+
+        for idx in ranked_by_density:
+            j_str = f"{idx:02d}"
+            if j_str not in top_10_jodi_strs:
+                top_10_jodi_strs.append(j_str)
+            if len(top_10_jodi_strs) >= 10:
+                break
+
+        top_10_jodis = []
+        for rank_idx, j_str in enumerate(top_10_jodi_strs[:10], start=1):
+            j_int = int(j_str)
+            top_10_jodis.append({
+                "rank": rank_idx,
+                "jodi": j_str,
+                "score": float(cut_cluster_density_scores[j_int]),
+                "raw_prob": float(jodi_probs[j_int]),
+                "is_family_affinity": (j_str in top_family),
+                "family": get_family_jodis(j_str),
+            })
+
+        # 13. Patti / Panel recommendations for OTC digits
         patti_preds = {}
         for ank in otc_digits:
             patti_preds[str(ank)] = self.patti_model.get_top_pattis_for_ank(ank, top_n=4)
 
         return {
             "jodi_probs": jodi_probs,
+            "cut_cluster_density_scores": cut_cluster_density_scores,
+            "top_10_jodis": top_10_jodis,
             "open_probs": open_probs,
             "close_probs": close_probs,
             "total_probs": p_tot,
@@ -636,3 +883,234 @@ class EnsemblePredictor:
             "otc_pass_prob": round(otc_pass_prob, 4),
             "patti_predictions": patti_preds,
         }
+
+
+def evaluate_outcome(
+    predicted_jodi_probs_or_ranking,
+    top_pick: str,
+    top_10: list,
+    otc_digits: list,
+    actual_jodi: str,
+    actual_open: int,
+    actual_close: int,
+) -> dict:
+    """
+    Evaluates draw outcome against model predictions (Feature 8, Requirement 3):
+    - exact rank (1..100) of actual draw in predicted distribution
+    - top10_hit: bool (actual_rank <= 10)
+    - family_cut_hit: bool (actual Jodi in family bracket of top pick)
+    - otc_hit: bool (actual Open or Close in 4-OTC digit set)
+    - open_hit: bool (actual Open in 4-OTC digit set)
+    - close_hit: bool (actual Close in 4-OTC digit set)
+    - reciprocal_rank: float (1.0 / actual_rank)
+    """
+    try:
+        act_j = f"{int(float(actual_jodi)):02d}"
+    except (ValueError, TypeError):
+        act_j = str(actual_jodi).strip().zfill(2)
+
+    try:
+        act_o = int(float(actual_open))
+    except (ValueError, TypeError):
+        act_o = -1
+
+    try:
+        act_c = int(float(actual_close))
+    except (ValueError, TypeError):
+        act_c = -1
+
+    # Top pick string and family bracket
+    if top_pick is not None:
+        try:
+            top_pick_str = f"{int(float(top_pick)):02d}"
+        except (ValueError, TypeError):
+            top_pick_str = str(top_pick).strip().zfill(2)
+    else:
+        top_pick_str = "00"
+    top_pick_fam = get_family_jodis(top_pick_str)
+
+    # Top 10 list of strings
+    top_10_strs = []
+    for item in (top_10 or []):
+        try:
+            top_10_strs.append(f"{int(float(item)):02d}")
+        except (ValueError, TypeError):
+            top_10_strs.append(str(item).strip().zfill(2))
+
+    # OTC digits
+    otc_list = [int(float(d)) for d in (otc_digits or [])]
+
+    # Calculate actual rank (1..100)
+    actual_rank = 100
+    if isinstance(predicted_jodi_probs_or_ranking, (list, tuple)) and len(predicted_jodi_probs_or_ranking) == 100:
+        if isinstance(predicted_jodi_probs_or_ranking[0], str):
+            ranked = [str(x).strip().zfill(2) for x in predicted_jodi_probs_or_ranking]
+            actual_rank = ranked.index(act_j) + 1 if act_j in ranked else 100
+        else:
+            scores = np.asarray(predicted_jodi_probs_or_ranking, dtype=float)
+            ranked = [f"{i:02d}" for i in np.argsort(scores)[::-1]]
+            actual_rank = ranked.index(act_j) + 1 if act_j in ranked else 100
+    elif isinstance(predicted_jodi_probs_or_ranking, np.ndarray) and len(predicted_jodi_probs_or_ranking) == 100:
+        scores = np.asarray(predicted_jodi_probs_or_ranking, dtype=float)
+        ranked = [f"{i:02d}" for i in np.argsort(scores)[::-1]]
+        actual_rank = ranked.index(act_j) + 1 if act_j in ranked else 100
+    elif isinstance(predicted_jodi_probs_or_ranking, (list, tuple)):
+        ranked = [str(x).strip().zfill(2) for x in predicted_jodi_probs_or_ranking]
+        if act_j in ranked:
+            actual_rank = ranked.index(act_j) + 1
+        elif act_j in top_10_strs:
+            actual_rank = top_10_strs.index(act_j) + 1
+        else:
+            all_100 = ranked + [f"{i:02d}" for i in range(100) if f"{i:02d}" not in ranked]
+            actual_rank = all_100.index(act_j) + 1 if act_j in all_100 else 100
+    else:
+        if act_j in top_10_strs:
+            actual_rank = top_10_strs.index(act_j) + 1
+        else:
+            actual_rank = 100
+
+    if act_j in top_10_strs:
+        top10_hit = True
+        actual_rank = min(actual_rank, top_10_strs.index(act_j) + 1)
+    else:
+        top10_hit = bool(actual_rank <= 10)
+    family_cut_hit = bool(act_j in top_pick_fam)
+    otc_hit = bool(act_o in otc_list or act_c in otc_list)
+    open_hit = bool(act_o in otc_list)
+    close_hit = bool(act_c in otc_list)
+    reciprocal_rank = round(1.0 / actual_rank, 4) if actual_rank > 0 else 0.0
+
+    return {
+        "actual_rank": actual_rank,
+        "top10_hit": top10_hit,
+        "family_cut_hit": family_cut_hit,
+        "otc_hit": otc_hit,
+        "open_hit": open_hit,
+        "close_hit": close_hit,
+        "reciprocal_rank": reciprocal_rank,
+    }
+
+
+def recalibrate_hyperparameters(
+    current_params: dict,
+    performance_log: dict,
+) -> dict:
+    """
+    Adaptive hyperparameter recalibration based on performance_log (Feature 10, Requirement 3):
+    - Bounded guardrails:
+      lambda in [0.25, 0.45]
+      w_recency in [0.40, 0.65]
+      w_markov in [0.10, 0.30]
+      w_seasonal in [0.08, 0.22]
+      w_gap in [0.08, 0.22]
+    - Dynamically increases lambda when family cut hit rate > 25%, decreases if < 10%
+    - Strict unit sum re-normalization for submodel weights
+    """
+    params = dict(current_params) if isinstance(current_params, dict) else {}
+    try:
+        lam = float(params.get("lambda_cut_cluster", 0.35))
+    except (ValueError, TypeError):
+        lam = 0.35
+    try:
+        w_rec = float(params.get("w_recency", 0.52))
+    except (ValueError, TypeError):
+        w_rec = 0.52
+    try:
+        w_mk = float(params.get("w_markov", 0.18))
+    except (ValueError, TypeError):
+        w_mk = 0.18
+    try:
+        w_sn = float(params.get("w_seasonal", 0.15))
+    except (ValueError, TypeError):
+        w_sn = 0.15
+    try:
+        w_gp = float(params.get("w_gap", 0.15))
+    except (ValueError, TypeError):
+        w_gp = 0.15
+
+    summary = performance_log.get("summary") if isinstance(performance_log, dict) else {}
+    if not isinstance(summary, dict):
+        summary = {}
+
+    raw_fam = summary.get("family_cut_hit_rate", 0.0)
+    try:
+        fam_rate = float(raw_fam)
+        if np.isnan(fam_rate):
+            fam_rate = None
+    except (ValueError, TypeError):
+        fam_rate = None
+
+    # Adjust lambda if valid float
+    if fam_rate is not None:
+        if fam_rate > 0.25:
+            lam = min(0.45, lam + 0.02)
+        elif fam_rate < 0.10:
+            lam = max(0.25, lam - 0.02)
+    params["lambda_cut_cluster"] = round(float(np.clip(lam, 0.25, 0.45)), 4)
+
+    # Submodel Weight Guardrail Invariant
+    bounds = {
+        "w_recency": (0.40, 0.65),
+        "w_markov": (0.10, 0.30),
+        "w_seasonal": (0.08, 0.22),
+        "w_gap": (0.08, 0.22),
+    }
+
+    # Normalize weights before clipping if positive sum
+    total_w = w_rec + w_mk + w_sn + w_gp
+    if total_w > 0:
+        w_rec /= total_w
+        w_mk /= total_w
+        w_sn /= total_w
+        w_gp /= total_w
+    else:
+        w_rec, w_mk, w_sn, w_gp = 0.52, 0.18, 0.15, 0.15
+
+    w_vec = {
+        "w_recency": float(np.clip(w_rec, bounds["w_recency"][0], bounds["w_recency"][1])),
+        "w_markov": float(np.clip(w_mk, bounds["w_markov"][0], bounds["w_markov"][1])),
+        "w_seasonal": float(np.clip(w_sn, bounds["w_seasonal"][0], bounds["w_seasonal"][1])),
+        "w_gap": float(np.clip(w_gp, bounds["w_gap"][0], bounds["w_gap"][1])),
+    }
+
+    # Iterative proportional slack distribution preserving all bounds
+    for _ in range(20):
+        s = sum(w_vec.values())
+        diff = 1.0 - s
+        if abs(diff) < 1e-7:
+            break
+        if diff > 0:
+            headroom = {k: bounds[k][1] - w_vec[k] for k in w_vec}
+            tot_headroom = sum(h for h in headroom.values() if h > 1e-7)
+            if tot_headroom <= 0:
+                break
+            for k, h in headroom.items():
+                if h > 1e-7:
+                    w_vec[k] += diff * (h / tot_headroom)
+        else:
+            legroom = {k: w_vec[k] - bounds[k][0] for k in w_vec}
+            tot_legroom = sum(l for l in legroom.values() if l > 1e-7)
+            if tot_legroom <= 0:
+                break
+            for k, l in legroom.items():
+                if l > 1e-7:
+                    w_vec[k] += diff * (l / tot_legroom)
+        for k in w_vec:
+            w_vec[k] = float(np.clip(w_vec[k], bounds[k][0], bounds[k][1]))
+
+    params["w_recency"] = round(w_vec["w_recency"], 4)
+    params["w_markov"] = round(w_vec["w_markov"], 4)
+    params["w_seasonal"] = round(w_vec["w_seasonal"], 4)
+    params["w_gap"] = round(1.0 - (params["w_recency"] + params["w_markov"] + params["w_seasonal"]), 4)
+
+    if params["w_gap"] < bounds["w_gap"][0]:
+        adj = round(bounds["w_gap"][0] - params["w_gap"], 4)
+        params["w_gap"] = bounds["w_gap"][0]
+        params["w_recency"] = round(params["w_recency"] - adj, 4)
+    elif params["w_gap"] > bounds["w_gap"][1]:
+        adj = round(params["w_gap"] - bounds["w_gap"][1], 4)
+        params["w_gap"] = bounds["w_gap"][1]
+        params["w_recency"] = round(params["w_recency"] + adj, 4)
+
+    return params
+

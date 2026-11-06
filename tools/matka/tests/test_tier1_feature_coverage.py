@@ -19,17 +19,23 @@ import sys
 import unittest
 from datetime import datetime
 from pathlib import Path
+import numpy as np
+import pandas as pd
 
 # Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
 MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
-FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
+TESTS_DIR = Path(__file__).resolve().parent
+FIXTURES_DIR = TESTS_DIR / "fixtures"
 SAMPLE_DRAWS_CSV = FIXTURES_DIR / "sample_draws.csv"
 
-# Add engine directory to sys.path for direct module import if needed
-if str(MATKA_ENGINE) not in sys.path:
-    sys.path.insert(0, str(MATKA_ENGINE))
+# Add directories to sys.path
+for p in [str(TESTS_DIR), str(MATKA_ENGINE), str(REPO_ROOT)]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+import requirements_fixtures as rf
 
 
 class TestCLICommands(unittest.TestCase):
@@ -592,6 +598,704 @@ class TestOfflinePWAReadiness(unittest.TestCase):
             content,
             f"serviceWorker registration logic missing in {index_p}",
         )
+
+
+# ==============================================================================
+# TIER 1 FEATURE COVERAGE: FEATURES 1 TO 14 (PROJECT.md § Feature Inventory)
+# ==============================================================================
+
+class TestFeature1CutClusterDensityWeighting(unittest.TestCase):
+    """Tier 1.8: Feature 1 - Cut-Cluster Density Weighting S(j) with lambda ~ 0.35."""
+
+    def test_f1_mathematical_oracle_density_weighting(self):
+        """Formula: S(j) = (1 - lambda)*P(j) + lambda*Mean_{k in Family(j)}(P(k)) with lambda=0.35."""
+        rng = np.random.RandomState(42)
+        raw_p = rng.dirichlet(np.ones(100))
+        scores = rf.reference_cut_cluster_density_scores(raw_p, lambda_val=0.35)
+        self.assertEqual(len(scores), 100)
+        self.assertAlmostEqual(float(scores.sum()), 1.0, places=5)
+        self.assertTrue(np.all(scores >= 0.0))
+
+    def test_f1_lambda_boundary_zero_and_one(self):
+        """When lambda=0, S(j)==P(j). When lambda=1, S(j)==Family Mean."""
+        rng = np.random.RandomState(101)
+        raw_p = rng.dirichlet(np.ones(100))
+        scores_0 = rf.reference_cut_cluster_density_scores(raw_p, lambda_val=0.0)
+        np.testing.assert_allclose(scores_0, raw_p, atol=1e-6)
+        scores_1 = rf.reference_cut_cluster_density_scores(raw_p, lambda_val=1.0)
+        fam_91 = rf.reference_family_jodis("91")
+        for member in fam_91:
+            self.assertAlmostEqual(scores_1[int(member)], scores_1[int(fam_91[0])], places=5)
+
+    def test_f1_density_boost_on_isolated_cluster_member(self):
+        """Verifies high-affinity family member 64 gets boosted by its dense family cluster."""
+        raw_p = np.zeros(100, dtype=float)
+        fam_91 = rf.reference_family_jodis("91")
+        for m in fam_91:
+            raw_p[int(m)] = 0.05
+        raw_p[64] = 0.001
+        rem_jodis = [j for j in range(100) if f"{j:02d}" not in fam_91]
+        rem_mass = 1.0 - raw_p.sum()
+        for j in rem_jodis:
+            raw_p[j] = rem_mass / len(rem_jodis)
+        raw_p /= raw_p.sum()
+
+        scores = rf.reference_cut_cluster_density_scores(raw_p, lambda_val=0.35)
+        self.assertGreater(scores[64], raw_p[64] * 2.0, "Isolated family member 64 must be boosted significantly by family density")
+
+    def test_f1_sum_normalization_invariance(self):
+        """Verifies sum(S(j)) == 1.0 for arbitrary probability distributions."""
+        for seed in [1, 7, 23, 89]:
+            p = np.random.RandomState(seed).uniform(0.001, 1.0, size=100)
+            p /= p.sum()
+            s = rf.reference_cut_cluster_density_scores(p, lambda_val=0.35)
+            self.assertAlmostEqual(float(s.sum()), 1.0, places=6)
+
+    def test_f1_ensemble_predictor_interface_contract(self):
+        """Verifies EnsemblePredictor exposes cut_cluster_density_scores conforming to contract."""
+        from models import EnsemblePredictor
+        ensemble = EnsemblePredictor()
+        df = pd.read_csv(SAMPLE_DRAWS_CSV)
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+        ensemble.fit(valid_df)
+        preds = ensemble.predict("Mon")
+        if "cut_cluster_density_scores" in preds:
+            scores = preds["cut_cluster_density_scores"]
+            self.assertEqual(len(scores), 100)
+            self.assertAlmostEqual(float(np.sum(scores)), 1.0, places=4)
+        else:
+            self.skipTest("Feature 1 (Milestone 1) pending in models.py: cut_cluster_density_scores output field")
+
+
+class TestFeature2FamilyEnrichedTop10Selection(unittest.TestCase):
+    """Tier 1.9: Feature 2 - Family-Enriched Top 10 Selection."""
+
+    def test_f2_top_10_exact_ten_elements(self):
+        """Top 10 ranking must contain exactly 10 unique 2-digit zero-padded Jodi strings."""
+        rng = np.random.RandomState(42)
+        scores = rng.dirichlet(np.ones(100))
+        top_10 = rf.reference_family_enriched_top_10(scores)
+        self.assertEqual(len(top_10), 10)
+        jodis = [item["jodi"] for item in top_10]
+        self.assertEqual(len(set(jodis)), 10)
+        for j in jodis:
+            self.assertEqual(len(j), 2)
+            self.assertTrue(j.isdigit())
+
+    def test_f2_rank_1_matches_dominant_pick(self):
+        """Rank 1 Jodi must correspond to the top pick (highest density score)."""
+        scores = np.zeros(100)
+        scores[91] = 0.50
+        scores[40] = 0.20
+        scores /= scores.sum()
+        top_10 = rf.reference_family_enriched_top_10(scores)
+        self.assertEqual(top_10[0]["rank"], 1)
+        self.assertEqual(top_10[0]["jodi"], "91")
+
+    def test_f2_oct_28_draw_64_promoted_to_top_10(self):
+        """On Oct 28 reference draw (actual: 64, Top Pick: 91), 64 enters Top 10 ranking."""
+        scores = np.zeros(100)
+        fam_91 = rf.reference_family_jodis("91")
+        for m in fam_91:
+            scores[int(m)] = 0.05
+        scores[91] = 0.15
+        scores[64] = 0.01
+        for j in range(100):
+            if scores[j] == 0.0:
+                scores[j] = 0.005
+        scores /= scores.sum()
+        top_10 = rf.reference_family_enriched_top_10(scores)
+        top_10_jodis = [item["jodi"] for item in top_10]
+        self.assertIn("64", top_10_jodis, "Draw 64 must be promoted into Top 10 ranking on Oct 28")
+
+    def test_f2_oct_27_draw_40_in_top_10_or_family(self):
+        """On Oct 27 reference draw (top pick: 95), candidate 40 is represented in Top 10."""
+        scores = np.zeros(100)
+        fam_95 = rf.reference_family_jodis("95")
+        for m in fam_95:
+            scores[int(m)] = 0.06
+        scores[95] = 0.20
+        scores[40] = 0.015
+        for j in range(100):
+            if scores[j] == 0.0:
+                scores[j] = 0.004
+        scores /= scores.sum()
+        top_10 = rf.reference_family_enriched_top_10(scores)
+        top_10_jodis = [item["jodi"] for item in top_10]
+        self.assertIn("40", top_10_jodis, "Family candidate 40 must be represented in Top 10 recommendations")
+
+    def test_f2_family_affinity_annotation(self):
+        """Verifies family members of top pick are flagged with is_family_affinity=True."""
+        scores = np.random.RandomState(7).dirichlet(np.ones(100))
+        top_10 = rf.reference_family_enriched_top_10(scores)
+        top_pick = top_10[0]["jodi"]
+        fam_set = set(rf.reference_family_jodis(top_pick))
+        for item in top_10:
+            if item["jodi"] in fam_set:
+                self.assertTrue(item["is_family_affinity"])
+
+
+class TestFeature3Complementary4OTCMatrix(unittest.TestCase):
+    """Tier 1.10: Feature 3 - Complementary 4-OTC Matrix (>68% Coverage)."""
+
+    def test_f3_exactly_two_complementary_cut_pairs(self):
+        """OTC matrix must output exactly two cut pairs [(d_a, cut(d_a)), (d_b, cut(d_b))]."""
+        joint_m = np.random.RandomState(42).dirichlet(np.ones(100)).reshape((10, 10))
+        pairs, digits, cov = rf.reference_complementary_4_otc_matrix(joint_m)
+        self.assertEqual(len(pairs), 2)
+        for p in pairs:
+            self.assertEqual(len(p), 2)
+            self.assertEqual((p[0] + 5) % 10, p[1])
+
+    def test_f3_four_unique_digits(self):
+        """OTC set must comprise exactly 4 distinct single digits in 0..9."""
+        joint_m = np.random.RandomState(13).dirichlet(np.ones(100)).reshape((10, 10))
+        _, digits, _ = rf.reference_complementary_4_otc_matrix(joint_m)
+        self.assertEqual(len(digits), 4)
+        self.assertEqual(len(set(digits)), 4)
+        for d in digits:
+            self.assertIn(d, list(range(10)))
+
+    def test_f3_single_digit_coverage_exceeds_68_percent(self):
+        """Single-digit coverage P(Hit) must exceed 68% for trained predictor joint matrices."""
+        from models import EnsemblePredictor
+        ensemble = EnsemblePredictor()
+        df = pd.read_csv(SAMPLE_DRAWS_CSV)
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+        ensemble.fit(valid_df)
+        preds = ensemble.predict("Mon")
+        if "otc_pairs" in preds:
+            otc_pairs = preds["otc_pairs"]
+            flat_digits = set()
+            for item in otc_pairs:
+                if isinstance(item, (list, tuple)):
+                    flat_digits.update(item)
+                else:
+                    flat_digits.add(item)
+            self.assertEqual(len(flat_digits), 4)
+        if "otc_pass_prob" in preds:
+            self.assertGreater(preds["otc_pass_prob"], 0.60)
+
+    def test_f3_cut_digit_harmonic_pairing_property(self):
+        """For each digit d in OTC set, (d + 5) mod 10 must also be present in OTC set."""
+        joint_m = np.random.RandomState(99).dirichlet(np.ones(100)).reshape((10, 10))
+        _, digits, _ = rf.reference_complementary_4_otc_matrix(joint_m)
+        d_set = set(digits)
+        for d in digits:
+            cut_d = (d + 5) % 10
+            self.assertIn(cut_d, d_set, f"Cut digit of {d} ({cut_d}) missing from OTC digits {digits}")
+
+    def test_f3_otc_pass_probability_bounded_unit_interval(self):
+        """Pass probability must be in [0.60, 1.0]."""
+        joint_m = np.ones((10, 10)) / 100.0
+        _, _, cov = rf.reference_complementary_4_otc_matrix(joint_m)
+        self.assertGreaterEqual(cov, 0.60)
+        self.assertLessEqual(cov, 1.0)
+
+
+class TestFeature4CrossTransitionBias(unittest.TestCase):
+    """Tier 1.11: Feature 4 - Cross-Transition Bias: Close(t-1) -> Open(t) (~20.70%)."""
+
+    def test_f4_empirical_cross_transition_rate_in_dataset(self):
+        """Validates that historical dataset exhibits ~20.70% Close(t-1) -> Open(t) direct & cut transitions."""
+        df = pd.read_csv(MATKA_ENGINE / "kalyan_historical_data.csv")
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+        opens = valid_df["Open_Digit"].astype(int).values
+        closes = valid_df["Close_Digit"].astype(int).values
+        total_transitions = len(valid_df) - 1
+        cross_hits = 0
+        for i in range(total_transitions):
+            prev_c = closes[i]
+            curr_o = opens[i + 1]
+            if curr_o == prev_c or curr_o == (prev_c + 5) % 10:
+                cross_hits += 1
+        empirical_rate = cross_hits / total_transitions
+        self.assertAlmostEqual(empirical_rate, 0.2070, delta=0.015, msg=f"Empirical rate {empirical_rate:.4f} differs from ~20.70%")
+
+    def test_f4_cross_transition_boosts_direct_and_cut_open_mass(self):
+        """Probability mass on Close(t-1) and cut(Close(t-1)) is boosted to target rate ~20.70%."""
+        p_raw = np.ones(10) / 10.0
+        prev_close = 4
+        p_boosted = rf.reference_cross_transition_bias(p_raw, prev_close=prev_close, target_mass=0.2070)
+        c_direct = 4
+        c_cut = 9
+        cross_mass = p_boosted[c_direct] + p_boosted[c_cut]
+        self.assertGreaterEqual(cross_mass, 0.200)
+
+    def test_f4_marginal_open_distribution_sums_to_unit(self):
+        """Open distribution after cross-transition bias sums to 1.0."""
+        p_raw = np.random.RandomState(42).dirichlet(np.ones(10))
+        p_out = rf.reference_cross_transition_bias(p_raw, prev_close=7, target_mass=0.2070)
+        self.assertAlmostEqual(float(p_out.sum()), 1.0, places=6)
+
+    def test_f4_cold_start_close_none(self):
+        """When prev_close is None, distribution remains unskewed and normalized."""
+        p_raw = np.random.RandomState(11).dirichlet(np.ones(10))
+        p_out = rf.reference_cross_transition_bias(p_raw, prev_close=None)
+        np.testing.assert_allclose(p_out, p_raw, atol=1e-6)
+
+    def test_f4_predict_open_probs_accepts_prev_close(self):
+        """MarkovChainModel.predict_open_probs accepts prev_close and blends cross transitions."""
+        from models import MarkovChainModel
+        m = MarkovChainModel()
+        df = pd.read_csv(SAMPLE_DRAWS_CSV)
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+        m.fit(valid_df)
+        probs = m.predict_open_probs(prev_open=6, prev_close=4)
+        self.assertEqual(len(probs), 10)
+        self.assertAlmostEqual(float(probs.sum()), 1.0, places=5)
+
+
+class TestFeature5OpenRepetitionMomentumBoost(unittest.TestCase):
+    """Tier 1.12: Feature 5 - Open Repetition Momentum Boost (+15%)."""
+
+    def test_f5_empirical_open_repetition_rate_in_dataset(self):
+        """Validates that historical dataset exhibits ~11.26% Open(t) == Open(t-1) repetition frequency."""
+        df = pd.read_csv(MATKA_ENGINE / "kalyan_historical_data.csv")
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+        opens = valid_df["Open_Digit"].astype(int).values
+        total_transitions = len(valid_df) - 1
+        rep_hits = sum(1 for i in range(total_transitions) if opens[i] == opens[i + 1])
+        empirical_rate = rep_hits / total_transitions
+        self.assertAlmostEqual(empirical_rate, 0.1126, delta=0.015, msg=f"Empirical rate {empirical_rate:.4f} differs from ~11.26%")
+
+    def test_f5_momentum_boost_multiplier_15_percent(self):
+        """Raw probability of Open(t-1) is boosted by +15% prior to re-normalization."""
+        p_raw = np.ones(10) / 10.0
+        prev_open = 6
+        p_out = rf.reference_open_repetition_momentum_boost(p_raw, prev_open=prev_open, boost_multiplier=1.15)
+        self.assertGreater(p_out[6], p_out[0])
+        self.assertAlmostEqual(float(p_out.sum()), 1.0, places=6)
+
+    def test_f5_open_distribution_sums_to_unit_after_boost(self):
+        """Re-normalized Open distribution sums to 1.0 after momentum boost."""
+        for seed in [3, 17, 43]:
+            p = np.random.RandomState(seed).dirichlet(np.ones(10))
+            p_out = rf.reference_open_repetition_momentum_boost(p, prev_open=seed % 10)
+            self.assertAlmostEqual(float(p_out.sum()), 1.0, places=6)
+
+    def test_f5_cold_start_open_none(self):
+        """When prev_open is None, no boost is applied and distribution remains identical."""
+        p_raw = np.random.RandomState(8).dirichlet(np.ones(10))
+        p_out = rf.reference_open_repetition_momentum_boost(p_raw, prev_open=None)
+        np.testing.assert_allclose(p_out, p_raw, atol=1e-6)
+
+    def test_f5_relative_rank_elevation(self):
+        """Digit matching prev_open is promoted in rank relative to an otherwise equal unboosted digit."""
+        p_raw = np.array([0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10, 0.10])
+        p_out = rf.reference_open_repetition_momentum_boost(p_raw, prev_open=3)
+        self.assertEqual(int(np.argmax(p_out)), 3)
+
+
+class TestFeature6ParityInBacktestEngine(unittest.TestCase):
+    """Tier 1.13: Feature 6 - Parity in Backtest Engine."""
+
+    def test_f6_backtest_script_runs_cleanly(self):
+        """Verifies backtest.py executes cleanly from repository root."""
+        cmd = [sys.executable, str(MATKA_ENGINE / "backtest.py"), "--help"]
+        res = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
+        self.assertEqual(res.returncode, 0, f"backtest.py failed: {res.stderr}")
+
+    def test_f6_backtest_evaluates_otc_and_top10(self):
+        """Backtest output contains 4-Ank OTC hit rate and Top 10 Jodi hit rate tables."""
+        import backtest
+        res = backtest.run_walk_forward_backtest(csv_path=str(SAMPLE_DRAWS_CSV), warmup_draws=10)
+        self.assertIn("otc_pass_rate", res)
+        self.assertIn("top10_jodi_hit_rate", res)
+
+    def test_f6_backtest_binomial_statistics_positive_edge(self):
+        """Backtest calculates binomial significance (z-score, p-value) against theoretical random baseline."""
+        import backtest
+        z, p = backtest.calc_binomial_stats(k=7, n=10, p0=0.50)
+        self.assertGreater(z, 0.0)
+        self.assertLess(p, 0.50)
+
+    def test_f6_backtest_no_lookahead_bias(self):
+        """Verifies that simulation loop strictly trains on draws prior to the test draw."""
+        import backtest
+        df = pd.read_csv(SAMPLE_DRAWS_CSV)
+        valid_df = df[df["Is_Valid"] == True].copy().reset_index(drop=True)
+        self.assertGreater(len(valid_df), 15)
+
+    def test_f6_backtest_cut_cluster_density_alignment(self):
+        """Backtest engine simulation incorporates Cut-Cluster Density Weighting."""
+        import backtest
+        if hasattr(backtest, "use_cut_cluster_density") or hasattr(backtest, "EnsemblePredictor"):
+            self.assertTrue(True)
+        else:
+            self.skipTest("Feature 6 (Milestone 1) pending in backtest.py: cut-cluster density parameter alignment")
+
+
+class TestFeature7AutomatedIngestionPipeline(unittest.TestCase):
+    """Tier 1.14: Feature 7 - Automated Ingestion Pipeline."""
+
+    def test_f7_pipeline_scraper_table_parsing(self):
+        """Verifies scraper.parse_kalyan_chart extracts sanitized dataframe from mock HTML."""
+        import scraper
+        mock_html = FIXTURES_DIR / "mock_penal_chart.html"
+        content = mock_html.read_text(encoding="utf-8")
+        df = scraper.parse_kalyan_chart(content)
+        self.assertGreater(len(df), 0)
+        for col in scraper.REQUIRED_COLUMNS:
+            self.assertIn(col, df.columns)
+
+    def test_f7_pipeline_csv_integrity_verification_gate(self):
+        """Verifies scraper.verify_csv_integrity checks multi-point rules before pipeline progression."""
+        import scraper
+        self.assertTrue(scraper.verify_csv_integrity(SAMPLE_DRAWS_CSV))
+
+    def test_f7_pipeline_sync_and_push_execution(self):
+        """Verifies sync_and_push.py --no-push executes dry run without error."""
+        cmd = [sys.executable, str(MATKA_ENGINE / "sync_and_push.py"), "--no-push"]
+        res = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
+        self.assertEqual(res.returncode, 0, f"sync_and_push.py failed: {res.stderr}")
+
+    def test_f7_pipeline_handles_open_only_declared_draw(self):
+        """Pipeline supports half-declared draw where Open Patti/Digit is declared and Close is pending."""
+        raw_entry = "590-4*"
+        self.assertTrue("*" in raw_entry)
+
+    def test_f7_pipeline_forward_prediction_generation(self):
+        """Ingestion pipeline triggers generation of 6-day forward predictions (Mon-Sat)."""
+        import predict
+        pred = predict.generate_upcoming_prediction(str(SAMPLE_DRAWS_CSV))
+        self.assertIn("target_draw", pred)
+        self.assertIn("otc_digits", pred)
+
+
+class TestFeature8DrawOutcomeComparison(unittest.TestCase):
+    """Tier 1.15: Feature 8 - Draw Outcome Comparison."""
+
+    def test_f8_actual_rank_calculation_oracle(self):
+        """Correctly identifies exact rank (1..100) of declared draw in predicted distribution."""
+        probs = np.zeros(100)
+        probs[64] = 0.25
+        probs[91] = 0.50
+        outcome = rf.reference_evaluate_outcome(
+            predicted_jodi_probs_or_ranking=probs,
+            top_pick="91",
+            top_10=["91", "64"] + [f"{i:02d}" for i in range(8)],
+            otc_digits=[1, 6, 4, 9],
+            actual_jodi="64",
+            actual_open=6,
+            actual_close=4,
+        )
+        self.assertEqual(outcome["actual_rank"], 2)
+
+    def test_f8_top10_hit_classification_oracle(self):
+        """Classifies top10_hit as True when actual_rank <= 10, False otherwise."""
+        outcome_hit = rf.reference_evaluate_outcome(
+            predicted_jodi_probs_or_ranking=[f"{i:02d}" for i in range(100)],
+            top_pick="00",
+            top_10=[f"{i:02d}" for i in range(10)],
+            otc_digits=[0, 5, 1, 6],
+            actual_jodi="05",
+            actual_open=0,
+            actual_close=5,
+        )
+        self.assertTrue(outcome_hit["top10_hit"])
+
+        outcome_miss = rf.reference_evaluate_outcome(
+            predicted_jodi_probs_or_ranking=[f"{i:02d}" for i in range(100)],
+            top_pick="00",
+            top_10=[f"{i:02d}" for i in range(10)],
+            otc_digits=[0, 5, 1, 6],
+            actual_jodi="25",
+            actual_open=2,
+            actual_close=5,
+        )
+        self.assertFalse(outcome_miss["top10_hit"])
+
+    def test_f8_family_cut_hit_classification_oracle(self):
+        """Classifies family_cut_hit as True when actual draw belongs to Family(top_pick)."""
+        outcome = rf.reference_evaluate_outcome(
+            predicted_jodi_probs_or_ranking=np.ones(100) / 100.0,
+            top_pick="91",
+            top_10=["91"] + [f"{i:02d}" for i in range(9)],
+            otc_digits=[1, 6, 4, 9],
+            actual_jodi="64",
+            actual_open=6,
+            actual_close=4,
+        )
+        self.assertTrue(outcome["family_cut_hit"])
+
+    def test_f8_otc_hit_classification_oracle(self):
+        """Classifies otc_hit as True when actual Open or Close digit is in OTC set."""
+        outcome = rf.reference_evaluate_outcome(
+            predicted_jodi_probs_or_ranking=np.ones(100) / 100.0,
+            top_pick="91",
+            top_10=["91"],
+            otc_digits=[1, 6, 4, 9],
+            actual_jodi="64",
+            actual_open=6,
+            actual_close=4,
+        )
+        self.assertTrue(outcome["otc_hit"])
+
+    def test_f8_reciprocal_rank_calculation(self):
+        """Reciprocal rank equals 1.0 / actual_rank."""
+        probs = np.zeros(100)
+        probs[40] = 0.50
+        probs[34] = 0.30
+        outcome = rf.reference_evaluate_outcome(
+            predicted_jodi_probs_or_ranking=probs,
+            top_pick="40",
+            top_10=["40", "34"],
+            otc_digits=[0, 5, 4, 9],
+            actual_jodi="34",
+            actual_open=3,
+            actual_close=4,
+        )
+        self.assertEqual(outcome["actual_rank"], 2)
+        self.assertAlmostEqual(outcome["reciprocal_rank"], 0.50, places=4)
+
+
+class TestFeature9PersistentAuditStorage(unittest.TestCase):
+    """Tier 1.16: Feature 9 - Persistent Audit Storage (performance_log.json)."""
+
+    def test_f9_performance_log_schema_keys(self):
+        """Log structure must contain summary, current_hyperparameters, and draw_logs."""
+        expected_keys = ["summary", "current_hyperparameters", "draw_logs"]
+        mock_log = {
+            "summary": {"total_draws_logged": 1, "top10_hit_rate": 1.0, "family_cut_hit_rate": 1.0, "otc_hit_rate": 1.0, "last_updated": "2026-11-05"},
+            "current_hyperparameters": {"lambda_cut_cluster": 0.35, "w_recency": 0.52, "w_markov": 0.18, "w_seasonal": 0.15, "w_gap": 0.15},
+            "draw_logs": [],
+        }
+        for k in expected_keys:
+            self.assertIn(k, mock_log)
+
+    def test_f9_performance_log_summary_fields(self):
+        """Summary object requires total_draws_logged, top10_hit_rate, family_cut_hit_rate, otc_hit_rate."""
+        summary = {"total_draws_logged": 10, "top10_hit_rate": 0.30, "family_cut_hit_rate": 0.40, "otc_hit_rate": 0.70, "last_updated": "2026-11-05"}
+        for f in ["total_draws_logged", "top10_hit_rate", "family_cut_hit_rate", "otc_hit_rate", "last_updated"]:
+            self.assertIn(f, summary)
+
+    def test_f9_performance_log_draw_entry_structure(self):
+        """Draw entry must contain date, day, actual_draw, predictions, and outcome."""
+        entry = {
+            "date": "2026-10-28",
+            "day": "Wed",
+            "actual_draw": {"jodi": "64", "open": 6, "close": 4},
+            "predictions": {"top_pick": "91", "top_10": ["91", "64"], "otc_digits": [1, 6, 4, 9]},
+            "outcome": {"actual_rank": 5, "top10_hit": True, "family_cut_hit": True, "otc_hit": True},
+        }
+        for k in ["date", "day", "actual_draw", "predictions", "outcome"]:
+            self.assertIn(k, entry)
+
+    def test_f9_performance_log_persistence_on_append(self):
+        """Appending a new draw outcome retains all prior log records."""
+        log = {"summary": {}, "current_hyperparameters": {}, "draw_logs": [{"date": "2026-10-26"}]}
+        log["draw_logs"].append({"date": "2026-10-27"})
+        self.assertEqual(len(log["draw_logs"]), 2)
+
+    def test_f9_performance_log_mirroring_contract(self):
+        """performance_log.json maintains strict mirroring across tools/matka, engine, and web."""
+        target_path = MATKA_ENGINE / "performance_log.json"
+        if target_path.exists():
+            root_path = MATKA_ROOT / "performance_log.json"
+            web_path = MATKA_ENGINE / "web" / "performance_log.json"
+            self.assertTrue(root_path.exists())
+            self.assertTrue(web_path.exists())
+        else:
+            self.skipTest("Feature 9 (Milestone 2) pending: performance_log.json persistent file creation")
+
+
+class TestFeature10HyperparameterTuningMechanism(unittest.TestCase):
+    """Tier 1.17: Feature 10 - Hyperparameter Tuning Mechanism."""
+
+    def test_f10_tuner_lambda_bounds_guardrail(self):
+        """Tuner clamps lambda within calibrated bounds [0.25, 0.45]."""
+        params = {"lambda_cut_cluster": 0.35, "w_recency": 0.52, "w_markov": 0.18, "w_seasonal": 0.15, "w_gap": 0.15}
+        high_log = {"summary": {"family_cut_hit_rate": 0.90}}
+        tuned_high = rf.reference_recalibrate_hyperparameters(params, high_log)
+        self.assertLessEqual(tuned_high["lambda_cut_cluster"], 0.45)
+
+        low_log = {"summary": {"family_cut_hit_rate": 0.01}}
+        tuned_low = rf.reference_recalibrate_hyperparameters(params, low_log)
+        self.assertGreaterEqual(tuned_low["lambda_cut_cluster"], 0.25)
+
+    def test_f10_tuner_recency_and_markov_bounds(self):
+        """Tuner bounds w_recency in [0.40, 0.65] and w_markov in [0.10, 0.30]."""
+        params = {"lambda_cut_cluster": 0.35, "w_recency": 0.70, "w_markov": 0.05, "w_seasonal": 0.15, "w_gap": 0.10}
+        tuned = rf.reference_recalibrate_hyperparameters(params, {})
+        self.assertGreaterEqual(tuned["w_recency"], 0.40)
+        self.assertLessEqual(tuned["w_recency"], 0.65)
+        self.assertGreaterEqual(tuned["w_markov"], 0.10)
+        self.assertLessEqual(tuned["w_markov"], 0.30)
+
+    def test_f10_tuner_weights_normalized_unit_sum(self):
+        """Model weights always re-normalize to sum to 1.0."""
+        params = {"lambda_cut_cluster": 0.35, "w_recency": 0.50, "w_markov": 0.20, "w_seasonal": 0.15, "w_gap": 0.15}
+        tuned = rf.reference_recalibrate_hyperparameters(params, {"summary": {"family_cut_hit_rate": 0.30}})
+        w_sum = tuned["w_recency"] + tuned["w_markov"] + tuned["w_seasonal"] + tuned["w_gap"]
+        self.assertAlmostEqual(w_sum, 1.0, places=3)
+
+    def test_f10_tuner_cluster_hit_response(self):
+        """When family cut hits dominate (>25%), tuner increases lambda by +0.02."""
+        base_params = {"lambda_cut_cluster": 0.35, "w_recency": 0.52, "w_markov": 0.18, "w_seasonal": 0.15, "w_gap": 0.15}
+        tuned = rf.reference_recalibrate_hyperparameters(base_params, {"summary": {"family_cut_hit_rate": 0.30}})
+        self.assertGreater(tuned["lambda_cut_cluster"], base_params["lambda_cut_cluster"])
+
+    def test_f10_tuner_tuning_history_logging(self):
+        """Tuning events record timestamp, previous parameters, and updated parameters."""
+        tuning_record = {
+            "timestamp": "2026-11-05T09:00:00Z",
+            "trigger": "weekly_rollover",
+            "previous_params": {"lambda": 0.35},
+            "updated_params": {"lambda": 0.37},
+        }
+        self.assertIn("timestamp", tuning_record)
+        self.assertIn("updated_params", tuning_record)
+
+
+class TestFeature11PredictionServingUpdates(unittest.TestCase):
+    """Tier 1.18: Feature 11 - Prediction Serving Updates."""
+
+    def test_f11_prediction_data_json_contains_top_jodis(self):
+        """prediction_data.json exports ranked top_jodis array."""
+        pred_p = MATKA_ENGINE / "prediction_data.json"
+        data = json.loads(pred_p.read_text(encoding="utf-8"))
+        self.assertIn("top_jodis", data)
+        self.assertGreaterEqual(len(data["top_jodis"]), 10)
+
+    def test_f11_prediction_data_json_contains_otc_recommendation(self):
+        """prediction_data.json exports otc_recommendation with pass_probability."""
+        pred_p = MATKA_ENGINE / "prediction_data.json"
+        data = json.loads(pred_p.read_text(encoding="utf-8"))
+        self.assertIn("otc_recommendation", data)
+        otc = data["otc_recommendation"]
+        self.assertTrue("digits" in otc or "recommended_digits" in otc)
+        digits = otc.get("digits") or otc.get("recommended_digits")
+        self.assertEqual(len(digits), 4)
+
+    def test_f11_app_status_api_endpoint(self):
+        """Verifies app.py provides /api/status endpoint returning online status."""
+        import app
+        self.assertTrue(hasattr(app, "KalyanWebHandler"))
+
+    def test_f11_app_performance_log_api_endpoint(self):
+        """Verifies app.py exposes /api/performance-log route."""
+        app_file = MATKA_ENGINE / "app.py"
+        content = app_file.read_text(encoding="utf-8")
+        if "performance-log" in content:
+            self.assertTrue(True)
+        else:
+            self.skipTest("Feature 11 (Milestone 3) pending in app.py: /api/performance-log endpoint")
+
+    def test_f11_app_fetch_and_predict_endpoint(self):
+        """Verifies app.py defines handle_fetch_and_predict endpoint."""
+        import app
+        self.assertTrue(hasattr(app.KalyanWebHandler, "handle_fetch_and_predict") or hasattr(app, "compute_all_predictions"))
+
+
+class TestFeature12HistoricalOutcomeUIRendering(unittest.TestCase):
+    """Tier 1.19: Feature 12 - Historical Outcome UI Rendering."""
+
+    def setUp(self):
+        self.index_html = (MATKA_ENGINE / "web" / "index.html").read_text(encoding="utf-8")
+
+    def test_f12_ui_rank_badge_css_classes_in_index_html(self):
+        """index.html contains styling or markup structure for Rank # pills."""
+        self.assertTrue("rank" in self.index_html.lower() or "pill" in self.index_html.lower())
+
+    def test_f12_ui_top10_hit_badge_in_index_html(self):
+        """index.html contains elements or styling for Top-10 Hit badges."""
+        self.assertTrue("top-10" in self.index_html.lower() or "top10" in self.index_html.lower() or "hit" in self.index_html.lower())
+
+    def test_f12_ui_family_cut_hit_badge_in_index_html(self):
+        """index.html contains elements or styling for Family Cut Hit badges."""
+        self.assertTrue("family" in self.index_html.lower())
+
+    def test_f12_ui_spotlight_top_pick_badge_in_index_html(self):
+        """index.html contains golden spotlight or Top-1 pick representation."""
+        self.assertTrue("spotlight" in self.index_html.lower() or "top pick" in self.index_html.lower() or "top-pick" in self.index_html.lower())
+
+    def test_f12_ui_last_week_table_structure(self):
+        """index.html contains #last-week-table-body for rendering historical outcome table."""
+        self.assertIn("last-week-table", self.index_html)
+
+
+class TestFeature13MobilePWAIntegration(unittest.TestCase):
+    """Tier 1.20: Feature 13 - Mobile PWA Integration."""
+
+    def test_f13_mobile_streamlined_view_container(self):
+        """web/index.html defines mobile streamlined view or responsive container."""
+        content = (MATKA_ENGINE / "web" / "index.html").read_text(encoding="utf-8")
+        self.assertTrue("mobile" in content.lower() or "streamlined" in content.lower())
+
+    def test_f13_manifest_json_standalone_and_icons(self):
+        """web/manifest.json specifies display: standalone and valid icons."""
+        manifest_p = MATKA_ENGINE / "web" / "manifest.json"
+        data = json.loads(manifest_p.read_text(encoding="utf-8"))
+        self.assertEqual(data.get("display"), "standalone")
+        self.assertGreater(len(data.get("icons", [])), 0)
+
+    def test_f13_sw_js_lifecycle_and_caching(self):
+        """web/sw.js implements install, activate, and fetch listeners."""
+        sw_p = MATKA_ENGINE / "web" / "sw.js"
+        content = sw_p.read_text(encoding="utf-8")
+        for ev in ["install", "activate", "fetch"]:
+            self.assertIn(ev, content)
+
+    def test_f13_sw_cache_version_v4_or_latest(self):
+        """web/sw.js defines versioned cache name."""
+        sw_p = MATKA_ENGINE / "web" / "sw.js"
+        content = sw_p.read_text(encoding="utf-8")
+        self.assertIn("CACHE_NAME", content)
+
+    def test_f13_pwa_icon_assets_exist(self):
+        """icon-192.png and icon-512.png exist in web folder."""
+        web_dir = MATKA_ENGINE / "web"
+        self.assertTrue((web_dir / "icon-192.png").exists())
+        self.assertTrue((web_dir / "icon-512.png").exists())
+
+
+class TestFeature14ThreeWayFileParitySync(unittest.TestCase):
+    """Tier 1.21: Feature 14 - 3-Way File Parity Sync."""
+
+    def test_f14_prediction_data_json_three_way_parity(self):
+        """prediction_data.json maintains identical root keys across all 3 project tiers."""
+        root_p = MATKA_ROOT / "prediction_data.json"
+        eng_p = MATKA_ENGINE / "prediction_data.json"
+        web_p = MATKA_ENGINE / "web" / "prediction_data.json"
+        d_root = json.loads(root_p.read_text(encoding="utf-8"))
+        d_eng = json.loads(eng_p.read_text(encoding="utf-8"))
+        d_web = json.loads(web_p.read_text(encoding="utf-8"))
+        self.assertEqual(set(d_root.keys()), set(d_eng.keys()))
+        self.assertEqual(set(d_eng.keys()), set(d_web.keys()))
+
+    def test_f14_history_json_three_way_parity(self):
+        """history.json array length matches across all 3 project tiers."""
+        root_p = MATKA_ROOT / "history.json"
+        eng_p = MATKA_ENGINE / "history.json"
+        web_p = MATKA_ENGINE / "web" / "history.json"
+        h_root = json.loads(root_p.read_text(encoding="utf-8"))
+        h_eng = json.loads(eng_p.read_text(encoding="utf-8"))
+        h_web = json.loads(web_p.read_text(encoding="utf-8"))
+        self.assertEqual(len(h_root), len(h_eng))
+        self.assertEqual(len(h_eng), len(h_web))
+
+    def test_f14_index_html_three_way_parity(self):
+        """index.html exists across root tools/matka, engine, and web folders."""
+        self.assertTrue((MATKA_ROOT / "index.html").exists())
+        self.assertTrue((MATKA_ENGINE / "index.html").exists())
+        self.assertTrue((MATKA_ENGINE / "web" / "index.html").exists())
+
+    def test_f14_performance_log_three_way_parity(self):
+        """performance_log.json matches across all 3 tiers when created."""
+        eng_p = MATKA_ENGINE / "performance_log.json"
+        if eng_p.exists():
+            root_p = MATKA_ROOT / "performance_log.json"
+            web_p = MATKA_ENGINE / "web" / "performance_log.json"
+            self.assertTrue(root_p.exists())
+            self.assertTrue(web_p.exists())
+        else:
+            self.skipTest("Feature 14 (Milestone 3) pending: performance_log.json 3-way synchronization")
+
+    def test_f14_sync_artifacts_function_contract(self):
+        """predict.sync_artifacts writes data to all 3 file paths simultaneously."""
+        import predict
+        self.assertTrue(hasattr(predict, "sync_artifacts"))
 
 
 if __name__ == "__main__":

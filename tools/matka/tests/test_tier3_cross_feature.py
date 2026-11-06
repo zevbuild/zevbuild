@@ -18,19 +18,25 @@ import sys
 import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
+import numpy as np
+import pandas as pd
 
 # Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
 MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
 MATKA_WEB = MATKA_ENGINE / "web"
-FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
+TESTS_DIR = Path(__file__).resolve().parent
+FIXTURES_DIR = TESTS_DIR / "fixtures"
 SAMPLE_DRAWS_CSV = FIXTURES_DIR / "sample_draws.csv"
 MOCK_PENAL_CHART_HTML = FIXTURES_DIR / "mock_penal_chart.html"
 
-# Add engine directory to sys.path
-if str(MATKA_ENGINE) not in sys.path:
-    sys.path.insert(0, str(MATKA_ENGINE))
+# Add directories to sys.path
+for p in [str(TESTS_DIR), str(MATKA_ENGINE), str(REPO_ROOT)]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+import requirements_fixtures as rf
 
 
 class TestCrossFeatureInteractions(unittest.TestCase):
@@ -260,6 +266,122 @@ class TestCrossFeatureInteractions(unittest.TestCase):
         reloaded = json.loads(json_output)
         self.assertEqual(reloaded["latest_draw"]["jodi"], str(latest["Jodi"]).zfill(2))
         self.assertEqual(len(reloaded["otc_recommendation"]["digits"]), 4)
+
+
+    def test_cross_feature_cut_cluster_prediction_to_json_export(self):
+        """Cross-Feature: Cut-cluster density prediction serializes into prediction_data.json."""
+        raw_p = np.random.RandomState(42).dirichlet(np.ones(100))
+        scores = rf.reference_cut_cluster_density_scores(raw_p, lambda_val=0.35)
+        top_10 = rf.reference_family_enriched_top_10(scores)
+        pairs, digits, cov = rf.reference_complementary_4_otc_matrix(raw_p.reshape((10, 10)))
+
+        payload = {
+            "last_updated": datetime.now().isoformat(),
+            "top_jodis": top_10,
+            "otc_recommendation": {
+                "digits": digits,
+                "cut_pairs": [f"{p[0]}-{p[1]}" for p in pairs],
+                "pass_probability": round(cov, 4),
+            },
+        }
+        dumped = json.dumps(payload, indent=2)
+        loaded = json.loads(dumped)
+        self.assertEqual(len(loaded["top_jodis"]), 10)
+        self.assertEqual(len(loaded["otc_recommendation"]["digits"]), 4)
+        self.assertAlmostEqual(loaded["otc_recommendation"]["pass_probability"], round(cov, 4))
+
+    def test_cross_feature_ingestion_to_outcome_evaluation(self):
+        """Cross-Feature: Ingesting newly completed draw triggers outcome evaluation."""
+        actual_draw = {"jodi": "64", "open": 6, "close": 4}
+        scores = np.zeros(100)
+        scores[91] = 0.50
+        scores[64] = 0.20
+        scores /= scores.sum()
+        top_10 = rf.reference_family_enriched_top_10(scores)
+        evaluation = rf.reference_evaluate_outcome(
+            predicted_jodi_probs_or_ranking=scores,
+            top_pick="91",
+            top_10=[item["jodi"] for item in top_10],
+            otc_digits=[1, 6, 4, 9],
+            actual_jodi=actual_draw["jodi"],
+            actual_open=actual_draw["open"],
+            actual_close=actual_draw["close"],
+        )
+        self.assertEqual(evaluation["actual_rank"], 2)
+        self.assertTrue(evaluation["top10_hit"])
+        self.assertTrue(evaluation["family_cut_hit"])
+        self.assertTrue(evaluation["otc_hit"])
+
+    def test_cross_feature_outcome_evaluation_to_persistent_audit_log(self):
+        """Cross-Feature: Evaluated draw outcomes append to performance_log.json and update summary."""
+        log = {
+            "summary": {"total_draws_logged": 1, "top10_hit_rate": 1.0, "family_cut_hit_rate": 1.0, "otc_hit_rate": 1.0, "last_updated": "2026-11-05"},
+            "current_hyperparameters": {"lambda_cut_cluster": 0.35, "w_recency": 0.52, "w_markov": 0.18, "w_seasonal": 0.15, "w_gap": 0.15},
+            "draw_logs": [],
+        }
+        entry = {
+            "date": "2026-10-28",
+            "day": "Wed",
+            "actual_draw": {"jodi": "64", "open": 6, "close": 4},
+            "predictions": {"top_pick": "91", "top_10": ["91", "64"], "otc_digits": [1, 6, 4, 9]},
+            "outcome": {"actual_rank": 2, "top10_hit": True, "family_cut_hit": True, "otc_hit": True},
+        }
+        log["draw_logs"].append(entry)
+        log["summary"]["total_draws_logged"] = len(log["draw_logs"])
+        self.assertEqual(log["summary"]["total_draws_logged"], 1)
+        self.assertEqual(log["draw_logs"][0]["outcome"]["actual_rank"], 2)
+
+    def test_cross_feature_persistent_log_to_hyperparameter_tuner(self):
+        """Cross-Feature: performance_log.json feeds adaptive hyperparameter tuner."""
+        current_params = {"lambda_cut_cluster": 0.35, "w_recency": 0.52, "w_markov": 0.18, "w_seasonal": 0.15, "w_gap": 0.15}
+        log_high_fam = {"summary": {"family_cut_hit_rate": 0.35, "top10_hit_rate": 0.20}}
+        tuned_params = rf.reference_recalibrate_hyperparameters(current_params, log_high_fam)
+        self.assertGreater(tuned_params["lambda_cut_cluster"], current_params["lambda_cut_cluster"])
+        self.assertLessEqual(tuned_params["lambda_cut_cluster"], 0.45)
+
+    def test_cross_feature_tuner_recalibration_to_retrained_predictor(self):
+        """Cross-Feature: Tuned lambda directly affects subsequent density scores."""
+        raw_p = np.zeros(100)
+        fam_91 = rf.reference_family_jodis("91")
+        for m in fam_91: raw_p[int(m)] = 0.05
+        raw_p[64] = 0.001
+        for j in range(100):
+            if raw_p[j] == 0: raw_p[j] = 0.006
+        raw_p /= raw_p.sum()
+
+        scores_base = rf.reference_cut_cluster_density_scores(raw_p, lambda_val=0.35)
+        scores_boosted = rf.reference_cut_cluster_density_scores(raw_p, lambda_val=0.45)
+        # Higher lambda transfers more cluster mean to isolated member 64
+        self.assertGreater(scores_boosted[64], scores_base[64])
+
+    def test_cross_feature_prediction_serving_to_ui_rendering(self):
+        """Cross-Feature: Prediction serving artifacts match UI template hooks."""
+        pred_p = MATKA_ENGINE / "web" / "prediction_data.json"
+        data = json.loads(pred_p.read_text(encoding="utf-8"))
+        index_html = (MATKA_ENGINE / "web" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("top_jodis", data)
+        self.assertIn("otc_recommendation", data)
+        self.assertIn("last-week-table", index_html)
+
+    def test_cross_feature_4_otc_and_cross_transition_interaction(self):
+        """Cross-Feature: Cross-transition bias reinforces pass probability of OTC pairs."""
+        p_raw = np.ones(10) / 10.0
+        p_cross = rf.reference_cross_transition_bias(p_raw, prev_close=4, target_mass=0.35)
+        # Matrix using biased Open probability achieves elevated coverage on Close(t-1)
+        joint_biased = np.outer(p_cross, np.ones(10) / 10.0)
+        pairs, digits, cov = rf.reference_complementary_4_otc_matrix(joint_biased)
+        self.assertIn(4, digits)
+        self.assertGreaterEqual(cov, 0.60)
+
+    def test_cross_feature_audit_log_to_three_way_parity(self):
+        """Cross-Feature: Audit log and prediction data update across all 3 directories."""
+        for name in ["prediction_data.json", "history.json"]:
+            root_f = MATKA_ROOT / name
+            eng_f = MATKA_ENGINE / name
+            web_f = MATKA_ENGINE / "web" / name
+            self.assertTrue(root_f.exists())
+            self.assertTrue(eng_f.exists())
+            self.assertTrue(web_f.exists())
 
 
 if __name__ == "__main__":

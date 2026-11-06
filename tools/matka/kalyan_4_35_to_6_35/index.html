@@ -449,8 +449,8 @@
       </div>
     </div>
 
-    <!-- Prediction Highlights (Top Pick, Prime Open, Prime Close) -->
-    <div class="hidden md:grid md:grid-cols-3 gap-3 sm:gap-4">
+    <!-- Prediction Highlights (Top Pick, Prime Open, Prime Close, 4-OTC Matrix) -->
+    <div class="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
       <!-- Card 1: Top Recommended Jodi -->
       <div id="box-spotlight-jodi" class="bg-gradient-to-b from-indigo-950/60 to-slate-900 border border-indigo-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg transition-all">
         <div class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -494,6 +494,25 @@
         </div>
         <div class="mt-3 text-xs text-slate-400">
           Secondary Alternative: <span id="spotlight-alt-close" class="font-bold text-slate-200 font-mono">Digit 8 (10.68%)</span>
+        </div>
+      </div>
+
+      <!-- Card 4: 4-OTC Matrix & Cut Pairs -->
+      <div id="box-spotlight-otc" class="bg-gradient-to-b from-amber-950/60 to-slate-900 border border-amber-500/40 rounded-2xl p-4 sm:p-5 relative overflow-hidden shadow-lg transition-all">
+        <div class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center justify-between">
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            4-OTC Matrix
+          </span>
+          <span id="spotlight-otc-prob" class="text-xs font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">68.8% Coverage</span>
+        </div>
+        <div class="flex items-center gap-2 mt-2">
+          <div id="spotlight-otc-digits" class="flex gap-1.5 font-mono">
+            <!-- Digits rendered dynamically -->
+          </div>
+        </div>
+        <div class="mt-3 text-xs text-slate-400">
+          Harmonic Cut Pairs: <span id="spotlight-otc-pairs" class="font-bold text-slate-200 font-mono">--</span>
         </div>
       </div>
     </div>
@@ -662,10 +681,10 @@
             <div class="text-[10px] text-slate-400 mt-0.5" id="kpi-otc-sub">61.4% All-Time • 37.5% 30-Day Dual Cut</div>
           </div>
 
-          <!-- Card 4: 100% Automated Prediction Engine -->
+          <!-- Card 4: 100% Automated Prediction Engine & Audit Telemetry -->
           <div class="bg-slate-950/70 border border-purple-500/30 rounded-xl p-3 shadow-sm">
             <div class="text-[10px] uppercase font-bold text-purple-400 flex items-center justify-between">
-              <span>Automated Engine</span>
+              <span>Automated Audit &amp; Telemetry</span>
               <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
             </div>
             <div class="text-2xl sm:text-3xl font-black font-mono text-purple-300 mt-0.5" id="kpi-edge-rate">100% Auto</div>
@@ -7162,6 +7181,34 @@
           badgeClass += " bg-slate-800 text-slate-400 border border-slate-700";
         }
 
+        const actualRank = d.actual_rank || (d.outcome && d.outcome.actual_rank);
+        const rankPillHtml = actualRank
+          ? `<span class="px-2 py-0.5 rounded-full font-mono text-[10px] font-bold bg-slate-800 text-indigo-300 border border-indigo-500/30">Rank #${actualRank}</span>`
+          : '';
+
+        const isTop10 = d.top10_hit || (actualRank && actualRank <= 10);
+        const isFam = d.family_cut_hit;
+        const isOtc = d.otc_hit;
+        const isTopPickHit = d.actual_jodi === d.predicted_top_pick;
+
+        let badges = [];
+        if (isTop10) {
+          badges.push(`<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Top-10 Hit</span>`);
+        }
+        if (isFam) {
+          badges.push(`<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">Family Cut Hit</span>`);
+        }
+        if (isOtc) {
+          badges.push(`<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">OTC Hit</span>`);
+        }
+        if (badges.length === 0) {
+          badges.push(`<span class="${badgeClass}">${d.status_label || 'Standard Variance'}</span>`);
+        }
+
+        const topPickHtml = isTopPickHit
+          ? `<span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.3)]">★ ${d.predicted_top_pick}</span>`
+          : `<span class="font-bold text-indigo-300">${d.predicted_top_pick}</span>`;
+
         const top5Html = (d.predicted_top_5 || []).map(j => {
           const isMatch = j === d.actual_jodi;
           return `<span class="px-1.5 py-0.5 rounded text-[11px] ${isMatch ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30' : 'bg-slate-800/80 text-slate-300'}">${j}</span>`;
@@ -7187,7 +7234,7 @@
             <span class="text-[10px] text-slate-400 ml-1.5">(${d.open_patti || '---'} - ${d.actual_jodi} - ${d.close_patti || '---'})</span>
           </td>
           <td class="py-2.5 px-3">
-            <span class="font-bold text-indigo-300">${d.predicted_top_pick}</span>
+            ${topPickHtml}
           </td>
           <td class="py-2.5 px-3">
             <div class="flex flex-wrap gap-1">${top5Html}</div>
@@ -7200,7 +7247,10 @@
             </div>
           </td>
           <td class="py-2.5 px-3 text-right">
-            <span class="${badgeClass}">${d.status_label}</span>
+            <div class="flex flex-col items-end gap-1">
+              ${rankPillHtml}
+              <div class="flex flex-wrap justify-end gap-1">${badges.join(' ')}</div>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -7275,9 +7325,20 @@
         if (kpiDouble) kpiDouble.textContent = `${mData.summary.double_ank_hits || 5} Draws`;
 
         const kpiEdge = document.getElementById('kpi-edge-rate');
-        if (kpiEdge) kpiEdge.textContent = '100% Auto';
         const kpiEdgeSub = document.getElementById('kpi-edge-sub');
-        if (kpiEdgeSub) kpiEdgeSub.textContent = (telemetry && telemetry.next_sync_ist) ? `Next: ${telemetry.next_sync_ist}` : 'Daily at 7:00 & 10:00 PM IST';
+        if (window.PERF_LOG && window.PERF_LOG.summary && window.PERF_LOG.summary.total_draws_logged) {
+          const s = window.PERF_LOG.summary;
+          const hp = window.PERF_LOG.current_hyperparameters || {};
+          const hpStr = hp.lambda_cut_cluster !== undefined ? ` • λ=${hp.lambda_cut_cluster}` : '';
+          if (kpiEdge) kpiEdge.textContent = `${(s.top10_hit_rate * 100).toFixed(1)}% T10`;
+          if (kpiEdgeSub) {
+            kpiEdgeSub.textContent = `${s.total_draws_logged} Draws • ${(s.otc_hit_rate * 100).toFixed(1)}% OTC • ${(s.family_cut_hit_rate * 100).toFixed(1)}% Cut${hpStr}`;
+            kpiEdgeSub.title = `Hyperparameters: λ=${hp.lambda_cut_cluster || 0.35}, w_rec=${hp.w_recency || 0.35}, w_mar=${hp.w_markov || 0.25}`;
+          }
+        } else {
+          if (kpiEdge) kpiEdge.textContent = '100% Auto';
+          if (kpiEdgeSub) kpiEdgeSub.textContent = (telemetry && telemetry.next_sync_ist) ? `Next: ${telemetry.next_sync_ist}` : 'Daily at 7:00 & 10:00 PM IST';
+        }
 
         const tabLabel = document.getElementById('tab-lastweek-label');
         if (tabLabel) {
@@ -7344,6 +7405,36 @@
       document.getElementById('spotlight-close-prob').textContent = `${topClose.prob.toFixed(2)}% prob`;
       document.getElementById('spotlight-alt-close').textContent = `Digit ${altClose.digit} (${altClose.prob.toFixed(2)}%)`;
 
+      // 4-OTC Matrix Spotlight Desktop Updates
+      const dOtcDigits = document.getElementById('spotlight-otc-digits');
+      if (dOtcDigits) {
+        dOtcDigits.innerHTML = '';
+        const otcDigits = dayData.otc_digits || [0, 5, 1, 6];
+        otcDigits.forEach(d => {
+          const cut = (d + 5) % 10;
+          const sp = document.createElement('div');
+          sp.className = "px-2 py-1 rounded-lg bg-amber-950/60 border border-amber-500/60 text-center min-w-[38px]";
+          sp.innerHTML = `<span class="text-xl font-black text-amber-400 font-mono block leading-tight">${d}</span><span class="block text-[8px] text-amber-300/70 font-bold uppercase">Cut ${cut}</span>`;
+          dOtcDigits.appendChild(sp);
+        });
+      }
+      const dOtcProb = document.getElementById('spotlight-otc-prob');
+      if (dOtcProb) {
+        const probVal = dayData.otc_pass_prob ? Number(dayData.otc_pass_prob).toFixed(1) : "68.8";
+        dOtcProb.textContent = `${probVal}% Coverage`;
+      }
+      const dOtcPairs = document.getElementById('spotlight-otc-pairs');
+      if (dOtcPairs) {
+        if (dayData.otc_pairs && dayData.otc_pairs.length > 0) {
+          dOtcPairs.textContent = dayData.otc_pairs.map(p => `[${p[0]}, ${p[1]}]`).join(' & ');
+        } else if (APP_STATE.otc_recommendation && APP_STATE.otc_recommendation.cut_pairs) {
+          dOtcPairs.textContent = APP_STATE.otc_recommendation.cut_pairs.join(' & ');
+        } else {
+          const otcDigits = dayData.otc_digits || [0, 5, 1, 6];
+          dOtcPairs.textContent = `[${otcDigits[0]}, ${(otcDigits[0]+5)%10}] & [${otcDigits[2] || otcDigits[1]}, ${((otcDigits[2] || otcDigits[1])+5)%10}]`;
+        }
+      }
+
       // 📱 Mobile Spotlight Updates
       const mJodi = document.getElementById('mobile-spotlight-jodi');
       if (mJodi) mJodi.textContent = top1.jodi;
@@ -7360,19 +7451,27 @@
       const mOtc = document.getElementById('mobile-otc-digits');
       if (mOtc) {
         mOtc.innerHTML = '';
-        const otcDigits = dayData.otc_digits || [0, 1, 5, 6];
-        otcDigits.forEach(d => {
+        const otcDigits = dayData.otc_digits || [0, 5, 1, 6];
+        otcDigits.forEach((d, idx) => {
           const cut = (d + 5) % 10;
+          const pairGroup = idx < 2 ? 'Cut Pair A' : 'Cut Pair B';
+          const pairBorder = idx < 2 ? 'border-amber-500/80 shadow-amber-500/10' : 'border-cyan-500/80 shadow-cyan-500/10';
+          const pairText = idx < 2 ? 'text-amber-400' : 'text-cyan-400';
+          const pairLabelColor = idx < 2 ? 'text-amber-400/80' : 'text-cyan-400/80';
           const box = document.createElement('div');
-          box.className = "flex-1 bg-slate-950 border-2 border-amber-500/80 rounded-xl py-2 text-center shadow-lg shadow-amber-500/10";
-          box.innerHTML = `<span class="text-2xl font-black text-amber-400 font-mono">${d}</span><span class="block text-[8px] text-slate-400 font-bold uppercase">Cut ${cut}</span>`;
+          box.className = `flex-1 bg-slate-950 border-2 ${pairBorder} rounded-xl py-1.5 text-center shadow-lg`;
+          box.innerHTML = `
+            <span class="text-[7px] ${pairLabelColor} font-bold uppercase block leading-tight mb-0.5">${pairGroup}</span>
+            <span class="text-2xl font-black ${pairText} font-mono leading-none">${d}</span>
+            <span class="block text-[8px] text-slate-400 font-bold uppercase mt-0.5">Cut ${cut}</span>
+          `;
           mOtc.appendChild(box);
         });
       }
 
       const mOtcProb = document.getElementById('mobile-otc-prob');
       if (mOtcProb) {
-        const probVal = dayData.otc_pass_prob ? Number(dayData.otc_pass_prob).toFixed(1) : "67.8";
+        const probVal = dayData.otc_pass_prob ? Number(dayData.otc_pass_prob).toFixed(1) : "68.8";
         mOtcProb.textContent = `${probVal}% Pass`;
       }
 
@@ -7382,11 +7481,24 @@
         mChips.innerHTML = '';
         dayData.top_jodis.forEach(j => {
           const edge = ((j.prob / 1.0) - 1.0) * 100;
+          const isAffinity = j.is_family_affinity || (top1 && top1.family && top1.family.includes(j.jodi) && j.rank !== 1);
+          let chipBorder = 'bg-slate-950/80 border-slate-800';
+          let textColor = 'text-white';
+          let badgeTag = '';
+          if (j.rank === 1) {
+            chipBorder = 'bg-indigo-950/80 border-indigo-500/80 shadow-sm';
+            textColor = 'text-indigo-300';
+          } else if (isAffinity) {
+            chipBorder = 'bg-purple-950/60 border-purple-500/80 shadow-sm';
+            textColor = 'text-purple-300';
+            badgeTag = '<div class="text-[7px] text-purple-400 font-bold uppercase tracking-tight">Cut Fam</div>';
+          }
           const chip = document.createElement('div');
-          chip.className = `p-1 sm:p-1.5 rounded-lg border text-center transition-all ${j.rank === 1 ? 'bg-indigo-950/80 border-indigo-500/80 shadow-sm' : 'bg-slate-950/80 border-slate-800'}`;
+          chip.className = `p-1 sm:p-1.5 rounded-lg border text-center transition-all ${chipBorder}`;
           chip.innerHTML = `
             <div class="text-[8px] text-slate-400 font-semibold leading-tight">#${j.rank}</div>
-            <div class="text-base font-black font-mono ${j.rank === 1 ? 'text-indigo-300' : 'text-white'} leading-tight">${j.jodi}</div>
+            <div class="text-base font-black font-mono ${textColor} leading-tight">${j.jodi}</div>
+            ${badgeTag}
             <div class="text-[8px] font-bold ${edge >= 0 ? 'text-emerald-400' : 'text-rose-400'} leading-tight">${edge >= 0 ? '+' : ''}${edge.toFixed(0)}%</div>
           `;
           mChips.appendChild(chip);
@@ -7832,6 +7944,36 @@
         }
       } catch (e) {
         console.warn('[BOOT] Could not load prediction_data.json, using embedded baseline.', e);
+      }
+
+      // 1b. Fetch /api/performance-log (with fallback to performance_log.json)
+      try {
+        let perfRes = await fetch('/api/performance-log');
+        if (!perfRes.ok) {
+          perfRes = await fetch('performance_log.json?_t=' + Date.now(), { cache: 'no-store' });
+        }
+        if (perfRes.ok) {
+          const perfData = await perfRes.json();
+          window.PERF_LOG = perfData;
+          if (perfData.summary) {
+            const s = perfData.summary;
+            const hp = perfData.current_hyperparameters || {};
+            const hpStr = hp.lambda_cut_cluster !== undefined ? ` • λ=${hp.lambda_cut_cluster}` : '';
+            const kpiEdgeRate = document.getElementById('kpi-edge-rate');
+            const kpiEdgeSub = document.getElementById('kpi-edge-sub');
+            if (kpiEdgeRate && s.total_draws_logged) {
+              const top10Rate = (s.top10_hit_rate * 100).toFixed(1);
+              kpiEdgeRate.textContent = `${top10Rate}% T10`;
+              if (kpiEdgeSub) {
+                kpiEdgeSub.textContent = `${s.total_draws_logged} Draws • ${(s.otc_hit_rate * 100).toFixed(1)}% OTC • ${(s.family_cut_hit_rate * 100).toFixed(1)}% Cut${hpStr}`;
+                kpiEdgeSub.title = `Hyperparameters: λ=${hp.lambda_cut_cluster || 0.35}, w_rec=${hp.w_recency || 0.35}, w_mar=${hp.w_markov || 0.25}`;
+              }
+            }
+          }
+          console.log('[BOOT] Loaded performance audit log.');
+        }
+      } catch (e) {
+        console.warn('[BOOT] Could not fetch performance log:', e);
       }
 
       // Automatically determine the active forecast target day

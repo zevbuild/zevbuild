@@ -61,6 +61,7 @@ def sync_and_push(push: bool = True, custom_msg: str = None, sunday_rollover: bo
     print(f"    - tools/matka/kalyan_historical_data.csv & subfolder mirror")
     print(f"    - tools/matka/prediction_data.json, subfolder & web mirrors")
     print(f"    - tools/matka/history.json, subfolder & web mirrors")
+    print(f"    - tools/matka/performance_log.json, subfolder & web mirrors")
     print(f"    - tools/matka/kalyan_penal_chart.html, subfolder & web mirrors (auto-updated to #bottom)")
 
     if not push:

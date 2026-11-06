@@ -9,6 +9,7 @@ import sys
 import json
 import webbrowser
 import argparse
+import urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from datetime import datetime, timedelta, timezone
@@ -23,8 +24,8 @@ if WORKSPACE_DIR not in sys.path:
 from pathlib import Path
 from bs4 import BeautifulSoup
 from scraper import fetch_html, parse_kalyan_chart, export_to_csv, sync_csv_to_root, verify_csv_integrity
-from models import EnsemblePredictor
-from predict import get_family_jodis
+from models import EnsemblePredictor, evaluate_outcome
+from predict import get_family_jodis, audit_and_update_performance_log, load_performance_log, sync_performance_log
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 WEB_DIR = os.path.join(WORKSPACE_DIR, "web")
@@ -82,12 +83,25 @@ def get_next_scheduled_sync(now_ist: datetime) -> str:
             return "Tomorrow at 07:00 PM IST"
 
 
-def compute_last_week_performance(valid_df, html=""):
+def compute_last_week_performance(valid_df=None, html=""):
     """
     Computes walk-forward predictions for the completed draws across the previous 4 calendar weeks
     (30-day window, 24 draws), matches against actual declared outcomes and pattis,
     and returns structured multi-week performance data for both last_week and last_month.
     """
+    if valid_df is None:
+        valid_df = pd.read_csv(CSV_PATH)
+    if "Is_Valid" in valid_df.columns:
+        valid_df = valid_df[valid_df.get("Is_Valid", True) == True].copy().reset_index(drop=True)
+    else:
+        valid_df = valid_df.copy().reset_index(drop=True)
+    if "Open_Digit" in valid_df.columns:
+        valid_df["Open_Digit"] = valid_df["Open_Digit"].apply(lambda x: int(float(x)))
+    if "Close_Digit" in valid_df.columns:
+        valid_df["Close_Digit"] = valid_df["Close_Digit"].apply(lambda x: int(float(x)))
+    if "Jodi" in valid_df.columns:
+        valid_df["Jodi"] = valid_df["Jodi"].apply(lambda x: f"{int(float(x)):02d}")
+
     patti_map = {}
     if html:
         try:
@@ -180,11 +194,16 @@ def compute_last_week_performance(valid_df, html=""):
                 prev_close=int(prev_row["Close_Digit"]),
             )
 
-            sorted_j = np.argsort(preds["jodi_probs"])[::-1]
+            top_10_items = preds.get("top_10_jodis", [])
+            if top_10_items:
+                top_jodis = [item["jodi"] for item in top_10_items]
+            else:
+                sorted_j = np.argsort(preds.get("cut_cluster_density_scores", preds["jodi_probs"]))[::-1]
+                top_jodis = [f"{x:02d}" for x in sorted_j[:10]]
+
             sorted_o = np.argsort(preds["open_probs"])[::-1]
             sorted_c = np.argsort(preds["close_probs"])[::-1]
 
-            top_jodis = [f"{x:02d}" for x in sorted_j[:10]]
             top_open = [int(x) for x in sorted_o[:3]]
             top_close = [int(x) for x in sorted_c[:3]]
 
@@ -195,15 +214,26 @@ def compute_last_week_performance(valid_df, html=""):
 
             op_p, cl_p = patti_map.get(date_str, ("---", "---"))
 
-            open_hit = actual_o in top_open
-            close_hit = actual_c in top_close
-            jodi_hit = actual_j in top_jodis[:5]
             top_pick = top_jodis[0]
             fam = get_family_jodis(top_pick)
-            fam_hit = actual_j in fam
-
             otc_digits = preds.get("otc_digits", [])
-            otc_hit = (actual_o in otc_digits) or (actual_c in otc_digits)
+
+            scores_or_probs = preds.get("cut_cluster_density_scores", preds["jodi_probs"])
+            eval_res = evaluate_outcome(
+                scores_or_probs,
+                top_pick=top_pick,
+                top_10=top_jodis,
+                otc_digits=otc_digits,
+                actual_jodi=actual_j,
+                actual_open=actual_o,
+                actual_close=actual_c,
+            )
+
+            open_hit = actual_o in top_open
+            close_hit = actual_c in top_close
+            jodi_hit = eval_res["top10_hit"]
+            fam_hit = eval_res["family_cut_hit"]
+            otc_hit = eval_res["otc_hit"]
 
             if open_hit and close_hit:
                 status_label = "Double Ank Hit (Open & Close)"
@@ -257,6 +287,10 @@ def compute_last_week_performance(valid_df, html=""):
                 "jodi_hit": jodi_hit,
                 "status_label": status_label,
                 "badge_type": badge_type,
+                "actual_rank": eval_res["actual_rank"],
+                "top10_hit": eval_res["top10_hit"],
+                "family_cut_hit": eval_res["family_cut_hit"],
+                "rank_pill": f"Rank #{eval_res['actual_rank']}",
             }
             touched = open_hit or close_hit or fam_hit or (actual_j in top_jodis) or otc_hit
             if touched:
@@ -379,8 +413,13 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
     except Exception:
         pass
 
-    # Fit Optimized Hybrid Ensemble Model
-    ensemble = EnsemblePredictor()
+    # Audit outcomes and recalibrate hyperparameters based on performance_log.json
+    audit_and_update_performance_log(CSV_PATH)
+    perf_log = load_performance_log()
+    current_params = perf_log.get("current_hyperparameters", None)
+
+    # Fit Optimized Hybrid Ensemble Model with calibrated hyperparameters
+    ensemble = EnsemblePredictor(hyperparameters=current_params)
     ensemble.fit(valid_df)
 
     # Compute last week and last month prediction performance
@@ -493,16 +532,34 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         sorted_o = np.argsort(open_probs)[::-1]
         sorted_c = np.argsort(close_probs)[::-1]
 
+        top_10 = preds.get("top_10_jodis", [])
         top_jodis = []
-        for rank, idx in enumerate(sorted_j[:10], start=1):
-            j_str = f"{idx:02d}"
-            p = round(float(jodi_probs[idx]) * 100.0, 2)
-            top_jodis.append({
-                "rank": rank,
-                "jodi": j_str,
-                "prob": p,
-                "family": get_family_jodis(j_str),
-            })
+        if top_10:
+            for item in top_10:
+                j_str = item["jodi"]
+                p = round(float(item.get("score", 0.0)) * 100.0, 2)
+                top_jodis.append({
+                    "rank": item["rank"],
+                    "jodi": j_str,
+                    "prob": p,
+                    "score": float(item.get("score", 0.0)),
+                    "raw_prob": float(item.get("raw_prob", 0.0)),
+                    "is_family_affinity": bool(item.get("is_family_affinity", False)),
+                    "family": get_family_jodis(j_str),
+                })
+        else:
+            for rank, idx in enumerate(sorted_j[:10], start=1):
+                j_str = f"{idx:02d}"
+                p = round(float(jodi_probs[idx]) * 100.0, 2)
+                top_jodis.append({
+                    "rank": rank,
+                    "jodi": j_str,
+                    "prob": p,
+                    "score": float(jodi_probs[idx]),
+                    "raw_prob": float(jodi_probs[idx]),
+                    "is_family_affinity": False,
+                    "family": get_family_jodis(j_str),
+                })
 
         top_open = []
         for rank, idx in enumerate(sorted_o, start=1):
@@ -642,9 +699,13 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         with open(path, "w", encoding="utf-8") as f:
             json.dump(history_list, f)
 
+    # Synchronize performance_log.json across all 3 locations
+    sync_performance_log(perf_log)
+
     # Synchronize CSV mirror
     sync_csv_to_root(CSV_PATH)
 
+    output_payload["performance_log"] = perf_log
     return output_payload
 
 
@@ -670,22 +731,50 @@ class KalyanWebHandler(SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path in ("/", "/index.html"):
+        parsed_path = urllib.parse.urlsplit(self.path).path
+        if parsed_path in ("/", "/index.html", "/dashboard.html"):
             return super().do_GET()
-        elif self.path.startswith("/api/status"):
+        elif parsed_path == "/api/status":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self._set_cors()
             self.end_headers()
-            resp = {"status": "online", "time": datetime.now().isoformat()}
+            try:
+                valid_df = pd.read_csv(CSV_PATH)
+                valid_df = valid_df[valid_df["Is_Valid"] == True]
+                draw_count = len(valid_df)
+                last_draw_date = str(valid_df.iloc[-1]["Date"])
+            except Exception:
+                draw_count = 0
+                last_draw_date = ""
+            resp = {
+                "status": "online",
+                "draw_count": draw_count,
+                "last_draw_date": last_draw_date,
+                "time": datetime.now().isoformat(),
+            }
             self.wfile.write(json.dumps(resp).encode("utf-8"))
-        elif self.path.startswith("/api/fetch-and-predict"):
+        elif parsed_path == "/api/performance-log":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self._set_cors()
+            self.end_headers()
+            perf_path = os.path.join(WORKSPACE_DIR, "performance_log.json")
+            if not os.path.exists(perf_path):
+                perf_path = os.path.join(WEB_DIR, "performance_log.json")
+            if os.path.exists(perf_path):
+                with open(perf_path, "rb") as f:
+                    self.wfile.write(f.read())
+            else:
+                self.wfile.write(b"{}")
+        elif parsed_path == "/api/fetch-and-predict":
             self.handle_fetch_and_predict()
         else:
             return super().do_GET()
 
     def do_POST(self):
-        if self.path.startswith("/api/fetch-and-predict"):
+        parsed_path = urllib.parse.urlsplit(self.path).path
+        if parsed_path == "/api/fetch-and-predict":
             self.handle_fetch_and_predict()
         else:
             self.send_response(404)

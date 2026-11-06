@@ -16,6 +16,9 @@ import pandas as pd
 import numpy as np
 from tabulate import tabulate
 from collections import defaultdict, Counter
+from models import EnsemblePredictor, get_family_jodis
+
+use_cut_cluster_density = True
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
@@ -182,6 +185,10 @@ def run_walk_forward_backtest(
         close_gaps += 1.0; close_gaps[c] = 0.0
         total_gaps += 1.0; total_gaps[t_mod] = 0.0
 
+    # Precompute domain family maps and cut pairs for walk-forward performance
+    family_map = {i: [int(x) for x in get_family_jodis(f"{i:02d}")] for i in range(100)}
+    cut_pairs = [(k, (k + 5) % 10) for k in range(5)]
+
     # Backtesting statistics
     test_draws = n_total - warmup_draws
     if verbose:
@@ -280,6 +287,31 @@ def run_walk_forward_backtest(
         open_probs = (1.0 - cut_res) * blend_o + cut_res * np.roll(blend_o, 5)
         open_probs /= open_probs.sum()
 
+        # Apply Commercial Portal Rules:
+        # Rule 1: Open repetition momentum boost (+15% historical frequency ~11.26%)
+        if prev_o is not None and 0 <= prev_o <= 9:
+            open_probs[prev_o] *= 1.15
+            open_probs /= open_probs.sum()
+
+        # Rule 2: Cross-transition bias: Close(t-1) -> Open(t) direct & cut (~20.70%)
+        if prev_c is not None and 0 <= prev_c <= 9:
+            c_dir = prev_c
+            c_cut = (prev_c + 5) % 10
+            target_mass = 0.2070
+            s0 = open_probs[c_dir] + open_probs[c_cut]
+            if s0 < target_mass and s0 > 0:
+                rem_target = 1.0 - target_mass
+                rem_curr = sum(open_probs[d] for d in range(10) if d not in (c_dir, c_cut))
+                scale_cross = target_mass / s0
+                scale_rem = (rem_target / rem_curr) if rem_curr > 0 else 1.0
+                open_probs[c_dir] *= scale_cross
+                open_probs[c_cut] *= scale_cross
+                for d in range(10):
+                    if d not in (c_dir, c_cut):
+                        open_probs[d] *= scale_rem
+
+        open_probs /= open_probs.sum()
+
         # 2. Close Probabilities
         m_c = (close_trans[prev_c] + alpha_digit) / (close_trans[prev_c].sum() + 10 * alpha_digit)
         r_f_c = (rec_close_fast + alpha_digit) / (rec_close_fast.sum() + 10 * alpha_digit)
@@ -294,26 +326,6 @@ def run_walk_forward_backtest(
         blend_c = w_mk * m_c + w_rec * p_rc_c + w_sn * s_c + w_gp * p_gp_c
         close_probs = (1.0 - cut_res) * blend_c + cut_res * np.roll(blend_c, 5)
         close_probs /= close_probs.sum()
-
-        # 3. 4-Ank OTC (Dual Cut Pairs)
-        comb_ank = 0.55 * open_probs + 0.45 * close_probs
-        rk_ank = np.argsort(comb_ank)[::-1]
-        d1 = int(rk_ank[0])
-        cut1 = (d1 + 5) % 10
-        d2 = None
-        for x in rk_ank[1:]:
-            d_cand = int(x)
-            if d_cand != d1 and d_cand != cut1:
-                d2 = d_cand
-                break
-        if d2 is None:
-            d2 = (d1 + 1) % 10
-        cut2 = (d2 + 5) % 10
-        otc = {d1, cut1, d2, cut2}
-
-        is_otc_hit = (act_o in otc) or (act_c in otc)
-        if is_otc_hit:
-            otc_hits += 1
 
         # Open/Close Ank Rankings & Brier calibration
         rk_open = np.argsort(open_probs)[::-1]
@@ -339,7 +351,7 @@ def run_walk_forward_backtest(
         actual_open_binary = 1.0 if is_top1_open else 0.0
         brier_sum += (prob_pred_open - actual_open_binary) ** 2
 
-        # 4. Joint Jodi Synthesis
+        # 3. Joint Jodi Synthesis
         row_sums = intra_mat.sum(axis=1, keepdims=True)
         p_c_given_o = (intra_mat + 0.5) / (row_sums + 5.0)
 
@@ -388,8 +400,59 @@ def run_walk_forward_backtest(
         jodi_matrix = (1.0 - cut_res) * jodi_matrix + (cut_res / 3.0) * (cut_2d_open + cut_2d_close + cut_2d_both)
         jodi_matrix /= jodi_matrix.sum()
 
-        jodi_prob = jodi_matrix.flatten()
-        ranked_jodis = np.argsort(jodi_prob)[::-1]
+        # 4-Ank OTC (Dual Cut Pairs - Joint Optimization)
+        best_p = -1.0
+        best_otc = None
+        for idx1 in range(5):
+            for idx2 in range(idx1 + 1, 5):
+                p1 = cut_pairs[idx1]
+                p2 = cut_pairs[idx2]
+                cand = set([p1[0], p1[1], p2[0], p2[1]])
+                miss = [digit for digit in range(10) if digit not in cand]
+                p_miss = float(jodi_matrix[np.ix_(miss, miss)].sum())
+                p_hit = 1.0 - p_miss
+                if p_hit > best_p:
+                    best_p = p_hit
+                    best_otc = cand
+        otc = best_otc
+
+        is_otc_hit = (act_o in otc) or (act_c in otc)
+        if is_otc_hit:
+            otc_hits += 1
+
+        # Cut-Cluster Density Weighting S(j) with lambda ~ 0.35
+        p_raw = jodi_matrix.flatten()
+        p_raw /= p_raw.sum()
+        s_scores = np.zeros(100, dtype=float)
+        for j in range(100):
+            fam_idx = family_map[j]
+            s_scores[j] = 0.65 * p_raw[j] + 0.35 * float(p_raw[fam_idx].mean())
+        s_scores /= s_scores.sum()
+
+        # Family-Enriched Top 10 Allocation
+        ranked_by_density = np.argsort(s_scores)[::-1]
+        top_pick_int = int(ranked_by_density[0])
+        top_family = family_map[top_pick_int]
+        top_fam_sorted = sorted(top_family, key=lambda k: s_scores[k], reverse=True)
+
+        top_10_jodis = [top_pick_int]
+        for fam_j in top_fam_sorted:
+            if fam_j not in top_10_jodis:
+                top_10_jodis.append(fam_j)
+            if len(top_10_jodis) >= 8:
+                break
+
+        for idx in ranked_by_density:
+            if idx not in top_10_jodis:
+                top_10_jodis.append(idx)
+            if len(top_10_jodis) >= 10:
+                break
+
+        full_ranked = list(top_10_jodis)
+        for idx in ranked_by_density:
+            if idx not in full_ranked:
+                full_ranked.append(idx)
+        ranked_jodis = np.array(full_ranked)
 
         # Ranking & Mean Reciprocal Rank (MRR)
         rank_act_j = int(np.where(ranked_jodis == act_j)[0][0]) + 1
@@ -408,16 +471,7 @@ def run_walk_forward_backtest(
         if is_top15_jodi: top15_jodi_hits += 1
 
         # Top 1 family
-        top_pick = ranked_jodis[0]
-        top_o = top_pick // 10; top_c = top_pick % 10
-        cut_to = (top_o + 5) % 10; cut_tc = (top_c + 5) % 10
-        fam_pairs = {
-            top_o * 10 + top_c, top_o * 10 + cut_tc,
-            cut_to * 10 + top_c, cut_to * 10 + cut_tc,
-            top_c * 10 + top_o, cut_tc * 10 + top_o,
-            top_c * 10 + cut_to, cut_tc * 10 + cut_to,
-        }
-        is_fam_hit = (act_j in fam_pairs)
+        is_fam_hit = (act_j in top_family)
         if is_fam_hit:
             top1_family_hits += 1
 

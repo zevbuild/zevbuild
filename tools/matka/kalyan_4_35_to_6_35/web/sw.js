@@ -1,5 +1,5 @@
 // Kalyan Predictor Service Worker (PWA) - Zev Glass 2.0 Offline Resilience
-const CACHE_NAME = 'kalyan-predictor-cache-v3';
+const CACHE_NAME = 'kalyan-predictor-cache-v4';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -11,6 +11,7 @@ const STATIC_ASSETS = [
   './manifest.json',
   './prediction_data.json',
   './history.json',
+  './performance_log.json',
   'https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js'
 ];
 
@@ -62,6 +63,7 @@ self.addEventListener('fetch', (event) => {
             if (isHtml) return caches.match('./index.html');
             if (url.pathname.endsWith('prediction_data.json')) return caches.match('./prediction_data.json');
             if (url.pathname.endsWith('history.json')) return caches.match('./history.json');
+            if (url.pathname.endsWith('performance_log.json') || url.pathname.includes('/api/performance-log')) return caches.match('./performance_log.json');
             return null;
           });
         })
