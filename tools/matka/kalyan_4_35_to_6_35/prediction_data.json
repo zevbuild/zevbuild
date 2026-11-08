@@ -28,7 +28,7 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "08 Nov 2026, 11:51 AM IST",
+    "last_sync_ist": "08 Nov 2026, 12:04 PM IST",
     "next_sync_ist": "Market Reopens Monday 16 Nov at 03:45 PM IST (Diwali Recess)",
     "daily_cadence": [
       "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
@@ -4023,7 +4023,7 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "08 Nov 2026, 11:51 AM IST",
+      "last_sync_ist": "08 Nov 2026, 12:04 PM IST",
       "next_sync_ist": "Market Reopens Monday 16 Nov at 03:45 PM IST (Diwali Recess)",
       "daily_cadence": [
         "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
@@ -6817,8 +6817,8 @@
     "end_date": "2026-11-15",
     "reopen_date": "2026-11-16",
     "reopen_time": "3:45 PM IST",
-    "greeting": "DPBOSS \u0915\u0940 \u0924\u0930\u092b \u0938\u0947 \u0926\u0940\u092a\u093e\u0935\u0932\u0940 \u0915\u0940 \u0939\u093e\u0930\u094d\u0926\u093f\u0915 \u0936\u0941\u092d\u0915\u093e\u092e\u0928\u093e\u090f\u0902!",
-    "notice_text": "\u2606 DIWALI HOLIDAY (NOTICE) \u2606 DATE: 06/11/2026 \u0938\u0947 15/11/2026 \u0924\u0915 KALYAN, KALYAN NIGHT, MAIN BAZAR, MILAN DAY/NIGHT, TIME BAZAR, NIGHT TIME BAZAR, RAJDHANI NIGHT \u092e\u093e\u0930\u094d\u0915\u0947\u091f \u092e\u0947\u0902 \u091b\u0941\u091f\u094d\u091f\u093f\u092f\u093e\u0902 \u0930\u0939\u0947\u0902\u0917\u0940\u0964 \u0906\u092a \u0938\u092d\u0940 \u0915\u094b \u0914\u0930 \u0906\u092a\u0915\u0947 \u092a\u0942\u0930\u0947 \u092a\u0930\u093f\u0935\u093e\u0930 \u0915\u094b DPBOSS \u0915\u0940 \u0924\u0930\u092b \u0938\u0947 \u0926\u0940\u092a\u093e\u0935\u0932\u0940 \u0915\u0940 \u0939\u093e\u0930\u094d\u0926\u093f\u0915 \u0936\u0941\u092d\u0915\u093e\u092e\u0928\u093e\u090f\u0902\u0964"
+    "greeting": "DPBOSS \u0915\u0940 \u0924\u0930\u092b \u0938\u0947 \u0926\u0940\u092a\u093e\u0935\u0932\u0940 \u0915\u0940 \u0939\u093e\u0930\u094d\u0926\u093f\u0915 \u0936\u0941\u092d\u0915\u093e\u092e\u0928\u093e\u090f\u0902\u0902!",
+    "notice_text": "\u2606 DIWALI HOLIDAY (NOTICE) \u2606 DATE: 06/11/2026 \u0938\u0947 15/11/2026 \u0924\u0915 KALYAN, KALYAN NIGHT, MAIN BAZAR, MILAN DAY/NIGHT, TIME BAZAR, NIGHT TIME BAZAR, RAJDHANI NIGHT \u092e\u093e\u0930\u094d\u0915\u0947\u091f \u092e\u0947\u0902 \u091b\u0941\u091f\u094d\u091f\u093f\u092f\u093e\u0902 \u0930\u0939\u0947\u0902\u0917\u0940\u0902\u0964 \u0906\u092a \u0938\u092d\u0940 \u0915\u094b \u0914\u0930 \u0906\u092a\u0915\u0947 \u092a\u0942\u0930\u0947 \u092a\u0930\u093f\u0935\u093e\u0930 \u0915\u094b DPBOSS \u0915\u0940 \u0924\u0930\u092b \u0938\u0947 \u0926\u0940\u092a\u093e\u0935\u0932\u0940 \u0915\u0940 \u0939\u093e\u0930\u094d\u0926\u093f\u0915 \u0936\u0941\u092d\u0915\u093e\u092e\u0928\u093e\u090f\u0902\u0902\u0964"
   },
   "timing_notice": {
     "effective_date": "2026-11-16",

@@ -8105,6 +8105,15 @@
           if (contentType.includes('application/json') || ep.includes('.json')) {
             const json = await res.json();
             if (json.draw && json.draw.status !== 'UNKNOWN') {
+              if (json.draw.status === 'MARKET_HOLIDAY') {
+                return {
+                  source: ep,
+                  parsed: {
+                    status: 'MARKET_HOLIDAY',
+                    raw: 'Market Holiday'
+                  }
+                };
+              }
               return {
                 source: ep,
                 parsed: {
@@ -8119,17 +8128,22 @@
               };
             } else if (json.latest_draw) {
               const ld = json.latest_draw;
-              const status = (ld.close_digit !== undefined && ld.close_digit !== null) ? 'FULL_JODI_DECLARED' : 'OPEN_DECLARED';
+              const hasClose = (ld.close !== undefined && ld.close !== null && String(ld.close).trim() !== "") ||
+                               (ld.close_digit !== undefined && ld.close_digit !== null && String(ld.close_digit).trim() !== "");
+              const status = hasClose ? 'FULL_JODI_DECLARED' : 'OPEN_DECLARED';
+              const rawJodi = (ld.jodi !== undefined && ld.jodi !== null) ? String(ld.jodi).padStart(2, '0') : '';
               return {
                 source: ep,
                 parsed: {
+                  date: ld.date,
+                  day: ld.day,
                   openPatti: ld.open_patti || ld.openPatti || '***',
                   openDigit: ld.open_digit !== undefined ? ld.open_digit : ld.open,
                   closeDigit: ld.close_digit !== undefined ? ld.close_digit : ld.close,
                   closePatti: ld.close_patti || ld.closePatti || '***',
-                  jodi: ld.jodi,
+                  jodi: rawJodi,
                   status: status,
-                  raw: `${ld.open_patti || '***'}-${ld.jodi}-${ld.close_patti || '***'}`
+                  raw: `${ld.open_patti || ld.openPatti || '***'}-${rawJodi || '--'}-${ld.close_patti || ld.closePatti || '***'}`
                 }
               };
             }
@@ -8213,12 +8227,25 @@
     }
 
     function isResultChanged(parsed) {
-      if (!parsed) return false;
+      if (!parsed || parsed.status === 'MARKET_HOLIDAY') return false;
+
+      const ist = getISTDate();
+      const istDateNum = ist.getFullYear() * 10000 + (ist.getMonth() + 1) * 100 + ist.getDate();
+      const isHolidayOrSunday = (ist.getDay() === 0 || (istDateNum >= 20261106 && istDateNum <= 20261115));
+
       if (parsed.status === 'FULL_JODI_DECLARED') {
-        // If full jodi has digits and is different from current latest
-        return parsed.jodi && parsed.jodi !== CURRENT_LATEST_DRAW.jodi;
+        // If parsed date matches current latest draw and Jodi is already settled, no change
+        if (parsed.date && parsed.date === CURRENT_LATEST_DRAW.date) {
+          if (CURRENT_LATEST_DRAW.status === 'FULL_JODI_DECLARED' && CURRENT_LATEST_DRAW.jodi === parsed.jodi) {
+            return false;
+          }
+        }
+        return Boolean(parsed.jodi && parsed.jodi !== CURRENT_LATEST_DRAW.jodi);
       } else if (parsed.status === 'OPEN_DECLARED') {
-        // If open digit is out and not yet recorded as open live or date is not today
+        // During market holiday or Sunday recess, no live draw can happen today
+        if (isHolidayOrSunday) {
+          return false;
+        }
         return parsed.openDigit !== null && (CURRENT_LATEST_DRAW.openLive !== parsed.openDigit || CURRENT_LATEST_DRAW.status !== 'OPEN_DECLARED');
       }
       return false;
@@ -8230,11 +8257,15 @@
       const todayDay = dayNames[istDate.getDay()] || "Mon";
       const todayDateStr = formatDateYYYYMMDD(istDate);
 
+      // Preserve explicit draw date/day if supplied by payload
+      const drawDateStr = parsed.date || todayDateStr;
+      const drawDay = parsed.day || todayDay;
+
       if (parsed.status === 'FULL_JODI_DECLARED') {
         CURRENT_LATEST_DRAW = {
-          date: todayDateStr,
-          day: todayDay,
-          jodi: parsed.jodi,
+          date: drawDateStr,
+          day: drawDay,
+          jodi: String(parsed.jodi).padStart(2, '0'),
           open: parsed.openDigit,
           close: parsed.closeDigit,
           openDigit: parsed.openDigit,
@@ -8244,9 +8275,9 @@
           status: 'FULL_JODI_DECLARED',
         };
 
-        // Append or update in historical records
-        const newRecord = [todayDateStr, todayDay, parseInt(parsed.jodi, 10), parsed.openDigit, parsed.closeDigit, parsed.openPatti || "---", parsed.closePatti || "---"];
-        const existIdx = HISTORY_RECORDS.findIndex(r => r[0] === todayDateStr);
+        // Append or update in historical records only if it is a real completed draw
+        const newRecord = [drawDateStr, drawDay, parseInt(parsed.jodi, 10), parsed.openDigit, parsed.closeDigit, parsed.openPatti || "---", parsed.closePatti || "---"];
+        const existIdx = HISTORY_RECORDS.findIndex(r => r[0] === drawDateStr);
         if (existIdx >= 0) {
           HISTORY_RECORDS[existIdx] = newRecord;
         } else {
@@ -8258,6 +8289,12 @@
         } catch (e) {}
 
       } else if (parsed.status === 'OPEN_DECLARED') {
+        // Only set OPEN_DECLARED if not on Sunday/Holiday
+        const istDateNum = istDate.getFullYear() * 10000 + (istDate.getMonth() + 1) * 100 + istDate.getDate();
+        if (istDate.getDay() === 0 || (istDateNum >= 20261106 && istDateNum <= 20261115)) {
+          return;
+        }
+
         CURRENT_LATEST_DRAW = {
           date: todayDateStr,
           day: todayDay,
@@ -8490,7 +8527,10 @@
       const countEl = document.getElementById('dataset-count');
       if (countEl && HISTORY_RECORDS) countEl.textContent = `${HISTORY_RECORDS.length.toLocaleString()} Historical Records`;
       const pipeEl = document.getElementById('pipeline-status-text');
-      if (pipeEl) pipeEl.textContent = `Sync Complete: Live draw ${CURRENT_LATEST_DRAW.jodi || CURRENT_LATEST_DRAW.openLive || ''} (${nowStr})`;
+      if (pipeEl) {
+        const drawLabel = CURRENT_LATEST_DRAW.status === 'FULL_JODI_DECLARED' ? `Latest draw ${CURRENT_LATEST_DRAW.jodi}` : `Live draw ${CURRENT_LATEST_DRAW.jodi || CURRENT_LATEST_DRAW.openLive || '--'}`;
+        pipeEl.textContent = `Sync Complete: ${drawLabel} (${nowStr})`;
+      }
     }
 
     function renderCurrentWeekTracker() {
@@ -9545,6 +9585,17 @@
     // 6. APPLICATION BOOTSTRAP
     // ==========================================
     async function initApp() {
+      // 0. Safety sanitization: purge corrupted local storage states
+      try {
+        const stored = localStorage.getItem('kalyan_latest_draw_v2');
+        if (stored) {
+          const parsedStored = JSON.parse(stored);
+          if (parsedStored.date === '2026-11-08' || parsedStored.day === 'Sun' || (parsedStored.jodi && String(parsedStored.jodi).includes('*'))) {
+            localStorage.removeItem('kalyan_latest_draw_v2');
+          }
+        }
+      } catch (e) {}
+
       // 1. Fetch server-generated prediction_data.json snapshot
       try {
         const pRes = await fetch('prediction_data.json?_t=' + Date.now(), { cache: 'no-store' });

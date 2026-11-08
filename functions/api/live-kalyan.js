@@ -53,32 +53,36 @@ export async function onRequest(context) {
     let status = "UNKNOWN";
 
     if (rawResult) {
-      // Examples:
-      // "560-15-249" -> Open Panna 560, Jodi 15 (Open 1, Close 5), Close Panna 249
-      // "299-0" -> Open Panna 299, Open Digit 0, Close pending
-      // "299-0*-***" -> Open declared, close pending
-      const fullMatch = rawResult.match(/^(\d{3})-(\d{2})-(\d{3})$/);
-      const partialMatch = rawResult.match(/^(\d{3})-(\d{1,2})(?:[\*-]*)?$/);
+      if (rawResult.toLowerCase().includes("holiday")) {
+        status = "MARKET_HOLIDAY";
+      } else {
+        // Examples:
+        // "560-15-249" -> Open Panna 560, Jodi 15 (Open 1, Close 5), Close Panna 249
+        // "299-0" -> Open Panna 299, Open Digit 0, Close pending
+        // "299-0*-***" -> Open declared, close pending
+        const fullMatch = rawResult.match(/^(\d{3})-(\d{2})-(\d{3})$/);
+        const partialMatch = rawResult.match(/^(\d{3})-(\d{1,2})(?:[\*-]*)?$/);
 
-      if (fullMatch) {
-        openPanna = fullMatch[1];
-        jodi = fullMatch[2];
-        openDigit = parseInt(jodi[0], 10);
-        closeDigit = parseInt(jodi[1], 10);
-        closePanna = fullMatch[3];
-        status = "FULL_JODI_DECLARED";
-      } else if (partialMatch) {
-        openPanna = partialMatch[1];
-        const digits = partialMatch[2];
-        openDigit = parseInt(digits[0], 10);
-        if (digits.length === 2) {
-          closeDigit = parseInt(digits[1], 10);
-          jodi = digits;
+        if (fullMatch) {
+          openPanna = fullMatch[1];
+          jodi = fullMatch[2];
+          openDigit = parseInt(jodi[0], 10);
+          closeDigit = parseInt(jodi[1], 10);
+          closePanna = fullMatch[3];
           status = "FULL_JODI_DECLARED";
-        } else {
-          closeDigit = null;
-          jodi = digits + "*";
-          status = "OPEN_DECLARED";
+        } else if (partialMatch) {
+          openPanna = partialMatch[1];
+          const digits = partialMatch[2];
+          openDigit = parseInt(digits[0], 10);
+          if (digits.length === 2) {
+            closeDigit = parseInt(digits[1], 10);
+            jodi = digits;
+            status = "FULL_JODI_DECLARED";
+          } else {
+            closeDigit = null;
+            jodi = digits + "*";
+            status = "OPEN_DECLARED";
+          }
         }
       }
     }
