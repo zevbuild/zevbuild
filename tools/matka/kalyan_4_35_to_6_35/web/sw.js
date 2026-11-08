@@ -1,5 +1,5 @@
 // Kalyan Predictor Service Worker (PWA) - Zev Glass 2.0 Offline Resilience
-const CACHE_NAME = 'kalyan-predictor-cache-v4';
+const CACHE_NAME = 'kalyan-predictor-cache-v5';
 const STATIC_ASSETS = [
   './',
   './index.html',

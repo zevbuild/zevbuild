@@ -11,7 +11,7 @@ import argparse
 from pathlib import Path
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from tabulate import tabulate
 from models import EnsemblePredictor, get_family_jodis, evaluate_outcome, recalibrate_hyperparameters
 
@@ -364,15 +364,28 @@ def generate_by_day_predictions(
     latest_jodi: str,
     latest_open: int,
     latest_close: int,
+    draw_days: list = None,
 ) -> dict:
     day_abbrs = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
     predictions_by_day = {}
-    d_date = latest_date
-    draw_days = []
-    while len(draw_days) < 6:
-        d_date += timedelta(days=1)
-        if d_date.weekday() != 6:  # Skip Sunday
-            draw_days.append(d_date)
+
+    if draw_days is None:
+        IST = timezone(timedelta(hours=5, minutes=30))
+        now_ist = datetime.now(IST)
+        today_ist = now_ist.date()
+        latest_draw_date = latest_date.date() if isinstance(latest_date, datetime) else latest_date
+
+        next_date = latest_draw_date + timedelta(days=1)
+        if next_date.weekday() == 6:
+            next_date += timedelta(days=1)
+
+        if abs((today_ist - latest_draw_date).days) <= 14 and today_ist > next_date:
+            next_date = today_ist
+            if next_date.weekday() == 6:
+                next_date += timedelta(days=1)
+
+        week_monday = next_date - timedelta(days=next_date.weekday())
+        draw_days = [week_monday + timedelta(days=i) for i in range(6)]
 
     for target_d in draw_days:
         day_name = day_abbrs[target_d.weekday()]
@@ -465,14 +478,28 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     latest_open = int(float(latest_row["Open_Digit"]))
     latest_close = int(float(latest_row["Close_Digit"]))
 
-    # Determine target next draw date (skip Sunday if next is Sunday)
-    next_date = latest_date + timedelta(days=1)
-    if next_date.weekday() == 6:  # Sunday
+    # Operational Week Calendar Engine: determine operational week and target draw
+    IST = timezone(timedelta(hours=5, minutes=30))
+    now_ist = datetime.now(IST)
+    today_ist = now_ist.date()
+    latest_draw_date = latest_date.date() if isinstance(latest_date, datetime) else latest_date
+
+    next_date = latest_draw_date + timedelta(days=1)
+    if next_date.weekday() == 6:
         next_date += timedelta(days=1)
-    
-    day_map = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat", 6: "Mon"}
-    target_day = day_map[next_date.weekday()]
-    target_date_str = next_date.strftime("%Y-%m-%d")
+
+    if abs((today_ist - latest_draw_date).days) <= 14 and today_ist > next_date:
+        next_date = today_ist
+        if next_date.weekday() == 6:
+            next_date += timedelta(days=1)
+
+    target_d = next_date
+    day_map = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}
+    target_day = day_map[target_d.weekday()]
+    target_date_str = target_d.strftime("%Y-%m-%d")
+
+    week_monday = target_d - timedelta(days=target_d.weekday())
+    draw_days = [week_monday + timedelta(days=i) for i in range(6)]
 
     # Load calibrated hyperparameters from performance_log.json if available
     perf_log = load_performance_log()
@@ -572,7 +599,7 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
 
     # Generate 6-day forecasts for full schedule
     by_day_forecasts = generate_by_day_predictions(
-        ensemble, latest_date, latest_jodi, latest_open, latest_close
+        ensemble, latest_date, latest_jodi, latest_open, latest_close, draw_days=draw_days
     )
 
     return {
@@ -708,6 +735,8 @@ if __name__ == "__main__":
         export_payload = {
             "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
             "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
+            "target_date": res["target_draw"]["date"],
+            "last_updated": datetime.now().strftime("%Y-%m-%d"),
             "latest_draw": {
                 "date": str(valid_df.iloc[-1]["Date"]),
                 "day": str(valid_df.iloc[-1]["Day_Of_Week"]),

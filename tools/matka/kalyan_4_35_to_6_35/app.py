@@ -645,6 +645,8 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
     pred_data_to_save = {
         "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
         "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
+        "target_date": first_day_pred.get("date", ""),
+        "last_updated": datetime.now().strftime("%Y-%m-%d"),
         "latest_draw": output_payload["latest_draw"],
         "all_time_performance": all_time_performance,
         "telemetry": telemetry,
