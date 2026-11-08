@@ -58,6 +58,29 @@ def sync_performance_log(log_payload: dict):
     print(f"[SUCCESS] performance_log.json synchronized across 3 mirror locations.")
 
 
+# Market Holiday Schedules: (start_date, end_date) inclusive
+MARKET_HOLIDAYS = [
+    (datetime(2026, 11, 6).date(), datetime(2026, 11, 15).date()),  # Diwali Holidays 2026
+]
+
+
+def is_market_holiday(d) -> bool:
+    target_d = d.date() if isinstance(d, datetime) else d
+    for h_start, h_end in MARKET_HOLIDAYS:
+        if h_start <= target_d <= h_end:
+            return True
+    return False
+
+
+def get_next_operational_draw_date(start_date):
+    cur = start_date.date() if isinstance(start_date, datetime) else start_date
+    while True:
+        if cur.weekday() == 6 or is_market_holiday(cur):
+            cur += timedelta(days=1)
+        else:
+            return cur
+
+
 def load_performance_log(custom_path: str = None) -> dict:
     """Load performance_log.json from candidate mirror locations or initialize default."""
     candidates = []
@@ -375,14 +398,10 @@ def generate_by_day_predictions(
         today_ist = now_ist.date()
         latest_draw_date = latest_date.date() if isinstance(latest_date, datetime) else latest_date
 
-        next_date = latest_draw_date + timedelta(days=1)
-        if next_date.weekday() == 6:
-            next_date += timedelta(days=1)
+        next_date = get_next_operational_draw_date(latest_draw_date + timedelta(days=1))
 
         if abs((today_ist - latest_draw_date).days) <= 14 and today_ist > next_date:
-            next_date = today_ist
-            if next_date.weekday() == 6:
-                next_date += timedelta(days=1)
+            next_date = get_next_operational_draw_date(today_ist)
 
         week_monday = next_date - timedelta(days=next_date.weekday())
         draw_days = [week_monday + timedelta(days=i) for i in range(6)]
@@ -484,14 +503,10 @@ def generate_upcoming_prediction(csv_path: str = None) -> dict:
     today_ist = now_ist.date()
     latest_draw_date = latest_date.date() if isinstance(latest_date, datetime) else latest_date
 
-    next_date = latest_draw_date + timedelta(days=1)
-    if next_date.weekday() == 6:
-        next_date += timedelta(days=1)
+    next_date = get_next_operational_draw_date(latest_draw_date + timedelta(days=1))
 
     if abs((today_ist - latest_draw_date).days) <= 14 and today_ist > next_date:
-        next_date = today_ist
-        if next_date.weekday() == 6:
-            next_date += timedelta(days=1)
+        next_date = get_next_operational_draw_date(today_ist)
 
     target_d = next_date
     day_map = {0: "Mon", 1: "Tue", 2: "Wed", 3: "Thu", 4: "Fri", 5: "Sat"}

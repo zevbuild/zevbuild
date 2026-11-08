@@ -12,7 +12,29 @@ import argparse
 import urllib.parse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from socketserver import ThreadingMixIn
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
+
+# Market Holiday Schedules: (start_date, end_date) inclusive
+MARKET_HOLIDAYS = [
+    (date(2026, 11, 6), date(2026, 11, 15)),  # Diwali Holidays 2026
+]
+
+
+def is_market_holiday(d) -> bool:
+    target_d = d.date() if isinstance(d, datetime) else d
+    for h_start, h_end in MARKET_HOLIDAYS:
+        if h_start <= target_d <= h_end:
+            return True
+    return False
+
+
+def get_next_operational_draw_date(start_date):
+    cur = start_date.date() if isinstance(start_date, datetime) else start_date
+    while True:
+        if cur.weekday() == 6 or is_market_holiday(cur):
+            cur += timedelta(days=1)
+        else:
+            return cur
 import pandas as pd
 import numpy as np
 
@@ -59,6 +81,10 @@ CSV_PATH = resolve_csv_path()
 
 def get_next_scheduled_sync(now_ist: datetime) -> str:
     """Calculate the next scheduled cron bot run in Indian Standard Time."""
+    now_date = now_ist.date()
+    if date(2026, 11, 6) <= now_date <= date(2026, 11, 15):
+        return "Market Reopens Monday 16 Nov at 03:45 PM IST (Diwali Recess)"
+
     weekday = now_ist.weekday()  # 0=Mon, 5=Sat, 6=Sun
     time_minutes = now_ist.hour * 60 + now_ist.minute
 
@@ -509,15 +535,11 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
     else:
         ref_date = latest_draw_date
 
-    is_sunday = (ref_date.weekday() == 6) or force_sunday_rollover
-    if is_sunday:
-        # Sunday Rollover Bot: Roll over to upcoming week (next Monday to Saturday)
-        days_to_next_monday = (7 - ref_date.weekday()) if ref_date.weekday() != 6 else 1
-        week_monday = ref_date + timedelta(days=days_to_next_monday)
-    else:
-        # Monday through Saturday: strictly lock to this operational week's Monday
-        week_monday = ref_date - timedelta(days=ref_date.weekday())
+    next_date = get_next_operational_draw_date(latest_draw_date + timedelta(days=1))
+    if abs((today_ist - latest_draw_date).days) <= 14 and today_ist > next_date:
+        next_date = get_next_operational_draw_date(today_ist)
 
+    week_monday = next_date - timedelta(days=next_date.weekday())
     draw_days = [week_monday + timedelta(days=i) for i in range(6)]
 
     for target_d in draw_days:
@@ -612,6 +634,7 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
     first_day_pred = target_upcoming_pred
     output_payload = {
         "status": "success",
+        "target_date": first_day_pred.get("date", ""),
         "sync_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "last_developer_update": datetime.now().strftime("%Y-%m-%d"),
         "last_update_by_developer": datetime.now().strftime("%d %b %Y"),
@@ -670,6 +693,16 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
             "pass_probability": float(first_day_pred.get("otc_pass_prob", 0.0)),
         },
         "top_jodis": first_day_pred.get("top_jodis", []),
+        "holiday_notice": {
+            "is_active": True,
+            "holiday_name": "Diwali Holiday 2026",
+            "start_date": "2026-11-06",
+            "end_date": "2026-11-15",
+            "reopen_date": "2026-11-16",
+            "reopen_time": "3:45 PM IST",
+            "greeting": "DPBOSS की तरफ से दीपावली की हार्दिक शुभकामनाएंं!",
+            "notice_text": "☆ DIWALI HOLIDAY (NOTICE) ☆ DATE: 06/11/2026 से 15/11/2026 तक KALYAN, KALYAN NIGHT, MAIN BAZAR, MILAN DAY/NIGHT, TIME BAZAR, NIGHT TIME BAZAR, RAJDHANI NIGHT मार्केट में छुट्टियां रहेंगीं। आप सभी को और आपके पूरे परिवार को DPBOSS की तरफ से दीपावली की हार्दिक शुभकामनाएंं।"
+        },
         "timing_notice": {
             "effective_date": "2026-11-16",
             "open_time": "3:45 PM IST",
