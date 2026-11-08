@@ -2,7 +2,11 @@ name: Matka Auto Update
 
 on:
   schedule:
-    # Mon-Sat Daily Draw & Prediction Sync (7:00 PM IST = 1:30 PM UTC, 10:00 PM IST = 4:30 PM UTC)
+    # Mon-Sat Daily Draw & Prediction Sync:
+    # 12:30 UTC = 6:00 PM IST (Captures new 5:45 PM Close results effective 16 Nov)
+    # 13:30 UTC = 7:00 PM IST (Evening Calibration & Open Result)
+    # 16:30 UTC = 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)
+    - cron: '30 12 * * 1-6'
     - cron: '30 13 * * 1-6'
     - cron: '30 16 * * 1-6'
     # Sunday Weekly Rollover Bot: Updates dates & baseline predictions for next week (12:00 PM IST = 6:30 AM UTC)

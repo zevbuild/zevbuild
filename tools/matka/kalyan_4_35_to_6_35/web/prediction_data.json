@@ -28,9 +28,10 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "08 Nov 2026, 11:09 AM IST",
+    "last_sync_ist": "08 Nov 2026, 11:33 AM IST",
     "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
     "daily_cadence": [
+      "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
       "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
       "Sun 12:00 PM IST (Weekly Rollover & Hyperparameter Re-tune)"
@@ -4022,9 +4023,10 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "08 Nov 2026, 11:09 AM IST",
+      "last_sync_ist": "08 Nov 2026, 11:33 AM IST",
       "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
       "daily_cadence": [
+        "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
         "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
         "Sun 12:00 PM IST (Weekly Rollover & Hyperparameter Re-tune)"
@@ -6807,5 +6809,11 @@
         "97"
       ]
     }
-  ]
+  ],
+  "timing_notice": {
+    "effective_date": "2026-11-16",
+    "open_time": "3:45 PM IST",
+    "close_time": "5:45 PM IST",
+    "notice_text": "\u2606 16/11/2026 \u0938\u0947 \u0928\u0908 TIMING \u0932\u093e\u0917\u0942 \u0939\u094b\u0917\u0940 \u2014 Open: 3:45 PM IST | Close: 5:45 PM IST \u2606"
+  }
 }

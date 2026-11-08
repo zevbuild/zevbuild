@@ -66,21 +66,25 @@ def get_next_scheduled_sync(now_ist: datetime) -> str:
         if time_minutes < 12 * 60:
             return "Today at 12:00 PM IST (Weekly Rollover)"
         else:
-            return "Monday at 07:00 PM IST"
+            return "Monday at 06:00 PM IST"
     elif weekday == 5:  # Saturday
-        if time_minutes < 19 * 60:
+        if time_minutes < 18 * 60:
+            return "Today at 06:00 PM IST"
+        elif time_minutes < 19 * 60:
             return "Today at 07:00 PM IST"
         elif time_minutes < 22 * 60:
             return "Tonight at 10:00 PM IST"
         else:
             return "Sunday at 12:00 PM IST (Weekly Rollover)"
     else:  # Monday to Friday
-        if time_minutes < 19 * 60:
+        if time_minutes < 18 * 60:
+            return "Today at 06:00 PM IST"
+        elif time_minutes < 19 * 60:
             return "Today at 07:00 PM IST"
         elif time_minutes < 22 * 60:
             return "Tonight at 10:00 PM IST"
         else:
-            return "Tomorrow at 07:00 PM IST"
+            return "Tomorrow at 06:00 PM IST"
 
 
 def compute_last_week_performance(valid_df=None, html=""):
@@ -477,6 +481,7 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         "last_sync_ist": now_ist.strftime("%d %b %Y, %I:%M %p IST"),
         "next_sync_ist": next_sync_str,
         "daily_cadence": [
+            "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
             "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
             "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
             "Sun 12:00 PM IST (Weekly Rollover & Hyperparameter Re-tune)"
@@ -665,6 +670,12 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
             "pass_probability": float(first_day_pred.get("otc_pass_prob", 0.0)),
         },
         "top_jodis": first_day_pred.get("top_jodis", []),
+        "timing_notice": {
+            "effective_date": "2026-11-16",
+            "open_time": "3:45 PM IST",
+            "close_time": "5:45 PM IST",
+            "notice_text": "☆ 16/11/2026 से नई TIMING लागू होगी — Open: 3:45 PM IST | Close: 5:45 PM IST ☆"
+        }
     }
     # Persist updated prediction_data.json to all 3 locations
     pred_paths = [

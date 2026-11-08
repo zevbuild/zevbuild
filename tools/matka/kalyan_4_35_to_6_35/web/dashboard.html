@@ -255,6 +255,19 @@
       </div>
     </div>
 
+    <!-- ═══ Official Market Notice: New Timing Effective 16/11/2026 ═══ -->
+    <div id="market-timing-notice-bar" class="bg-gradient-to-r from-amber-950/50 via-purple-950/40 to-slate-950 border border-amber-500/40 rounded-xl px-3 py-2 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 text-xs shadow-sm">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="text-amber-400 font-bold shrink-0">☆</span>
+        <span class="text-[11px] text-amber-200 font-medium leading-tight">
+          <strong>Official Notice:</strong> 16/11/2026 से नई TIMING लागू होगी — Open: <strong class="text-white font-mono">3:45 PM IST</strong> | Close: <strong class="text-white font-mono">5:45 PM IST</strong>
+        </span>
+      </div>
+      <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded font-mono self-start sm:self-center font-bold whitespace-nowrap shrink-0">
+        New Timing 16 Nov
+      </span>
+    </div>
+
     <!-- ═══ Slim Compact Live IST Market Timing Bar (Automatic Small Size) ═══ -->
     <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl px-3 py-2 flex items-center justify-between gap-2 shadow-sm text-xs">
       <div class="flex items-center gap-2 min-w-0">
@@ -1164,6 +1177,8 @@
     const BASELINE_DATA = {
   "last_developer_update": "2026-11-08",
   "last_update_by_developer": "08 Nov 2026",
+  "target_date": "2026-11-09",
+  "last_updated": "2026-11-08",
   "latest_draw": {
     "date": "2026-11-05",
     "day": "Thu",
@@ -1189,9 +1204,10 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "08 Nov 2026, 10:35 AM IST",
+    "last_sync_ist": "08 Nov 2026, 11:09 AM IST",
     "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
     "daily_cadence": [
+      "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
       "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
       "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
       "Sun 12:00 PM IST (Weekly Rollover & Hyperparameter Re-tune)"
@@ -5183,9 +5199,10 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "08 Nov 2026, 10:35 AM IST",
+      "last_sync_ist": "08 Nov 2026, 11:09 AM IST",
       "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
       "daily_cadence": [
+        "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
         "Mon-Sat 07:00 PM IST (Open Result & Evening Calibration)",
         "Mon-Sat 10:00 PM IST (Full Jodi Settlement & Next-Day Prediction)",
         "Sun 12:00 PM IST (Weekly Rollover & Hyperparameter Re-tune)"
@@ -7969,8 +7986,12 @@
       ]
     }
   ],
-  "target_date": "2026-11-09",
-  "last_updated": "2026-11-08"
+  "timing_notice": {
+    "effective_date": "2026-11-16",
+    "open_time": "3:45 PM IST",
+    "close_time": "5:45 PM IST",
+    "notice_text": "\u2606 16/11/2026 \u0938\u0947 \u0928\u0908 TIMING \u0932\u093e\u0917\u0942 \u0939\u094b\u0917\u0940 \u2014 Open: 3:45 PM IST | Close: 5:45 PM IST \u2606"
+  }
 };
     const FALLBACK_HISTORY = [["2026-05-19", "Tue", 64, 6, 4], ["2026-05-20", "Wed", 31, 3, 1], ["2026-05-21", "Thu", 24, 2, 4], ["2026-05-22", "Fri", 0, 0, 0], ["2026-05-23", "Sat", 13, 1, 3], ["2026-05-25", "Mon", 72, 7, 2], ["2026-05-26", "Tue", 71, 7, 1], ["2026-05-27", "Wed", 21, 2, 1], ["2026-05-28", "Thu", 75, 7, 5], ["2026-05-29", "Fri", 1, 0, 1], ["2026-05-30", "Sat", 95, 9, 5], ["2026-06-01", "Mon", 2, 0, 2], ["2026-06-02", "Tue", 38, 3, 8], ["2026-06-03", "Wed", 31, 3, 1], ["2026-06-04", "Thu", 83, 8, 3], ["2026-06-05", "Fri", 80, 8, 0], ["2026-06-06", "Sat", 50, 5, 0], ["2026-06-08", "Mon", 92, 9, 2], ["2026-06-09", "Tue", 62, 6, 2], ["2026-06-10", "Wed", 95, 9, 5], ["2026-06-11", "Thu", 30, 3, 0], ["2026-06-12", "Fri", 78, 7, 8], ["2026-06-13", "Sat", 17, 1, 7], ["2026-06-15", "Mon", 50, 5, 0], ["2026-06-16", "Tue", 23, 2, 3], ["2026-06-17", "Wed", 2, 0, 2], ["2026-06-18", "Thu", 13, 1, 3], ["2026-06-19", "Fri", 96, 9, 6], ["2026-06-20", "Sat", 92, 9, 2], ["2026-06-22", "Mon", 8, 0, 8], ["2026-06-23", "Tue", 34, 3, 4], ["2026-06-24", "Wed", 57, 5, 7], ["2026-06-25", "Thu", 21, 2, 1], ["2026-06-26", "Fri", 93, 9, 3], ["2026-06-27", "Sat", 97, 9, 7], ["2026-06-29", "Mon", 34, 3, 4], ["2026-06-30", "Tue", 6, 0, 6], ["2026-07-01", "Wed", 94, 9, 4], ["2026-07-02", "Thu", 6, 0, 6], ["2026-07-03", "Fri", 3, 0, 3], ["2026-07-04", "Sat", 49, 4, 9], ["2026-07-06", "Mon", 95, 9, 5], ["2026-07-07", "Tue", 75, 7, 5], ["2026-07-08", "Wed", 69, 6, 9], ["2026-07-09", "Thu", 14, 1, 4], ["2026-07-10", "Fri", 64, 6, 4], ["2026-07-11", "Sat", 96, 9, 6], ["2026-07-13", "Mon", 74, 7, 4], ["2026-07-14", "Tue", 1, 0, 1], ["2026-07-15", "Wed", 14, 1, 4], ["2026-07-16", "Thu", 45, 4, 5], ["2026-07-17", "Fri", 81, 8, 1], ["2026-07-18", "Sat", 62, 6, 2], ["2026-07-20", "Mon", 31, 3, 1], ["2026-07-21", "Tue", 31, 3, 1], ["2026-07-22", "Wed", 78, 7, 8], ["2026-07-23", "Thu", 0, 0, 0], ["2026-07-24", "Fri", 4, 0, 4], ["2026-07-25", "Sat", 74, 7, 4], ["2026-07-27", "Mon", 26, 2, 6], ["2026-07-28", "Tue", 26, 2, 6], ["2026-07-29", "Wed", 45, 4, 5], ["2026-07-30", "Thu", 28, 2, 8], ["2026-07-31", "Fri", 23, 2, 3], ["2026-08-01", "Sat", 32, 3, 2], ["2026-08-03", "Mon", 99, 9, 9], ["2026-08-04", "Tue", 65, 6, 5], ["2026-08-05", "Wed", 66, 6, 6], ["2026-08-06", "Thu", 89, 8, 9], ["2026-08-07", "Fri", 59, 5, 9], ["2026-08-08", "Sat", 67, 6, 7], ["2026-08-10", "Mon", 26, 2, 6], ["2026-08-11", "Tue", 81, 8, 1], ["2026-08-12", "Wed", 38, 3, 8], ["2026-08-13", "Thu", 37, 3, 7], ["2026-08-14", "Fri", 26, 2, 6], ["2026-08-17", "Mon", 33, 3, 3], ["2026-08-18", "Tue", 20, 2, 0], ["2026-08-19", "Wed", 73, 7, 3], ["2026-08-20", "Thu", 88, 8, 8], ["2026-08-21", "Fri", 99, 9, 9], ["2026-08-22", "Sat", 31, 3, 1], ["2026-08-24", "Mon", 7, 0, 7], ["2026-08-25", "Tue", 17, 1, 7], ["2026-08-26", "Wed", 33, 3, 3], ["2026-08-27", "Thu", 92, 9, 2], ["2026-08-28", "Fri", 32, 3, 2], ["2026-08-29", "Sat", 50, 5, 0], ["2026-08-31", "Mon", 69, 6, 9], ["2026-09-01", "Tue", 5, 0, 5], ["2026-09-02", "Wed", 18, 1, 8], ["2026-09-03", "Thu", 65, 6, 5], ["2026-09-04", "Fri", 70, 7, 0], ["2026-09-05", "Sat", 63, 6, 3], ["2026-09-07", "Mon", 96, 9, 6], ["2026-09-08", "Tue", 76, 7, 6], ["2026-09-09", "Wed", 27, 2, 7], ["2026-09-10", "Thu", 15, 1, 5], ["2026-09-11", "Fri", 59, 5, 9], ["2026-09-12", "Sat", 15, 1, 5]];
     let HISTORY_RECORDS = [];
@@ -8266,9 +8287,14 @@
         CURRENT_LATEST_DRAW.date === todayDateStr && 
         CURRENT_LATEST_DRAW.status === 'FULL_JODI_DECLARED';
 
-      // Kalyan Close draw is at 6:35 PM IST (18:35 = 1115 minutes)
-      // When today's full draw is declared OR current time is past 18:40 IST (1120 min), advance to tomorrow's prediction
-      if (isTodayDrawCompleted || istMinutes >= 1120) {
+      // Dynamic market close timing:
+      // Starting 16/11/2026, close draw moves to 5:45 PM IST (17:45 = 1065 min, cutoff 1070 min).
+      // Prior to 16/11/2026, close draw is at 6:35 PM IST (18:35 = 1115 min, cutoff 1120 min).
+      const istDateNum = ist.getFullYear() * 10000 + (ist.getMonth() + 1) * 100 + ist.getDate();
+      const isNewTiming = (istDateNum >= 20261116);
+      const closeCutoffMinutes = isNewTiming ? 1070 : 1120; // 5:50 PM or 6:40 PM IST
+
+      if (isTodayDrawCompleted || istMinutes >= closeCutoffMinutes) {
         return nextDayMap[todayDay] || "Mon";
       }
 
@@ -8544,7 +8570,10 @@
           badgeHtml = `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30 animate-pulse">
             <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Today Live
           </span>`;
-          resultHtml = `<div class="text-xs sm:text-sm font-bold text-slate-300">Draw 4:35 PM</div>`;
+          const dateNum = parseInt(dateStr.replace(/-/g, ''), 10);
+          const isDayNewTiming = (dateNum >= 20261116);
+          const drawTimeText = isDayNewTiming ? '3:45 PM' : '4:35 PM';
+          resultHtml = `<div class="text-xs sm:text-sm font-bold text-slate-300">Draw ${drawTimeText}</div>`;
           pattiHtml = `<div class="text-[10px] text-slate-400 truncate">Pick: <strong class="text-indigo-300">${dayData.top_pick}</strong></div>`;
         } else {
           badgeHtml = `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-800 text-slate-400 border border-slate-700">Upcoming</span>`;
@@ -8640,12 +8669,16 @@
 
       // Render Latest Draw banner
       if (CURRENT_LATEST_DRAW) {
+        const ist = getISTDate();
+        const istDateNum = ist.getFullYear() * 10000 + (ist.getMonth() + 1) * 100 + ist.getDate();
+        const isNewTiming = (istDateNum >= 20261116);
+        const openTimeText = isNewTiming ? "3:45 PM" : "4:35 PM";
         if (CURRENT_LATEST_DRAW.status === 'OPEN_DECLARED') {
           document.getElementById('latest-jodi').textContent = CURRENT_LATEST_DRAW.jodi || `${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open}*`;
           const mLatest = document.getElementById('mobile-latest-draw');
           if (mLatest) mLatest.textContent = CURRENT_LATEST_DRAW.jodi || `${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open}*`;
           document.getElementById('latest-patti').textContent = `Live Open: ${CURRENT_LATEST_DRAW.openLive || CURRENT_LATEST_DRAW.open} (Patti: ${CURRENT_LATEST_DRAW.openLivePatti || CURRENT_LATEST_DRAW.openPatti || '---'}) - Close Pending`;
-          document.getElementById('draw-status-badge').textContent = "Open Declared (4:35 PM)";
+          document.getElementById('draw-status-badge').textContent = `Open Declared (${openTimeText})`;
           document.getElementById('draw-status-badge').className = "inline-block px-2.5 py-1 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30 font-bold text-xs animate-pulse";
           document.getElementById('latest-date').textContent = `${CURRENT_LATEST_DRAW.day}, ${CURRENT_LATEST_DRAW.date}`;
         } else {
@@ -9389,8 +9422,22 @@
       const seconds = ist.getSeconds();
       const currentTotalSeconds = hours * 3600 + minutes * 60 + seconds;
 
-      const openSeconds = 16 * 3600 + 35 * 60;   // 16:35:00 (4:35 PM)
-      const closeSeconds = 18 * 3600 + 35 * 60;  // 18:35:00 (6:35 PM)
+      // Dynamic Market Timing Engine:
+      // Effective 16/11/2026, official Kalyan timing changes:
+      // Open: 3:45 PM (15:45), Close: 5:45 PM (17:45).
+      // Prior to 16/11/2026: Open: 4:35 PM (16:35), Close: 6:35 PM (18:35).
+      const istDateNum = ist.getFullYear() * 10000 + (ist.getMonth() + 1) * 100 + ist.getDate();
+      const isNewTiming = (istDateNum >= 20261116);
+
+      const openHour = isNewTiming ? 15 : 16;
+      const openMin = isNewTiming ? 45 : 35;
+      const closeHour = isNewTiming ? 17 : 18;
+      const closeMin = isNewTiming ? 45 : 35;
+
+      const openSeconds = openHour * 3600 + openMin * 60;
+      const closeSeconds = closeHour * 3600 + closeMin * 60;
+      const openTimeLabel = isNewTiming ? "3:45 PM" : "4:35 PM";
+      const closeTimeLabel = isNewTiming ? "5:45 PM" : "6:35 PM";
 
       let phase = '';
       let targetDiff = 0;
@@ -9399,20 +9446,20 @@
 
       if (day === 0) {
         // Sunday Market Recess
-        phase = "Sunday Market Recess · Next Draw Monday 4:35 PM IST";
+        phase = `Sunday Market Recess · Next Draw Monday ${openTimeLabel} IST`;
         targetDiff = (86400 - currentTotalSeconds) + openSeconds;
         statusBadge = "WEEKEND RECESS";
         badgeColor = "bg-slate-800 text-slate-400 border-slate-700";
       } else if (currentTotalSeconds < openSeconds) {
         // Phase 1: Pre-Open Countdown
         targetDiff = openSeconds - currentTotalSeconds;
-        phase = "Countdown to Kalyan Open (4:35 PM IST)";
+        phase = `Countdown to Kalyan Open (${openTimeLabel} IST)`;
         statusBadge = "PRE-OPEN WINDOW";
         badgeColor = "bg-amber-500/15 text-amber-300 border-amber-500/30";
       } else if (currentTotalSeconds < closeSeconds) {
         // Phase 2: Live Draw Window (Open Declared, Waiting for Close)
         targetDiff = closeSeconds - currentTotalSeconds;
-        phase = "Open Declared! Countdown to Kalyan Close (6:35 PM IST)";
+        phase = `Open Declared! Countdown to Kalyan Close (${closeTimeLabel} IST)`;
         statusBadge = "LIVE DRAW ACTIVE";
         badgeColor = "bg-emerald-500/20 text-emerald-300 border-emerald-500/30 animate-pulse";
       } else {
@@ -9420,10 +9467,10 @@
         const isSaturday = (day === 6);
         if (isSaturday) {
           targetDiff = (86400 - currentTotalSeconds) + 86400 + openSeconds;
-          phase = "Draw Closed · Next Draw Monday 4:35 PM IST";
+          phase = `Draw Closed · Next Draw Monday ${openTimeLabel} IST`;
         } else {
           targetDiff = (86400 - currentTotalSeconds) + openSeconds;
-          phase = "Draw Settled · Next Draw Tomorrow 4:35 PM IST";
+          phase = `Draw Settled · Next Draw Tomorrow ${openTimeLabel} IST`;
         }
         statusBadge = "MARKET CLOSED";
         badgeColor = "bg-purple-500/15 text-purple-300 border-purple-500/30";
