@@ -71,5 +71,5 @@ jobs:
             fi
             git pull --rebase origin main
             git push origin main
-            git push origin main:matka
+            git push origin main:matka || echo "Notice: matka branch could not be fast-forwarded from main."
           fi
