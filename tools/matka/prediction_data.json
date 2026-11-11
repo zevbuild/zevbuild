@@ -1,8 +1,8 @@
 {
-  "last_developer_update": "2026-11-10",
-  "last_update_by_developer": "10 Nov 2026",
+  "last_developer_update": "2026-11-11",
+  "last_update_by_developer": "11 Nov 2026",
   "target_date": "2026-11-16",
-  "last_updated": "2026-11-10",
+  "last_updated": "2026-11-11",
   "latest_draw": {
     "date": "2026-11-05",
     "day": "Thu",
@@ -28,7 +28,7 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "11 Nov 2026, 03:24 AM IST",
+    "last_sync_ist": "11 Nov 2026, 11:27 PM IST",
     "next_sync_ist": "Market Reopens Monday 16 Nov at 03:45 PM IST (Diwali Recess)",
     "daily_cadence": [
       "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
@@ -4024,7 +4024,7 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "11 Nov 2026, 03:24 AM IST",
+      "last_sync_ist": "11 Nov 2026, 11:27 PM IST",
       "next_sync_ist": "Market Reopens Monday 16 Nov at 03:45 PM IST (Diwali Recess)",
       "daily_cadence": [
         "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
