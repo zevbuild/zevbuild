@@ -699,7 +699,7 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         },
         "top_jodis": first_day_pred.get("top_jodis", []),
         "holiday_notice": {
-            "is_active": True,
+            "is_active": bool(now_ist.date() <= date(2026, 11, 15)),
             "holiday_name": "Diwali Holiday 2026",
             "start_date": "2026-11-06",
             "end_date": "2026-11-15",

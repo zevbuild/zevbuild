@@ -9573,6 +9573,32 @@
         const istTimeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         istLiveEl.textContent = istTimeStr;
       }
+
+      // Dynamic Holiday / New Timing Banner Transformation (Automatic Reopening on 16/11/2026)
+      const holidayBar = document.getElementById('market-holiday-notice-bar');
+      if (holidayBar && istDateNum >= 20261116) {
+        if (!holidayBar.dataset.reopened) {
+          holidayBar.dataset.reopened = "true";
+          holidayBar.className = "bg-gradient-to-r from-emerald-950/80 via-teal-950/50 to-slate-950 border border-emerald-500/50 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-lg";
+          holidayBar.innerHTML = `
+            <div class="flex items-start sm:items-center gap-2.5 min-w-0">
+              <span class="text-emerald-400 text-lg shrink-0">⚡</span>
+              <div class="min-w-0">
+                <div class="text-xs text-emerald-200 font-bold leading-tight flex items-center gap-1.5 flex-wrap">
+                  <span>☆ 16/11/2026 से नई TIMING लागू — KALYAN MARKET REOPENED ☆</span>
+                  <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono font-bold uppercase">बाजार खुला</span>
+                </div>
+                <div class="text-[11px] text-emerald-100/90 leading-snug mt-1">
+                  Kalyan मार्केट अब नई आधिकारिक टाइमिंग पर संचालित है: Open <strong class="text-white font-mono">3:45 PM IST</strong> | Close <strong class="text-white font-mono">5:45 PM IST</strong>. DPBOSS लाइव रिजल्ट्स स्वचालित रूप से सिंक होंगे।
+                </div>
+              </div>
+            </div>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg font-mono font-bold whitespace-nowrap shrink-0 self-start sm:self-center">
+              New Timing Active · Mon-Sat
+            </span>
+          `;
+        }
+      }
     }
 
     // Clean up timer on window unload
