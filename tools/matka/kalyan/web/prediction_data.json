@@ -6827,5 +6827,16 @@
     "open_time": "3:45 PM IST",
     "close_time": "5:45 PM IST",
     "notice_text": "☆ NEW OFFICIAL TIMINGS EFFECTIVE 16/11/2026 — Open: 3:45 PM IST | Close: 5:45 PM IST ☆"
+  },
+  "custom_notice": {
+    "is_active": true,
+    "icon": "🪔",
+    "headline": "☆ DIWALI HOLIDAY NOTICE (06/11/2026 TO 15/11/2026) ☆",
+    "badge_text": "MARKET CLOSED",
+    "badge_color": "red",
+    "subtext": "Kalyan Market reopens on Monday <strong class=\"text-white font-mono\">16/11/2026</strong> under new official timings: Open <strong class=\"text-amber-300 font-mono\">3:45 PM IST</strong> | Close <strong class=\"text-amber-300 font-mono\">5:45 PM IST</strong>. Warm Diwali festive greetings!",
+    "phase_text": "Diwali Holiday Recess (06/11 - 15/11) · Next Draw Monday 16 Nov, 3:45 PM IST",
+    "countdown_label": "DIWALI HOLIDAY",
+    "countdown_target": "2026-11-16T15:45:00+05:30"
   }
 }
