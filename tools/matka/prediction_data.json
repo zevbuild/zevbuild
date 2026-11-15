@@ -28,7 +28,7 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "15 Nov 2026, 01:51 PM IST",
+    "last_sync_ist": "15 Nov 2026, 03:55 PM IST",
     "next_sync_ist": "Market Reopens Monday 16 Nov at 03:45 PM IST (Diwali Recess)",
     "daily_cadence": [
       "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
@@ -4024,7 +4024,7 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "15 Nov 2026, 01:51 PM IST",
+      "last_sync_ist": "15 Nov 2026, 03:55 PM IST",
       "next_sync_ist": "Market Reopens Monday 16 Nov at 03:45 PM IST (Diwali Recess)",
       "daily_cadence": [
         "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
@@ -6819,24 +6819,13 @@
     "end_date": "2026-11-15",
     "reopen_date": "2026-11-16",
     "reopen_time": "3:45 PM IST",
-    "greeting": "DPBOSS की तरफ से दीपावली की हार्दिक शुभकामनाएंं!",
-    "notice_text": "☆ DIWALI HOLIDAY (NOTICE) ☆ DATE: 06/11/2026 से 15/11/2026 तक KALYAN, KALYAN NIGHT, MAIN BAZAR, MILAN DAY/NIGHT, TIME BAZAR, NIGHT TIME BAZAR, RAJDHANI NIGHT मार्केट में छुट्टियां रहेंगीं। आप सभी को और आपके पूरे परिवार को DPBOSS की तरफ से दीपावली की हार्दिक शुभकामनाएंं।"
+    "greeting": "Warm festive Diwali greetings!",
+    "notice_text": "☆ DIWALI HOLIDAY (NOTICE) ☆ DATE: 06/11/2026 to 15/11/2026. Kalyan markets will observe scheduled holiday recess. Markets reopen Monday 16 Nov 2026 under new timings."
   },
   "timing_notice": {
     "effective_date": "2026-11-16",
     "open_time": "3:45 PM IST",
     "close_time": "5:45 PM IST",
-    "notice_text": "☆ 16/11/2026 से नई TIMING लागू होगी — Open: 3:45 PM IST | Close: 5:45 PM IST ☆"
-  },
-  "custom_notice": {
-    "is_active": true,
-    "icon": "🪔",
-    "headline": "☆ DIWALI HOLIDAY NOTICE (06/11/2026 से 15/11/2026 तक) ☆",
-    "badge_text": "बाजार बंद",
-    "badge_color": "red",
-    "subtext": "Kalyan मार्केट सोमवार 16/11/2026 को नई टाइमिंग पर खुलेगा: Open 3:45 PM | Close 5:45 PM. DPBOSS की तरफ से दीपावली की शुभकामनाएं!",
-    "phase_text": "Diwali Holiday Recess (06/11 - 15/11) · Next Draw Monday 16 Nov, 3:45 PM IST",
-    "countdown_label": "DIWALI HOLIDAY",
-    "countdown_target": "2026-11-16T15:45:00+05:30"
+    "notice_text": "☆ NEW OFFICIAL TIMINGS EFFECTIVE 16/11/2026 — Open: 3:45 PM IST | Close: 5:45 PM IST ☆"
   }
 }

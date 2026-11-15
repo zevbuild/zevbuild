@@ -704,14 +704,14 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
             "end_date": "2026-11-15",
             "reopen_date": "2026-11-16",
             "reopen_time": "3:45 PM IST",
-            "greeting": "DPBOSS की तरफ से दीपावली की हार्दिक शुभकामनाएंं!",
-            "notice_text": "☆ DIWALI HOLIDAY (NOTICE) ☆ DATE: 06/11/2026 से 15/11/2026 तक KALYAN, KALYAN NIGHT, MAIN BAZAR, MILAN DAY/NIGHT, TIME BAZAR, NIGHT TIME BAZAR, RAJDHANI NIGHT मार्केट में छुट्टियां रहेंगीं। आप सभी को और आपके पूरे परिवार को DPBOSS की तरफ से दीपावली की हार्दिक शुभकामनाएंं।"
+            "greeting": "Warm festive Diwali greetings!",
+            "notice_text": "☆ DIWALI HOLIDAY (NOTICE) ☆ DATE: 06/11/2026 to 15/11/2026. Kalyan markets observe scheduled holiday recess. Markets reopen Monday 16 Nov 2026 under new official timings. Warm Diwali festive greetings!"
         },
         "timing_notice": {
             "effective_date": "2026-11-16",
             "open_time": "3:45 PM IST",
             "close_time": "5:45 PM IST",
-            "notice_text": "☆ 16/11/2026 से नई TIMING लागू होगी — Open: 3:45 PM IST | Close: 5:45 PM IST ☆"
+            "notice_text": "☆ NEW OFFICIAL TIMINGS EFFECTIVE 16/11/2026 — Open: 3:45 PM IST | Close: 5:45 PM IST ☆"
         }
     }
     # Persist updated prediction_data.json to canonical locations
