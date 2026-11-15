@@ -255,43 +255,45 @@
       </div>
     </div>
 
-    <!-- ═══ Official Diwali Holiday & Market Schedule Notice ═══ -->
-    <div id="market-holiday-notice-bar" class="bg-gradient-to-r from-amber-950/80 via-yellow-950/50 to-slate-950 border border-amber-500/50 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-lg">
-      <div class="flex items-start sm:items-center gap-2.5 min-w-0">
-        <span class="text-amber-400 text-lg shrink-0">🪔</span>
-        <div class="min-w-0">
-          <div class="text-xs text-amber-200 font-bold leading-tight flex items-center gap-1.5 flex-wrap">
-            <span>☆ DIWALI HOLIDAY NOTICE (06/11/2026 से 15/11/2026 तक) ☆</span>
-            <span class="text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-1.5 py-0.2 rounded font-mono font-bold uppercase">बाजार बंद</span>
+    <!-- ═══ Unified Hero Market Status & Timing Bar ═══ -->
+    <div id="market-holiday-notice-bar" class="bg-gradient-to-r from-amber-950/80 via-yellow-950/40 to-slate-950 border border-amber-500/50 rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 transition-all">
+      <div class="flex items-start sm:items-center gap-3 min-w-0">
+        <span id="market-status-icon" class="text-2xl p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 shrink-0">🪔</span>
+        <div class="min-w-0 space-y-1">
+          <div class="text-xs text-amber-200 font-bold leading-tight flex items-center gap-2 flex-wrap">
+            <span id="market-status-headline">☆ DIWALI HOLIDAY NOTICE (06/11/2026 से 15/11/2026 तक) ☆</span>
+            <span id="market-status-pill" class="text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase">बाजार बंद</span>
           </div>
-          <div class="text-[11px] text-amber-100/90 leading-snug mt-1">
-            Kalyan मार्केट सोमवार <strong class="text-white font-mono">16/11/2026</strong> को नई टाइमिंग पर खुलेगा: Open <strong class="text-amber-300 font-mono">3:45 PM</strong> | Close <strong class="text-amber-300 font-mono">5:45 PM</strong>. DPBOSS की तरफ से दीपावली की हार्दिक शुभकामनाएं!
+          <div id="market-status-subtext" class="text-[11px] text-amber-100/90 leading-snug">
+            Kalyan मार्केट सोमवार <strong class="text-white font-mono">16/11/2026</strong> को नई टाइमिंग पर खुलेगा: Open <strong class="text-amber-300 font-mono">3:45 PM</strong> | Close <strong class="text-amber-300 font-mono">5:45 PM</strong>. DPBOSS की तरफ से दीपावली की शुभकामनाएं!
+          </div>
+          <div class="flex items-center gap-2 pt-0.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+            <span id="market-countdown-phase" class="text-[11px] text-slate-300 font-medium truncate">
+              Diwali Holiday Recess (06/11 - 15/11) · Next Draw Monday 16 Nov, 3:45 PM IST
+            </span>
           </div>
         </div>
       </div>
-      <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg font-mono font-bold whitespace-nowrap shrink-0 self-start sm:self-center">
-        Diwali Recess · Reopens 16 Nov
-      </span>
-    </div>
 
-    <!-- ═══ Slim Compact Live IST Market Timing Bar (Automatic Small Size) ═══ -->
-    <div class="bg-slate-900/90 border border-purple-500/30 rounded-xl px-3 py-2 flex items-center justify-between gap-2 shadow-sm text-xs">
-      <div class="flex items-center gap-2 min-w-0">
-        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse shrink-0"></span>
-        <span id="market-countdown-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border bg-amber-500/20 text-amber-300 border-amber-500/40 shrink-0">
-          DIWALI RECESS
-        </span>
-        <span id="market-countdown-phase" class="text-[11px] text-slate-300 font-medium truncate">
-          Diwali Holiday Recess (06/11 - 15/11) · Next Draw Monday 16 Nov 3:45 PM IST
-        </span>
-      </div>
-
-      <div class="flex items-center gap-2 font-mono shrink-0">
-        <span class="text-[10px] text-slate-400 hidden sm:inline">Countdown:</span>
-        <span id="market-countdown-time" class="text-xs sm:text-sm font-black text-purple-300 tracking-wider bg-slate-950 px-2.5 py-1 rounded-lg border border-purple-500/30 shadow-inner">
-          --:--:--
-        </span>
-        <span id="ist-live-clock" class="text-[10px] text-slate-400 hidden md:inline">--:--:-- IST</span>
+      <div class="flex items-center justify-between lg:justify-end gap-3 pt-2 lg:pt-0 border-t lg:border-t-0 border-amber-500/20 shrink-0">
+        <div class="flex items-center gap-2">
+          <span id="market-countdown-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border bg-amber-500/20 text-amber-300 border-amber-500/40">
+            DIWALI RECESS
+          </span>
+        </div>
+        <div class="flex items-center gap-2 font-mono">
+          <div class="flex flex-col items-end">
+            <span class="text-[9px] uppercase tracking-wider text-slate-400">Countdown:</span>
+            <span id="market-countdown-time" class="text-sm sm:text-base font-black text-purple-200 tracking-wider bg-slate-950 px-3 py-1 rounded-xl border border-purple-500/40 shadow-inner">
+              --:--:--
+            </span>
+          </div>
+          <div class="hidden sm:flex flex-col items-end pl-2 border-l border-slate-800">
+            <span class="text-[9px] uppercase tracking-wider text-slate-400">IST Live:</span>
+            <span id="ist-live-clock" class="text-[11px] font-bold text-slate-300">--:--:--</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -407,19 +409,24 @@
 
 
 
-    <!-- Live Live Debug Console Drawer -->
-    <div class="hidden md:block bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-mono space-y-1">
-      <div class="flex items-center justify-between text-slate-400 text-[11px]">
-        <span class="font-bold text-indigo-400 flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-          Live Pipeline Pipeline Audit
-        </span>
-        <span id="pipeline-status-text" class="text-slate-400">Idle (Next auto-check in 45s)</span>
-      </div>
-      <div id="live-console-log" class="text-[11px] text-slate-400 truncate">
+    <!-- Live Pipeline Audit Drawer (Collapsible) -->
+    <details class="hidden md:block group bg-slate-950/70 border border-slate-800/80 hover:border-slate-700/80 rounded-xl p-2.5 text-xs font-mono transition-all">
+      <summary class="flex items-center justify-between cursor-pointer select-none text-slate-400 text-[11px]">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+          <span class="font-bold text-indigo-300 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Live Pipeline Audit
+          </span>
+          <span class="text-slate-600">|</span>
+          <span id="pipeline-status-text" class="text-slate-400 text-[10px]">Idle (Next auto-check in 45s)</span>
+        </div>
+        <span class="text-[10px] text-indigo-400 group-open:rotate-180 transition-transform">▼ Log Trace</span>
+      </summary>
+      <div id="live-console-log" class="mt-2 pt-2 border-t border-slate-800/80 text-[11px] text-slate-400 font-mono">
         [INITIALIZED] Ready for live polling. Check Chrome DevTools console (F12) for detailed traces.
       </div>
-    </div>
+    </details>
 
     <!-- 30-Day Historical Accuracy & Telemetry Strip -->
     <div id="lastweek" class="hidden md:flex bg-gradient-to-r from-emerald-950/30 via-indigo-950/20 to-slate-950 border border-emerald-500/20 rounded-xl p-3 flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs scroll-mt-24">
@@ -523,7 +530,13 @@
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
             4-OTC Matrix
           </span>
-          <span id="spotlight-otc-prob" class="text-xs font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">68.8% Coverage</span>
+          <div class="flex items-center gap-2">
+            <span id="spotlight-otc-prob" class="text-xs font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">68.8% Coverage</span>
+            <button onclick="copyOTCNumbers()" id="btn-copy-otc-desktop" class="py-1 px-2.5 bg-amber-500/20 hover:bg-amber-500/30 active:scale-95 text-amber-200 border border-amber-500/40 font-bold text-[10px] rounded-lg transition-all flex items-center gap-1 shadow-sm">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              <span id="btn-copy-text-desktop">Copy OTC</span>
+            </button>
+          </div>
         </div>
         <div class="flex items-center gap-2 mt-2">
           <div id="spotlight-otc-digits" class="flex gap-1.5 font-mono">
@@ -793,7 +806,7 @@
     </div>
 
     <!-- Risk & Bankroll Management Card -->
-    <footer class="bg-amber-950/20 border border-amber-500/20 rounded-2xl p-4 text-xs text-slate-400 space-y-2">
+    <footer class="mb-16 sm:mb-0 bg-amber-950/20 border border-amber-500/20 rounded-2xl p-4 text-xs text-slate-400 space-y-2">
       <div class="flex items-center gap-2 font-bold text-amber-400">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
         <span>Mathematical Guardrail & Risk Management Notice</span>
@@ -8083,12 +8096,16 @@
 
     async function fetchLiveDrawData(syncId) {
       const timestamp = Date.now();
-      const endpoints = [
+      const isLocalHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+      const endpoints = isLocalHost ? [
+        // Local snapshot fallback (no Cloudflare Pages worker on static local server)
+        `prediction_data.json?_t=${timestamp}`,
+      ] : [
         // 1. Cloudflare Pages Function (same-origin, zero CORS, edge-executed)
         `/api/live-kalyan?_t=${timestamp}`,
         // 2. Cloudflare Pages Function alias
         `/api/fetch-and-predict?_t=${timestamp}`,
-        // 3. Local snapshot fallback
+        // 3. Static snapshot fallback
         `prediction_data.json?_t=${timestamp}`,
       ];
 
@@ -9411,6 +9428,11 @@
         btnTextMob.textContent = "Copied!";
         setTimeout(() => btnTextMob.textContent = "Copy 4-Ank OTC", 2000);
       }
+      const btnTextDesk = document.getElementById('btn-copy-text-desktop');
+      if (btnTextDesk) {
+        btnTextDesk.textContent = "Copied!";
+        setTimeout(() => btnTextDesk.textContent = "Copy OTC", 2000);
+      }
       const btnText = document.getElementById('btn-copy-text');
       if (btnText) {
         btnText.textContent = "Copied!";
@@ -9579,24 +9601,23 @@
       if (holidayBar && istDateNum >= 20261116) {
         if (!holidayBar.dataset.reopened) {
           holidayBar.dataset.reopened = "true";
-          holidayBar.className = "bg-gradient-to-r from-emerald-950/80 via-teal-950/50 to-slate-950 border border-emerald-500/50 rounded-xl px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-lg";
-          holidayBar.innerHTML = `
-            <div class="flex items-start sm:items-center gap-2.5 min-w-0">
-              <span class="text-emerald-400 text-lg shrink-0">⚡</span>
-              <div class="min-w-0">
-                <div class="text-xs text-emerald-200 font-bold leading-tight flex items-center gap-1.5 flex-wrap">
-                  <span>☆ 16/11/2026 से नई TIMING लागू — KALYAN MARKET REOPENED ☆</span>
-                  <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono font-bold uppercase">बाजार खुला</span>
-                </div>
-                <div class="text-[11px] text-emerald-100/90 leading-snug mt-1">
-                  Kalyan मार्केट अब नई आधिकारिक टाइमिंग पर संचालित है: Open <strong class="text-white font-mono">3:45 PM IST</strong> | Close <strong class="text-white font-mono">5:45 PM IST</strong>. DPBOSS लाइव रिजल्ट्स स्वचालित रूप से सिंक होंगे।
-                </div>
-              </div>
-            </div>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg font-mono font-bold whitespace-nowrap shrink-0 self-start sm:self-center">
-              New Timing Active · Mon-Sat
-            </span>
-          `;
+          holidayBar.className = "bg-gradient-to-r from-emerald-950/80 via-teal-950/40 to-slate-950 border border-emerald-500/50 rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 transition-all";
+          const iconEl = document.getElementById('market-status-icon');
+          if (iconEl) {
+            iconEl.textContent = '⚡';
+            iconEl.className = 'text-2xl p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 shrink-0';
+          }
+          const hlEl = document.getElementById('market-status-headline');
+          if (hlEl) hlEl.textContent = '☆ 16/11/2026 से नई TIMING लागू — KALYAN MARKET REOPENED ☆';
+          const pillEl = document.getElementById('market-status-pill');
+          if (pillEl) {
+            pillEl.textContent = 'बाजार खुला';
+            pillEl.className = 'text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+          }
+          const subEl = document.getElementById('market-status-subtext');
+          if (subEl) {
+            subEl.innerHTML = 'Kalyan मार्केट अब नई आधिकारिक टाइमिंग पर संचालित है: Open <strong class="text-white font-mono">3:45 PM IST</strong> | Close <strong class="text-white font-mono">5:45 PM IST</strong>. DPBOSS लाइव रिजल्ट्स स्वचालित रूप से सिंक होंगे।';
+          }
         }
       }
     }
