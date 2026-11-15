@@ -60,3 +60,7 @@ audit_summary.md
 
 # Agent Internal Workspaces
 .agents/
+
+# Offline Local Management Console (Local Desktop Only - Never Pushed to GitHub)
+tools/matka/manager/
+start_manager.bat
