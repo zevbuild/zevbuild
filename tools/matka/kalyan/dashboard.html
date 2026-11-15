@@ -8135,6 +8135,9 @@
           const contentType = res.headers.get('content-type') || '';
           if (contentType.includes('application/json') || ep.includes('.json')) {
             const json = await res.json();
+            if (json.custom_notice) {
+              applyCustomNotice(json.custom_notice);
+            }
             if (json.draw && json.draw.status !== 'UNKNOWN') {
               if (json.draw.status === 'MARKET_HOLIDAY') {
                 return {
@@ -9691,6 +9694,49 @@
       }
     }
 
+    function applyCustomNotice(notice) {
+      if (!notice) return;
+      window.CUSTOM_NOTICE = notice;
+      const bar = document.getElementById('market-holiday-notice-bar');
+      if (!bar) return;
+
+      if (!notice.is_active) {
+        bar.style.display = 'none';
+        return;
+      }
+      bar.style.display = '';
+
+      const iconEl = document.getElementById('market-status-icon');
+      if (iconEl && notice.icon) iconEl.textContent = notice.icon;
+
+      const hlEl = document.getElementById('market-status-headline');
+      if (hlEl && notice.headline) hlEl.textContent = notice.headline;
+
+      const pillEl = document.getElementById('market-status-pill');
+      if (pillEl && notice.badge_text) {
+        pillEl.textContent = notice.badge_text;
+        const col = notice.badge_color || 'red';
+        if (col === 'emerald' || col === 'green') {
+          pillEl.className = 'text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+        } else if (col === 'amber' || col === 'yellow') {
+          pillEl.className = 'text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+        } else if (col === 'purple') {
+          pillEl.className = 'text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+        } else {
+          pillEl.className = 'text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+        }
+      }
+
+      const subEl = document.getElementById('market-status-subtext');
+      if (subEl && notice.subtext) subEl.innerHTML = notice.subtext;
+
+      const phaseEl = document.getElementById('market-countdown-phase') || document.getElementById('market-phase-text');
+      if (phaseEl && notice.phase_text) phaseEl.textContent = notice.phase_text;
+
+      const lblEl = document.getElementById('countdown-label');
+      if (lblEl && notice.countdown_label) lblEl.textContent = notice.countdown_label;
+    }
+
     // Clean up timer on window unload
     window.addEventListener('beforeunload', () => {
       if (autoSyncTimerId) {
@@ -9739,6 +9785,9 @@
             if (hDate) hDate.textContent = devDate;
             const cDate = document.getElementById('dev-card-date');
             if (cDate) cDate.textContent = devDate;
+          }
+          if (pData.custom_notice) {
+            applyCustomNotice(pData.custom_notice);
           }
           console.log('[BOOT] Loaded fresh prediction_data.json snapshot.');
         }

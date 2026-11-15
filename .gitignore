@@ -64,3 +64,7 @@ audit_summary.md
 # Offline Local Management Console (Local Desktop Only - Never Pushed to GitHub)
 tools/matka/manager/
 start_manager.bat
+
+# Local scratch scripts and site notices cache
+scratch/
+tools/matka/site_notices.json

@@ -200,6 +200,22 @@
       </p>
     </div>
 
+        <!-- ═══ Dynamic Site Notice & Announcement Banner ═══ -->
+    <div id="hub-notice-banner" class="hidden glass-card rounded-2xl p-4 sm:p-5 border border-amber-500/40 bg-gradient-to-r from-amber-950/70 via-slate-900/90 to-purple-950/50 shadow-xl transition-all">
+      <div class="flex items-start sm:items-center gap-3.5">
+        <span id="hub-notice-icon" class="text-2xl p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 shrink-0">🪔</span>
+        <div class="space-y-1 flex-1 min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="hub-notice-headline" class="text-xs sm:text-sm font-bold text-amber-200">☆ DIWALI HOLIDAY NOTICE ☆</span>
+            <span id="hub-notice-badge" class="text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase">बाजार बंद</span>
+          </div>
+          <div id="hub-notice-subtext" class="text-xs text-slate-300 leading-snug">
+            Kalyan मार्केट सोमवार 16/11/2026 को नई टाइमिंग पर खुलेगा।
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ═══ Live Kalyan Draw Window Board ═══ -->
     <section class="glass-card rounded-2xl p-5 sm:p-6 border-purple-500/30">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-white/5">
@@ -475,6 +491,41 @@
         color: 'cyan'
       }
     ];
+
+    async function loadHubNotice() {
+      try {
+        const res = await fetch('prediction_data.json?_t=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const notice = data.custom_notice;
+        if (!notice || !notice.is_active) return;
+
+        const banner = document.getElementById('hub-notice-banner');
+        if (!banner) return;
+
+        banner.classList.remove('hidden');
+        if (notice.icon) document.getElementById('hub-notice-icon').textContent = notice.icon;
+        if (notice.headline) document.getElementById('hub-notice-headline').textContent = notice.headline;
+        if (notice.subtext) document.getElementById('hub-notice-subtext').innerHTML = notice.subtext;
+        if (notice.badge_text) {
+          const badge = document.getElementById('hub-notice-badge');
+          badge.textContent = notice.badge_text;
+          const col = notice.badge_color || 'red';
+          if (col === 'emerald' || col === 'green') {
+            badge.className = 'text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+          } else if (col === 'amber' || col === 'yellow') {
+            badge.className = 'text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+          } else if (col === 'purple') {
+            badge.className = 'text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+          } else {
+            badge.className = 'text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load hub notice:', e);
+      }
+    }
+    loadHubNotice();
 
     function getISTDate() {
       const now = new Date();
