@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: tools/matka/kalyan_4_35_to_6_35
+        working-directory: tools/matka/kalyan
 
     steps:
       - name: Checkout repository
@@ -42,7 +42,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-          cache-dependency-path: tools/matka/kalyan_4_35_to_6_35/requirements.txt
+          cache-dependency-path: tools/matka/kalyan/requirements.txt
 
       - name: Install dependencies
         run: |
