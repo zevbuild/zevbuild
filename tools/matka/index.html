@@ -173,6 +173,10 @@
       <div class="flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span class="text-[11px] text-emerald-400 font-mono font-medium hidden sm:inline">Kalyan Suite Active</span>
+        <button onclick="shareAppOrPrediction()" class="h-7 px-3 rounded-full bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-[11px] text-purple-300 font-bold transition-all flex items-center gap-1 active:scale-95 ml-1 sm:ml-2" title="Share Kalyan Suite">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+          <span>Share</span>
+        </button>
       </div>
     </div>
   </nav>
@@ -558,6 +562,45 @@
           </a>
         `;
       }).join('');
+    }
+
+    function shareAppOrPrediction() {
+      const shareData = {
+        title: 'Kalyan Predictive Analytics Suite | Zevbuild',
+        text: 'Check out the Kalyan Matka quantitative predictive suite (Day · Night · Morning) on Zevbuild:',
+        url: window.location.href.split('#')[0]
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => fallbackCopyShare(shareData.url, shareData.text));
+      } else {
+        fallbackCopyShare(shareData.url, shareData.text);
+      }
+    }
+
+    function fallbackCopyShare(url, text) {
+      const full = text ? `${text}\n${url}` : url;
+      navigator.clipboard.writeText(full).then(() => {
+        showGlassToast("Link copied to clipboard! 📋");
+      }).catch(() => {
+        showGlassToast("Copied to clipboard!");
+      });
+    }
+
+    function showGlassToast(msg) {
+      let toast = document.getElementById('glass-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'glass-toast';
+        toast.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full glass-card border border-purple-500/50 text-purple-200 text-xs font-bold shadow-2xl backdrop-blur-xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+      }, 2500);
     }
 
     updateMultiMarketTicker();
