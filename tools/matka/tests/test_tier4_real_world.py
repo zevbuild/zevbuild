@@ -23,7 +23,7 @@ import numpy as np
 # Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
+MATKA_ENGINE = MATKA_ROOT / "kalyan"
 FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 SAMPLE_DRAWS_CSV = FIXTURES_DIR / "sample_draws.csv"
 TESTS_DIR = Path(__file__).resolve().parent

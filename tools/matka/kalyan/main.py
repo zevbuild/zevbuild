@@ -31,7 +31,6 @@ def resolve_csv_path(custom_path: str = None) -> str:
         SCRIPT_DIR / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_historical_data.csv",
-        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
     ]
     for cand in candidates:
         if cand.exists():

@@ -47,7 +47,7 @@ import pandas as pd
 import numpy as np
 
 # Ensure workspace is importable
-KALYAN_DIR = Path(__file__).resolve().parent.parent / "kalyan_4_35_to_6_35"
+KALYAN_DIR = Path(__file__).resolve().parent.parent / "kalyan"
 if str(KALYAN_DIR) not in sys.path:
     sys.path.insert(0, str(KALYAN_DIR))
 
@@ -387,7 +387,7 @@ class TestThreeWayFileParity(unittest.TestCase):
 
     def setUp(self):
         self.root_dir = Path(__file__).resolve().parent.parent
-        self.engine_dir = self.root_dir / "kalyan_4_35_to_6_35"
+        self.engine_dir = self.root_dir / "kalyan"
         self.web_dir = self.engine_dir / "web"
 
     def _hash(self, path):

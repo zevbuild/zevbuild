@@ -68,7 +68,6 @@ def resolve_csv_path(custom_path: str = None) -> str:
         SCRIPT_DIR / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_historical_data.csv",
-        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
     ]
     for cand in candidates:
         if cand.exists():
@@ -715,21 +714,18 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
             "notice_text": "☆ 16/11/2026 से नई TIMING लागू होगी — Open: 3:45 PM IST | Close: 5:45 PM IST ☆"
         }
     }
-    # Persist updated prediction_data.json to canonical and legacy locations
-    legacy_dir = os.path.join(ROOT_MATKA_DIR, "kalyan_4_35_to_6_35")
+    # Persist updated prediction_data.json to canonical locations
     pred_paths = [
         os.path.join(WORKSPACE_DIR, "prediction_data.json"),
         os.path.join(WEB_DIR, "prediction_data.json"),
         os.path.join(ROOT_MATKA_DIR, "prediction_data.json"),
-        os.path.join(legacy_dir, "prediction_data.json"),
-        os.path.join(legacy_dir, "web", "prediction_data.json"),
     ]
     for path in pred_paths:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             json.dump(pred_data_to_save, f, indent=2)
 
-    # Persist updated history.json to all 3 locations
+    # Persist updated history.json to all locations
     history_list = []
     for _, row in valid_df.iterrows():
         op = str(row["Open_Patti"]) if pd.notna(row.get("Open_Patti")) and str(row.get("Open_Patti")).strip() != "" else ""
@@ -747,8 +743,6 @@ def compute_all_predictions(force_refresh: bool = False, force_sunday_rollover: 
         os.path.join(WORKSPACE_DIR, "history.json"),
         os.path.join(WEB_DIR, "history.json"),
         os.path.join(ROOT_MATKA_DIR, "history.json"),
-        os.path.join(legacy_dir, "history.json"),
-        os.path.join(legacy_dir, "web", "history.json"),
     ]
     for path in hist_paths:
         os.makedirs(os.path.dirname(path), exist_ok=True)

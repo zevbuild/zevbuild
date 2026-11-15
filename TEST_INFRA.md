@@ -41,7 +41,7 @@ Validates the fundamental interfaces and expected primary behaviors across all 1
 - **Feature 11 (Prediction Serving Updates)**: Verifies `prediction_data.json` schema, `by_day` weekday line forecasts, and 4-Ank OTC serialization.
 - **Feature 12 (Historical Outcome UI Rendering)**: Verifies HTML/DOM rendering of `Rank #X` pills, green `Top-10 Hit`, and purple `Family Cut Hit` badges.
 - **Feature 13 (Mobile PWA Integration)**: Validates `manifest.json`, Service Worker cache v4, and offline standalone readiness.
-- **Feature 14 (3-Way File Parity Sync)**: Enforces strict data and schema synchronization across root `tools/matka/`, engine `kalyan_4_35_to_6_35/`, and `web/`.
+- **Feature 14 (3-Way File Parity Sync)**: Enforces strict data and schema synchronization across root `tools/matka/`, engine `kalyan/`, and `web/`.
 
 ### Tier 2: Boundary & Corner Cases (`test_tier2_boundary_corner.py`)
 Stress-tests the entire analytical engine under extreme, corrupted, and degenerate edge conditions (>=5 test cases per feature, plus 27 foundational edge tests for a total of 97 test cases):

@@ -35,7 +35,6 @@ def resolve_csv_path(custom_path: str = None) -> str:
         SCRIPT_DIR / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_historical_data.csv",
-        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
     ]
     for cand in candidates:
         if cand.exists():
@@ -44,14 +43,11 @@ def resolve_csv_path(custom_path: str = None) -> str:
 
 
 def sync_performance_log(log_payload: dict):
-    """Synchronize performance_log.json across all canonical and legacy locations with identical binary encoding."""
-    legacy_dir = os.path.join(ROOT_MATKA_DIR, "kalyan_4_35_to_6_35")
+    """Synchronize performance_log.json across all canonical locations with identical binary encoding."""
     perf_paths = [
         os.path.join(WORKSPACE_DIR, "performance_log.json"),
         os.path.join(WEB_DIR, "performance_log.json"),
         os.path.join(ROOT_MATKA_DIR, "performance_log.json"),
-        os.path.join(legacy_dir, "performance_log.json"),
-        os.path.join(legacy_dir, "web", "performance_log.json"),
     ]
     json_bytes = (json.dumps(log_payload, indent=2) + "\n").encode("utf-8")
     for p in perf_paths:

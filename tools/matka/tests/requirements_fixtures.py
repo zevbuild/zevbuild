@@ -22,7 +22,7 @@ import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
+MATKA_ENGINE = MATKA_ROOT / "kalyan"
 
 # Ground Truth Reference Week: Oct 26–31, 2026 from kalyan_historical_data.csv (lines 3284-3289)
 OCT_26_31_REFERENCE_DRAWS = [

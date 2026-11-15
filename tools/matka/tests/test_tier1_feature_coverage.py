@@ -25,7 +25,7 @@ import pandas as pd
 # Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
+MATKA_ENGINE = MATKA_ROOT / "kalyan"
 TESTS_DIR = Path(__file__).resolve().parent
 FIXTURES_DIR = TESTS_DIR / "fixtures"
 SAMPLE_DRAWS_CSV = FIXTURES_DIR / "sample_draws.csv"
@@ -375,7 +375,7 @@ class TestWebAssets(unittest.TestCase):
         self.assertIn("<body", content)
 
     def test_engine_index_html_structure(self):
-        """Verifies tools/matka/kalyan_4_35_to_6_35/index.html exists with responsive viewport meta."""
+        """Verifies tools/matka/kalyan/index.html exists with responsive viewport meta."""
         p = MATKA_ENGINE / "index.html"
         self.assertTrue(p.exists(), f"Missing {p}")
         content = p.read_text(encoding="utf-8")
@@ -425,7 +425,7 @@ class TestLinkHealth(unittest.TestCase):
         )
 
     def test_anchor_lastweek_preserved_in_engine_index(self):
-        """Verifies target element id='lastweek' is preserved in kalyan_4_35_to_6_35/index.html."""
+        """Verifies target element id='lastweek' is preserved in kalyan/index.html."""
         p = MATKA_ENGINE / "index.html"
         content = p.read_text(encoding="utf-8")
         self.assertTrue(
@@ -443,7 +443,7 @@ class TestLinkHealth(unittest.TestCase):
         )
 
     def test_engine_breadcrumbs_exist(self):
-        """Verifies tools/matka/kalyan_4_35_to_6_35/index.html contains breadcrumbs resolving up the tree."""
+        """Verifies tools/matka/kalyan/index.html contains breadcrumbs resolving up the tree."""
         p = MATKA_ENGINE / "index.html"
         content = p.read_text(encoding="utf-8")
         self.assertTrue(

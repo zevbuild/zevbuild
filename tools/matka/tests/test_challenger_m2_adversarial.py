@@ -17,7 +17,7 @@ from pathlib import Path
 import numpy as np
 
 # Ensure workspace is importable
-WORKSPACE_DIR = Path(__file__).resolve().parent.parent / "kalyan_4_35_to_6_35"
+WORKSPACE_DIR = Path(__file__).resolve().parent.parent / "kalyan"
 if str(WORKSPACE_DIR) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_DIR))
 
@@ -29,7 +29,7 @@ class ChallengerM2AdversarialTests(unittest.TestCase):
 
     def setUp(self):
         self.root_dir = Path(__file__).resolve().parent.parent
-        self.kalyan_dir = self.root_dir / "kalyan_4_35_to_6_35"
+        self.kalyan_dir = self.root_dir / "kalyan"
         self.web_dir = self.kalyan_dir / "web"
 
     # =========================================================================

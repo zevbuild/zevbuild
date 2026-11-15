@@ -27,7 +27,7 @@ import pandas as pd
 # Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
+MATKA_ENGINE = MATKA_ROOT / "kalyan"
 TESTS_DIR = Path(__file__).resolve().parent
 FIXTURES_DIR = TESTS_DIR / "fixtures"
 SAMPLE_DRAWS_CSV = FIXTURES_DIR / "sample_draws.csv"

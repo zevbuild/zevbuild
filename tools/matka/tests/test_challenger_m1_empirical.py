@@ -29,7 +29,7 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
+MATKA_ENGINE = MATKA_ROOT / "kalyan"
 
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))

@@ -39,7 +39,7 @@ from typing import Dict, List, Optional, Tuple
 # Base repository paths
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 TESTS_DIR = Path(__file__).resolve().parent
-ENGINE_DIR = REPO_ROOT / "tools" / "matka" / "kalyan_4_35_to_6_35"
+ENGINE_DIR = REPO_ROOT / "tools" / "matka" / "kalyan"
 
 # Add directories to python sys.path
 for p in [str(REPO_ROOT), str(TESTS_DIR), str(ENGINE_DIR)]:

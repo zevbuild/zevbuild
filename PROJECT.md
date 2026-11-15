@@ -4,24 +4,24 @@
 The Kalyan Matka suite is a zero-build-step, offline-resilient quantitative prediction, backtesting, and visualization platform. The architecture comprises four core layers:
 1. **Data Ingestion & Integrity Layer (`scraper.py`, `sync_and_push.py`)**: Fetches historical and live draw results from remote sources, decouples raw scrape caching (`kalyan_penal_chart_raw.html`), performs strict multi-point CSV validation (monotonic dates, no duplicates, panel digit sum rule), and safely orchestrates synchronization.
 2. **Quantitative Engine Layer (`models.py`, `predict.py`, `backtest.py`)**: Mathematical prediction models using Dirichlet-smoothed Markov chain transitions, tri-horizon exponential recency (Fast 8d, Medium 35d, Macro 120d), 2D harmonic cut resonance diffusion, and exact OTC joint pass probabilities. Backtest engine provides walk-forward validation with Precision@K, MRR, Brier scores, drawdown duration, profit factor, and temporal regime breakdown.
-3. **Data Artifact Layer (`prediction_data.json`, `history.json`, `kalyan_historical_data.csv`)**: Normalized, atomic data interchange format shared identically across root `tools/matka/`, subfolder `tools/matka/kalyan_4_35_to_6_35/`, and web server `tools/matka/kalyan_4_35_to_6_35/web/`.
+3. **Data Artifact Layer (`prediction_data.json`, `history.json`, `kalyan_historical_data.csv`)**: Normalized, atomic data interchange format shared identically across root `tools/matka/`, subfolder `tools/matka/kalyan/`, and web server `tools/matka/kalyan/web/`.
 4. **Presentation & PWA Layer (`index.html`, `dashboard.html`, `kalyan_penal_chart.html`, `sw.js`)**: Pure HTML5, Tailwind CDN, and vanilla JS styled with Zev Glass 2.0 obsidian aesthetics. Features live Indian Standard Time (IST, UTC+5:30) market countdowns for Kalyan Open (4:35 PM IST) and Kalyan Close (6:35 PM IST), interactive visualization cards, offline Service Worker precaching, zero external telemetry, and full compatibility with `verify_links_and_assets.py`.
 
 ## Feature Inventory
 | # | Feature | Description | Milestone | Source |
 |---|---------|-------------|-----------|--------|
-| 1 | Zev Glass 2.0 Obsidian Aesthetic | Modernize all web pages (`tools/matka/index.html`, `kalyan_4_35_to_6_35/index.html`, `dashboard.html`, `kalyan_penal_chart.html`) with obsidian dark surfaces (`#06080d`, `#0b0f19`), ambient radial glow, glass cards, and high-contrast typography | M3 | R1, Survey |
+| 1 | Zev Glass 2.0 Obsidian Aesthetic | Modernize all web pages (`tools/matka/index.html`, `kalyan/index.html`, `dashboard.html`, `kalyan_penal_chart.html`) with obsidian dark surfaces (`#06080d`, `#0b0f19`), ambient radial glow, glass cards, and high-contrast typography | M3 | R1, Survey |
 | 2 | Live IST Market Countdown Engine | State-machine countdown for Kalyan Open (4:35 PM IST) and Kalyan Close (6:35 PM IST) with Pre-Open, Live Draw Active, Market Closed, and Weekend Recess states | M3 | R1, Survey |
 | 3 | Zero Third-Party Telemetry & Privacy Leak Removal | Eliminate external CORS proxies (`allorigins.win`, `corsproxy.io`, `codetabs.com`) and scraped Google AMP tags / external images | M3 | R1, Survey |
 | 4 | Offline PWA Resilience & Service Worker Cache Expansion | Expand `sw.js` precache to include `kalyan_penal_chart.html`, `prediction_data.json`, `history.json`, and Tailwind CDN script for full offline operation | M3 | R1, Survey |
 | 5 | Modernized Historical Penal Chart | Redesign `kalyan_penal_chart.html` into a dark obsidian glassmorphic historical matrix with year filtering and breadcrumbs, eliminating raw AMP scrapes | M3 | R1, Survey |
-| 6 | Cross-Page Anchor & Hub Link Preservation | Maintain `#lastweek` DOM ID in `kalyan_4_35_to_6_35/index.html` and 3-level breadcrumbs (`../../../index.html` -> `../../index.html` -> `../index.html`) for 100% HEALTHY verification | M3 | R1, R3, Survey |
-| 7 | CLI Path Portability & Root Execution | Enable running `python tools/matka/kalyan_4_35_to_6_35/predict.py` and `backtest.py` from repo root via dynamic `Path(__file__).resolve().parent` CSV resolution | M1 | R2, R3, Survey |
+| 6 | Cross-Page Anchor & Hub Link Preservation | Maintain `#lastweek` DOM ID in `kalyan/index.html` and 3-level breadcrumbs (`../../../index.html` -> `../../index.html` -> `../index.html`) for 100% HEALTHY verification | M3 | R1, R3, Survey |
+| 7 | CLI Path Portability & Root Execution | Enable running `python tools/matka/kalyan/predict.py` and `backtest.py` from repo root via dynamic `Path(__file__).resolve().parent` CSV resolution | M1 | R2, R3, Survey |
 | 8 | Raw Cache Decoupling in Scraper | Decouple `LOCAL_CACHE_HTML` in `scraper.py` to `kalyan_penal_chart_raw.html` so live scrapes never overwrite user-facing web interfaces | M1 | R3, Survey |
 | 9 | Scraper Network Resilience & Table Validation | Add 3-attempt exponential backoff retries and HTML table structure validation (`chart-table`) in `scraper.py` | M1 | R3, Survey |
 | 10 | REPO_ROOT Path Calculation Fix in Sync Pipeline | Fix 3-level parent directory calculation in `sync_and_push.py` so Git commands execute from actual repo root | M1 | R3, Survey |
 | 11 | Historical CSV Integrity Verification & Deduplication | Implement multi-point CSV validation (monotonic dates, no duplicate dates, Jodi digit consistency, panel digit sum rule `sum(patti) % 10 == digit`) and deduplicate 30 legacy dates | M1 | R3, Survey |
-| 12 | Three-Way Artifact Mirroring | Synchronize generated `prediction_data.json`, `history.json`, and `kalyan_historical_data.csv` atomically across root `tools/matka/`, subfolder `kalyan_4_35_to_6_35/`, and `web/` | M1 | R2, R3, Survey |
+| 12 | Three-Way Artifact Mirroring | Synchronize generated `prediction_data.json`, `history.json`, and `kalyan_historical_data.csv` atomically across root `tools/matka/`, subfolder `kalyan/`, and `web/` | M1 | R2, R3, Survey |
 | 13 | Tri-Horizon Recency Modeling | Implement calibrated 3-horizon exponential recency (Fast 8d, Medium 35d, Macro 120d) applied to Open Anks, Close Anks, and Jodis in `models.py` | M2 | R2, Survey |
 | 14 | Markov Chain Jodi Transition Integration | Incorporate 100x100 Jodi Markov transition probability distribution into `EnsemblePredictor.predict()` `jodi_matrix` synthesis with time decay | M2 | R2, Survey |
 | 15 | 2D Harmonic Cut Resonance Diffusion | Extend cut resonance across 2D joint Jodi distribution space for candidate cut pairs $((o+5)\%10, c)$, $(o, (c+5)\%10)$, and $((o+5)\%10, (c+5)\%10)$ | M2 | R2, Survey |
@@ -66,9 +66,9 @@ The Kalyan Matka suite is a zero-build-step, offline-resilient quantitative pred
   - Preserves exact array indexing for frontend `BrowserEnsemblePredictor` consumption.
 
 ### Presentation Layer ↔ Repository Link Verifier (`index.html` ↔ `verify_links_and_assets.py`)
-- Target `tools/matka/kalyan_4_35_to_6_35/index.html` MUST contain `<... id="lastweek" ...>` element to satisfy Tier 2 cross-page anchor audit.
+- Target `tools/matka/kalyan/index.html` MUST contain `<... id="lastweek" ...>` element to satisfy Tier 2 cross-page anchor audit.
 - Target `tools/matka/index.html` MUST contain back-links `<a href="../../index.html">` and `<a href="../index.html">` for Tier 3 hub hierarchy compliance.
-- Target `tools/matka/kalyan_4_35_to_6_35/index.html` MUST contain breadcrumbs resolving to Studio (`../../../index.html`), Tools (`../../index.html`), and Matka Hub (`../index.html`).
+- Target `tools/matka/kalyan/index.html` MUST contain breadcrumbs resolving to Studio (`../../../index.html`), Tools (`../../index.html`), and Matka Hub (`../index.html`).
 
 ## Code Layout
 ```
@@ -79,7 +79,7 @@ tools/matka/
 ├── history.json                         # Mirrored historical draws artifact
 ├── kalyan_historical_data.csv           # Mirrored historical CSV dataset
 ├── favicon.svg                          # Suite favicon
-└── kalyan_4_35_to_6_35/                 # Primary Kalyan engine & tools directory
+└── kalyan/                 # Primary Kalyan engine & tools directory
     ├── index.html                       # Primary interactive predictor UI (Zev Glass 2.0)
     ├── dashboard.html                   # Synchronized dashboard UI
     ├── kalyan_penal_chart.html          # Modernized obsidian historical penal chart

@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 import numpy as np
 
-WORKSPACE_DIR = Path(__file__).resolve().parent.parent / "kalyan_4_35_to_6_35"
+WORKSPACE_DIR = Path(__file__).resolve().parent.parent / "kalyan"
 if str(WORKSPACE_DIR) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_DIR))
 

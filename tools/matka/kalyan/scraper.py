@@ -57,7 +57,6 @@ def resolve_csv_path(custom_path: str = None) -> str:
         SCRIPT_DIR / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent / "kalyan_historical_data.csv",
         SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_historical_data.csv",
-        SCRIPT_DIR.parent.parent.parent / "tools" / "matka" / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
     ]
     for cand in candidates:
         if cand.exists():
@@ -67,11 +66,10 @@ def resolve_csv_path(custom_path: str = None) -> str:
 
 
 def sync_csv_to_root(csv_path: str = DEFAULT_OUTPUT_CSV):
-    """Mirror historical CSV to root tools/matka/ and legacy directories."""
+    """Mirror historical CSV to root tools/matka/ directory."""
     try:
         targets = [
             SCRIPT_DIR.parent / "kalyan_historical_data.csv",
-            SCRIPT_DIR.parent / "kalyan_4_35_to_6_35" / "kalyan_historical_data.csv",
         ]
         src_path = os.path.abspath(csv_path)
         for t in targets:
@@ -124,13 +122,10 @@ def sync_penal_chart_html(raw_cache_path: str = LOCAL_CACHE_HTML) -> bool:
 
         new_tbody_html = "<tbody>\n" + "\n".join(str(r) for r in data_rows) + "\n      </tbody>"
 
-        legacy_dir = SCRIPT_DIR.parent / "kalyan_4_35_to_6_35"
         target_html_files = [
             SCRIPT_DIR / "kalyan_penal_chart.html",
             SCRIPT_DIR.parent / "kalyan_penal_chart.html",
             SCRIPT_DIR / "web" / "kalyan_penal_chart.html",
-            legacy_dir / "kalyan_penal_chart.html",
-            legacy_dir / "web" / "kalyan_penal_chart.html",
         ]
 
         pattern = re.compile(r"<tbody>.*?</tbody>", re.DOTALL)

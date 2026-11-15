@@ -34,7 +34,7 @@ import numpy as np
 # Path setup
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
+MATKA_ENGINE = MATKA_ROOT / "kalyan"
 WEB_DIR = MATKA_ENGINE / "web"
 
 for p in [str(MATKA_ENGINE), str(MATKA_ROOT), str(REPO_ROOT)]:

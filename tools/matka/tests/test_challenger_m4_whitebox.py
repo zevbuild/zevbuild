@@ -19,7 +19,7 @@ import urllib.request
 import urllib.error
 
 # Setup import path
-WORKSPACE_MATKA = Path(__file__).resolve().parent.parent / "kalyan_4_35_to_6_35"
+WORKSPACE_MATKA = Path(__file__).resolve().parent.parent / "kalyan"
 if str(WORKSPACE_MATKA) not in sys.path:
     sys.path.insert(0, str(WORKSPACE_MATKA))
 

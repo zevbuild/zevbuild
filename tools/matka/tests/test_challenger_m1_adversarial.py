@@ -21,7 +21,7 @@ import requests
 import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-ENGINE_DIR = REPO_ROOT / "tools" / "matka" / "kalyan_4_35_to_6_35"
+ENGINE_DIR = REPO_ROOT / "tools" / "matka" / "kalyan"
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
 
 # Add engine dir to sys.path
@@ -199,7 +199,7 @@ class TestScraperNetworkResilienceAndDecoupling(unittest.TestCase):
     def test_user_facing_penal_chart_is_never_overwritten_by_scraper(self):
         """
         Verifies decoupled cache invariant:
-        Running scraper never touches or overwrites tools/matka/kalyan_4_35_to_6_35/kalyan_penal_chart.html.
+        Running scraper never touches or overwrites tools/matka/kalyan/kalyan_penal_chart.html.
         """
         ui_html_path = ENGINE_DIR / "kalyan_penal_chart.html"
         self.assertTrue(ui_html_path.exists(), "User UI kalyan_penal_chart.html must exist")

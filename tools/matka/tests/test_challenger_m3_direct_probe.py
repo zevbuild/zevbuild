@@ -20,7 +20,7 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-ENG_DIR = MATKA_ROOT / "kalyan_4_35_to_6_35"
+ENG_DIR = MATKA_ROOT / "kalyan"
 WEB_DIR = ENG_DIR / "web"
 
 sys.path.insert(0, str(ENG_DIR))

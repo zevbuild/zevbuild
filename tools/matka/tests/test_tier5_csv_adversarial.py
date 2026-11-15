@@ -3,7 +3,7 @@ Tier 5: White-Box Adversarial Stress Test & Empirical Verification Oracle for Ka
 Milestone 1 Adversarial Verification Suite.
 
 Audits:
-- tools/matka/kalyan_4_35_to_6_35/kalyan_historical_data.csv
+- tools/matka/kalyan/kalyan_historical_data.csv
 - tools/matka/kalyan_historical_data.csv
 
 Asserts on Production Datasets:
@@ -45,7 +45,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 MATKA_ROOT = REPO_ROOT / "tools" / "matka"
-MATKA_ENGINE = MATKA_ROOT / "kalyan_4_35_to_6_35"
+MATKA_ENGINE = MATKA_ROOT / "kalyan"
 
 if str(MATKA_ENGINE) not in sys.path:
     sys.path.insert(0, str(MATKA_ENGINE))
@@ -250,7 +250,7 @@ class TestCSVRowByRowIntegrity(unittest.TestCase):
         self._audit_csv_file(ROOT_CSV_PATH)
 
     def test_engine_csv_row_by_row(self):
-        """Audits every row of tools/matka/kalyan_4_35_to_6_35/kalyan_historical_data.csv."""
+        """Audits every row of tools/matka/kalyan/kalyan_historical_data.csv."""
         self._audit_csv_file(ENGINE_CSV_PATH)
 
 
