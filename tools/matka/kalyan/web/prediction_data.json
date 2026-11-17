@@ -28,7 +28,7 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "18 Nov 2026, 02:43 AM IST",
+    "last_sync_ist": "18 Nov 2026, 03:20 AM IST",
     "next_sync_ist": "Today at 04:00 PM IST",
     "daily_cadence": [
       "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
@@ -2279,7 +2279,7 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "18 Nov 2026, 02:43 AM IST",
+      "last_sync_ist": "18 Nov 2026, 03:20 AM IST",
       "next_sync_ist": "Today at 04:00 PM IST",
       "daily_cadence": [
         "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
@@ -2325,8 +2325,8 @@
           "rank": 2,
           "jodi": "32",
           "prob": 1.41,
-          "score": 0.01409394555522277,
-          "raw_prob": 0.015074046388409264,
+          "score": 0.014093945555222772,
+          "raw_prob": 0.015074046388409265,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -2343,8 +2343,8 @@
           "rank": 3,
           "jodi": "73",
           "prob": 1.34,
-          "score": 0.01340260711301061,
-          "raw_prob": 0.01415226179879305,
+          "score": 0.013402607113010613,
+          "raw_prob": 0.014152261798793054,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -2415,8 +2415,8 @@
           "rank": 7,
           "jodi": "87",
           "prob": 0.86,
-          "score": 0.008555652035376176,
-          "raw_prob": 0.007689655028613806,
+          "score": 0.008555652035376178,
+          "raw_prob": 0.007689655028613807,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -2433,8 +2433,8 @@
           "rank": 8,
           "jodi": "82",
           "prob": 0.82,
-          "score": 0.00816805994511492,
-          "raw_prob": 0.007172865574932131,
+          "score": 0.008168059945114922,
+          "raw_prob": 0.007172865574932132,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -2767,8 +2767,8 @@
           "rank": 3,
           "jodi": "73",
           "prob": 1.34,
-          "score": 0.013404456076843731,
-          "raw_prob": 0.014153589448423955,
+          "score": 0.013404456076843735,
+          "raw_prob": 0.014153589448423957,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -3597,7 +3597,7 @@
           "rank": 2,
           "jodi": "32",
           "prob": 1.42,
-          "score": 0.014166842371215661,
+          "score": 0.014166842371215663,
           "raw_prob": 0.01515207057574656,
           "is_family_affinity": true,
           "family": [
@@ -3615,8 +3615,8 @@
           "rank": 3,
           "jodi": "73",
           "prob": 1.35,
-          "score": 0.013474050477705453,
-          "raw_prob": 0.01422834805106628,
+          "score": 0.013474050477705455,
+          "raw_prob": 0.014228348051066281,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -3651,7 +3651,7 @@
           "rank": 5,
           "jodi": "23",
           "prob": 0.93,
-          "score": 0.009275321958576348,
+          "score": 0.00927532195857635,
           "raw_prob": 0.00863004335889414,
           "is_family_affinity": true,
           "family": [
@@ -3687,7 +3687,7 @@
           "rank": 7,
           "jodi": "87",
           "prob": 0.85,
-          "score": 0.008489025833154104,
+          "score": 0.008489025833154105,
           "raw_prob": 0.007581648524997815,
           "is_family_affinity": true,
           "family": [
@@ -3705,7 +3705,7 @@
           "rank": 8,
           "jodi": "82",
           "prob": 0.81,
-          "score": 0.008147630301727922,
+          "score": 0.008147630301727923,
           "raw_prob": 0.007126454483096239,
           "is_family_affinity": true,
           "family": [
@@ -4040,7 +4040,7 @@
           "jodi": "73",
           "prob": 1.35,
           "score": 0.013491612505808492,
-          "raw_prob": 0.01426335697661563,
+          "raw_prob": 0.014263356976615632,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -4093,8 +4093,8 @@
           "rank": 6,
           "jodi": "37",
           "prob": 0.88,
-          "score": 0.008807912645913803,
-          "raw_prob": 0.008018423830089381,
+          "score": 0.008807912645913806,
+          "raw_prob": 0.008018423830089383,
           "is_family_affinity": true,
           "family": [
             "23",
@@ -4129,8 +4129,8 @@
           "rank": 8,
           "jodi": "82",
           "prob": 0.82,
-          "score": 0.008202879754650307,
-          "raw_prob": 0.00721171330840472,
+          "score": 0.00820287975465031,
+          "raw_prob": 0.007211713308404722,
           "is_family_affinity": true,
           "family": [
             "23",
