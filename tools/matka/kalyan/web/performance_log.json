@@ -1,10 +1,10 @@
 {
   "summary": {
-    "total_draws_logged": 63,
-    "top10_hit_rate": 0.0794,
-    "family_cut_hit_rate": 0.0476,
-    "otc_hit_rate": 0.5873,
-    "last_updated": "2026-11-18"
+    "total_draws_logged": 64,
+    "top10_hit_rate": 0.0938,
+    "family_cut_hit_rate": 0.0469,
+    "otc_hit_rate": 0.5938,
+    "last_updated": "2026-11-19"
   },
   "current_hyperparameters": {
     "lambda_cut_cluster": 0.25,
@@ -2951,6 +2951,54 @@
         "family_cut_hit": false,
         "otc_hit": false,
         "open_hit": false,
+        "close_hit": false
+      }
+    },
+    {
+      "date": "2026-11-19",
+      "day": "Thu",
+      "actual_draw": {
+        "jodi": "92",
+        "open": 9,
+        "close": 2
+      },
+      "predictions": {
+        "top_pick": "78",
+        "top_10": [
+          "78",
+          "73",
+          "28",
+          "23",
+          "32",
+          "37",
+          "82",
+          "87",
+          "17",
+          "92"
+        ],
+        "top_family_bracket": [
+          "23",
+          "28",
+          "32",
+          "37",
+          "73",
+          "78",
+          "82",
+          "87"
+        ],
+        "otc_digits": [
+          3,
+          4,
+          8,
+          9
+        ]
+      },
+      "outcome": {
+        "actual_rank": 3,
+        "top10_hit": true,
+        "family_cut_hit": false,
+        "otc_hit": true,
+        "open_hit": true,
         "close_hit": false
       }
     }
