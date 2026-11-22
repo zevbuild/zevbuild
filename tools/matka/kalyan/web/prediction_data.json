@@ -1,8 +1,8 @@
 {
-  "last_developer_update": "2026-11-21",
-  "last_update_by_developer": "21 Nov 2026",
+  "last_developer_update": "2026-11-22",
+  "last_update_by_developer": "22 Nov 2026",
   "target_date": "2026-11-23",
-  "last_updated": "2026-11-21",
+  "last_updated": "2026-11-22",
   "latest_draw": {
     "date": "2026-11-21",
     "day": "Sat",
@@ -28,8 +28,8 @@
   "telemetry": {
     "engine_status": "100% Fully Automated Daily Pipeline",
     "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-    "last_sync_ist": "22 Nov 2026, 03:19 AM IST",
-    "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
+    "last_sync_ist": "22 Nov 2026, 08:15 PM IST",
+    "next_sync_ist": "Monday at 04:00 PM IST",
     "daily_cadence": [
       "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
       "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
@@ -3175,8 +3175,8 @@
     "telemetry": {
       "engine_status": "100% Fully Automated Daily Pipeline",
       "automation_mode": "Scheduled Cloud Execution (GitHub Actions Cron)",
-      "last_sync_ist": "22 Nov 2026, 03:19 AM IST",
-      "next_sync_ist": "Today at 12:00 PM IST (Weekly Rollover)",
+      "last_sync_ist": "22 Nov 2026, 08:15 PM IST",
+      "next_sync_ist": "Monday at 04:00 PM IST",
       "daily_cadence": [
         "Mon-Sat 04:00 PM IST (Open Result Capture - New timing 3:45 PM effective 16 Nov)",
         "Mon-Sat 06:00 PM IST (Evening Close Settlement - New timing 5:45 PM effective 16 Nov)",
