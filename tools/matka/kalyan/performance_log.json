@@ -4,7 +4,7 @@
     "top10_hit_rate": 0.0909,
     "family_cut_hit_rate": 0.0455,
     "otc_hit_rate": 0.5909,
-    "last_updated": "2026-11-23"
+    "last_updated": "2026-11-21"
   },
   "current_hyperparameters": {
     "lambda_cut_cluster": 0.25,
