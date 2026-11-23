@@ -659,5 +659,83 @@
   </script>
 
   <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c0b6dadac96743ea84c677995e32dc24"}'></script><!-- End Cloudflare Web Analytics -->
+
+  <!-- ═══ Kalyan Hub Migration Announcement Modal ═══ -->
+  <div id="kalyanhub-migration-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none" style="z-index: 9999;">
+    <div class="relative w-full max-w-lg p-6 sm:p-7 rounded-2xl glass-card border border-purple-500/40 bg-gradient-to-b from-slate-900/98 via-[#0b0f19]/98 to-[#06080d]/98 shadow-2xl shadow-purple-950/60 text-left transform scale-95 transition-transform duration-300">
+      <!-- Close button -->
+      <button onclick="dismissMigrationModal()" class="absolute top-4 right-4 p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Close" aria-label="Close Announcement">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Header badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>NEW DEDICATED PLATFORM LAUNCHED</span>
+      </div>
+
+      <!-- Title -->
+      <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
+        Kalyan Matka has moved to <span class="text-purple-400">Kalyan Hub</span>!
+      </h3>
+
+      <!-- Description -->
+      <p class="text-xs sm:text-sm text-slate-300 mb-6 leading-relaxed">
+        The Kalyan Predictive Analytics Suite is migrating to its dedicated home at <strong class="text-purple-300 font-mono">kalyanhub.pages.dev</strong>. Enjoy live schedule window clocks (Open 3:45 PM | Close 5:45 PM IST), enhanced multi-session analytics, and mobile optimizations.
+      </p>
+
+      <!-- CTAs (No Auto-Redirect: User Choice) -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+        <a id="kalyanhub-migrate-link" href="https://kalyanhub.pages.dev/" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-3 px-5 rounded-xl text-xs sm:text-sm font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-1.5">
+          <span>Visit New Platform ↗</span>
+        </a>
+        <button onclick="dismissMigrationModal()" class="py-3 px-4 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
+          Stay on This Site
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const TARGET_MAP = {
+        'kalyan-night': 'https://kalyanhub.pages.dev/night/',
+        'kalyan-morning': 'https://kalyanhub.pages.dev/morning/',
+        'top-10-random-numbers-generator': 'https://kalyanhub.pages.dev/rng/',
+        'kalyan_penal_chart': 'https://kalyanhub.pages.dev/chart.html',
+        'kalyan': 'https://kalyanhub.pages.dev/kalyan/'
+      };
+      let targetUrl = 'https://kalyanhub.pages.dev/';
+      const pathname = window.location.pathname;
+      for (const [key, url] of Object.entries(TARGET_MAP)) {
+        if (pathname.includes(key)) {
+          targetUrl = url;
+          break;
+        }
+      }
+      const linkEl = document.getElementById('kalyanhub-migrate-link');
+      if (linkEl) linkEl.href = targetUrl;
+
+      window.showMigrationModal = function() {
+        if (sessionStorage.getItem('kalyanhub_modal_dismissed')) return;
+        const modal = document.getElementById('kalyanhub-migration-modal');
+        if (!modal) return;
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        const dialog = modal.querySelector('.transform');
+        if (dialog) dialog.classList.remove('scale-95');
+      };
+
+      window.dismissMigrationModal = function() {
+        const modal = document.getElementById('kalyanhub-migration-modal');
+        if (!modal) return;
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100');
+        sessionStorage.setItem('kalyanhub_modal_dismissed', '1');
+      };
+
+      setTimeout(window.showMigrationModal, 600);
+    })();
+  </script>
 </body>
 </html>
