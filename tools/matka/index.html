@@ -717,7 +717,6 @@
       if (linkEl) linkEl.href = targetUrl;
 
       window.showMigrationModal = function() {
-        if (sessionStorage.getItem('kalyanhub_modal_dismissed')) return;
         const modal = document.getElementById('kalyanhub-migration-modal');
         if (!modal) return;
         modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -731,10 +730,9 @@
         if (!modal) return;
         modal.classList.add('opacity-0', 'pointer-events-none');
         modal.classList.remove('opacity-100');
-        sessionStorage.setItem('kalyanhub_modal_dismissed', '1');
       };
 
-      setTimeout(window.showMigrationModal, 600);
+      setTimeout(window.showMigrationModal, 300);
     })();
   </script>
 </body>
