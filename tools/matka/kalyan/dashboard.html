@@ -262,30 +262,30 @@
     </div>
 
     <!-- ═══ Unified Hero Market Status & Timing Bar ═══ -->
-    <div id="market-holiday-notice-bar" class="bg-gradient-to-r from-amber-950/80 via-yellow-950/40 to-slate-950 border border-amber-500/50 rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 transition-all">
+    <div id="market-holiday-notice-bar" class="glass-card border border-purple-500/30 rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 transition-all">
       <div class="flex items-start sm:items-center gap-3 min-w-0">
-        <span id="market-status-icon" class="text-2xl p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 shrink-0">🪔</span>
+        <span id="market-status-icon" class="text-2xl p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 shrink-0">🕒</span>
         <div class="min-w-0 space-y-1">
-          <div class="text-xs text-amber-200 font-bold leading-tight flex items-center gap-2 flex-wrap">
-            <span id="market-status-headline">☆ DIWALI HOLIDAY NOTICE (06/11/2026 TO 15/11/2026) ☆</span>
-            <span id="market-status-pill" class="text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase">MARKET CLOSED</span>
+          <div class="text-xs text-purple-200 font-bold leading-tight flex items-center gap-2 flex-wrap">
+            <span id="market-status-headline">Live IST Draw Window Clock</span>
+            <span id="market-status-pill" class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase">MARKET OPEN</span>
           </div>
-          <div id="market-status-subtext" class="text-[11px] text-amber-100/90 leading-snug">
-            Kalyan Market reopens on Monday <strong class="text-white font-mono">16/11/2026</strong> under new official timings: Open <strong class="text-amber-300 font-mono">3:45 PM IST</strong> | Close <strong class="text-amber-300 font-mono">5:45 PM IST</strong>. Warm Diwali festive greetings!
+          <div id="market-status-subtext" class="text-[11px] text-slate-300 leading-snug">
+            Operating Schedule: Mon–Sat · Open: <strong class="text-white font-mono">3:45 PM IST</strong> | Close: <strong class="text-white font-mono">5:45 PM IST</strong> · Sunday Recess
           </div>
           <div class="flex items-center gap-2 pt-0.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span id="market-countdown-phase" class="text-[11px] text-slate-300 font-medium truncate">
-              Diwali Holiday Recess (06/11 - 15/11) · Next Draw Monday 16 Nov, 3:45 PM IST
+              Tracking next Kalyan Day draw event...
             </span>
           </div>
         </div>
       </div>
 
-      <div class="flex items-center justify-between lg:justify-end gap-3 pt-2 lg:pt-0 border-t lg:border-t-0 border-amber-500/20 shrink-0">
+      <div class="flex items-center justify-between lg:justify-end gap-3 pt-2 lg:pt-0 border-t lg:border-t-0 border-purple-500/20 shrink-0">
         <div class="flex items-center gap-2">
-          <span id="market-countdown-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border bg-amber-500/20 text-amber-300 border-amber-500/40">
-            DIWALI RECESS
+          <span id="market-countdown-badge" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border bg-purple-500/20 text-purple-300 border-purple-500/40">
+            KALYAN DAY
           </span>
         </div>
         <div class="flex items-center gap-2 font-mono">
@@ -8020,7 +8020,7 @@
     }
   ],
   "holiday_notice": {
-    "is_active": true,
+    "is_active": false,
     "holiday_name": "Diwali Holiday 2026",
     "start_date": "2026-11-06",
     "end_date": "2026-11-15",
@@ -9668,29 +9668,11 @@
         istLiveEl.textContent = istTimeStr;
       }
 
-      // Dynamic Holiday / New Timing Banner Transformation (Automatic Reopening on 16/11/2026)
-      const holidayBar = document.getElementById('market-holiday-notice-bar');
-      if (holidayBar && istDateNum >= 20261116) {
-        if (!holidayBar.dataset.reopened) {
-          holidayBar.dataset.reopened = "true";
-          holidayBar.className = "bg-gradient-to-r from-emerald-950/80 via-teal-950/40 to-slate-950 border border-emerald-500/50 rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 transition-all";
-          const iconEl = document.getElementById('market-status-icon');
-          if (iconEl) {
-            iconEl.textContent = '⚡';
-            iconEl.className = 'text-2xl p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 shrink-0';
-          }
-          const hlEl = document.getElementById('market-status-headline');
-          if (hlEl) hlEl.textContent = '☆ NEW TIMINGS IN EFFECT FROM 16/11/2026 — KALYAN MARKET REOPENED ☆';
-          const pillEl = document.getElementById('market-status-pill');
-          if (pillEl) {
-            pillEl.textContent = 'MARKET OPEN';
-            pillEl.className = 'text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full font-mono font-bold uppercase';
-          }
-          const subEl = document.getElementById('market-status-subtext');
-          if (subEl) {
-            subEl.innerHTML = 'Kalyan Market is now operating on official new schedule: Open <strong class="text-white font-mono">3:45 PM IST</strong> | Close <strong class="text-white font-mono">5:45 PM IST</strong>. Live draw results will synchronize automatically.';
-          }
-        }
+      // Keep market status pill in sync with live draw schedule unless custom notice active
+      const statusPillEl = document.getElementById('market-status-pill');
+      if (statusPillEl && (!window.CUSTOM_NOTICE || !window.CUSTOM_NOTICE.is_active)) {
+        statusPillEl.textContent = statusBadge;
+        statusPillEl.className = `text-[10px] px-2 py-0.5 rounded-full font-mono font-bold uppercase border ${badgeColor}`;
       }
     }
 
@@ -9701,11 +9683,22 @@
       if (!bar) return;
 
       if (!notice.is_active) {
-        bar.style.display = 'none';
+        bar.className = "glass-card border border-purple-500/30 rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 transition-all";
+        const iconEl = document.getElementById('market-status-icon');
+        if (iconEl) {
+          iconEl.textContent = '🕒';
+          iconEl.className = 'text-2xl p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 shrink-0';
+        }
+        const hlEl = document.getElementById('market-status-headline');
+        if (hlEl) hlEl.textContent = 'Live IST Draw Window Clock';
+        const subEl = document.getElementById('market-status-subtext');
+        if (subEl) {
+          subEl.innerHTML = 'Operating Schedule: Mon–Sat · Open: <strong class="text-white font-mono">3:45 PM IST</strong> | Close: <strong class="text-white font-mono">5:45 PM IST</strong> · Sunday Recess';
+        }
         return;
       }
-      bar.style.display = '';
 
+      bar.className = "glass-card border border-purple-500/40 rounded-2xl p-3.5 sm:p-4 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 transition-all";
       const iconEl = document.getElementById('market-status-icon');
       if (iconEl && notice.icon) iconEl.textContent = notice.icon;
 
