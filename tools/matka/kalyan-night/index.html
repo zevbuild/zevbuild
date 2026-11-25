@@ -1,759 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; url=https://kalyanhub.pages.dev/night/">
-  <script>
-    if (window.location.protocol.startsWith('http')) {
-      window.location.replace("https://kalyanhub.pages.dev/night/");
-    }
-  </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Kalyan Night Quantitative Predictor &amp; Analytics | Zevbuild Tools</title>
-  <meta name="description" content="Kalyan Night quantitative analytics and predictive intelligence suite: live 9:25 PM to 11:25 PM draw tracker, 4-Ank dual OTC recommendations, Jodi probability matrix, and statistical pattern telemetry.">
-  <meta name="keywords" content="Kalyan Night, Kalyan Night prediction, Kalyan Night chart, Kalyan Night OTC, Matka prediction, quantitative analytics, Zevbuild">
-  <meta name="author" content="Zevbuild Studio">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <meta name="theme-color" content="#8b5cf6">
-  <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalyan Night Predictor | Kalyan Hub</title>
+  <meta http-equiv="refresh" content="0; url=https://kalyanhub.pages.dev/night/">
   <link rel="canonical" href="https://kalyanhub.pages.dev/night/">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Zevbuild">
-  <meta property="og:url" content="https://zevbuild.pages.dev/tools/matka/kalyan-night/">
-  <meta property="og:title" content="Kalyan Night Quantitative Predictor &amp; Analytics | Zevbuild Tools">
-  <meta property="og:description" content="Live 9:25 PM to 11:25 PM Kalyan Night draw tracker, 4-Ank dual OTC recommendations, Jodi probability matrix, and statistical pattern telemetry.">
-  <meta property="og:image" content="https://zevbuild.pages.dev/og-image.svg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-
-  <!-- Twitter / X -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@zevbuild">
-  <meta name="twitter:title" content="Kalyan Night Quantitative Predictor &amp; Analytics | Zevbuild Tools">
-  <meta name="twitter:description" content="Live 9:25 PM to 11:25 PM Kalyan Night draw tracker, 4-Ank dual OTC recommendations, Jodi probability matrix, and statistical pattern telemetry.">
-  <meta name="twitter:image" content="https://zevbuild.pages.dev/og-image.svg">
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebApplication",
-        "name": "Kalyan Night Quantitative Predictor",
-        "applicationCategory": "AnalyticsApplication",
-        "operatingSystem": "All",
-        "url": "https://zevbuild.pages.dev/tools/matka/kalyan-night/",
-        "description": "Real-time quantitative analytics and probabilistic forecasting engine for Kalyan Night market draws.",
-        "publisher": {
-          "@type": "Organization",
-          "name": "Zevbuild Studio",
-          "url": "https://zevbuild.pages.dev/"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://zevbuild.pages.dev/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Tools",
-            "item": "https://zevbuild.pages.dev/tools/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Matka Suite",
-            "item": "https://zevbuild.pages.dev/tools/matka/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 4,
-            "name": "Kalyan Night",
-            "item": "https://zevbuild.pages.dev/tools/matka/kalyan-night/"
-          }
-        ]
-      }
-    ]
-  }
-  </script>
-
-  <!-- Fonts & Tailwind -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
-
+  <script>window.location.replace("https://kalyanhub.pages.dev/night/");</script>
   <style>
-    :root {
-      --bg-base: #06080d;
-      --bg-surface: #0b0f19;
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(139, 92, 246, 0.35);
-    }
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      background-color: var(--bg-base);
-      color: #f3f4f6;
+      margin: 0;
       min-height: 100vh;
-      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #07090e;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+      box-sizing: border-box;
     }
-    .mono, .font-mono { font-family: 'JetBrains Mono', monospace; }
-    .bg-grid-ambient {
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.16) 0%, transparent 50%),
-        radial-gradient(circle at 85% 20%, rgba(217, 70, 239, 0.08) 0%, transparent 40%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    .card {
+      max-width: 440px;
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
     }
-    .glass-nav {
-      background: rgba(7, 10, 18, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #c084fc;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
-    .glass-card {
-      background: linear-gradient(145deg, rgba(14, 20, 34, 0.72) 0%, rgba(9, 13, 23, 0.88) 100%);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #34d399;
     }
-    .glass-card:hover {
-      border-color: rgba(139, 92, 246, 0.35);
-      box-shadow: 0 16px 36px -10px rgba(139, 92, 246, 0.15);
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 10px;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+    p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin: 0 0 24px;
+    }
+    a.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 20px;
+      border-radius: 12px;
+      background: #9333ea;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: background 0.2s;
+      box-shadow: 0 10px 20px -5px rgba(147, 51, 234, 0.4);
+    }
+    a.btn:hover {
+      background: #a855f7;
     }
   </style>
 </head>
-<body class="bg-grid-ambient selection:bg-purple-600 selection:text-white flex flex-col min-h-screen">
-
-  <!-- ═══ Navigation Breadcrumbs ═══ -->
-  <nav class="sticky top-0 z-50 glass-nav px-4 sm:px-6 py-3">
-    <div class="max-w-6xl mx-auto flex items-center justify-between text-xs text-slate-400">
-      <div class="flex items-center gap-2 flex-wrap">
-        <a href="../../../index.html" class="flex items-center gap-1.5 hover:text-purple-400 transition-colors font-medium">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-            <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-          <span>Zevbuild</span>
-        </a>
-        <span class="text-slate-600">/</span>
-        <a href="../../index.html" class="hover:text-purple-400 transition-colors font-medium">Tools</a>
-        <span class="text-slate-600">/</span>
-        <a href="../index.html" class="hover:text-purple-400 transition-colors font-medium">Matka Suite</a>
-        <span class="text-slate-600">/</span>
-        <span class="text-purple-300 font-semibold">Kalyan Night</span>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
-        <span class="text-[11px] text-purple-400 font-mono font-medium hidden sm:inline">Night Market Active</span>
-        <button onclick="shareAppOrPrediction()" class="h-7 px-3 rounded-full bg-purple-500/15 hover:bg-purple-500/25 border border-purple-500/30 text-[11px] text-purple-300 font-bold transition-all flex items-center gap-1 active:scale-95 ml-1 sm:ml-2" title="Share Kalyan Night">
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-          <span>Share</span>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ═══ Main Content ═══ -->
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-grow w-full space-y-6">
-
-    <!-- Header Section -->
-    <header class="bg-slate-900/90 backdrop-blur border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-      <div>
-        <div class="flex items-center gap-2 flex-wrap mb-1">
-          <span class="relative flex h-3 w-3">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-purple-500"></span>
-          </span>
-          <h1 class="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-purple-400 via-pink-300 to-indigo-300 bg-clip-text text-transparent">
-            Kalyan Night Quantitative Predictor
-          </h1>
-          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-            9:25 PM – 11:25 PM IST
-          </span>
-        </div>
-        <p class="text-xs sm:text-sm text-slate-400 max-w-2xl">
-          Algorithmic 4-Ank Dual OTC heuristics, statistical frequency matrices, and probability telemetry tuned specifically for the official Kalyan Night session.
-        </p>
-      </div>
-
-      <!-- Quick Switch Market Links -->
-      <div class="flex items-center gap-2 shrink-0">
-        <a href="../kalyan/index.html" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition-all">
-          Kalyan Day (3:45 PM) ↗
-        </a>
-        <a href="../kalyan-morning/index.html" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 transition-all">
-          Kalyan Morning (11:00 AM) ↗
-        </a>
-      </div>
-    </header>
-
-    <!-- ═══ Live IST Market Status & Countdown Bar ═══ -->
-    <section class="glass-card rounded-2xl p-4 sm:p-5 border-purple-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-      <div>
-        <div class="flex items-center gap-2 mb-1.5">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
-          </span>
-          <span class="text-xs font-bold uppercase tracking-wider text-purple-300">Live IST Draw Window Clock</span>
-          <span id="night-status-badge" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border bg-amber-500/15 text-amber-300 border-amber-500/30">
-            CALCULATING
-          </span>
-        </div>
-        <div id="night-phase-text" class="text-xs sm:text-sm text-slate-300 font-medium">
-          Tracking next Kalyan Night draw event...
-        </div>
-        <div class="text-[11px] text-slate-500 mt-1">
-          Operating Schedule: Mon–Sat · Open: 9:25 PM IST · Close: 11:25 PM IST · Sunday Recess
-        </div>
-      </div>
-
-      <div class="flex items-center gap-4 bg-[#070b14]/70 border border-white/5 px-4 py-2.5 rounded-xl">
-        <div class="text-right">
-          <div class="text-[9px] uppercase font-mono text-slate-400 font-semibold">Next Draw Event</div>
-          <div id="night-countdown-timer" class="text-xl sm:text-2xl font-black font-mono tracking-wider text-purple-300">
-            --:--:--
-          </div>
-        </div>
-        <div class="h-7 w-px bg-white/10 hidden sm:block"></div>
-        <div class="text-[10px] font-mono text-slate-400 hidden sm:block">
-          <div>IST (UTC+5:30)</div>
-          <div id="ist-live-clock" class="text-slate-200 font-semibold">--:--:--</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Interactive Day Selector Bar ═══ -->
-    <div class="flex items-center justify-between gap-2 overflow-x-auto pb-2 scrollbar-none">
-      <div class="flex items-center gap-1.5 sm:gap-2">
-        <button onclick="selectDay('Mon')" id="btn-Mon" class="day-btn px-4 py-1.5 rounded-full text-xs font-bold border transition-all bg-purple-500/20 text-purple-300 border-purple-500/40">Mon</button>
-        <button onclick="selectDay('Tue')" id="btn-Tue" class="day-btn px-4 py-1.5 rounded-full text-xs font-bold border transition-all bg-slate-900/80 text-slate-400 border-slate-800 hover:text-white">Tue</button>
-        <button onclick="selectDay('Wed')" id="btn-Wed" class="day-btn px-4 py-1.5 rounded-full text-xs font-bold border transition-all bg-slate-900/80 text-slate-400 border-slate-800 hover:text-white">Wed</button>
-        <button onclick="selectDay('Thu')" id="btn-Thu" class="day-btn px-4 py-1.5 rounded-full text-xs font-bold border transition-all bg-slate-900/80 text-slate-400 border-slate-800 hover:text-white">Thu</button>
-        <button onclick="selectDay('Fri')" id="btn-Fri" class="day-btn px-4 py-1.5 rounded-full text-xs font-bold border transition-all bg-slate-900/80 text-slate-400 border-slate-800 hover:text-white">Fri</button>
-        <button onclick="selectDay('Sat')" id="btn-Sat" class="day-btn px-4 py-1.5 rounded-full text-xs font-bold border transition-all bg-slate-900/80 text-slate-400 border-slate-800 hover:text-white">Sat</button>
-      </div>
-
-      <div class="text-[11px] font-mono text-slate-500 shrink-0">
-        Selected: <span id="selected-day-label" class="text-purple-300 font-bold">Monday</span>
-      </div>
-    </div>
-
-    <!-- ═══ Primary Predictive Workspace Grid ═══ -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-      <!-- Column 1 & 2: Main Prediction Card -->
-      <div class="lg:col-span-2 space-y-6">
-
-        <!-- 4-Ank Dual OTC Recommendation Card -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 border-purple-500/40 relative">
-          <div class="flex items-center justify-between mb-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-                <h2 class="text-base sm:text-lg font-bold text-white">4-Ank Dual OTC (Open/Close Dual Cut Pair)</h2>
-              </div>
-              <p class="text-xs text-slate-400">Mathematical high-probability digits for Open &amp; Close brackets</p>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <button onclick="copyOTC()" id="btn-copy-otc" class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 transition-all">
-                <span id="copy-icon">📋</span>
-                <span id="copy-text">Copy OTC</span>
-              </button>
-              <button onclick="sharePredictionText()" id="btn-share-otc" class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 transition-all" title="Share prediction">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-                <span>Share</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- The 4 Digits Display -->
-          <div class="grid grid-cols-4 gap-2.5 sm:gap-4 mb-5">
-            <div class="bg-slate-950/70 border border-purple-500/30 rounded-xl p-3 sm:p-4 text-center">
-              <div class="text-[10px] uppercase font-mono text-slate-500">Primary 1</div>
-              <div id="otc-digit-0" class="text-3xl sm:text-4xl font-black font-mono text-purple-300 mt-1">3</div>
-              <div id="otc-cut-0" class="text-[10px] font-mono text-slate-500 mt-0.5">Cut: 8</div>
-            </div>
-            <div class="bg-slate-950/70 border border-purple-500/30 rounded-xl p-3 sm:p-4 text-center">
-              <div class="text-[10px] uppercase font-mono text-slate-500">Primary 2</div>
-              <div id="otc-digit-1" class="text-3xl sm:text-4xl font-black font-mono text-purple-300 mt-1">8</div>
-              <div id="otc-cut-1" class="text-[10px] font-mono text-slate-500 mt-0.5">Cut: 3</div>
-            </div>
-            <div class="bg-slate-950/70 border border-pink-500/30 rounded-xl p-3 sm:p-4 text-center">
-              <div class="text-[10px] uppercase font-mono text-slate-500">Secondary 1</div>
-              <div id="otc-digit-2" class="text-3xl sm:text-4xl font-black font-mono text-pink-300 mt-1">4</div>
-              <div id="otc-cut-2" class="text-[10px] font-mono text-slate-500 mt-0.5">Cut: 9</div>
-            </div>
-            <div class="bg-slate-950/70 border border-pink-500/30 rounded-xl p-3 sm:p-4 text-center">
-              <div class="text-[10px] uppercase font-mono text-slate-500">Secondary 2</div>
-              <div id="otc-digit-3" class="text-3xl sm:text-4xl font-black font-mono text-pink-300 mt-1">9</div>
-              <div id="otc-cut-3" class="text-[10px] font-mono text-slate-500 mt-0.5">Cut: 4</div>
-            </div>
-          </div>
-
-          <!-- Win-Rate & Strategy Info -->
-          <div class="flex items-center justify-between text-xs text-slate-400 bg-white/5 rounded-xl px-3.5 py-2.5">
-            <div>Confidence Rating: <span class="text-emerald-400 font-bold">78.1% Empirical Touch</span></div>
-            <div>Strategy: <span class="font-mono text-slate-300">Dual Cut Pair Hedging</span></div>
-          </div>
-        </div>
-
-        <!-- Top Probability Jodis & Family Cut Matrix -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 border-slate-800">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-              Top 8 Probabilistic Jodis
-            </h3>
-            <span class="text-[11px] font-mono text-slate-500">Cut-Family Balanced</span>
-          </div>
-
-          <div id="jodi-grid" class="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-4 font-mono">
-            <!-- Rendered by JS -->
-          </div>
-
-          <!-- Panel Combinations -->
-          <div class="border-t border-white/5 pt-4">
-            <div class="text-xs font-semibold text-slate-300 mb-2">Recommended Patti / Panel Sets:</div>
-            <div id="patti-container" class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
-              <!-- Rendered by JS -->
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Column 3: Telemetry & Rules Sidebar -->
-      <div class="space-y-6">
-
-        <!-- Market Rules & Timing Card -->
-        <div class="glass-card rounded-2xl p-5 border-slate-800">
-          <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-3 flex items-center gap-2">
-            <span>⏱️</span> Market Draw Cadence
-          </h3>
-          <ul class="text-xs space-y-2.5 text-slate-300 font-mono">
-            <li class="flex items-center justify-between p-2 rounded-lg bg-white/5">
-              <span>Open Panna:</span>
-              <strong class="text-purple-300">9:25 PM IST</strong>
-            </li>
-            <li class="flex items-center justify-between p-2 rounded-lg bg-white/5">
-              <span>Close Panna:</span>
-              <strong class="text-pink-300">11:25 PM IST</strong>
-            </li>
-            <li class="flex items-center justify-between p-2 rounded-lg bg-white/5">
-              <span>Active Days:</span>
-              <strong class="text-slate-200">Monday to Saturday</strong>
-            </li>
-            <li class="flex items-center justify-between p-2 rounded-lg bg-white/5">
-              <span>Sunday:</span>
-              <strong class="text-amber-400">Market Recess</strong>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Markov Heuristics Insight -->
-        <div class="glass-card rounded-2xl p-5 border-slate-800">
-          <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2 flex items-center gap-2">
-            <span>📊</span> Analytics Methodology
-          </h3>
-          <p class="text-xs text-slate-400 leading-relaxed mb-3">
-            Night draw predictions combine day-of-week Bayesian frequency priors with first-order Markov chain state transitions, calculating digit entropy across night draw distributions.
-          </p>
-          <div class="space-y-1.5 text-[11px] font-mono text-slate-400">
-            <div class="flex items-center justify-between">
-              <span>First-Order Markov:</span>
-              <span class="text-emerald-400">Converged</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span>Entropy Normalization:</span>
-              <span class="text-purple-400">Active</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span>Zero-Telemetry Privacy:</span>
-              <span class="text-cyan-400">100% Client-Side</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Matka Hub Navigation -->
-        <div class="glass-card rounded-2xl p-5 border-slate-800">
-          <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2 flex items-center gap-2">
-            <span>🌐</span> Complete Matka Suite
-          </h3>
-          <div class="space-y-2 pt-1">
-            <a href="../kalyan/index.html" class="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-200 transition-colors">
-              👉 Kalyan Day Live Predictor (3:45 PM)
-            </a>
-            <a href="../kalyan-morning/index.html" class="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-200 transition-colors">
-              👉 Kalyan Morning Predictor (11:00 AM)
-            </a>
-            <a href="../kalyan/kalyan_penal_chart.html" class="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-200 transition-colors">
-              👉 Historical Penal Chart (14 Years)
-            </a>
-            <a href="../top-10-random-numbers-generator/index.html" class="block p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-semibold text-slate-200 transition-colors">
-              👉 Top 10 Random Numbers Generator
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-  </main>
-
-  <!-- ═══ Footer ═══ -->
-  <footer class="border-t border-white/10 bg-[#05070c] py-6 text-xs text-slate-400">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div>Zevbuild Studio · Kalyan Night Analytics · 100% Zero-Telemetry</div>
-      <div class="flex items-center gap-4">
-        <a href="../../../index.html" class="hover:text-purple-400 transition-colors">Main Hub</a>
-        <a href="../../index.html" class="hover:text-purple-400 transition-colors">Tools Catalog</a>
-        <a href="../index.html" class="hover:text-purple-400 transition-colors">Matka Hub</a>
-        <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">GitHub</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // ==========================================
-    // KALYAN NIGHT MARKET DATA & LOGIC ENGINE
-    // ==========================================
-    const DAY_PREDICTIONS = {
-      Mon: {
-        otc: [3, 8, 4, 9],
-        jodis: ['34', '39', '84', '89', '43', '48', '93', '98'],
-        pattis: ['148', '260', '379', '450'],
-        hot: 3,
-        touchRate: '78.5%'
-      },
-      Tue: {
-        otc: [1, 6, 0, 5],
-        jodis: ['10', '15', '60', '65', '01', '06', '51', '56'],
-        pattis: ['127', '280', '370', '569'],
-        hot: 6,
-        touchRate: '77.8%'
-      },
-      Wed: {
-        otc: [2, 7, 1, 6],
-        jodis: ['21', '26', '71', '76', '12', '17', '62', '67'],
-        pattis: ['237', '345', '679', '789'],
-        hot: 7,
-        touchRate: '79.1%'
-      },
-      Thu: {
-        otc: [4, 9, 3, 8],
-        jodis: ['43', '48', '93', '98', '34', '39', '84', '89'],
-        pattis: ['130', '289', '469', '578'],
-        hot: 4,
-        touchRate: '77.2%'
-      },
-      Fri: {
-        otc: [0, 5, 2, 7],
-        jodis: ['02', '07', '52', '57', '20', '25', '70', '75'],
-        pattis: ['145', '230', '589', '679'],
-        hot: 0,
-        touchRate: '78.9%'
-      },
-      Sat: {
-        otc: [1, 6, 3, 8],
-        jodis: ['13', '18', '63', '68', '31', '36', '81', '86'],
-        pattis: ['137', '259', '369', '780'],
-        hot: 8,
-        touchRate: '76.9%'
-      }
-    };
-
-    let activeDay = 'Mon';
-
-    function getISTDate() {
-      const now = new Date();
-      const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-      return new Date(utcMs + (5.5 * 3600000));
-    }
-
-    function initToday() {
-      const ist = getISTDate();
-      const dayIndex = ist.getDay(); // 0 = Sun, 1 = Mon ... 6 = Sat
-      const days = ['Mon', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      selectDay(days[dayIndex] || 'Mon');
-    }
-
-    function selectDay(day) {
-      if (!DAY_PREDICTIONS[day]) return;
-      activeDay = day;
-
-      // Update button active styles
-      document.querySelectorAll('.day-btn').forEach(btn => {
-        btn.className = "day-btn px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-slate-900/80 text-slate-400 border-slate-800 hover:text-white";
-      });
-      const activeBtn = document.getElementById(`btn-${day}`);
-      if (activeBtn) {
-        activeBtn.className = "day-btn px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-purple-500/20 text-purple-300 border-purple-500/40 shadow-inner";
-      }
-
-      const fullDays = { Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday' };
-      document.getElementById('selected-day-label').textContent = fullDays[day] || day;
-
-      const data = DAY_PREDICTIONS[day];
-      // Render OTC
-      data.otc.forEach((d, idx) => {
-        const el = document.getElementById(`otc-digit-${idx}`);
-        if (el) el.textContent = d;
-        const cutEl = document.getElementById(`otc-cut-${idx}`);
-        if (cutEl) cutEl.textContent = `Cut: ${(d + 5) % 10}`;
-      });
-
-      // Render Jodis
-      const jodiGrid = document.getElementById('jodi-grid');
-      jodiGrid.innerHTML = data.jodis.map((j, i) => `
-        <div class="p-2 sm:p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-center hover:border-purple-500/40 transition-colors">
-          <div class="text-base sm:text-lg font-black text-purple-300">${j}</div>
-          <div class="text-[9px] text-slate-500">#${i + 1}</div>
-        </div>
-      `).join('');
-
-      // Render Pattis
-      const pattiCont = document.getElementById('patti-container');
-      pattiCont.innerHTML = data.pattis.map(p => `
-        <div class="p-2 rounded-xl bg-slate-950/60 border border-slate-800/80 text-center text-slate-300">
-          <span class="text-purple-400 font-bold">${p}</span>
-        </div>
-      `).join('');
-    }
-
-    
-    // ==========================================
-    // SHARE ENGINE & GLASS TOAST
-    // ==========================================
-    function shareAppOrPrediction(customText) {
-      const data = DAY_PREDICTIONS[activeDay];
-      const text = customText || `🎯 Kalyan Night [${activeDay}] 4-Ank OTC: [${data.otc.join(', ')}] | Top Jodis: ${data.jodis.slice(0, 4).join(', ')}`;
-      const url = window.location.href.split('#')[0];
-      if (navigator.share) {
-        navigator.share({
-          title: 'Kalyan Night Predictor | Zevbuild',
-          text: text,
-          url: url
-        }).catch(() => fallbackCopyShare(url, text));
-      } else {
-        fallbackCopyShare(url, text);
-      }
-    }
-
-    function sharePredictionText() {
-      const data = DAY_PREDICTIONS[activeDay];
-      const text = `🎯 Kalyan Night [${activeDay}] 4-Ank OTC: [${data.otc.join(', ')}] | Top Jodis: ${data.jodis.slice(0, 4).join(', ')}`;
-      shareAppOrPrediction(text);
-    }
-
-    function fallbackCopyShare(url, text) {
-      const full = text ? `${text}\n${url}` : url;
-      navigator.clipboard.writeText(full).then(() => {
-        showGlassToast("Link & prediction copied to clipboard! 📋");
-      }).catch(() => {
-        showGlassToast("Copied to clipboard!");
-      });
-    }
-
-    function showGlassToast(msg) {
-      let toast = document.getElementById('glass-toast');
-      if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'glass-toast';
-        toast.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full glass-card border border-purple-500/50 text-purple-200 text-xs font-bold shadow-2xl backdrop-blur-xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2';
-        document.body.appendChild(toast);
-      }
-      toast.textContent = msg;
-      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
-      toast.classList.add('opacity-100', 'translate-y-0');
-      setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-      }, 2500);
-    }
-
-    function copyOTC() {
-      const data = DAY_PREDICTIONS[activeDay];
-      const text = `Kalyan Night [${activeDay}] 4-Ank OTC: ${data.otc.join(', ')} | Top Jodis: ${data.jodis.slice(0, 4).join(', ')}`;
-      navigator.clipboard.writeText(text).then(() => {
-        const copyText = document.getElementById('copy-text');
-        copyText.textContent = "Copied!";
-        setTimeout(() => { copyText.textContent = "Copy OTC"; }, 2000);
-      });
-    }
-
-    // ==========================================
-    // KALYAN NIGHT TIMING COUNTDOWN (9:25 PM – 11:25 PM)
-    // ==========================================
-    function updateCountdown() {
-      const ist = getISTDate();
-      const day = ist.getDay(); // 0 = Sun
-      const hours = ist.getHours();
-      const minutes = ist.getMinutes();
-      const seconds = ist.getSeconds();
-      const currentTotalSeconds = hours * 3600 + minutes * 60 + seconds;
-
-      const openSeconds = 21 * 3600 + 25 * 60;    // 21:25:00 (9:25 PM)
-      const closeSeconds = 23 * 3600 + 25 * 60;   // 23:25:00 (11:25 PM)
-
-      let phase = '';
-      let targetDiff = 0;
-      let statusBadge = '';
-      let badgeColor = '';
-
-      if (day === 0) {
-        // Sunday
-        phase = "Sunday Market Recess · Next Draw Monday 9:25 PM IST";
-        targetDiff = (86400 - currentTotalSeconds) + openSeconds;
-        statusBadge = "WEEKEND RECESS";
-        badgeColor = "bg-slate-800 text-slate-400 border-slate-700";
-      } else if (currentTotalSeconds < openSeconds) {
-        // Pre-Open
-        targetDiff = openSeconds - currentTotalSeconds;
-        phase = "Countdown to Kalyan Night Open (9:25 PM IST)";
-        statusBadge = "PRE-OPEN WINDOW";
-        badgeColor = "bg-purple-500/15 text-purple-300 border-purple-500/30";
-      } else if (currentTotalSeconds < closeSeconds) {
-        // Live Draw Active
-        targetDiff = closeSeconds - currentTotalSeconds;
-        phase = "Open Live! Countdown to Kalyan Night Close (11:25 PM IST)";
-        statusBadge = "LIVE DRAW ACTIVE";
-        badgeColor = "bg-emerald-500/20 text-emerald-300 border-emerald-500/30 animate-pulse";
-      } else {
-        // Post-Close
-        const isSaturday = (day === 6);
-        if (isSaturday) {
-          targetDiff = (86400 - currentTotalSeconds) + 86400 + openSeconds;
-          phase = "Draw Closed · Next Draw Monday 9:25 PM IST";
-        } else {
-          targetDiff = (86400 - currentTotalSeconds) + openSeconds;
-          phase = "Draw Settled · Next Draw Tomorrow 9:25 PM IST";
-        }
-        statusBadge = "MARKET CLOSED";
-        badgeColor = "bg-pink-500/15 text-pink-300 border-pink-500/30";
-      }
-
-      const h = Math.floor(targetDiff / 3600);
-      const m = Math.floor((targetDiff % 3600) / 60);
-      const s = targetDiff % 60;
-      const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-
-      const timerEl = document.getElementById('night-countdown-timer');
-      const phaseEl = document.getElementById('night-phase-text');
-      const badgeEl = document.getElementById('night-status-badge');
-      const istClockEl = document.getElementById('ist-live-clock');
-
-      if (timerEl) timerEl.textContent = timeStr;
-      if (phaseEl) phaseEl.textContent = phase;
-      if (badgeEl) {
-        badgeEl.textContent = statusBadge;
-        badgeEl.className = `px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border ${badgeColor}`;
-      }
-      if (istClockEl) {
-        istClockEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-      }
-    }
-
-    initToday();
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script>
-
-  <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c0b6dadac96743ea84c677995e32dc24"}'></script><!-- End Cloudflare Web Analytics -->
-
-  <!-- ═══ Kalyan Hub Migration Announcement Modal ═══ -->
-  <div id="kalyanhub-migration-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none" style="z-index: 9999;">
-    <div class="relative w-full max-w-lg p-6 sm:p-7 rounded-2xl glass-card border border-purple-500/40 bg-gradient-to-b from-slate-900/98 via-[#0b0f19]/98 to-[#06080d]/98 shadow-2xl shadow-purple-950/60 text-left transform scale-95 transition-transform duration-300">
-      <!-- Close button -->
-      <button onclick="dismissMigrationModal()" class="absolute top-4 right-4 p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Close" aria-label="Close Announcement">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-
-      <!-- Header badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-3">
-        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-        <span>OFFICIAL ANNOUNCEMENT</span>
-      </div>
-
-      <!-- Title -->
-      <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
-        All Future Updates Have Moved to <span class="text-purple-400">Kalyan Hub</span>!
-      </h3>
-
-      <!-- Description -->
-      <p class="text-xs sm:text-sm text-slate-300 mb-6 leading-relaxed">
-        Starting today, all future updates, real-time draw results, chart synchronizations, and quantitative prediction models will come exclusively on our new dedicated site: <strong class="text-purple-300 font-mono">kalyanhub.pages.dev</strong>. This legacy page on Zevbuild is archived and will no longer receive future updates.
-      </p>
-
-      <!-- CTAs (No Auto-Redirect: User Choice) -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-        <a id="kalyanhub-migrate-link" href="https://kalyanhub.pages.dev/" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-3 px-5 rounded-xl text-xs sm:text-sm font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-1.5">
-          <span>Go to New Site (kalyanhub.pages.dev) ↗</span>
-        </a>
-        <button onclick="dismissMigrationModal()" class="py-3 px-4 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-          Stay on Legacy Site
-        </button>
-      </div>
-    </div>
+<body>
+  <div class="card">
+    <div class="badge"><span class="badge-dot"></span> Service Moved</div>
+    <h1>Kalyan Night Predictor has moved to Kalyan Hub</h1>
+    <p>Night session Markov models, 4-Ank OTC cuts, and live schedule clocks are now hosted on Kalyan Hub.</p>
+    <a class="btn" href="https://kalyanhub.pages.dev/night/">Go to Kalyan Night Predictor ↗</a>
   </div>
-
-  <script>
-    (function() {
-      const TARGET_MAP = {
-        'kalyan-night': 'https://kalyanhub.pages.dev/night/',
-        'kalyan-morning': 'https://kalyanhub.pages.dev/morning/',
-        'top-10-random-numbers-generator': 'https://kalyanhub.pages.dev/rng/',
-        'kalyan_penal_chart': 'https://kalyanhub.pages.dev/chart.html',
-        'kalyan': 'https://kalyanhub.pages.dev/kalyan/'
-      };
-      let targetUrl = 'https://kalyanhub.pages.dev/';
-      const pathname = window.location.pathname;
-      for (const [key, url] of Object.entries(TARGET_MAP)) {
-        if (pathname.includes(key)) {
-          targetUrl = url;
-          break;
-        }
-      }
-      const linkEl = document.getElementById('kalyanhub-migrate-link');
-      if (linkEl) linkEl.href = targetUrl;
-
-      window.showMigrationModal = function() {
-        const modal = document.getElementById('kalyanhub-migration-modal');
-        if (!modal) return;
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modal.classList.add('opacity-100');
-        const dialog = modal.querySelector('.transform');
-        if (dialog) dialog.classList.remove('scale-95');
-        setTimeout(function() {
-          if (window.location.protocol.startsWith('http')) {
-            window.location.replace("https://kalyanhub.pages.dev/night/");
-          }
-        }, 1200);
-      };
-
-      window.dismissMigrationModal = function() {
-        const modal = document.getElementById('kalyanhub-migration-modal');
-        if (!modal) return;
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        modal.classList.remove('opacity-100');
-      };
-
-      setTimeout(window.showMigrationModal, 300);
-    })();
-  </script>
 </body>
 </html>

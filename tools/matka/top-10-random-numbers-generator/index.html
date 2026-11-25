@@ -1,303 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 10 Random Numbers Generator | Kalyan Hub</title>
   <meta http-equiv="refresh" content="0; url=https://kalyanhub.pages.dev/rng/">
-  <script>
-    if (window.location.protocol.startsWith('http')) {
-      window.location.replace("https://kalyanhub.pages.dev/rng/");
+  <link rel="canonical" href="https://kalyanhub.pages.dev/rng/">
+  <script>window.location.replace("https://kalyanhub.pages.dev/rng/");</script>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #07090e;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+      box-sizing: border-box;
     }
-  </script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Top 10 Random Numbers Generator | Secure Cryptographic RNG | Zevbuild Tools</title>
-<meta name="description" content="Generate 10 secure, cryptographic random numbers with customizable ranges (10–99+), live rolling animations, sum and average calculations, and saved roll history. Free zero-build utility by Zevbuild.">
-<meta name="keywords" content="random numbers generator, top 10 random numbers, crypto random generator, true random numbers, number picker, lottery number generator, matka random numbers, Zevbuild">
-<meta name="author" content="Zevbuild Studio">
-<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-<meta name="theme-color" content="#6d5efc">
-<link rel="canonical" href="https://kalyanhub.pages.dev/rng/">
-<link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Zevbuild">
-<meta property="og:url" content="https://zevbuild.pages.dev/tools/matka/top-10-random-numbers-generator/">
-<meta property="og:title" content="Top 10 Random Numbers Generator | Secure Cryptographic RNG | Zevbuild Tools">
-<meta property="og:description" content="Generate 10 secure, cryptographic random numbers with customizable ranges, live statistics, and roll history.">
-<meta property="og:image" content="https://zevbuild.pages.dev/og-image.svg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-
-<!-- Twitter / X -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@zevbuild">
-<meta name="twitter:title" content="Top 10 Random Numbers Generator | Secure Cryptographic RNG | Zevbuild Tools">
-<meta name="twitter:description" content="Generate 10 secure, cryptographic random numbers with live stats and roll history.">
-<meta name="twitter:image" content="https://zevbuild.pages.dev/og-image.svg">
-
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "Top 10 Random Numbers Generator",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "All",
-      "url": "https://zevbuild.pages.dev/tools/matka/top-10-random-numbers-generator/",
-      "description": "Cryptographically secure top 10 random number generator with customizable bounds, rolling animation, and sum/average telemetry.",
-      "browserRequirements": "Requires JavaScript. Requires HTML5.",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Zevbuild Studio",
-        "url": "https://zevbuild.pages.dev/"
-      }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://zevbuild.pages.dev/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Tools",
-          "item": "https://zevbuild.pages.dev/tools/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "Matka Suite",
-          "item": "https://zevbuild.pages.dev/tools/matka/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": "Top 10 Random Numbers",
-          "item": "https://zevbuild.pages.dev/tools/matka/top-10-random-numbers-generator/"
-        }
-      ]
+    .card {
+      max-width: 440px;
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
     }
-  ]
-}
-</script>
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap">
-<style>
-:root{--bg:#f4f3ff;--text:#1d1b3a;--muted:#6b6a8a;--card:rgba(255,255,255,.75);--bd:rgba(90,80,200,.16);--nl:44%;--o1:#a78bfa;--o2:#67e8f9;--o3:#f9a8d4;--b1:#6d5efc;--b2:#d946ef;--sh:0 10px 30px rgba(80,60,200,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0b1a;--text:#f1f0ff;--muted:#a3a1c8;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.13);--nl:68%;--o1:#6d28d9;--o2:#0891b2;--o3:#be185d;--sh:0 10px 40px rgba(0,0,0,.5)}}
-:root[data-theme="dark"]{--bg:#0b0b1a;--text:#f1f0ff;--muted:#a3a1c8;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.13);--nl:68%;--o1:#6d28d9;--o2:#0891b2;--o3:#be185d;--sh:0 10px 40px rgba(0,0,0,.5)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:"Space Grotesk",ui-rounded,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;justify-content:center;padding:28px 16px;overflow-x:hidden}
-.bg{position:fixed;inset:0;z-index:-1;overflow:hidden}
-.bg i{position:absolute;width:55vmax;height:55vmax;border-radius:50%;filter:blur(90px);opacity:.45;animation:drift 18s ease-in-out infinite alternate}
-.bg i:nth-child(1){background:var(--o1);top:-20vmax;left:-15vmax}
-.bg i:nth-child(2){background:var(--o2);bottom:-25vmax;right:-15vmax;animation-delay:-6s}
-.bg i:nth-child(3){background:var(--o3);top:30%;left:35%;width:35vmax;height:35vmax;animation-delay:-12s;opacity:.3}
-@keyframes drift{to{transform:translate(8vmax,6vmax) scale(1.15)}}
-main{width:100%;max-width:760px}
-.nav-bread{display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--muted);margin-bottom:16px;justify-content:center;flex-wrap:wrap}
-.nav-bread a{color:inherit;text-decoration:none;transition:color .2s}
-.nav-bread a:hover{color:var(--text)}
-.nav-bread span{color:var(--text);font-weight:700}
-h1{font-size:clamp(1.9rem,6vw,2.8rem);margin:0;text-align:center;letter-spacing:-.02em;background:linear-gradient(90deg,var(--b1),var(--b2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{text-align:center;color:var(--muted);margin:6px 0 22px}
-.bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:18px}
-.bar label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.9rem}
-input{width:5.4rem;padding:9px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--text);font:inherit;text-align:center}
-.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-@media (max-width:560px){.grid{grid-template-columns:repeat(2,1fr)}.tile{aspect-ratio:4/3!important}}
-.tile{aspect-ratio:1/1;display:grid;place-items:center;border-radius:20px;background:var(--card);border:1px solid var(--bd);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:var(--sh);transition:box-shadow .4s,border-color .4s}
-.n{font-size:clamp(1.6rem,5.5vw,2.5rem);font-weight:700;color:hsl(var(--h) 85% var(--nl));font-variant-numeric:tabular-nums}
-.n.l{font-size:clamp(1rem,3.4vw,1.5rem)}
-.roll .n{filter:blur(1.4px);opacity:.75}
-.land{border-color:hsl(var(--h) 85% 60% / .7);box-shadow:0 10px 30px hsl(var(--h) 90% 60% / .4);animation:pop .55s cubic-bezier(.2,1.5,.4,1)}
-@keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
-.btns{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
-button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:14px 30px;cursor:pointer;transition:transform .15s,box-shadow .3s}
-#go{color:#fff;font-size:1.05rem;background:linear-gradient(90deg,var(--b1),var(--b2));box-shadow:0 8px 26px rgba(109,94,252,.45)}
-#go:hover{transform:translateY(-2px)}
-#go:active{transform:scale(.97)}
-#go:disabled{opacity:.6;cursor:wait}
-#cp{background:var(--card);color:var(--text);border:1px solid var(--bd)}
-.stats{text-align:center;color:var(--muted);margin-top:16px;min-height:1.4em;font-size:.95rem}
-.hist{margin-top:26px;color:var(--muted);font-size:.85rem}
-.hist h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;margin:0 0 10px;display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
-.hist h2 button{padding:5px 12px;font-size:.72rem;background:var(--card);color:var(--muted);border:1px solid var(--bd)}
-.row{padding:10px 12px;border-radius:12px;background:var(--card);border:1px solid var(--bd);margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.row b{color:var(--text);margin-right:4px;font-size:.8rem}
-.row i{font-style:normal;font-weight:700;padding:3px 9px;border-radius:8px;border:1px solid var(--bd);color:hsl(var(--h) 85% var(--nl))}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #c084fc;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #34d399;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 10px;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+    p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin: 0 0 24px;
+    }
+    a.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 20px;
+      border-radius: 12px;
+      background: #9333ea;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: background 0.2s;
+      box-shadow: 0 10px 20px -5px rgba(147, 51, 234, 0.4);
+    }
+    a.btn:hover {
+      background: #a855f7;
+    }
+  </style>
 </head>
 <body>
-<div class="bg"><i></i><i></i><i></i></div>
-<main>
-  <nav class="nav-bread" aria-label="Breadcrumb">
-    <a href="../../../index.html">Zevbuild</a>
-    <span>/</span>
-    <a href="../../index.html">Tools</a>
-    <span>/</span>
-    <a href="../index.html">Matka Suite</a>
-    <span>/</span>
-    <span>Random 10 Numbers</span>
-  </nav>
-  <h1>Fully Random 10</h1>
-  <p class="sub">10 independent picks from a secure random generator. Any number, any time, even twice.</p>
-  <div class="bar">
-    <label>From <input id="lo" type="number" value="10"></label>
-    <label>To <input id="hi" type="number" value="99"></label>
+  <div class="card">
+    <div class="badge"><span class="badge-dot"></span> Service Moved</div>
+    <h1>Top 10 RNG has moved to Kalyan Hub</h1>
+    <p>Cryptographic lottery random number picker, custom ranges, and roll history are now live at Kalyan Hub.</p>
+    <a class="btn" href="https://kalyanhub.pages.dev/rng/">Go to Random Generator ↗</a>
   </div>
-  <div class="grid" id="grid"></div>
-  <div class="btns"><button id="go">Draw 10 numbers</button><button id="cp">Copy</button></div>
-  <div class="stats" id="st" aria-live="polite"></div>
-  <div class="hist" id="hs" hidden><h2><span id="cnt">Saved numbers</span><button id="clr">Clear all</button></h2><div id="hl"></div></div>
-</main>
-<script>
-(function(){
-var $=function(i){return document.getElementById(i)},grid=$('grid'),st=$('st'),go=$('go'),tiles=[],cur=[],hist=[],busy=false,KEY="random10-saved";
-var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
-for(var i=0;i<10;i++){var t=document.createElement('div');t.className='tile';t.style.setProperty('--h',i*36);t.innerHTML='<span class="n">-</span>';grid.appendChild(t);tiles.push(t)}
-function rnd(n){var m=Math.floor(4294967296/n)*n,x=new Uint32Array(1);do{crypto.getRandomValues(x)}while(x[0]>=m);return x[0]%n}
-function show(t,v){var s=t.firstChild;s.textContent=v;s.className='n'+(String(v).length>3?' l':'')}
-function range(){var a=parseInt($('lo').value,10),b=parseInt($('hi').value,10);if(isNaN(a))a=10;if(isNaN(b))b=99;a=Math.max(-999999,Math.min(999999,a));b=Math.max(-999999,Math.min(999999,b));if(a>b){var c=a;a=b;b=c}$('lo').value=a;$('hi').value=b;return[a,b]}
-function rowHTML(d){
-  var tm=new Date(d.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  return '<div class="row" data-draw="'+d.n+'" data-nums="'+d.nums.join(',')+'"><b>#'+d.n+' · '+tm+'</b>'+d.nums.map(function(v,i){return '<i style="--h:'+i*36+'">'+v+'</i>'}).join('')+'</div>';
-}
-function stats(f){
-  var s=f.reduce(function(x,y){return x+y},0);
-  st.textContent='Sum '+s+'  ·  Average '+(s/10).toFixed(1)+'  ·  Lowest '+Math.min.apply(null,f)+'  ·  Highest '+Math.max.apply(null,f);
-}
-function count(){
-  $('hs').hidden=!hist.length;
-  $('cnt').textContent='Saved: '+hist.length+(hist.length===1?' draw':' draws')+' · '+hist.length*10+' numbers';
-}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(hist))}catch(e){}}
-function ok(d){return d&&typeof d.n==='number'&&typeof d.t==='number'&&Array.isArray(d.nums)&&d.nums.length===10&&d.nums.every(function(v){return typeof v==='number'&&isFinite(v)})}
-function done(f){
-  cur=f;busy=false;go.disabled=false;stats(f);
-  var d={n:hist.length?hist[0].n+1:1,t:Date.now(),nums:f};
-  hist.unshift(d);
-  $('hl').insertAdjacentHTML('afterbegin',rowHTML(d));
-  count();save();
-}
-function draw(){
-  if(busy)return;
-  var r=range(),lo=r[0],n=r[1]-r[0]+1,f=[];
-  for(var i=0;i<10;i++)f.push(lo+rnd(n));
-  $('cp').textContent='Copy';
-  if(calm){tiles.forEach(function(t,i){show(t,f[i]);t.className='tile land'});return done(f)}
-  busy=true;go.disabled=true;
-  tiles.forEach(function(t){t.className='tile roll';t.d=0});
-  var t0=performance.now(),k=0,iv=setInterval(function(){
-    var e=performance.now()-t0;
-    tiles.forEach(function(t,i){
-      if(t.d)return;
-      if(e>=800+i*170){t.d=1;show(t,f[i]);t.className='tile land';k++}
-      else show(t,lo+Math.floor(Math.random()*n));
-    });
-    if(k===10){clearInterval(iv);done(f)}
-  },60);
-}
-$('cp').onclick=function(){
-  if(!cur.length)return;var txt=cur.join(', '),b=this;
-  try{navigator.clipboard.writeText(txt).then(function(){b.textContent='Copied ✓'},function(){st.textContent=txt})}catch(e){st.textContent=txt}
-};
-go.onclick=draw;
-$('clr').onclick=function(){hist=[];$('hl').innerHTML='';count();save()};
-try{hist=JSON.parse(localStorage.getItem(KEY))}catch(e){hist=[]}
-hist=Array.isArray(hist)?hist.filter(ok):[];
-$('hl').innerHTML=hist.map(function(d){return rowHTML(d)}).join('');count();
-if(hist.length){var f0=hist[0].nums;cur=f0;tiles.forEach(function(t,i){show(t,f0[i]);t.className='tile land'});stats(f0)}else draw();
-})();
-</script>
-
-  <!-- ═══ Kalyan Hub Migration Announcement Modal ═══ -->
-  <div id="kalyanhub-migration-modal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none" style="z-index: 9999;">
-    <div class="relative w-full max-w-lg p-6 sm:p-7 rounded-2xl glass-card border border-purple-500/40 bg-gradient-to-b from-slate-900/98 via-[#0b0f19]/98 to-[#06080d]/98 shadow-2xl shadow-purple-950/60 text-left transform scale-95 transition-transform duration-300">
-      <!-- Close button -->
-      <button onclick="dismissMigrationModal()" class="absolute top-4 right-4 p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors" title="Close" aria-label="Close Announcement">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-
-      <!-- Header badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-3">
-        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-        <span>OFFICIAL ANNOUNCEMENT</span>
-      </div>
-
-      <!-- Title -->
-      <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
-        All Future Updates Have Moved to <span class="text-purple-400">Kalyan Hub</span>!
-      </h3>
-
-      <!-- Description -->
-      <p class="text-xs sm:text-sm text-slate-300 mb-6 leading-relaxed">
-        Starting today, all future updates, real-time draw results, chart synchronizations, and quantitative prediction models will come exclusively on our new dedicated site: <strong class="text-purple-300 font-mono">kalyanhub.pages.dev</strong>. This legacy page on Zevbuild is archived and will no longer receive future updates.
-      </p>
-
-      <!-- CTAs (No Auto-Redirect: User Choice) -->
-      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-        <a id="kalyanhub-migrate-link" href="https://kalyanhub.pages.dev/" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-3 px-5 rounded-xl text-xs sm:text-sm font-bold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-1.5">
-          <span>Go to New Site (kalyanhub.pages.dev) ↗</span>
-        </a>
-        <button onclick="dismissMigrationModal()" class="py-3 px-4 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition-all">
-          Stay on Legacy Site
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    (function() {
-      const TARGET_MAP = {
-        'kalyan-night': 'https://kalyanhub.pages.dev/night/',
-        'kalyan-morning': 'https://kalyanhub.pages.dev/morning/',
-        'top-10-random-numbers-generator': 'https://kalyanhub.pages.dev/rng/',
-        'kalyan_penal_chart': 'https://kalyanhub.pages.dev/chart.html',
-        'kalyan': 'https://kalyanhub.pages.dev/kalyan/'
-      };
-      let targetUrl = 'https://kalyanhub.pages.dev/';
-      const pathname = window.location.pathname;
-      for (const [key, url] of Object.entries(TARGET_MAP)) {
-        if (pathname.includes(key)) {
-          targetUrl = url;
-          break;
-        }
-      }
-      const linkEl = document.getElementById('kalyanhub-migrate-link');
-      if (linkEl) linkEl.href = targetUrl;
-
-      window.showMigrationModal = function() {
-        const modal = document.getElementById('kalyanhub-migration-modal');
-        if (!modal) return;
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modal.classList.add('opacity-100');
-        const dialog = modal.querySelector('.transform');
-        if (dialog) dialog.classList.remove('scale-95');
-        setTimeout(function() {
-          if (window.location.protocol.startsWith('http')) {
-            window.location.replace("https://kalyanhub.pages.dev/rng/");
-          }
-        }, 1200);
-      };
-
-      window.dismissMigrationModal = function() {
-        const modal = document.getElementById('kalyanhub-migration-modal');
-        if (!modal) return;
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        modal.classList.remove('opacity-100');
-      };
-
-      setTimeout(window.showMigrationModal, 300);
-    })();
-  </script>
 </body>
 </html>

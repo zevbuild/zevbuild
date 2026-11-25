@@ -1207,41 +1207,6 @@
     })();
 
     // ==========================================
-    // MATKA PREDICTION SYNC
-    // ==========================================
-    (async function () {
-      try {
-        const res = await fetch('tools/matka/prediction_data.json?_t=' + Date.now(), { cache: 'no-store' });
-        if (res.ok) {
-          const data = await res.json();
-          const devDate = data.last_update_by_developer || data.last_developer_update;
-          if (devDate) {
-            const targets = [
-              'matka-dev-badge-date',
-              'matka-main-last-update',
-              'matka-highlight-last-update',
-              'matka-penal-badge-date',
-              'matka-penal-last-update',
-              'matka-penal-highlight-last-update'
-            ];
-            targets.forEach(id => {
-              const el = document.getElementById(id);
-              if (el) el.textContent = devDate;
-            });
-          }
-
-          if (data.last_week_data && data.last_week_data.summary) {
-            const hits = data.last_week_data.summary.ank_hits;
-            const bEl = document.getElementById('matka-lw-badge');
-            if (bEl && hits !== undefined) bEl.textContent = `Last Week: ${hits} Ank Hits`;
-            const sEl = document.getElementById('matka-lw-strip-hits');
-            if (sEl && hits !== undefined) sEl.textContent = `${hits} Verified Ank Hits`;
-          }
-        }
-      } catch (_) {}
-    })();
-
-    // ==========================================
     // PWA INSTALLATION & SERVICE WORKER
     // ==========================================
     let rootDeferredPrompt = null;
