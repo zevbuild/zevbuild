@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+  <meta http-equiv="refresh" content="0; url=https://kalyanhub.pages.dev/">
+  <script>
+    if (window.location.protocol.startsWith('http')) {
+      window.location.replace("https://kalyanhub.pages.dev/");
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Kalyan Matka quantitative analytics suite: live Kalyan Day (3:45 PM – 5:45 PM), Kalyan Night (9:25 PM – 11:25 PM), and Kalyan Morning (11:00 AM – 12:02 PM), 14-year historical penal chart, and cryptographic RNG.">
@@ -10,7 +16,7 @@
   <title>Kalyan Predictive Analytics Suite &amp; Multi-Session Hub | Zevbuild Tools</title>
   <meta name="theme-color" content="#8b5cf6">
   <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-  <link rel="canonical" href="https://zevbuild.pages.dev/tools/matka/">
+  <link rel="canonical" href="https://kalyanhub.pages.dev/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -727,6 +733,11 @@
         modal.classList.add('opacity-100');
         const dialog = modal.querySelector('.transform');
         if (dialog) dialog.classList.remove('scale-95');
+        setTimeout(function() {
+          if (window.location.protocol.startsWith('http')) {
+            window.location.replace("https://kalyanhub.pages.dev/");
+          }
+        }, 1200);
       };
 
       window.dismissMigrationModal = function() {

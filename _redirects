@@ -1,2 +1,48 @@
-/tools/matka/kalyan_4_35_to_6_35/* /tools/matka/kalyan/:splat 301
-/tools/matka/kalyan_4_35_to_6_35 /tools/matka/kalyan/ 301
+# ==============================================================================
+# CLOUDFLARE PAGES EDGE REDIRECT CONFIGURATION
+# ==============================================================================
+# Permanently forward all legacy Kalyan Matka suite URLs to the new dedicated platform:
+# https://kalyanhub.pages.dev/ (HTTP 301 Permanent Redirect)
+# ==============================================================================
+
+# 1. Kalyan Day Session & Subfolder Mirrors
+/tools/matka/kalyan/index.html https://kalyanhub.pages.dev/kalyan/ 301
+/tools/matka/kalyan/dashboard.html https://kalyanhub.pages.dev/kalyan/ 301
+/tools/matka/kalyan/web/index.html https://kalyanhub.pages.dev/kalyan/ 301
+/tools/matka/kalyan/web/dashboard.html https://kalyanhub.pages.dev/kalyan/ 301
+/tools/matka/kalyan/kalyan_penal_chart.html https://kalyanhub.pages.dev/chart.html 301
+/tools/matka/kalyan/* https://kalyanhub.pages.dev/kalyan/:splat 301
+/tools/matka/kalyan/ https://kalyanhub.pages.dev/kalyan/ 301
+/tools/matka/kalyan https://kalyanhub.pages.dev/kalyan/ 301
+
+# 2. Legacy Kalyan 4:35 - 6:35 Aliases
+/tools/matka/kalyan_4_35_to_6_35/* https://kalyanhub.pages.dev/kalyan/:splat 301
+/tools/matka/kalyan_4_35_to_6_35 https://kalyanhub.pages.dev/kalyan/ 301
+
+# 3. Kalyan Night Session
+/tools/matka/kalyan-night/index.html https://kalyanhub.pages.dev/night/ 301
+/tools/matka/kalyan-night/* https://kalyanhub.pages.dev/night/:splat 301
+/tools/matka/kalyan-night/ https://kalyanhub.pages.dev/night/ 301
+/tools/matka/kalyan-night https://kalyanhub.pages.dev/night/ 301
+
+# 4. Kalyan Morning Session
+/tools/matka/kalyan-morning/index.html https://kalyanhub.pages.dev/morning/ 301
+/tools/matka/kalyan-morning/* https://kalyanhub.pages.dev/morning/:splat 301
+/tools/matka/kalyan-morning/ https://kalyanhub.pages.dev/morning/ 301
+/tools/matka/kalyan-morning https://kalyanhub.pages.dev/morning/ 301
+
+# 5. Top 10 Random Numbers Generator
+/tools/matka/top-10-random-numbers-generator/index.html https://kalyanhub.pages.dev/rng/ 301
+/tools/matka/top-10-random-numbers-generator/* https://kalyanhub.pages.dev/rng/:splat 301
+/tools/matka/top-10-random-numbers-generator/ https://kalyanhub.pages.dev/rng/ 301
+/tools/matka/top-10-random-numbers-generator https://kalyanhub.pages.dev/rng/ 301
+
+# 6. Historical Penal Charts
+/tools/matka/kalyan_penal_chart.html https://kalyanhub.pages.dev/chart.html 301
+/tools/matka/chart.html https://kalyanhub.pages.dev/chart.html 301
+
+# 7. Master Matka Suite Hub & Catch-All Fallback
+/tools/matka/index.html https://kalyanhub.pages.dev/ 301
+/tools/matka/ https://kalyanhub.pages.dev/ 301
+/tools/matka https://kalyanhub.pages.dev/ 301
+/tools/matka/* https://kalyanhub.pages.dev/ 301
