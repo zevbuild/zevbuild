@@ -20,32 +20,103 @@
   <meta property="og:url" content="https://zevbuild.pages.dev/tools/yt/">
   <meta property="og:title" content="v_yt — YouTube Video Downloader | Zevbuild">
   <meta property="og:description" content="Download YouTube videos in MP4 or MP3 — powered by yt-dlp. No install, no tracking, works in your browser.">
-  <meta property="og:image" content="https://zevbuild.pages.dev/og-image.svg">
+  <meta property="og:image" content="https://zevbuild.pages.dev/og-image.png">
+  <meta property="og:image:secure_url" content="https://zevbuild.pages.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="v_yt — YouTube Video &amp; Audio Downloader | Zevbuild Tools">
+  <meta property="og:locale" content="en_US">
 
   <!-- ═══ Twitter Cards ═══ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@zevbuild">
   <meta name="twitter:title" content="v_yt — YouTube Video Downloader | Zevbuild">
   <meta name="twitter:description" content="Free YouTube downloader powered by yt-dlp. MP4 & MP3, no install needed.">
-  <meta name="twitter:image" content="https://zevbuild.pages.dev/og-image.svg">
+  <meta name="twitter:image" content="https://zevbuild.pages.dev/og-image.png">
+  <meta name="twitter:image:alt" content="v_yt — YouTube Video &amp; Audio Downloader | Zevbuild Tools">
 
   <!-- ═══ Structured Data ═══ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "v_yt — YouTube Video & Audio Downloader",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "All",
-    "url": "https://zevbuild.pages.dev/tools/yt/",
-    "description": "Browser-based video and audio extractor powered by yt-dlp with zero tracking.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Zevbuild Studio",
-      "url": "https://zevbuild.pages.dev/"
-    }
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://zevbuild.pages.dev/tools/yt/#breadcrumbs",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://zevbuild.pages.dev/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tools",
+            "item": "https://zevbuild.pages.dev/tools/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "v_yt",
+            "item": "https://zevbuild.pages.dev/tools/yt/"
+          }
+        ]
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://zevbuild.pages.dev/tools/yt/#app",
+        "name": "v_yt — YouTube Video & Audio Downloader",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "All",
+        "url": "https://zevbuild.pages.dev/tools/yt/",
+        "description": "Browser-based video and audio extractor powered by yt-dlp with zero tracking.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "MP4 720p HD Video Download",
+          "MP4 1080p Full HD Video Download",
+          "MP3 Audio Extraction 128kbps",
+          "Zero Tracking and Zero Telemetry",
+          "In-Browser Instant Conversion"
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Zevbuild Studio",
+          "url": "https://zevbuild.pages.dev/"
+        }
+      },
+      {
+        "@type": "HowTo",
+        "name": "How to Download YouTube Videos and Audio with v_yt",
+        "description": "Step-by-step instructions for extracting MP4 videos or MP3 audio from YouTube using v_yt.",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Paste YouTube URL",
+            "text": "Copy any YouTube link — video, Shorts, or Live — and paste it into the URL field.",
+            "position": 1
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Select Format",
+            "text": "Choose MP4 HD video (720p/1080p) or MP3 for audio-only extraction.",
+            "position": 2
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Download File",
+            "text": "Click Get Download Link and save the file directly to your device.",
+            "position": 3
+          }
+        ]
+      }
+    ]
   }
   </script>
 
@@ -669,7 +740,7 @@
         <!-- Result video info -->
         <div id="result-video-info" class="flex items-center gap-4 mb-5 pb-5 border-b border-white/5 hidden">
           <div class="thumb-wrap w-20 h-[45px] flex-shrink-0">
-            <img id="result-thumb" src="" alt="" class="w-full h-full">
+            <img id="result-thumb" src="" alt="Extracted video thumbnail" class="w-full h-full">
             <div class="play-overlay">
               <svg class="w-4 h-4 text-white opacity-60" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </div>

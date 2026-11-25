@@ -120,6 +120,6 @@
   </g>
 
   <!-- ── Bottom URL / domain ── -->
-  <text x="80" y="575" font-family="'Courier New', monospace" font-size="15" fill="rgba(139,92,246,0.6)" letter-spacing="1">zevbuild.github.io</text>
+  <text x="80" y="575" font-family="'Courier New', monospace" font-size="15" fill="rgba(139,92,246,0.6)" letter-spacing="1">zevbuild.pages.dev</text>
   <text x="1120" y="575" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="rgba(100,116,139,0.7)" text-anchor="end">Privacy-First · Open Source · Goa, India</text>
 </svg>

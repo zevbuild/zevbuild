@@ -1,17 +1,38 @@
+# ==============================================================================
 # Zevbuild — robots.txt
-# https://zevbuild.pages.dev/
+# Canonical Origin: https://zevbuild.pages.dev/
+# ==============================================================================
+
+# Search Engine Crawlers
+User-agent: Googlebot
+Allow: /
+Allow: /og-image.png
+Allow: /og-image.svg
+Allow: /favicon.svg
+
+User-agent: Bingbot
+Allow: /
+Allow: /og-image.png
+Allow: /og-image.svg
+Allow: /favicon.svg
 
 User-agent: *
 Allow: /
+Allow: /og-image.png
+Allow: /og-image.svg
+Allow: /favicon.svg
 
-# Disallow build artifacts, internal tools, and raw caches
+# Disallow build artifacts, internal systems, and test fixtures
 Disallow: /.git/
 Disallow: /.agents/
+Disallow: /.gemini/
+Disallow: /scratch/
 Disallow: /functions/
 Disallow: /tools/matka/tests/
 Disallow: /*_raw.html
 Disallow: /audit_results.json
 Disallow: /audit_summary.md
 
-# Search Engine Sitemap
+# Host Directive & Canonical Sitemap
+Host: https://zevbuild.pages.dev
 Sitemap: https://zevbuild.pages.dev/sitemap.xml

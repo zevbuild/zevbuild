@@ -33,21 +33,24 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zevbuild">
   <meta property="og:url" content="https://zevbuild.pages.dev/">
-  <meta property="og:title" content="Zevbuild — Privacy-First Software & Tools">
+  <meta property="og:title" content="Zevbuild — Privacy-First Software &amp; Tools">
   <meta property="og:description" content="Independent software studio building zero-knowledge vaults, offline utilities, civic transit apps, and probabilistic AI engines. Zero telemetry.">
-  <meta property="og:image" content="https://zevbuild.pages.dev/og-image.svg">
+  <meta property="og:image" content="https://zevbuild.pages.dev/og-image.png">
+  <meta property="og:image:secure_url" content="https://zevbuild.pages.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Zevbuild — Privacy-First Software & Tools">
+  <meta property="og:image:alt" content="Zevbuild — Privacy-First Software &amp; Resilient Digital Products">
   <meta property="og:locale" content="en_US">
 
   <!-- ═══ Twitter / X ═══ -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@zevbuild">
   <meta name="twitter:creator" content="@zevbuild">
-  <meta name="twitter:title" content="Zevbuild — Privacy-First Software & Tools">
+  <meta name="twitter:title" content="Zevbuild — Privacy-First Software &amp; Tools">
   <meta name="twitter:description" content="Zero-knowledge encryption, offline-first utilities, and real-time predictive data engines. Zero telemetry. MIT open source.">
-  <meta name="twitter:image" content="https://zevbuild.pages.dev/og-image.svg">
+  <meta name="twitter:image" content="https://zevbuild.pages.dev/og-image.png">
+  <meta name="twitter:image:alt" content="Zevbuild — Privacy-First Software &amp; Resilient Digital Products">
 
   <!-- ═══ Structured Data ═══ -->
   <script type="application/ld+json">
@@ -60,8 +63,10 @@
         "name": "Zevbuild",
         "alternateName": "Zevbuild Studio",
         "url": "https://zevbuild.pages.dev/",
-        "logo": "https://zevbuild.pages.dev/og-image.svg",
+        "logo": "https://zevbuild.pages.dev/og-image.png",
+        "image": "https://zevbuild.pages.dev/og-image.png",
         "description": "Independent software studio specializing in privacy-first cryptographic systems, offline mesh protocols, civic transit applications, and predictive platforms.",
+        "slogan": "Privacy-First Software & Resilient Digital Products",
         "foundingDate": "2024",
         "foundingLocation": {
           "@type": "Place",
@@ -72,11 +77,21 @@
             "addressCountry": "IN"
           }
         },
+        "knowsAbout": [
+          "Zero-Knowledge Cryptography",
+          "AES-256-GCM Encryption",
+          "Offline-First Architectures",
+          "Bluetooth Mesh Networks",
+          "Civic Transit Routing",
+          "Web Audio Visualizers",
+          "Quantitative Modeling"
+        ],
         "sameAs": [
           "https://github.com/zevbuild",
           "https://zevsafe.pages.dev",
           "https://collegebus.pages.dev",
-          "https://santmistricarpenter.pages.dev"
+          "https://santmistricarpenter.pages.dev",
+          "https://kalyanhub.pages.dev"
         ],
         "contactPoint": {
           "@type": "ContactPoint",
@@ -89,7 +104,16 @@
         "@id": "https://zevbuild.pages.dev/#website",
         "url": "https://zevbuild.pages.dev/",
         "name": "Zevbuild",
-        "publisher": { "@id": "https://zevbuild.pages.dev/#organization" }
+        "description": "Privacy-First Software & Resilient Digital Products",
+        "publisher": { "@id": "https://zevbuild.pages.dev/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://zevbuild.pages.dev/tools/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
       },
       {
         "@type": "SoftwareApplication",
@@ -97,7 +121,8 @@
         "applicationCategory": "SecurityApplication",
         "operatingSystem": "All",
         "description": "Zero-knowledge cryptographic vault engineered with AES-256-GCM and PBKDF2-SHA512 key derivation.",
-        "url": "https://zevsafe.pages.dev"
+        "url": "https://zevsafe.pages.dev",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       },
       {
         "@type": "SoftwareApplication",
@@ -105,7 +130,8 @@
         "applicationCategory": "TravelApplication",
         "operatingSystem": "All",
         "description": "Civic transit live tracking and crowd-sourced bus routing application for college campuses.",
-        "url": "https://collegebus.pages.dev"
+        "url": "https://collegebus.pages.dev",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
       },
       {
         "@type": "WebApplication",
@@ -113,15 +139,44 @@
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "All",
         "description": "High-performance woodworking, interior carpentry, and SQFT cost estimation web platform built by Zevbuild.",
-        "url": "https://santmistricarpenter.pages.dev"
+        "url": "https://santmistricarpenter.pages.dev",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
+      },
+      {
+        "@type": "WebApplication",
+        "name": "v_yt — YouTube Video & Audio Downloader",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "All",
+        "description": "Client-side video and audio extractor powered by yt-dlp with zero tracking.",
+        "url": "https://zevbuild.pages.dev/tools/yt/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "WebApplication",
+        "name": "RetroWave Offline Audio Player",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "All",
+        "description": "Privacy-first, zero-telemetry offline music visualizer and audio player.",
+        "url": "https://zevbuild.pages.dev/tools/spotify/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "WebApplication",
+        "name": "UPI Payment Link & QR Generator",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All",
+        "description": "Instant zero-telemetry UPI payment link and QR code generator for Indian payments.",
+        "url": "https://zevbuild.pages.dev/tools/upi-link-generator/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" }
       },
       {
         "@type": "SoftwareApplication",
         "name": "Kalyan Matka Predictive Analytics Suite",
         "applicationCategory": "AnalyticsApplication",
         "operatingSystem": "All",
-        "description": "Zero-build quantitative predictive analytics and 30-day walk-forward verification suite.",
-        "url": "https://zevbuild.pages.dev/tools/matka/"
+        "description": "Quantitative predictive analytics and 30-day walk-forward statistical verification suite.",
+        "url": "https://kalyanhub.pages.dev/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       },
       {
         "@type": "SoftwareApplication",
@@ -129,7 +184,8 @@
         "applicationCategory": "UtilityApplication",
         "operatingSystem": "All",
         "description": "Cryptographically secure random number picker with rolling animations and statistics.",
-        "url": "https://zevbuild.pages.dev/tools/matka/top-10-random-numbers-generator/"
+        "url": "https://kalyanhub.pages.dev/rng/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }
     ]
   }

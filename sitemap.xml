@@ -1,128 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
           http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <!-- Homepage / Main Studio Portal -->
+  <!-- 1. Homepage / Main Studio Portal -->
   <url>
     <loc>https://zevbuild.pages.dev/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://zevbuild.pages.dev/og-image.png</image:loc>
+      <image:title>Zevbuild — Privacy-First Software &amp; Resilient Digital Products</image:title>
+    </image:image>
   </url>
 
-  <!-- Embedded Tools & Utilities Hub -->
+  <!-- 2. Embedded Tools & Utilities Hub -->
   <url>
     <loc>https://zevbuild.pages.dev/tools/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://zevbuild.pages.dev/og-image.png</image:loc>
+      <image:title>Tools &amp; Interactive Applications — Zevbuild Studio</image:title>
+    </image:image>
   </url>
 
-  <!-- Kalyan Matka ML & Analytics Engine Hub -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Kalyan Live Quantitative Predictor -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/kalyan/</loc>
-    <lastmod>2026-11-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Kalyan Night Quantitative Predictor -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/kalyan-night/</loc>
-    <lastmod>2026-11-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- Kalyan Morning Quantitative Predictor -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/kalyan-morning/</loc>
-    <lastmod>2026-11-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-
-  <!-- Kalyan Historical Penal Chart Matrix (2012–2026) -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/kalyan_penal_chart.html</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Top 10 Random Numbers Generator (Secure Cryptographic RNG) -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/matka/top-10-random-numbers-generator/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Spotify Offline Audio Player & Visualizer -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/spotify/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Curated Video Downloaders & Media Utilities Guide -->
-  <url>
-    <loc>https://zevbuild.pages.dev/tools/download/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- v_yt — YouTube Video & Audio Downloader -->
+  <!-- 3. v_yt — YouTube Video & Audio Downloader -->
   <url>
     <loc>https://zevbuild.pages.dev/tools/yt/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://zevbuild.pages.dev/og-image.png</image:loc>
+      <image:title>v_yt — YouTube Video &amp; Audio Downloader | Zevbuild Tools</image:title>
+    </image:image>
   </url>
 
-  <!-- UPI Payment Link Generator -->
+  <!-- 4. UPI Payment Link & QR Generator -->
   <url>
     <loc>https://zevbuild.pages.dev/tools/upi-link-generator/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://zevbuild.pages.dev/og-image.png</image:loc>
+      <image:title>UPI Link Generator — Pay Anyone Instantly | Zevbuild Tools</image:title>
+    </image:image>
   </url>
 
-  <!-- Studio Donation Portal -->
+  <!-- 5. RetroWave Offline Audio Player & Visualizer -->
+  <url>
+    <loc>https://zevbuild.pages.dev/tools/spotify/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://zevbuild.pages.dev/og-image.png</image:loc>
+      <image:title>RetroWave Offline Audio Player | Zevbuild Tools</image:title>
+    </image:image>
+  </url>
+
+  <!-- 6. Curated Video Downloaders & Media Utilities Guide -->
+  <url>
+    <loc>https://zevbuild.pages.dev/tools/download/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <image:image>
+      <image:loc>https://zevbuild.pages.dev/og-image.png</image:loc>
+      <image:title>Top 10 Video Downloaders &amp; Media Utilities | Zevbuild Tools</image:title>
+    </image:image>
+  </url>
+
+  <!-- 7. Studio Donation Portal -->
   <url>
     <loc>https://zevbuild.pages.dev/donation/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.60</priority>
+    <image:image>
+      <image:loc>https://zevbuild.pages.dev/og-image.png</image:loc>
+      <image:title>Support Zevbuild Studio — Privacy Software &amp; Independent Development</image:title>
+    </image:image>
   </url>
 
-  <!-- Privacy Policy -->
+  <!-- 8. Privacy Policy -->
   <url>
     <loc>https://zevbuild.pages.dev/t/privacy/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.50</priority>
   </url>
 
-  <!-- Terms of Service -->
+  <!-- 9. Terms of Service -->
   <url>
     <loc>https://zevbuild.pages.dev/t/terms/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.50</priority>
   </url>
 
 </urlset>
