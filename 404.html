@@ -76,15 +76,19 @@
 
     <!-- Quick Navigation Links -->
     <div class="mt-8 pt-6 border-t border-white/5 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs text-slate-400">
-      <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">ZevSafe App ↗</a>
+      <a href="tools/index.html" class="hover:text-purple-400 transition-colors">Tools Hub</a>
       <span>·</span>
       <a href="tools/upi-link-generator/index.html" class="hover:text-emerald-400 transition-colors">UPI Generator</a>
       <span>·</span>
-      <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors">CollegeBus</a>
+      <a href="tools/spotify/index.html" class="hover:text-fuchsia-400 transition-colors">RetroWave Player</a>
+      <span>·</span>
+      <a href="https://kalyanhub.pages.dev/" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-400 transition-colors">Kalyan Hub ↗</a>
+      <span>·</span>
+      <a href="https://zevsafe.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-purple-400 transition-colors">ZevSafe ↗</a>
+      <span>·</span>
+      <a href="https://collegebus.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition-colors">CollegeBus ↗</a>
       <span>·</span>
       <a href="https://santmistricarpenter.pages.dev" target="_blank" rel="noopener noreferrer" class="hover:text-amber-400 transition-colors">Sant Mistri (Web) ↗</a>
-      <span>·</span>
-      <a href="tools/matka/index.html" class="hover:text-indigo-400 transition-colors">Analytics</a>
       <span>·</span>
       <a href="https://github.com/zevbuild" target="_blank" rel="noopener noreferrer" class="hover:text-slate-200 transition-colors">GitHub</a>
     </div>
@@ -111,32 +115,48 @@
     if (currentPath.includes('upi') || currentPath.includes('qr') || currentPath.includes('pay')) {
       destination = isLocal ? 'tools/upi-link-generator/index.html' : '/tools/upi-link-generator/index.html';
       destTitle = 'UPI Link & QR Generator';
-    } else if (currentPath.includes('satta') || currentPath.includes('matka')) {
-      destination = isLocal ? 'tools/matka/index.html' : '/tools/matka/index.html';
-      destTitle = 'Predictive Analytics & Kalyan Engine';
-    } else if (currentPath.includes('spotify') || currentPath.includes('music') || currentPath.includes('player')) {
+    } else if (currentPath.includes('rng') || currentPath.includes('random')) {
+      destination = 'https://kalyanhub.pages.dev/rng/';
+      destTitle = 'Top 10 Random Numbers Generator (Kalyan Hub)';
+    } else if (currentPath.includes('chart') || currentPath.includes('penal')) {
+      destination = 'https://kalyanhub.pages.dev/chart.html';
+      destTitle = 'Kalyan Historical Penal Chart (Kalyan Hub)';
+    } else if (currentPath.includes('morning')) {
+      destination = 'https://kalyanhub.pages.dev/morning/';
+      destTitle = 'Kalyan Morning Predictor (Kalyan Hub)';
+    } else if (currentPath.includes('night')) {
+      destination = 'https://kalyanhub.pages.dev/night/';
+      destTitle = 'Kalyan Night Predictor (Kalyan Hub)';
+    } else if (currentPath.includes('kalyan') || currentPath.includes('satta') || currentPath.includes('matka')) {
+      destination = 'https://kalyanhub.pages.dev/';
+      destTitle = 'Kalyan Hub — Predictive Analytics Platform';
+    } else if (currentPath.includes('spotify') || currentPath.includes('music') || currentPath.includes('player') || currentPath.includes('retrowave')) {
       destination = isLocal ? 'tools/spotify/index.html' : '/tools/spotify/index.html';
-      destTitle = 'Spotify RetroWave Player';
-    } else if (currentPath.includes('download') || currentPath.includes('video')) {
-      destination = isLocal ? 'tools/download/index.html' : '/tools/download/index.html';
-      destTitle = 'Video Downloaders Guide';
-    } else if (currentPath.includes('yt') || currentPath.includes('youtube')) {
-      destination = isLocal ? 'tools/yt/index.html' : '/tools/yt/index.html';
-      destTitle = 'YouTube Video Downloader';
+      destTitle = 'RetroWave Offline Audio Player';
     } else if (currentPath.includes('zevsafe')) {
       destination = 'https://zevsafe.pages.dev';
+      destTitle = 'ZevSafe — Zero-Knowledge Vault';
     } else if (currentPath.includes('zevblock') || currentPath.includes('block')) {
       destination = 'https://github.com/zevbuild/zevblock';
       destTitle = 'ZevBlock — Android Accountability & Anti-Bypass OS';
-    } else if (currentPath.includes('zevsync')) {
-      destination = 'https://github.com/zevbuild/zevsync';
-      destTitle = 'ZevSync — Offline Bluetooth Mesh Sync';
     } else if (currentPath.includes('collegebus') || currentPath.includes('bus')) {
       destination = 'https://collegebus.pages.dev';
       destTitle = 'CollegeBus — Student Transit Tracker';
     } else if (currentPath.includes('carpenter') || currentPath.includes('santmistri') || currentPath.includes('mistri') || currentPath.includes('wood')) {
       destination = 'https://santmistricarpenter.pages.dev';
       destTitle = 'Sant Mistri Carpenter & Contractor (Web)';
+    } else if (currentPath.includes('privacy')) {
+      destination = isLocal ? 't/privacy/index.html' : '/t/privacy/';
+      destTitle = 'Zevbuild Privacy Policy';
+    } else if (currentPath.includes('terms')) {
+      destination = isLocal ? 't/terms/index.html' : '/t/terms/';
+      destTitle = 'Zevbuild Terms of Service';
+    } else if (currentPath.includes('donat') || currentPath.includes('support')) {
+      destination = isLocal ? 'donation/index.html' : '/donation/';
+      destTitle = 'Support Zevbuild Studio';
+    } else if (currentPath.includes('tool')) {
+      destination = isLocal ? 'tools/index.html' : '/tools/index.html';
+      destTitle = 'Zevbuild Tools Catalog';
     }
 
     if (destination !== rootPath) {

@@ -309,8 +309,7 @@ class VerificationHarness:
         required_tools = [
             ("Kalyan Matka Analytics", self.root / "tools" / "matka" / "index.html"),
             ("Spotify RetroWave Player", self.root / "tools" / "spotify" / "index.html"),
-            ("Video Downloader Guide", self.root / "tools" / "download" / "index.html"),
-            ("YouTube Downloader (v_yt)", self.root / "tools" / "yt" / "index.html"),
+            ("UPI Link Generator", self.root / "tools" / "upi-link-generator" / "index.html"),
         ]
 
         for tool_name, tool_entry in required_tools:
@@ -541,7 +540,7 @@ class VerificationHarness:
         # Every page in tools/<tool_name>/ must have breadcrumb/back links to:
         # a) Main Hub: ../../index.html (or /index.html or /)
         # b) Tools Hub: ../index.html (or /tools/index.html or ../)
-        sub_tool_dirs = ["matka", "spotify", "download", "yt"]
+        sub_tool_dirs = ["matka", "spotify", "upi-link-generator"]
         for t_dir in sub_tool_dirs:
             tool_page = self.root / "tools" / t_dir / "index.html"
             rel_page = f"tools/{t_dir}/index.html"
